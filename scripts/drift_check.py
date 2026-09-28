@@ -1881,6 +1881,109 @@ _WO004_SESSION_A_BASIS_HEADING = "## Session A authorization basis"
 _WO004_SESSION_A_ANCHORED = (
     _WO004_SESSION_A_BASIS_HEADING + " " + _WO004_SESSION_A_STATEMENT
 )
+# Authorizing Session C adds three more declarations and moves the base to the
+# Session C authorization commit. Its CI ran on that base commit, which does
+# not contain the uncommitted Session B implementation, so the mandate also
+# records the reviewed implementation files by identity.
+_WO004_SESSION_C_COMMIT = "17b5afe3f50bfa3ab882ff362a10eef70750c694"
+_WO004_SESSION_C_WORKFLOW = "36385787242"
+_WO004_SESSION_C_JOB = "108810759914"
+_WO004_SESSION_C_GATE = (
+    "WO-004 SESSION C AUTHORIZED — OWNER-OPERATED LIVE ACCEPTANCE ONLY"
+)
+_WO004_SESSION_C_AUTH = (
+    "AUTHORIZATION: ISSUED — SESSION C AUTHORIZED FOR LIVE ACCEPTANCE ONLY"
+)
+_WO004_SESSION_C_ISSUED_SEQUENCE = _WO004_SESSION_B_ISSUED_SEQUENCE + (
+    "SESSION_C_AUTHORIZATION_COMMIT: `" + _WO004_SESSION_C_COMMIT + "`",
+    "SESSION_C_AUTHORIZATION_CI_WORKFLOW: `"
+    + _WO004_SESSION_C_WORKFLOW + "`",
+    "SESSION_C_AUTHORIZATION_CI_JOB: `" + _WO004_SESSION_C_JOB + "` "
+    + "— Lint, types, tests",
+)
+_WO004_SESSION_C_POINTER_SEQUENCE = _WO004_SESSION_B_POINTER_SEQUENCE[:16] + (
+    "- Session C authorization commit: `" + _WO004_SESSION_C_COMMIT + "`",
+    "- Session C authorization CI workflow: `"
+    + _WO004_SESSION_C_WORKFLOW + "`",
+    "- Session C authorization CI job: `" + _WO004_SESSION_C_JOB + "` "
+    + "— Lint, types, tests",
+) + _WO004_SESSION_B_POINTER_SEQUENCE[16:]
+_WO004_SESSION_C_ISSUED_KEYS = _WO004_SESSION_B_ISSUED_KEYS + (
+    ("SESSION_C_AUTHORIZATION_COMMIT:", _WO004_SESSION_C_ISSUED_SEQUENCE[13]),
+    ("SESSION_C_AUTHORIZATION_CI_WORKFLOW:",
+     _WO004_SESSION_C_ISSUED_SEQUENCE[14]),
+    ("SESSION_C_AUTHORIZATION_CI_JOB:", _WO004_SESSION_C_ISSUED_SEQUENCE[15]),
+)
+_WO004_SESSION_C_POINTER_KEYS = (
+    (("- Base commit:",
+      "- Base commit: `" + _WO004_SESSION_C_COMMIT + "`"),)
+    + _WO004_SESSION_B_POINTER_KEYS[1:]
+    + (("- Session C authorization commit:",
+        _WO004_SESSION_C_POINTER_SEQUENCE[16]),
+       ("- Session C authorization CI workflow:",
+        _WO004_SESSION_C_POINTER_SEQUENCE[17]),
+       ("- Session C authorization CI job:",
+        _WO004_SESSION_C_POINTER_SEQUENCE[18]))
+)
+_WO004_SESSION_C_STATEMENT = (
+    "Session C is authorized for owner-operated live acceptance only under "
+    "the current root `WORKORDER.md` gate alone."
+)
+_WO004_SESSION_C_NEXT_GATE = (
+    "NEXT GATE: owner-operated Session C live acceptance of the reviewed "
+    "uncommitted Session B implementation, followed by fresh independent "
+    "review of the recorded evidence. Any change to the implementation, "
+    "commit, push, and WO-004 completion remain closed."
+)
+# Session B's authorization statement, kept as history once Session C is
+# authorized and anchored to its heading, as Session A's is.
+_WO004_SESSION_B_BASIS_HEADING = "## Session B authorization basis"
+_WO004_SESSION_B_ANCHORED = (
+    _WO004_SESSION_B_BASIS_HEADING + " At the Session B authorization gate, "
+    "Session B was authorized for client outcome semantics only under the "
+    "root `WORKORDER.md` gate."
+)
+# A sentence the issued mandate has carried since issuance (Status semantics,
+# "Operation identity and recovery"). It names Session B beside the word
+# "resume", so once Session B is no longer the authorized session the scanner
+# would read it as a grant. It is pinned and removed in a form anchored to the
+# sentence before it, as the authorization statements are.
+_WO004_ISSUED_RECOVERY_STATEMENT = (
+    "correlation of a late reply to a specific in-flight operation is "
+    "unproven. Session B must confirm what the transport can actually do "
+    "before any resume, cancel, or reattach behaviour is designed."
+)
+# The reviewed, uncommitted implementation Session C tests: path, the Git blob
+# Git would commit (line-ending normalized), and the SHA-256 of the reviewed
+# worktree bytes. The mandate records them as one list in the Session C
+# authorization section, checked by _wo004_implementation_identity_findings.
+_WO004_SESSION_C_IMPLEMENTATION = (
+    (".claude/mcp_reference.md", "75873316c1f0f57037181a4fda2f2cd4365a730d",
+     "cb55912ec5168d2d46a3631443bc2dcc462f543567142d91b1fdd0b1cb6e5c26"),
+    ("client.py", "bfff40e02fa167a0f987a5e066e7bc6f13f8b308",
+     "c5097f3141b19122b665b0be2a570e13ec642a5d2cc582a6bec717ae25e34850"),
+    ("mcp_server.py", "70a88474dc138b5d3915f06a96dffef24c71c993",
+     "0aa4268491d60f7fbb663da1d3bbcb095997243a51db91357452160b04eed0b3"),
+    ("tests/test_mcp_security.py", "34580cb9426f4aeaaa47381cf77d707936e88ffa",
+     "dd0c2ceaebfb813b371650e10658c98b41958e8d1f5139181ecaf8955cfe6976"),
+)
+_WO004_SESSION_C_IMPLEMENTATION_LINES = tuple(
+    "- `" + path + "`: Git blob `" + blob + "`, SHA-256 `" + sha + "`"
+    for path, blob, sha in _WO004_SESSION_C_IMPLEMENTATION
+)
+_WO004_SESSION_C_BASIS_HEADING = "## Session C authorization basis"
+# The paragraphs directly before and after the identity list, which place it.
+_WO004_SESSION_C_IDENTITY_INTRO = (
+    "Session C tests exactly this reviewed implementation, identified by its "
+    "files in the reviewed snapshot `wo004-session-b-cleanup-2026-09-28`:"
+)
+_WO004_SESSION_C_IDENTITY_CLOSING = (
+    "Each Git blob is the line-ending-normalized identity Git would commit; "
+    "each SHA-256 is of the reviewed worktree bytes."
+)
+# An identity declaration names its kind and then gives a code-span value.
+# Prose that only names a kind, as the closing paragraph does, declares nothing.
+_WO004_IDENTITY_DECLARATION = re.compile(r"(Git blob|SHA-256)[\s:]*`")
 # Which canonical shape each WO-004 state must present. Adding a state here
 # is the visible act that moves the pointer's base commit. Keys come from
 # _wo004_state_key, never straight from the pointer, so a pointer cannot
@@ -1901,6 +2004,9 @@ _WO004_STATES = {
     "B": (_WO004_SESSION_B_POINTER_SEQUENCE, _WO004_SESSION_B_POINTER_KEYS,
           _WO004_SESSION_B_ISSUED_SEQUENCE, _WO004_SESSION_B_ISSUED_KEYS,
           _WO004_SESSION_B_NEXT_GATE, _WO004_SESSION_B_STATEMENT),
+    "C": (_WO004_SESSION_C_POINTER_SEQUENCE, _WO004_SESSION_C_POINTER_KEYS,
+          _WO004_SESSION_C_ISSUED_SEQUENCE, _WO004_SESSION_C_ISSUED_KEYS,
+          _WO004_SESSION_C_NEXT_GATE, _WO004_SESSION_C_STATEMENT),
 }
 
 
@@ -1910,10 +2016,10 @@ def _wo004_state_key(session, current_gate, auth_lines, issued_text):
     A closed session carrying ANY Session A acceptance signal - the accepted
     gate, the accepted marker, or the decision record - is compared against
     the whole accepted shape, so a partial transition fails as the state it
-    claims to be instead of passing as the closed issuance. NONE, A, and B
-    are the only recognized session values; anything else is rogue.
+    claims to be instead of passing as the closed issuance. NONE, A, B, and
+    C are the only recognized session values; anything else is rogue.
     """
-    if session in ("A", "B"):
+    if session in ("A", "B", "C"):
         return session
     if session != "NONE":
         return None
@@ -1932,6 +2038,62 @@ def _wo004_decision_record_findings(issued_text, rel):
         return []
     return [(rel, "WO-004 Session A decision record", str(len(headings)),
              "exactly one " + _WO004_DECISION_HEADING)]
+
+
+def _wo004_implementation_identity_findings(issued_text, rel):
+    """The reviewed implementation's identity list, where Session C records it.
+
+    The mandate has exactly one Session C authorization section. Inside it,
+    exactly one paragraph is the introduction, followed by the four identity
+    lines in order as a paragraph of their own, followed by the closing
+    explanation. No identity is declared anywhere else in the mandate: each
+    kind's declarations are counted over the whole file, so a decoy, a
+    conflicting or additional entry, or the complete block moved out of the
+    section cannot satisfy the record.
+    """
+    kind = "WO-004 Session C implementation identity"
+    expected = len(_WO004_SESSION_C_IMPLEMENTATION)
+    findings = []
+    declared = [
+        match.group(1)
+        for match in _WO004_IDENTITY_DECLARATION.finditer(
+            " ".join(issued_text.split()))
+    ]
+    for term in ("Git blob", "SHA-256"):
+        if declared.count(term) != expected:
+            findings.append((
+                rel, kind,
+                str(declared.count(term)) + " " + term + " declarations",
+                "exactly " + str(expected) + ", all in the Session C "
+                "identity list"))
+    lines = issued_text.splitlines()
+    starts = [index for index, line in enumerate(lines)
+              if line == _WO004_SESSION_C_BASIS_HEADING]
+    if len(starts) != 1:
+        findings.append((
+            rel, kind,
+            str(len(starts)) + " Session C authorization sections",
+            "exactly one " + _WO004_SESSION_C_BASIS_HEADING))
+        return findings
+    end = next((index for index in range(starts[0] + 1, len(lines))
+                if lines[index].startswith("## ")), len(lines))
+    blocks = _paragraphs("\n".join(lines[starts[0] + 1:end]))
+    records = [
+        index for index in range(len(blocks) - 2)
+        if " ".join(" ".join(blocks[index]).split())
+        == _WO004_SESSION_C_IDENTITY_INTRO
+        and tuple(blocks[index + 1]) == _WO004_SESSION_C_IMPLEMENTATION_LINES
+        and " ".join(" ".join(blocks[index + 2]).split())
+        == _WO004_SESSION_C_IDENTITY_CLOSING
+    ]
+    if len(records) != 1:
+        findings.append((
+            rel, kind,
+            str(len(records)) + " canonical identity lists in the Session C "
+            "authorization section",
+            "exactly one: the introduction, the four reviewed identities in "
+            "order, and the closing explanation"))
+    return findings
 
 
 def _wo004_issuance_findings(pointer, issued_text, rel, state_key):
@@ -3379,9 +3541,69 @@ def check_work_order_contract() -> list[dict]:
                         add("WORKORDER.md", "next work order authorization",
                             "implicit WO-003 permission",
                             "WO-003 remains proposed and not authorized")
+            elif (session == "C" and issued[0].name == _WO004_NAME
+                  and issued_id == _WO004_ID):
+                # WO-004's Session C is owner-operated live acceptance of the
+                # reviewed, uncommitted Session B implementation. The
+                # canonical slices, the base commit, the next gate, and the
+                # Session C statement are enforced by _wo004_issuance_findings.
+                wo004_rel = issued[0].relative_to(root).as_posix()
+                if auth_lines != [_WO004_SESSION_C_AUTH]:
+                    add(wo004_rel, "issued session authorization",
+                        repr(auth_lines), f"exactly {_WO004_SESSION_C_AUTH}")
+                if current_gate != _WO004_SESSION_C_GATE:
+                    add("WORKORDER.md", "authorized session gate",
+                        str(current_gate), _WO004_SESSION_C_GATE)
+                if _has_other_session_authorization(pointer, "", session):
+                    add("WORKORDER.md", "later session authorization",
+                        "positive permission for a non-current session",
+                        "only Session C authorized")
+                # The records that came before stay in place, each exactly
+                # once: Session A's authorization and acceptance statements,
+                # the decision record, Session B's authorization statement,
+                # and the issued recovery sentence. The reviewed
+                # implementation's identity list is checked in place.
+                normalized_wo004 = " ".join(issued_text.split())
+                pinned = (
+                    (_WO004_SESSION_A_ANCHORED,
+                     "WO-004 Session A authorization statement"),
+                    (_WO004_SESSION_A_ACCEPTANCE_RECORD,
+                     "WO-004 Session A acceptance statement"),
+                    (_WO004_SESSION_B_ANCHORED,
+                     "WO-004 Session B authorization statement"),
+                    (_WO004_ISSUED_RECOVERY_STATEMENT,
+                     "WO-004 issued recovery statement"),
+                )
+                for required, kind in pinned:
+                    if normalized_wo004.count(required) != 1:
+                        add(wo004_rel, kind,
+                            str(normalized_wo004.count(required)),
+                            "exactly one " + required)
+                for _f, _k, _found, _want in (
+                    _wo004_decision_record_findings(issued_text, wo004_rel)
+                    + _wo004_implementation_identity_findings(issued_text,
+                                                              wo004_rel)
+                ):
+                    add(_f, _k, _found, _want)
+                # Session A's and Session B's authorization statements and the
+                # issued recovery sentence are kept verbatim. Their anchored
+                # forms are pinned above, and those same forms are removed once
+                # each before the existing scanner looks for a positive
+                # statement about any session other than C.
+                scannable = normalized_wo004
+                for kept in (_WO004_SESSION_A_ANCHORED,
+                             _WO004_SESSION_B_ANCHORED,
+                             _WO004_ISSUED_RECOVERY_STATEMENT):
+                    scannable = scannable.replace(kept, "", 1)
+                if _has_other_session_authorization("", scannable, session):
+                    add(wo004_rel, "session authorization reopening",
+                        "positive permission for Session A, Session B, or "
+                        "later",
+                        "only Session C authorized")
             else:
                 add("WORKORDER.md", "authorized session gate", str(session),
-                    "NONE or the specifically authorized session A or B")
+                    "NONE or the specifically authorized session A or B, or "
+                    "WO-004's Session C")
 
     # WO-002's completed-document enforcement is bound to the artifact too.
     # It used to live in the NONE branch, where a later Work Order taking the

@@ -1,0 +1,13 @@
+ARMED case5-client at 1790626132.358; waiting up to 600 s for the stall-start print
+  case5-client request: CommandTimeout after 30.030s, attempts=1 | No reply confirmed the outcome of command 'set_viewport_camera' (no reply within 30.0s).
+    attempt client.py set_viewport_camera port=8765 1790626152.532->1790626182.540 status=None raised=TimeoutError reason=None
+  waiting for the stall-end print ...
+  timing: {'stall_start_print': 1790626152.4916277, 'stall_end_print': 1790626227.4925508, 'log_seen_at': 1790626152.5102503, 'attempt_start': 1790626152.5320566, 'client_raised_at': 1790626182.5405297, 'stall_began_before_attempt': True, 'raised_before_stall_end': True, 'no_200_for_attempt': True}
+  checks: {'one_attempt': True, 'unknown_outcome_class': True, 'unknown_outcome_wording': True, 'arrival': 'socket timeout'}
+  history (verify): OK in 0.350s, attempts=1, result={'entries': [{'command': 'ping', 'elapsed_ms': 0.0, 'success': True}, {'command': 'get_viewport_camera', 'elapsed_ms': 0.0, 'success': True}, {'command': 'ping', 'elapsed_ms': 0.0, 'success': True}, {'command': 'ping', 'elapsed_ms': 0.0, 'success': True}, {'command': 'ping', 'elapsed_ms': 0.0, 'success': True}, {'command': 'history', 'elapsed_ms': 0.0, 'success': True}, {'command': 'history', 'elapsed_ms': 0.0, 'success': True}, {'command': 'ping', 'elapsed_ms': 1.0, 'success': True}, {'command': 'get_viewport_camera', 'elapsed_ms': 0.0, 'success': True}, {'command': 'history', 'elapsed_ms': 0.0, 'success': True}, {'command': 'set_viewport_camera', 'elapsed_ms': 0.0, 'success': True}], 'total': 11}
+    attempt client.py history port=8765 1790626232.518->1790626232.844 status=200 raised=None reason=None
+  get_viewport_camera (verify): OK in 0.330s, attempts=1, result={'location': {'x': 739.2, 'y': 739.2, 'z': 602.5}, 'rotation': {'pitch': -40.0, 'yaw': 225.0, 'roll': 0.0}}
+    attempt client.py get_viewport_camera port=8765 1790626232.870->1790626233.180 status=200 raised=None reason=None
+  history window since baseline: [{'command': 'history', 'elapsed_ms': 0.0, 'success': True}, {'command': 'set_viewport_camera', 'elapsed_ms': 0.0, 'success': True}]
+  checks: {'one_attempt': True, 'unknown_outcome_class': True, 'unknown_outcome_wording': True, 'arrival': 'socket timeout', 'exactly_one_new_set_viewport_camera': True, 'total_below_500_both_reads': True, 'camera_at_target': True}
+==> case5-client: PASS

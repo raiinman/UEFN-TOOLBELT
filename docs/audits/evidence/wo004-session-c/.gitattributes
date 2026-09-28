@@ -1,0 +1,3 @@
+# Raw and redacted WO-004 Session C evidence. Store and check out the exact bytes,
+# so SHA256SUMS.txt and PROVENANCE.txt hold on every platform regardless of core.autocrlf.
+* binary

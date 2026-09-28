@@ -2,7 +2,7 @@
 
 STATUS: ISSUED
 
-AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR CLIENT OUTCOME SEMANTICS ONLY
+AUTHORIZATION: ISSUED — SESSION C AUTHORIZED FOR LIVE ACCEPTANCE ONLY
 
 OWNER: Ocean Bennett
 
@@ -33,6 +33,12 @@ SESSION_B_AUTHORIZATION_COMMIT: `da846ec36773d673ca9dcab3025ac36555579d0f`
 SESSION_B_AUTHORIZATION_CI_WORKFLOW: `36375370541`
 
 SESSION_B_AUTHORIZATION_CI_JOB: `108780005124` — Lint, types, tests
+
+SESSION_C_AUTHORIZATION_COMMIT: `17b5afe3f50bfa3ab882ff362a10eef70750c694`
+
+SESSION_C_AUTHORIZATION_CI_WORKFLOW: `36385787242`
+
+SESSION_C_AUTHORIZATION_CI_JOB: `108810759914` — Lint, types, tests
 
 ## Issuance basis
 
@@ -122,22 +128,58 @@ separate owner gate recorded in root `WORKORDER.md`.
 
 ## Session B authorization basis
 
-Session B is authorized for client outcome semantics only under the current
-root `WORKORDER.md` gate alone. The recorded basis is commit
-`da846ec36773d673ca9dcab3025ac36555579d0f`; [CI workflow
+At the Session B authorization gate, Session B was authorized for client
+outcome semantics only under the root `WORKORDER.md` gate. The recorded basis
+is commit `da846ec36773d673ca9dcab3025ac36555579d0f`; [CI workflow
 `36375370541`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36375370541)
 completed successfully, including required job
 [`108780005124` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36375370541/job/108780005124).
 
-This gate covers exactly the amended scope in "Session B — client outcome
+That gate covered exactly the amended scope in "Session B — client outcome
 semantics (amended)" below: its candidate file inventory, required contract,
-exclusions, and static verification, unchanged. Session B ends with its
-worktree uncommitted for independent review. It opens no live UEFN work: no
-deploy, no editor launch, no bridge start, no MCP call, and no level mutation.
-Session C live testing remains unauthorized and needs its own owner gate
-recorded in root `WORKORDER.md`. The issuance, Session A authorization, and
-Session A acceptance evidence above are preserved unchanged, and none of them
-is the Session B basis.
+exclusions, and static verification, unchanged. Session B ended with its
+worktree uncommitted for independent review. That gate opened no live UEFN
+work: no deploy, no editor launch, no bridge start, no MCP call, and no level
+mutation. Session C live testing was not authorized at that gate. The
+issuance, Session A authorization, and Session A acceptance evidence above are
+preserved unchanged, and none of them is the Session B basis.
+
+## Session C authorization basis
+
+Session C is authorized for owner-operated live acceptance only under the
+current root `WORKORDER.md` gate alone. The recorded basis is commit
+`17b5afe3f50bfa3ab882ff362a10eef70750c694`; [CI workflow
+`36385787242`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36385787242)
+completed successfully, including required job
+[`108810759914` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36385787242/job/108810759914).
+
+That CI ran on the base commit, which does not contain the Session B
+implementation. The implementation is uncommitted, and its evidence is local
+checks and independent static review, not CI. On Windows 11 with Python
+3.13.5, the full suite gave 1443 passed and 10 skipped; the security tests gave
+175 passed on Python 3.13.5 and on Python 3.12.10; and ruff, the drift check,
+and the API manifest check were clean. The configured mypy files include
+neither client. Two independent static reviews accepted the implementation:
+the implementation review and the review of its test and documentation
+cleanup. Linux, macOS, Python 3.8 to 3.11, and all live behaviour are untested,
+and static acceptance is not live acceptance.
+
+Session C tests exactly this reviewed implementation, identified by its files
+in the reviewed snapshot `wo004-session-b-cleanup-2026-09-28`:
+
+- `.claude/mcp_reference.md`: Git blob `75873316c1f0f57037181a4fda2f2cd4365a730d`, SHA-256 `cb55912ec5168d2d46a3631443bc2dcc462f543567142d91b1fdd0b1cb6e5c26`
+- `client.py`: Git blob `bfff40e02fa167a0f987a5e066e7bc6f13f8b308`, SHA-256 `c5097f3141b19122b665b0be2a570e13ec642a5d2cc582a6bec717ae25e34850`
+- `mcp_server.py`: Git blob `70a88474dc138b5d3915f06a96dffef24c71c993`, SHA-256 `0aa4268491d60f7fbb663da1d3bbcb095997243a51db91357452160b04eed0b3`
+- `tests/test_mcp_security.py`: Git blob `34580cb9426f4aeaaa47381cf77d707936e88ffa`, SHA-256 `dd0c2ceaebfb813b371650e10658c98b41958e8d1f5139181ecaf8955cfe6976`
+
+Each Git blob is the line-ending-normalized identity Git would commit; each
+SHA-256 is of the reviewed worktree bytes.
+
+This gate covers the owner-operated procedure in "Session C — live acceptance,
+owner-operated (amended)" below, unchanged, including its runtime prerequisites
+and the updated-editor prerequisite. The owner operates UEFN. Session C changes
+no implementation file: a defect found live stops the session and is reported
+for a separate owner decision. It opens no commit, push, or WO-004 completion.
 
 ## Planning basis
 
@@ -880,10 +922,10 @@ Each is a separate owner gate and none implies the next.
 
 Completed: proposal revision → independent pre-issuance review → issuance →
 Session A gate → Session A decision → independent review of the decision and
-amendment → commit → push → CI → Session B gate.
+amendment → commit → push → CI → Session B gate → Session B implementation,
+left uncommitted → independent review → Session C gate.
 
-Remaining: Session B implementation, left uncommitted → independent review →
-Session C gate → live acceptance against that uncommitted change → independent
+Remaining: live acceptance against that uncommitted change → independent
 acceptance review → commit → push → CI → WO-004 completion gate.
 
 As issued, this chain placed commit and push before Session C. It is reordered
@@ -923,7 +965,7 @@ declared in the canonical metadata block above and in the root pointer's
 canonical bullet block. The planning basis and the issuance basis are
 distinct records and must not be conflated.
 
-NEXT GATE: fresh independent review of the complete uncommitted Session B
-implementation, which is limited to client outcome semantics, followed by a
-separate owner gate for Session C live acceptance. Session C, commit, push, and
-all live UEFN work remain closed.
+NEXT GATE: owner-operated Session C live acceptance of the reviewed uncommitted
+Session B implementation, followed by fresh independent review of the recorded
+evidence. Any change to the implementation, commit, push, and WO-004 completion
+remain closed.

@@ -1,0 +1,11 @@
+# WO-004 Session C build fields - DERIVED from the private run-time capture editor_build.txt
+# (sha256 in PROVENANCE.txt). Each field quotes its source line from that capture verbatim,
+# except that leading indentation is removed.
+# The raw capture is not published: it also holds user-profile paths.
+running_editor_build: ++Fortnite+Release-42.20-CL-58011042
+  source line: LogInit: Build: ++Fortnite+Release-42.20-CL-58011042   (session editor log L:1344)
+project_compatibilityVersion: 42.00
+  source line: "compatibilityVersion": "42.00",   (TOOL_TEST.uefnproject)
+uefn_mcp_toolsets_beta: ON
+  source line: "bEnableToolsetsForProject": true   (TOOL_TEST.uefnproject; the log also shows
+  Epic's MCP server started for the UEFN MCP Toolsets setting at L:8822)

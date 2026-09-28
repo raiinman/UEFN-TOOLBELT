@@ -1,0 +1,7 @@
+ARMED case4-client at 1790625974.534; waiting up to 600 s for the stall-start print
+  case4-client request: CommandTimeout after 30.035s, attempts=1 | No reply confirmed the outcome of command 'ping' (no reply within 30.0s).
+    attempt client.py ping port=8765 1790625994.033->1790626024.045 status=None raised=TimeoutError reason=None
+  waiting for the stall-end print ...
+  timing: {'stall_start_print': 1790625994.0096123, 'stall_end_print': 1790626069.0111585, 'log_seen_at': 1790625994.011196, 'attempt_start': 1790625994.0333924, 'client_raised_at': 1790626024.0457926, 'stall_began_before_attempt': True, 'raised_before_stall_end': True, 'no_200_for_attempt': True}
+  checks: {'one_attempt': True, 'unknown_outcome_class': True, 'unknown_outcome_wording': True, 'arrival': 'socket timeout'}
+==> case4-client: PASS

@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import json
 import os
+import socket
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -45,6 +46,104 @@ def _redact_secret(value: Any, secret: str) -> Any:
         return tuple(_redact_secret(item, secret) for item in value)
     return value
 
+
+# ─── Bridge outcome contract ─────────────────────────────────────────────────
+#
+# WO-004 Session B. Every (status, error) pair the bridge writes before it
+# queues a command (mcp_bridge.py, its _reject and _error call sites). Only one
+# of these exact two-key bodies, received directly from the validated loopback
+# endpoint, shows that the request was rejected before queueing. Anything else
+# is an unknown outcome: a status code alone does not identify its producer.
+_BRIDGE_REJECTIONS = frozenset({
+    (400, "Invalid Host header"),
+    (400, "Transfer-Encoding is not supported"),
+    (400, "Malformed JSON request"),
+    (400, "JSON body must be an object"),
+    (400, "Missing 'command'"),
+    (400, "'params' must be an object"),
+    (401, "Authentication required"),
+    (403, "Browser-originated requests are not accepted"),
+    (403, "Browser preflight is not accepted"),
+    (404, "Unknown path"),
+    (405, "Only authenticated POST requests are accepted"),
+    (411, "A valid Content-Length is required"),
+    (413, "Request body is too large"),
+    (415, "Content-Type must be application/json"),
+})
+# The bridge's own 504 body, followed by the command that was sent.
+_DEADLINE_ERROR_PREFIX = "Command timed out: "
+# The body stop_listener returns for a command drained before dispatch.
+_STOP_DRAIN_ERROR = "MCP listener stopped before command dispatch"
+
+
+class _RefuseRedirects(urllib.request.HTTPRedirectHandler):
+    """Never follow a redirect: it would carry the bearer to an unvalidated URL."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def _direct_opener() -> urllib.request.OpenerDirector:
+    """A per-request opener for the bridge: no HTTP proxy and no redirect.
+
+    ProxyHandler({}) ignores environment and system proxy settings for these
+    requests only. No global opener is installed and no environment variable
+    is changed.
+    """
+    return urllib.request.build_opener(
+        urllib.request.ProxyHandler({}), _RefuseRedirects()
+    )
+
+
+def _is_timeout(error: object) -> bool:
+    """True for a timeout on every supported Python.
+
+    socket.timeout is an alias of TimeoutError from Python 3.10, and a
+    separate OSError subclass before it, so both are named here.
+    """
+    return isinstance(error, (TimeoutError, socket.timeout))
+
+
+def _bridge_error_body(raw: bytes | None) -> dict | None:
+    """The bridge's exact two-key error envelope, or None for anything else."""
+    if raw is None:
+        return None
+    try:
+        body = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, ValueError):
+        return None
+    if (
+        isinstance(body, dict)
+        and set(body) == {"success", "error"}
+        and body["success"] is False
+        and isinstance(body["error"], str)
+    ):
+        return body
+    return None
+
+
+def _unknown_outcome(safe_command: str, detail: str) -> str:
+    """Wording for every outcome no reply confirmed. It names no cause."""
+    return (
+        f"No reply confirmed the outcome of command '{safe_command}' ({detail}).\n"
+        "  The command may not have run, may still be queued or running, or may "
+        "have completed.\n"
+        "  Do not send a command that changes editor or project state again "
+        "until that state has been checked. A check sent while the editor is "
+        "not processing the bridge queue can also go unanswered.\n"
+        "  Toolbelt cannot determine why no reply arrived; look at the UEFN editor."
+    )
+
+
+def _reported_failure(safe_command: str, error: object) -> str:
+    """Wording for a reported failure. It claims neither execution nor its absence."""
+    return (
+        f"UEFN reported a failure for command '{safe_command}': {error}\n"
+        "  It may have failed before running or partway through, leaving some "
+        "changes applied. Check the editor's state before continuing."
+    )
+
+
 # ─── Exceptions ───────────────────────────────────────────────────────────────
 
 class ToolbeltError(Exception):
@@ -60,15 +159,55 @@ class ToolbeltError(Exception):
 
 
 class NotConnected(ToolbeltError):
-    """The UEFN listener is not running."""
+    """The connection was refused, so no request reached a listener."""
 
 
-class CommandTimeout(ToolbeltError):
-    """The command timed out waiting for UEFN to respond."""
+class OutcomeUnknown(ToolbeltError):
+    """No reply confirmed whether the command ran.
+
+    The command may not have run, may still be queued or running, or may have
+    completed. Check editor state before sending a state-changing command again.
+    """
+
+
+class CommandTimeout(OutcomeUnknown):
+    """No reply arrived before a deadline. The outcome is unknown."""
 
 
 class AuthenticationError(ToolbeltError):
     """The local session credential is missing, stale, or rejected."""
+
+
+_INVALID_HANDOFF = (
+    "No request was sent: the UEFN MCP session handoff is invalid.\n"
+    "  Restart the listener in UEFN: import UEFN_Toolbelt as tb; tb.run('mcp_restart')"
+)
+
+
+def _http_status_error(code: int, raw: bytes | None, command: str,
+                       safe_command: str, token: str) -> ToolbeltError:
+    """Classify an HTTP error status. Only the bridge's exact bodies count."""
+    body = _bridge_error_body(raw)
+    if body is not None:
+        error = body["error"]
+        if (code, error) in _BRIDGE_REJECTIONS:
+            if code == 401:
+                return AuthenticationError(
+                    "UEFN MCP authentication failed: the listener rejected the "
+                    "request before queueing it (HTTP 401).\n"
+                    "  Restart the listener to refresh the session."
+                )
+            return ToolbeltError(
+                "The UEFN Toolbelt listener rejected the request before queueing "
+                f"it (HTTP {code}: {_redact_secret(error, token)})."
+            )
+        if code == 504 and error == _DEADLINE_ERROR_PREFIX + command:
+            return CommandTimeout(_unknown_outcome(
+                safe_command, "the bridge's reply deadline elapsed (HTTP 504)"
+            ))
+    return OutcomeUnknown(_unknown_outcome(
+        safe_command, f"an unexpected HTTP {code} response"
+    ))
 
 
 # ─── Client ───────────────────────────────────────────────────────────────────
@@ -106,7 +245,8 @@ class ToolbeltClient:
         local_app_data = os.environ.get("LOCALAPPDATA", "").strip()
         if not local_app_data:
             raise AuthenticationError(
-                "LOCALAPPDATA is unset; the UEFN MCP session handoff cannot be located"
+                "No request can be sent: LOCALAPPDATA is unset, so the UEFN MCP "
+                "session handoff cannot be located"
             )
         return (
             Path(local_app_data)
@@ -121,10 +261,13 @@ class ToolbeltClient:
             payload = json.loads(self._token_file.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
             raise AuthenticationError(
-                "UEFN MCP session is unavailable; start or restart the listener"
+                "No request was sent: the UEFN MCP session handoff is missing or "
+                "unreadable.\n"
+                "  Start or restart the listener in UEFN: "
+                "import UEFN_Toolbelt as tb; tb.run('mcp_start')"
             ) from exc
         if not isinstance(payload, dict):
-            raise AuthenticationError("UEFN MCP session handoff is invalid")
+            raise AuthenticationError(_INVALID_HANDOFF)
         host = payload.get("host")
         port = self._port_override if self._port_override is not None else payload.get("port")
         token = payload.get("token")
@@ -136,7 +279,7 @@ class ToolbeltClient:
             or not isinstance(token, str)
             or len(token) < 32
         ):
-            raise AuthenticationError("UEFN MCP session handoff is invalid")
+            raise AuthenticationError(_INVALID_HANDOFF)
         return f"http://127.0.0.1:{port}", token
 
     # ── Core transport ────────────────────────────────────────────────────────
@@ -145,7 +288,19 @@ class ToolbeltClient:
               timeout: float | None = None) -> Any:
         """
         Send one command to UEFN and return the result.
-        Raises ToolbeltError / NotConnected / CommandTimeout on failure.
+
+        Exactly one connection attempt is made, directly to the validated
+        loopback endpoint, and none when the session handoff is missing or
+        invalid. Nothing is retried. Raises:
+
+          AuthenticationError - no request was sent (missing or invalid
+                                handoff), or the bridge's own 401 rejection
+          NotConnected        - the connection was refused; nothing delivered
+          CommandTimeout      - no reply before a deadline; outcome unknown
+          OutcomeUnknown      - no reply confirmed the outcome
+          ToolbeltError       - the bridge rejected the request before queueing
+                                it, stopped before dispatching it, or reported
+                                a failure
         """
         url, token = self._session()
         payload = json.dumps({"command": command, "params": params or {}}).encode()
@@ -159,37 +314,67 @@ class ToolbeltClient:
             method="POST",
         )
         t = timeout if timeout is not None else self.timeout
+        safe_command = _redact_secret(command, token)
         try:
-            with urllib.request.urlopen(req, timeout=t) as resp:
-                body = json.loads(resp.read().decode())
-        except urllib.error.HTTPError as e:
-            if e.code == 401:
-                raise AuthenticationError(
-                    "UEFN MCP authentication failed; restart the listener"
-                ) from None
-            raise ToolbeltError(f"UEFN MCP request rejected with HTTP {e.code}") from None
-        except urllib.error.URLError as e:
-            detail = _redact_secret(str(e), token)
-            if "refused" in detail.lower() or "no connection" in detail.lower():
-                raise NotConnected(
-                    "UEFN Toolbelt listener is not running.\n"
-                    "  Start it: import UEFN_Toolbelt as tb; tb.run('mcp_start')"
-                ) from None
-            raise NotConnected("UEFN Toolbelt listener could not be reached") from None
-        except Exception as e:
-            detail = _redact_secret(str(e), token)
-            if "timed out" in detail.lower():
+            with _direct_opener().open(req, timeout=t) as resp:
+                status = resp.status
+                raw = resp.read()
+        except urllib.error.HTTPError as exc:
+            try:
+                error_raw: bytes | None = exc.read()
+            except Exception as read_error:
+                if _is_timeout(read_error):
+                    raise CommandTimeout(
+                        _unknown_outcome(safe_command, f"no reply within {t}s")
+                    ) from None
+                error_raw = None
+            raise _http_status_error(
+                exc.code, error_raw, command, safe_command, token
+            ) from None
+        except Exception as exc:
+            reason = exc.reason if isinstance(exc, urllib.error.URLError) else None
+            # A timeout is a timeout whether or not urllib wrapped it, so it is
+            # decided before a refusal or any other transport error.
+            if _is_timeout(exc) or _is_timeout(reason):
                 raise CommandTimeout(
-                    f"Command '{_redact_secret(command, token)}' timed out after {t}s.\n"
-                    "  UEFN may be processing a heavy operation."
+                    _unknown_outcome(safe_command, f"no reply within {t}s")
                 ) from None
-            raise ToolbeltError(detail) from None
+            if isinstance(reason, ConnectionRefusedError):
+                raise NotConnected(
+                    "The connection was refused, so no request reached a UEFN "
+                    "Toolbelt listener.\n"
+                    "  Start it in UEFN: import UEFN_Toolbelt as tb; tb.run('mcp_start')"
+                ) from None
+            raise OutcomeUnknown(_unknown_outcome(
+                safe_command,
+                "the connection failed or closed before a complete reply",
+            )) from None
+
+        if status != 200:
+            # urllib raises only outside 200-299, so a 2xx other than 200
+            # arrives here as an ordinary response. It is not the bridge's.
+            raise OutcomeUnknown(_unknown_outcome(
+                safe_command, f"an unexpected HTTP {status} response"
+            ))
+        try:
+            body = json.loads(raw.decode("utf-8"))
+        except (UnicodeDecodeError, ValueError):
+            body = None
+        if not isinstance(body, dict) or not isinstance(body.get("success"), bool):
+            raise OutcomeUnknown(_unknown_outcome(
+                safe_command, "a reply that is not the bridge's result format"
+            ))
+        if body == {"success": False, "error": _STOP_DRAIN_ERROR}:
+            raise ToolbeltError(
+                "The UEFN Toolbelt listener stopped before it dispatched "
+                f"command '{safe_command}'."
+            )
 
         body = _redact_secret(body, token)
 
-        if not body.get("success", False):
+        if not body["success"]:
             raise ToolbeltError(
-                body.get("error", "Unknown error"),
+                _reported_failure(safe_command, body.get("error", "Unknown error")),
                 body.get("traceback", ""),
             )
         return body.get("result")
@@ -431,7 +616,7 @@ class ToolbeltClient:
 # ─── Quick connect helper ─────────────────────────────────────────────────────
 
 def connect(port: int | None = None, timeout: float = 30.0) -> ToolbeltClient:
-    """Create a client and verify the connection with a ping."""
+    """Create a client and verify the connection with a single ping."""
     client = ToolbeltClient(port=port, timeout=timeout)
-    client.ping()   # raises NotConnected if listener isn't running
+    client.ping()   # raises NotConnected if the connection is refused
     return client

@@ -79,6 +79,81 @@ for the current editor session before starting the listener:
 import UEFN_Toolbelt as tb; tb.register(); tb.run("mcp_start")
 ```
 
+### Transport and outcomes
+
+Both `client.py` and `mcp_server.py` open every bridge request directly to the
+endpoint validated from the session handoff (`127.0.0.1` and its port) through
+a per-request opener that ignores environment and system HTTP proxy settings
+and follows no redirect. No global opener is installed and no environment
+variable is changed. A setup that reached the bridge only through a proxy stops
+working.
+
+Each call makes exactly one connection attempt, and none when the handoff is
+missing or invalid. Nothing is retried, and `connect()` sends one `ping`.
+
+| What happened | What it establishes | `client.py` | `mcp_server.py` |
+|---|---|---|---|
+| Handoff missing, unreadable, or invalid | No request was sent | `AuthenticationError` | `ConnectionError` |
+| Connection refused | No request reached a listener | `NotConnected` | `ConnectionError` |
+| A timeout - `TimeoutError` or `socket.timeout`, raised directly or wrapped in `URLError` | Unknown outcome | `CommandTimeout` | `TimeoutError` |
+| One of the bridge's exact pre-queue rejection bodies | Rejected before queueing | `AuthenticationError` for `401`, otherwise `ToolbeltError` | `PermissionError` for `401`, otherwise `RuntimeError` |
+| The bridge's exact `504` deadline body for the command sent | Unknown outcome | `CommandTimeout` | `TimeoutError` |
+| Any other status that is not `200`, including redirects and anything a proxy or another server could produce | Unknown outcome | `OutcomeUnknown` | `RuntimeError` |
+| `200` with `success: true` | The handler returned | the result | the result |
+| `200` with exactly the stop-drain body | Stopped before dispatch | `ToolbeltError` | `RuntimeError` |
+| Any other `200` with `success: false` | A reported failure; it may have run partway | `ToolbeltError` | `RuntimeError` |
+| A lost or reset connection, a truncated body, or a `200` that is not the bridge's result format | Unknown outcome | `OutcomeUnknown` | `ConnectionError` for a wrapped transport error, otherwise `RuntimeError` |
+
+One missing-handoff case is local configuration rather than the listener.
+When `LOCALAPPDATA` is unset, the clients cannot locate the session handoff
+(`Saved/UEFN_Toolbelt/mcp_session.json`, described above and in `SECURITY.md`)
+before any networking starts, so restarting the listener alone does not repair
+it. Its message therefore carries no restart step.
+
+`OutcomeUnknown` subclasses `ToolbeltError`, and `CommandTimeout` subclasses
+`OutcomeUnknown`. An unknown outcome means no reply confirmed whether the
+command ran: it may not have run, may still be queued or running, or may have
+completed. Do not send a command that changes editor or project state again
+until that state has been checked; a check sent while the editor is not
+processing the bridge queue can also go unanswered. `history` entries carry a
+command name, an elapsed time, and a success flag, but no request identity, so
+they cannot show how many times a call ran. The clients do not diagnose why a
+reply is missing.
+
+**Compatibility changes** (WO-004 Session B):
+
+- A bridge `504`: `client.py` raises `CommandTimeout` (was `ToolbeltError`), and
+  `mcp_server.py` raises `TimeoutError` (was `RuntimeError`).
+- A timeout wrapped in `URLError`: `CommandTimeout` (was `NotConnected`) and
+  `TimeoutError` (was `ConnectionError`).
+- Any other `URLError` that is not a refusal: `client.py` raises
+  `OutcomeUnknown` (was `NotConnected`). A refusal is recognized by the
+  exception type only, never by its message text.
+- A lost connection, an unreadable body, or an error status without an exact
+  bridge body: `client.py` raises `OutcomeUnknown` (was `ToolbeltError`). An
+  unmatched `401` raises `OutcomeUnknown` and `RuntimeError` (was
+  `AuthenticationError` and `PermissionError`).
+- A `200` body that is not a JSON object (previously an `AttributeError`) and
+  a truthy non-boolean `success` (previously returned as a result) are now
+  unknown outcomes, and so is every 2xx other than `200`. Such a 2xx was
+  previously returned as a result only when its body carried a truthy
+  `success`.
+- Bridge requests no longer use HTTP proxies or follow redirects.
+- Message text changed for timeouts, lost connections, rejections, and
+  reported failures.
+
+**Limitations.** When the bridge's deadline loop runs, it bounds the wait for
+a reply at 30 seconds (`HTTP_TIMEOUT_SEC`), so an operation longer than that is
+reported as an unknown outcome even if it later succeeds, and a longer client
+timeout is not reached on that path. Whether that loop completes while the
+editor is not servicing ticks has not been shown, so the client's own timeout
+may arrive instead; both are unknown outcomes. A timeout is not a cancellation: a
+`504` neither removes nor cancels the queued command, and its late result is
+discarded. The listener handles one request at a time,
+so a follow-up check can wait behind a pending one. No request identifier
+reaches the client, so a late execution cannot be matched to the call that
+submitted it.
+
 ---
 
 ## Common Patterns Claude Should Know

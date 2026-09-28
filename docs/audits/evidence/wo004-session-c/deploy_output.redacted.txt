@@ -1,0 +1,73 @@
+
+ ==========================================
+   UEFN TOOLBELT  |  Deploy Script
+ ==========================================
+
+ Found UEFN projects:
+
+   [1]  <other-project>
+   [2]  <other-project>
+   [3]  <other-project>
+   [4]  <other-project>
+   [5]  <other-project>
+   [6]  <other-project>
+   [7]  <other-project>
+   [8]  TOOL_TEST
+   [9]  <other-project>
+
+Enter the number of the project to deploy to: 
+ Deploying to:  C:\Users\<user>\Documents\Fortnite Projects\TOOL_TEST
+
+ [1/4]  Copying UEFN_Toolbelt package...
+        OK 
+ [2/4]  Copying init_unreal.py...
+        OK 
+ [3/4]  Copying verse-book reference without Python helpers...
+        OK 
+ [4/4]  Writing build stamp...
+        OK  (17b5afe+dirty -> TOOL_TEST) 
+
+ UE Python: C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\python.exe
+ PySide6 already installed.
+
+==========================================
+  All files deployed successfully!
+==========================================
+
+BEFORE LAUNCH SESSION OR PUSH CHANGES:
+  Run prepare_launch.bat to move every .py outside the UEFN project.
+  After the upload finishes, run restore_after_launch.bat.
+  UEFN 42.00 rejects project .py files for the VKCreateUGC role.
+
+HOT-RELOAD COMMANDS (paste into UEFN Python console):
+
+[STANDARD] Reload + open dashboard:
+import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.launch_qt()
+
+[SMOKE TEST] Reload + verify health:
+import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("toolbelt_smoke_test")
+
+[INTEGRATION TEST] WARNING - invasive, use a clean template only:
+import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("toolbelt_integration_test")
+
+[MASTER SYNC] Reload + sync docs & Verse IQ:
+import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("api_sync_master")
+
+[VERSE GRAPH] Reload + open device graph:
+import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("verse_graph_open")
+
+==========================================
+  !! BEFORE COMMITTING !!
+==========================================
+  1. Run drift check (catches stale counts + versions):
+     python scripts/drift_check.py
+  2. Run the SMOKE TEST command above in UEFN.
+  3. Confirm the dashboard opens and your change works.
+  Only run "git commit" after you see it working live.
+  Syntax passing != working in the editor.
+==========================================
+
+TIP: Only restart UEFN if you changed init_unreal.py.
+     New project deployment? RESTART UEFN for the menu to appear.
+
+Press any key to continue . . . 

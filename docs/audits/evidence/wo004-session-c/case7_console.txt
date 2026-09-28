@@ -1,0 +1,7 @@
+ARMED case7-server at 1790626257.021; waiting up to 600 s for the stall-start print
+  case7-server request: TimeoutError after 30.032s, attempts=1 | No reply confirmed the outcome of command 'ping' (no reply within 30.0s).
+    attempt mcp_server.py ping port=8765 1790626274.628->1790626304.639 status=None raised=TimeoutError reason=None
+  waiting for the stall-end print ...
+  timing: {'stall_start_print': 1790626274.6053107, 'stall_end_print': 1790626349.6062815, 'log_seen_at': 1790626274.6069043, 'attempt_start': 1790626274.6281376, 'client_raised_at': 1790626304.6393874, 'stall_began_before_attempt': True, 'raised_before_stall_end': True, 'no_200_for_attempt': True}
+  checks: {'one_attempt': True, 'unknown_outcome_class': True, 'unknown_outcome_wording': True, 'arrival': 'socket timeout'}
+==> case7-server: PASS

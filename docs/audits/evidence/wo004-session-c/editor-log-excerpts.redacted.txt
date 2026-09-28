@@ -1,0 +1,187 @@
+# WO-004 Session C editor-log excerpts - REDACTED DERIVATIVE, not the raw log.
+# Source: the private session log (sha256 in PROVENANCE.txt), split on LF; 'L:n<TAB>' is its line number.
+# Each excerpt line is the original line's bytes (CRLF kept) after one substitution:
+#   the Windows user-profile segment C:/Users/<account>/ or C:\Users\<account>\ -> <user>.
+# Only the listed windows are included; account, auth, machine and network lines are outside them.
+L:1	﻿Log file open, 09/28/26 16:02:00
+L:1344	LogInit: Build: ++Fortnite+Release-42.20-CL-58011042
+L:1348	LogInit: Engine Version: 6.0.0-58011042+++Fortnite+Release-42.20
+L:1349	LogInit: Compatible Engine Version: 6.0.0-58003952+++Fortnite+Release-42.20
+L:1350	LogInit: Net CL: 57379872
+L:1356	LogInit: Build Configuration: Shipping
+L:1357	LogInit: Branch Name: ++Fortnite+Release-42.20
+L:8374	[2026.09.28-20.02.45:578][893]LogPython: Warning: Python enabled via IPythonScriptPlugin::ForceEnablePythonAtRuntime: 
+L:8375	[2026.09.28-20.02.45:578][893]LogPython: Using Python 3.11.8
+L:8376	[2026.09.28-20.02.46:965][893]LogPython: Display: Running start-up script C:/Users/<user>/Documents/Fortnite Projects/TOOL_TEST/Content/Python/init_unreal.py... started...
+L:8740	[2026.09.28-20.02.48:274][893]LogPython: [TOOLBELT] 362 tools registered across 55 categories.
+L:8744	[2026.09.28-20.02.48:291][893]LogPython: [TOOLBELT] ✓ All tools registered — build 17b5afe+dirty deployed 2026-09-28T15:58:27 to TOOL_TEST
+L:8747	[2026.09.28-20.02.48:291][893]LogPython: Display: Running start-up script C:/Users/<user>/Documents/Fortnite Projects/TOOL_TEST/Content/Python/init_unreal.py... took 1.32 sec
+L:8817	[2026.09.28-20.02.48:669][893]LogHttpListener: Created new HttpListener on 127.0.0.1:8000
+L:8818	[2026.09.28-20.02.48:669][893]LogModelContextProtocol: Starting MCP server on port 8000 at URL path '/mcp' (override with -ModelContextProtocolPort=N).
+L:8819	[2026.09.28-20.02.48:669][893]LogModelContextProtocol: Warning: Data transmitted via this plugin to your connected LLM service is Licensed Technology under the UE EULA. You are responsible for ensuring your LLM provider does not use it as training input. See Section 6(e) of the UE EULA for full terms.
+L:8820	[2026.09.28-20.02.48:669][893]LogHttpServerModule: Starting all listeners...
+L:8821	[2026.09.28-20.02.48:669][893]LogHttpServerModule: All listeners started
+L:8822	[2026.09.28-20.02.48:669][893]LogValkyrieToolsetRegistration: Started the ModelContextProtocol server on port 8000 for the UEFN MCP Toolsets setting.
+L:8850	[2026.09.28-20.02.48:876][893]LogValkyrie: Display: Successfully opened project 'C:/Users/<user>/Documents/Fortnite Projects/TOOL_TEST/TOOL_TEST.uefnproject' and 0 dependency project(s) (took 9.31 sec)
+L:8927	[2026.09.28-20.03.41:489][807]LogPython: import UEFN_Toolbelt as tb; tb.run("mcp_start")
+L:8928	[2026.09.28-20.03.41:489][807]LogPython: [TOOLBELT] Running tool: mcp_start
+L:8929	[2026.09.28-20.03.41:520][807]LogPython: [MCP] Listener started on http://127.0.0.1:8765
+L:8930	[2026.09.28-20.03.41:520][807]LogPython: [MCP] 31 authenticated queued commands available
+L:8931	[2026.09.28-20.03.41:520][807]LogPython: [MCP] ✓ Listener running on http://127.0.0.1:8765
+L:8932	  31 authenticated queued commands available.
+L:8933	  Configure mcp_server.py in .mcp.json, then restart Claude Code.
+L:8947	[2026.09.28-20.04.34:466][804]LogPython: tb.run("mcp_stop")
+L:8948	[2026.09.28-20.04.34:466][804]LogPython: [TOOLBELT] Running tool: mcp_stop
+L:8949	[2026.09.28-20.04.34:863][804]LogPython: [MCP] Listener stopped (was on port 8765)
+L:8950	[2026.09.28-20.04.34:863][804]LogPython: [MCP] Listener stopped.
+L:8955	[2026.09.28-20.05.49:458][628]LogPython: tb.run("mcp_start")
+L:8956	[2026.09.28-20.05.49:458][628]LogPython: [TOOLBELT] Running tool: mcp_start
+L:8957	[2026.09.28-20.05.49:461][628]LogPython: [MCP] Listener started on http://127.0.0.1:8765
+L:8958	[2026.09.28-20.05.49:461][628]LogPython: [MCP] 31 authenticated queued commands available
+L:8959	[2026.09.28-20.05.49:461][628]LogPython: [MCP] ✓ Listener running on http://127.0.0.1:8765
+L:8960	  31 authenticated queued commands available.
+L:8961	  Configure mcp_server.py in .mcp.json, then restart Claude Code.
+L:8966	[2026.09.28-20.06.34:009][472]LogPython: import time; print("WO-004 stall start", time.time()); time.sleep(75); print("WO-004 stall end", time.time())
+L:8967	[2026.09.28-20.06.34:009][472]LogPython: WO-004 stall start 1790625994.0096123
+L:8968	
+L:8969	[2026.09.28-20.07.04:049][472]LogPython: Error: ----------------------------------------
+L:8970	
+L:8971	[2026.09.28-20.07.04:049][472]LogPython: Error: Exception occurred during processing of request from ('127.0.0.1', 52733)
+L:8972	
+L:8973	[2026.09.28-20.07.04:055][472]LogPython: Error: Traceback (most recent call last):
+L:8974	
+L:8975	[2026.09.28-20.07.04:056][472]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 317, in _handle_request_noblock
+L:8976	    self.process_request(request, client_address)
+L:8977	
+L:8978	[2026.09.28-20.07.04:061][472]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 348, in process_request
+L:8979	    self.finish_request(request, client_address)
+L:8980	
+L:8981	[2026.09.28-20.07.04:061][472]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 361, in finish_request
+L:8982	    self.RequestHandlerClass(request, client_address, self)
+L:8983	
+L:8984	[2026.09.28-20.07.04:066][472]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 755, in __init__
+L:8985	    self.handle()
+L:8986	
+L:8987	[2026.09.28-20.07.04:066][472]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\http\server.py", line 436, in handle
+L:8988	    self.handle_one_request()
+L:8989	
+L:8990	[2026.09.28-20.07.04:072][472]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\http\server.py", line 424, in handle_one_request
+L:8991	    method()
+L:8992	
+L:8993	[2026.09.28-20.07.04:072][472]LogPython: Error:   File "C:\Users\<user>\Documents\Fortnite Projects\TOOL_TEST\Content\Python\UEFN_Toolbelt\tools\mcp_bridge.py", line 942, in do_POST
+L:8994	    self._error(504, f"Command timed out: {command}")
+L:8995	
+L:8996	[2026.09.28-20.07.04:077][472]LogPython: Error:   File "C:\Users\<user>\Documents\Fortnite Projects\TOOL_TEST\Content\Python\UEFN_Toolbelt\tools\mcp_bridge.py", line 951, in _error
+L:8997	    self._respond(code, {"success": False, "error": message})
+L:8998	
+L:8999	[2026.09.28-20.07.04:077][472]LogPython: Error:   File "C:\Users\<user>\Documents\Fortnite Projects\TOOL_TEST\Content\Python\UEFN_Toolbelt\tools\mcp_bridge.py", line 963, in _respond
+L:9000	    self.wfile.write(body)
+L:9001	
+L:9002	[2026.09.28-20.07.04:083][472]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 834, in write
+L:9003	    self._sock.sendall(b)
+L:9004	
+L:9005	[2026.09.28-20.07.04:083][472]LogPython: Error: ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+L:9006	
+L:9007	[2026.09.28-20.07.04:088][472]LogPython: Error: ----------------------------------------
+L:9008	
+L:9009	[2026.09.28-20.07.49:011][472]LogPython: WO-004 stall end 1790626069.0111585
+L:9010	
+L:9028	[2026.09.28-20.09.12:491][525]LogPython: import time; print("WO-004 stall start", time.time()); time.sleep(75); print("WO-004 stall end", time.time())
+L:9029	[2026.09.28-20.09.12:491][525]LogPython: WO-004 stall start 1790626152.4916277
+L:9030	
+L:9031	[2026.09.28-20.09.42:547][525]LogPython: Error: ----------------------------------------
+L:9032	
+L:9033	[2026.09.28-20.09.42:563][525]LogPython: Error: Exception occurred during processing of request from ('127.0.0.1', 56655)
+L:9034	
+L:9035	[2026.09.28-20.09.42:564][525]LogPython: Error: Traceback (most recent call last):
+L:9036	
+L:9037	[2026.09.28-20.09.42:593][525]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 317, in _handle_request_noblock
+L:9038	    self.process_request(request, client_address)
+L:9039	
+L:9040	[2026.09.28-20.09.42:593][525]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 348, in process_request
+L:9041	    self.finish_request(request, client_address)
+L:9042	
+L:9043	[2026.09.28-20.09.42:598][525]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 361, in finish_request
+L:9044	    self.RequestHandlerClass(request, client_address, self)
+L:9045	
+L:9046	[2026.09.28-20.09.42:598][525]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 755, in __init__
+L:9047	    self.handle()
+L:9048	
+L:9049	[2026.09.28-20.09.42:604][525]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\http\server.py", line 436, in handle
+L:9050	    self.handle_one_request()
+L:9051	
+L:9052	[2026.09.28-20.09.42:604][525]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\http\server.py", line 424, in handle_one_request
+L:9053	    method()
+L:9054	
+L:9055	[2026.09.28-20.09.42:609][525]LogPython: Error:   File "C:\Users\<user>\Documents\Fortnite Projects\TOOL_TEST\Content\Python\UEFN_Toolbelt\tools\mcp_bridge.py", line 942, in do_POST
+L:9056	    self._error(504, f"Command timed out: {command}")
+L:9057	
+L:9058	[2026.09.28-20.09.42:610][525]LogPython: Error:   File "C:\Users\<user>\Documents\Fortnite Projects\TOOL_TEST\Content\Python\UEFN_Toolbelt\tools\mcp_bridge.py", line 951, in _error
+L:9059	    self._respond(code, {"success": False, "error": message})
+L:9060	
+L:9061	[2026.09.28-20.09.42:615][525]LogPython: Error:   File "C:\Users\<user>\Documents\Fortnite Projects\TOOL_TEST\Content\Python\UEFN_Toolbelt\tools\mcp_bridge.py", line 963, in _respond
+L:9062	    self.wfile.write(body)
+L:9063	
+L:9064	[2026.09.28-20.09.42:615][525]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 834, in write
+L:9065	    self._sock.sendall(b)
+L:9066	
+L:9067	[2026.09.28-20.09.42:621][525]LogPython: Error: ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+L:9068	
+L:9069	[2026.09.28-20.09.42:621][525]LogPython: Error: ----------------------------------------
+L:9070	
+L:9071	[2026.09.28-20.10.27:492][525]LogPython: WO-004 stall end 1790626227.4925508
+L:9072	
+L:9076	[2026.09.28-20.10.49:155][ 75]LogPython: Error: [MCP] Command 'wo004_session_c_no_such_command' failed: Unknown command: 'wo004_session_c_no_such_command'. Available: ['batch_exec', 'create_material_instance', 'delete_actors', 'delete_asset', 'describe_tool', 'does_asset_exist', 'duplicate_asset', 'get_actor_properties', 'get_all_actors', 'get_asset_info', 'get_level_info', 'get_log', 'get_selected_actors', 'get_selected_assets', 'get_viewport_camera', 'history', 'import_asset', 'list_assets', 'list_tools', 'ping', 'redo', 'rename_asset', 'run_tool', 'save_asset', 'save_current_level', 'search_assets', 'set_actor_property', 'set_actor_transform', 'set_viewport_camera', 'spawn_actor', 'undo']
+L:9077	[2026.09.28-20.10.49:822][ 77]LogPython: Error: [MCP] Command 'wo004_session_c_no_such_command' failed: Unknown command: 'wo004_session_c_no_such_command'. Available: ['batch_exec', 'create_material_instance', 'delete_actors', 'delete_asset', 'describe_tool', 'does_asset_exist', 'duplicate_asset', 'get_actor_properties', 'get_all_actors', 'get_asset_info', 'get_level_info', 'get_log', 'get_selected_actors', 'get_selected_assets', 'get_viewport_camera', 'history', 'import_asset', 'list_assets', 'list_tools', 'ping', 'redo', 'rename_asset', 'run_tool', 'save_asset', 'save_current_level', 'search_assets', 'set_actor_property', 'set_actor_transform', 'set_viewport_camera', 'spawn_actor', 'undo']
+L:9079	[2026.09.28-20.11.14:605][665]LogPython: import time; print("WO-004 stall start", time.time()); time.sleep(75); print("WO-004 stall end", time.time())
+L:9080	[2026.09.28-20.11.14:605][665]LogPython: WO-004 stall start 1790626274.6053107
+L:9081	
+L:9082	[2026.09.28-20.11.44:649][665]LogPython: Error: ----------------------------------------
+L:9083	
+L:9084	[2026.09.28-20.11.44:649][665]LogPython: Error: Exception occurred during processing of request from ('127.0.0.1', 51536)
+L:9085	
+L:9086	[2026.09.28-20.11.44:680][665]LogPython: Error: Traceback (most recent call last):
+L:9087	
+L:9088	[2026.09.28-20.11.44:681][665]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 317, in _handle_request_noblock
+L:9089	    self.process_request(request, client_address)
+L:9090	
+L:9091	[2026.09.28-20.11.44:695][665]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 348, in process_request
+L:9092	    self.finish_request(request, client_address)
+L:9093	
+L:9094	[2026.09.28-20.11.44:695][665]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 361, in finish_request
+L:9095	    self.RequestHandlerClass(request, client_address, self)
+L:9096	
+L:9097	[2026.09.28-20.11.44:729][665]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 755, in __init__
+L:9098	    self.handle()
+L:9099	
+L:9100	[2026.09.28-20.11.44:729][665]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\http\server.py", line 436, in handle
+L:9101	    self.handle_one_request()
+L:9102	
+L:9103	[2026.09.28-20.11.44:732][665]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\http\server.py", line 424, in handle_one_request
+L:9104	    method()
+L:9105	
+L:9106	[2026.09.28-20.11.44:733][665]LogPython: Error:   File "C:\Users\<user>\Documents\Fortnite Projects\TOOL_TEST\Content\Python\UEFN_Toolbelt\tools\mcp_bridge.py", line 942, in do_POST
+L:9107	    self._error(504, f"Command timed out: {command}")
+L:9108	
+L:9109	[2026.09.28-20.11.44:737][665]LogPython: Error:   File "C:\Users\<user>\Documents\Fortnite Projects\TOOL_TEST\Content\Python\UEFN_Toolbelt\tools\mcp_bridge.py", line 951, in _error
+L:9110	    self._respond(code, {"success": False, "error": message})
+L:9111	
+L:9112	[2026.09.28-20.11.44:737][665]LogPython: Error:   File "C:\Users\<user>\Documents\Fortnite Projects\TOOL_TEST\Content\Python\UEFN_Toolbelt\tools\mcp_bridge.py", line 963, in _respond
+L:9113	    self.wfile.write(body)
+L:9114	
+L:9115	[2026.09.28-20.11.44:741][665]LogPython: Error:   File "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\Lib\socketserver.py", line 834, in write
+L:9116	    self._sock.sendall(b)
+L:9117	
+L:9118	[2026.09.28-20.11.44:741][665]LogPython: Error: ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+L:9119	
+L:9120	[2026.09.28-20.11.44:744][665]LogPython: Error: ----------------------------------------
+L:9121	
+L:9122	[2026.09.28-20.12.29:606][665]LogPython: WO-004 stall end 1790626349.6062815
+L:9123	
+L:9128	[2026.09.28-20.13.01:029][898]LogPython: tb.run("mcp_stop")
+L:9129	[2026.09.28-20.13.01:030][898]LogPython: [TOOLBELT] Running tool: mcp_stop
+L:9130	[2026.09.28-20.13.01:303][898]LogPython: [MCP] Listener stopped (was on port 8765)
+L:9131	[2026.09.28-20.13.01:303][898]LogPython: [MCP] Listener stopped.
+L:9141	[2026.09.28-20.13.04:344][188]Cmd: QUIT_EDITOR
+L:9231	[2026.09.28-20.13.06:909][189]LogExit: Editor shut down
+L:9396	[2026.09.28-20.13.09:386][189]Log file closed, 09/28/26 16:13:09

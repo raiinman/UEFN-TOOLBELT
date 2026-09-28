@@ -1,0 +1,131 @@
+{
+  "camera_initial": {
+    "location": {
+      "x": 339.186416,
+      "y": 339.18649,
+      "z": 402.501074
+    },
+    "rotation": {
+      "pitch": -40.0,
+      "roll": 0.0,
+      "yaw": 225.0
+    }
+  },
+  "case5": {
+    "baseline_camera": {
+      "location": {
+        "x": 339.186416,
+        "y": 339.18649,
+        "z": 402.501074
+      },
+      "rotation": {
+        "pitch": -40.0,
+        "roll": 0.0,
+        "yaw": 225.0
+      }
+    },
+    "baseline_history": {
+      "entries": [
+        {
+          "command": "ping",
+          "elapsed_ms": 0.0,
+          "success": true
+        },
+        {
+          "command": "get_viewport_camera",
+          "elapsed_ms": 0.0,
+          "success": true
+        },
+        {
+          "command": "ping",
+          "elapsed_ms": 0.0,
+          "success": true
+        },
+        {
+          "command": "ping",
+          "elapsed_ms": 0.0,
+          "success": true
+        },
+        {
+          "command": "ping",
+          "elapsed_ms": 0.0,
+          "success": true
+        },
+        {
+          "command": "history",
+          "elapsed_ms": 0.0,
+          "success": true
+        },
+        {
+          "command": "history",
+          "elapsed_ms": 0.0,
+          "success": true
+        },
+        {
+          "command": "ping",
+          "elapsed_ms": 1.0,
+          "success": true
+        },
+        {
+          "command": "get_viewport_camera",
+          "elapsed_ms": 0.0,
+          "success": true
+        }
+      ],
+      "total": 9
+    },
+    "fired": {
+      "checks": {
+        "arrival": "socket timeout",
+        "one_attempt": true,
+        "unknown_outcome_class": true,
+        "unknown_outcome_wording": true
+      },
+      "outcome": {
+        "attempts": [
+          {
+            "client": "client.py",
+            "command": "set_viewport_camera",
+            "end": 1790626182.5401142,
+            "raised": "TimeoutError",
+            "reason": null,
+            "run": "20260928T160852-13400",
+            "start": 1790626152.5320566,
+            "timeout": 30.0,
+            "url_port": "8765"
+          }
+        ],
+        "call": "case5-client request",
+        "exception": "CommandTimeout",
+        "message": "No reply confirmed the outcome of command 'set_viewport_camera' (no reply within 30.0s).\n  The command may not have run, may still be queued or running, or may have completed.\n  Do not send a command that changes editor or project state again until that state has been checked. A check sent while the editor is not processing the bridge queue can also go unanswered.\n  Toolbelt cannot determine why no reply arrived; look at the UEFN editor.",
+        "mro": [
+          "CommandTimeout",
+          "OutcomeUnknown",
+          "ToolbeltError",
+          "Exception",
+          "BaseException",
+          "object"
+        ],
+        "ok": false,
+        "raised_at": 1790626182.5405297,
+        "start": 1790626152.5103161
+      },
+      "timing": {
+        "attempt_start": 1790626152.5320566,
+        "client_raised_at": 1790626182.5405297,
+        "log_seen_at": 1790626152.5102503,
+        "no_200_for_attempt": true,
+        "raised_before_stall_end": true,
+        "stall_began_before_attempt": true,
+        "stall_end_print": 1790626227.4925508,
+        "stall_start_print": 1790626152.4916277
+      }
+    },
+    "target": [
+      739.2,
+      739.2,
+      602.5
+    ]
+  },
+  "port": 8765
+}
