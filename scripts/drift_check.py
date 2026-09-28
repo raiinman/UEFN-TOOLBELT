@@ -1757,8 +1757,64 @@ _WO004_SESSION_A_NEXT_GATE = (
     "on whether the proposed probes run. Session B, Session C, and all "
     "live UEFN work remain closed."
 )
-# Which canonical shape each authorized state must present. Adding a state
-# here is the visible act that moves the pointer's base commit.
+# Accepting Session A adds three more declarations to each canonical block
+# and moves the base to the acceptance commit. The issuance and Session A
+# authorization declarations stay inside the same exact, terminal slice, so
+# accepting the session cannot drop the evidence that authorized it.
+_WO004_SESSION_A_ACCEPTED_COMMIT = "c4c21caa0960c430a4bcfb90cd65ef1edfc1a790"
+_WO004_SESSION_A_ACCEPTED_WORKFLOW = "34735715115"
+_WO004_SESSION_A_ACCEPTED_JOB = "103666661855"
+_WO004_SESSION_A_ACCEPTED_GATE = (
+    "WO-004 SESSION A ACCEPTED — SESSION B IMPLEMENTATION NOT AUTHORIZED"
+)
+_WO004_DECISION_HEADING = "## Session A decision record"
+_WO004_ACCEPTED_ISSUED_SEQUENCE = _WO004_SESSION_A_ISSUED_SEQUENCE + (
+    "SESSION_A_ACCEPTANCE_COMMIT: `" + _WO004_SESSION_A_ACCEPTED_COMMIT + "`",
+    "SESSION_A_ACCEPTANCE_CI_WORKFLOW: `"
+    + _WO004_SESSION_A_ACCEPTED_WORKFLOW + "`",
+    "SESSION_A_ACCEPTANCE_CI_JOB: `" + _WO004_SESSION_A_ACCEPTED_JOB + "` "
+    + "— Lint, types, tests",
+)
+_WO004_ACCEPTED_POINTER_SEQUENCE = _WO004_SESSION_A_POINTER_SEQUENCE[:10] + (
+    "- Session A acceptance commit: `" + _WO004_SESSION_A_ACCEPTED_COMMIT + "`",
+    "- Session A acceptance CI workflow: `"
+    + _WO004_SESSION_A_ACCEPTED_WORKFLOW + "`",
+    "- Session A acceptance CI job: `" + _WO004_SESSION_A_ACCEPTED_JOB + "` "
+    + "— Lint, types, tests",
+) + _WO004_SESSION_A_POINTER_SEQUENCE[10:]
+_WO004_ACCEPTED_ISSUED_KEYS = _WO004_SESSION_A_ISSUED_KEYS + (
+    ("SESSION_A_ACCEPTANCE_COMMIT:", _WO004_ACCEPTED_ISSUED_SEQUENCE[7]),
+    ("SESSION_A_ACCEPTANCE_CI_WORKFLOW:", _WO004_ACCEPTED_ISSUED_SEQUENCE[8]),
+    ("SESSION_A_ACCEPTANCE_CI_JOB:", _WO004_ACCEPTED_ISSUED_SEQUENCE[9]),
+)
+# The base moves again, to the acceptance commit; every earlier bullet keeps
+# its exact pin beside it.
+_WO004_ACCEPTED_POINTER_KEYS = (
+    (("- Base commit:",
+      "- Base commit: `" + _WO004_SESSION_A_ACCEPTED_COMMIT + "`"),)
+    + _WO004_SESSION_A_POINTER_KEYS[1:]
+    + (("- Session A acceptance commit:",
+        _WO004_ACCEPTED_POINTER_SEQUENCE[10]),
+       ("- Session A acceptance CI workflow:",
+        _WO004_ACCEPTED_POINTER_SEQUENCE[11]),
+       ("- Session A acceptance CI job:",
+        _WO004_ACCEPTED_POINTER_SEQUENCE[12]))
+)
+_WO004_SESSION_A_ACCEPTED_STATEMENT = (
+    "Session A is accepted and complete. Session B implementation and "
+    "Session C live testing are not authorized; each requires a separate "
+    "owner gate recorded in root `WORKORDER.md`."
+)
+_WO004_SESSION_A_ACCEPTED_NEXT_GATE = (
+    "NEXT GATE: fresh independent review of this uncommitted Session A "
+    "decision and mandate amendment, followed by a separate owner "
+    "authorization for Session B implementation. Session B, Session C, and "
+    "all live UEFN work remain closed."
+)
+# Which canonical shape each WO-004 state must present. Adding a state here
+# is the visible act that moves the pointer's base commit. Keys come from
+# _wo004_state_key, never straight from the pointer, so a pointer cannot
+# select a state by naming it.
 _WO004_STATES = {
     "NONE": (_WO004_POINTER_SEQUENCE, _WO004_POINTER_KEYS,
              _WO004_ISSUED_SEQUENCE, _WO004_ISSUED_KEYS,
@@ -1766,14 +1822,41 @@ _WO004_STATES = {
     "A": (_WO004_SESSION_A_POINTER_SEQUENCE, _WO004_SESSION_A_POINTER_KEYS,
           _WO004_SESSION_A_ISSUED_SEQUENCE, _WO004_SESSION_A_ISSUED_KEYS,
           _WO004_SESSION_A_NEXT_GATE, _WO004_SESSION_A_STATEMENT),
+    "A_ACCEPTED": (_WO004_ACCEPTED_POINTER_SEQUENCE,
+                   _WO004_ACCEPTED_POINTER_KEYS,
+                   _WO004_ACCEPTED_ISSUED_SEQUENCE,
+                   _WO004_ACCEPTED_ISSUED_KEYS,
+                   _WO004_SESSION_A_ACCEPTED_NEXT_GATE,
+                   _WO004_SESSION_A_ACCEPTED_STATEMENT),
 }
 
 
-def _wo004_issuance_findings(pointer, issued_text, rel, session):
+def _wo004_state_key(session, current_gate, auth_lines, issued_text):
+    """The _WO004_STATES key for this pointer and mandate, or None.
+
+    A closed session carrying ANY Session A acceptance signal - the accepted
+    gate, the accepted marker, or the decision record - is compared against
+    the whole accepted shape, so a partial transition fails as the state it
+    claims to be instead of passing as the closed issuance. NONE and A are
+    the only recognized session values; anything else is rogue.
+    """
+    if session == "A":
+        return "A"
+    if session != "NONE":
+        return None
+    if (current_gate == _WO004_SESSION_A_ACCEPTED_GATE
+            or auth_lines == [_ISSUED_SESSION_A_ACCEPTED]
+            or _WO004_DECISION_HEADING in issued_text):
+        return "A_ACCEPTED"
+    return "NONE"
+
+
+def _wo004_issuance_findings(pointer, issued_text, rel, state_key):
     """WO-004's issuance record on the two surfaces that declare it.
 
-    Called from outside the session branches on purpose: authorizing a
-    session must not silence the record that issued the Work Order.
+    Called from outside the session branches on purpose: authorizing or
+    accepting a session must not silence the record that issued the Work
+    Order. `state_key` comes from _wo004_state_key.
 
     That includes the base commit. _WO004_POINTER_KEYS pins its exact
     value from here, in EVERY session state - not only while the session
@@ -1789,7 +1872,7 @@ def _wo004_issuance_findings(pointer, issued_text, rel, session):
         return line.startswith("## ")
 
     out = []
-    state = _WO004_STATES.get(session)
+    state = _WO004_STATES.get(state_key) if state_key else None
     if state is None:
         # An unrecognized session value is its own finding in the session
         # branch below. The issuance declarations are common to every
@@ -2688,7 +2771,9 @@ def check_work_order_contract() -> list[dict]:
                     and issued_id == _WO004_ID):
                 for _f, _k, _found, _want in _wo004_issuance_findings(
                     pointer, issued_text,
-                    issued[0].relative_to(root).as_posix(), session,
+                    issued[0].relative_to(root).as_posix(),
+                    _wo004_state_key(session, current_gate, auth_lines,
+                                     issued_text),
                 ):
                     add(_f, _k, _found, _want)
             if issued[0].name == _WO002_NAME:
@@ -2826,6 +2911,12 @@ def check_work_order_contract() -> list[dict]:
                 )
                 settled = _wo003_settled_gate(
                     issued[0].name, current_gate, auth_lines, issued_text)
+                wo004_session_a_accepted = (
+                    issued[0].name == _WO004_NAME
+                    and issued_id == _WO004_ID
+                    and _wo004_state_key(session, current_gate, auth_lines,
+                                         issued_text) == "A_ACCEPTED"
+                )
                 if wo002_session_a_accepted:
                     rel = issued[0].relative_to(root).as_posix()
                     normalized_issued = " ".join(issued_text.split())
@@ -2901,6 +2992,49 @@ def check_work_order_contract() -> list[dict]:
                         add("WORKORDER.md", "session authorization reopening",
                             "positive permission for Session A, Session B, or later",
                             "Session A accepted; no session authorized")
+                elif wo004_session_a_accepted:
+                    # The canonical slices, the base commit, the next gate,
+                    # and the accepted statement are enforced by
+                    # _wo004_issuance_findings above. This branch adds the
+                    # marker, the gate, the decision record, and the closed
+                    # sessions.
+                    rel = issued[0].relative_to(root).as_posix()
+                    if auth_lines != [_ISSUED_SESSION_A_ACCEPTED]:
+                        add(rel, "WO-004 Session A accepted authorization",
+                            repr(auth_lines),
+                            f"exactly {_ISSUED_SESSION_A_ACCEPTED}")
+                    if base != f"`{_WO004_SESSION_A_ACCEPTED_COMMIT}`":
+                        add("WORKORDER.md",
+                            "WO-004 Session A accepted base commit", str(base),
+                            f"`{_WO004_SESSION_A_ACCEPTED_COMMIT}`")
+                    if current_gate != _WO004_SESSION_A_ACCEPTED_GATE:
+                        add("WORKORDER.md", "WO-004 Session A accepted gate",
+                            str(current_gate), _WO004_SESSION_A_ACCEPTED_GATE)
+                    decision_headings = [
+                        line for line in issued_text.splitlines()
+                        if line.strip() == _WO004_DECISION_HEADING
+                    ]
+                    if len(decision_headings) != 1:
+                        add(rel, "WO-004 Session A decision record",
+                            str(len(decision_headings)),
+                            "exactly one " + _WO004_DECISION_HEADING)
+                    # This branch does not scan the pointer for a reopened
+                    # labeled session. The completed-WO-003 boundary at the end
+                    # of this function does, and it runs whenever a non-empty
+                    # WO-003 document was read from completed/
+                    # (`if wo003_completed_text:`), whatever that document's own
+                    # markers say. Deleting it, moving it out, or emptying it
+                    # skips that scan and raises the "completed WO-003 state"
+                    # finding instead; changing its status or authorization
+                    # marker raises that finding with the scan still running.
+                    # The mandate is not scanned there. It keeps Session A's
+                    # historical authorization basis verbatim, so it is
+                    # scanned here with Session A exempt: a positive Session B,
+                    # Session C, or later statement in it is a finding.
+                    if _has_other_session_authorization("", issued_text, "A"):
+                        add(rel, "session authorization reopening",
+                            "positive permission for Session B or later",
+                            "Session B and Session C remain unauthorized")
                 else:
                     expected_gate = (
                         f"{issued_id} ISSUED — SESSION A IMPLEMENTATION NOT AUTHORIZED"

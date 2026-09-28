@@ -5,15 +5,18 @@ state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
 - Current issued Work Order: WO-004
-- Authorized session: A
-- Base commit: `f9fc7268d63dad92f5dd009bbf20e11477b8f926`
-- Current gate: WO-004 SESSION A AUTHORIZED — READ-ONLY FEASIBILITY PLANNING ONLY
+- Authorized session: NONE
+- Base commit: `c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`
+- Current gate: WO-004 SESSION A ACCEPTED — SESSION B IMPLEMENTATION NOT AUTHORIZED
 - Issuance commit: `8444faf340afe47765c43d943200db712880817b`
 - Issuance CI workflow: `34441169191`
 - Issuance CI job: `102756337393` — Lint, types, tests
 - Session A authorization commit: `f9fc7268d63dad92f5dd009bbf20e11477b8f926`
 - Session A authorization CI workflow: `34509193110`
 - Session A authorization CI job: `102978793893` — Lint, types, tests
+- Session A acceptance commit: `c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`
+- Session A acceptance CI workflow: `34735715115`
+- Session A acceptance CI job: `103666661855` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -106,16 +109,32 @@ Release creation, branch-protection changes, other repository metadata
 changes, and social publication all remain unauthorized, as do WO-005,
 WO-006, and WO-007, which stay proposed.
 
-Session A is authorized under this pointer for read-only feasibility
-planning only, on the basis of commit `f9fc7268d63dad92f5dd009bbf20e11477b8f926`,
-successful CI workflow `34509193110`, and successful required job
-`102978793893` (`Lint, types, tests`). It covers source and
-documentation inspection and the drafting of proposed probes. No live
-UEFN probe, editor launch, bridge start, official-MCP call, or level
-mutation is authorized, and every proposed probe needs its own separate
-owner gate. Session B and Session C stay closed, as do WO-005, WO-006,
-and WO-007. Tagging, Release creation, branch-protection changes, other
-repository metadata changes, and social publication all remain
+At the Session A authorization gate, this pointer opened read-only
+feasibility planning only, on the basis of commit
+`f9fc7268d63dad92f5dd009bbf20e11477b8f926`, successful CI workflow
+`34509193110`, and successful required job `102978793893` (`Lint, types,
+tests`). That gate covered source and documentation inspection and the
+drafting of proposed probes, and it opened no live UEFN work. Live Probe A
+ran later under a separate owner authorization and is recorded in Section 6
+of the [Session A record](docs/audits/2026-09-10-wo004-session-a-modal-feasibility.md),
+with preserved evidence under `docs/audits/evidence/wo004-probe-a/`. Probes
+B and C were not run.
+
+The owner accepted Session A's bounded findings. Session A is accepted as
+`c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`; [CI workflow
+`34735715115`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/34735715115)
+completed successfully, including required job
+[`103666661855` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/34735715115/job/103666661855).
+Python post-tick callback silence was observed; its cause, any modal
+diagnosis, and heartbeat reliability remain unproven. WO-004's remaining work
+is narrowed to client timeout and error semantics, to direct loopback client
+transport that bypasses HTTP proxies, and to no-automatic-retry guidance; modal
+detection, heartbeat and status endpoints, and further feasibility probes are
+deferred. The decision and the amended Session B and
+Session C scope are recorded in the issued mandate. Session B implementation
+and Session C live testing are not authorized, and each requires a separate
+owner gate recorded here. Tagging, Release creation, branch-protection
+changes, other repository metadata changes, and social publication all remain
 unauthorized.
 
 WO-001 through WO-007 form the frozen next release train. The release version

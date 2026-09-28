@@ -230,16 +230,16 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         work_orders / "completed" / "WO-003-official-mcp-doc-convergence.md"
     ).exists()
     assert current == "WO-004"
-    assert session == "A"
-    # The base moves with the gate; the issuance commit stays declared in its
-    # own bullet, so authorizing a session records new evidence without
-    # overwriting the evidence that issued the order.
+    assert session == "NONE"
+    # The base moves with the gate; the issuance and Session A authorization
+    # commits stay declared in their own bullets, so accepting Session A
+    # records new evidence without overwriting the evidence before it.
     assert base_lines == [
-        "- Base commit: `f9fc7268d63dad92f5dd009bbf20e11477b8f926`"
+        "- Base commit: `c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`"
     ]
     assert gate_lines == [
-        "- Current gate: WO-004 SESSION A AUTHORIZED "
-        "— READ-ONLY FEASIBILITY PLANNING ONLY"
+        "- Current gate: WO-004 SESSION A ACCEPTED "
+        "— SESSION B IMPLEMENTATION NOT AUTHORIZED"
     ]
     # The canonical bullet block belongs to whichever order owns the
     # pointer. WO-004's issuance evidence is declared here; WO-003's own
@@ -255,27 +255,39 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "- Session A authorization CI workflow: `34509193110`",
         "- Session A authorization CI job: `102978793893` — Lint, types,"
         " tests",
+        "- Session A acceptance commit:"
+        " `c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`",
+        "- Session A acceptance CI workflow: `34735715115`",
+        "- Session A acceptance CI job: `103666661855` — Lint, types, tests",
     ):
         assert line in pointer, line
-    # Session A is read-only feasibility planning. Live UEFN work, the later
-    # sessions, and the publication gates all stay closed.
+    # Session A is accepted. Its authorization basis is kept in the mandate as
+    # history; live UEFN work, the later sessions, and the publication gates
+    # all stay closed.
     wo004_live = (
         work_orders / "issued" / "WO-004-modal-observability.md"
     ).read_text(encoding="utf-8")
     assert [
         line for line in wo004_live.splitlines()
         if line.startswith("AUTHORIZATION:")
-    ] == ["AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR FEASIBILITY"
-          " PLANNING ONLY"]
+    ] == ["AUTHORIZATION: ISSUED — SESSION A ACCEPTED; NO SESSION"
+          " AUTHORIZED"]
     assert "## Session A authorization basis" in wo004_live
+    assert "## Session A decision record" in wo004_live
     normalized_live = " ".join(wo004_live.split())
     assert (
         "It opens no live UEFN work: no editor launch, no bridge start, no "
         "official-MCP call, and no level mutation." in normalized_live
     )
+    normalized_pointer_live = " ".join(pointer.split())
     assert (
-        "Session A is authorized under this pointer for read-only feasibility "
-        "planning only" in " ".join(pointer.split())
+        "Session B implementation and Session C live testing are not "
+        "authorized, and each requires a separate owner gate recorded here."
+        in normalized_pointer_live
+    )
+    assert (
+        "Session A is authorized under this pointer"
+        not in normalized_pointer_live
     )
     # WO-003's own session bullets are gone from the pointer - they live in
     # its completed document now. WO-004 declares a Session A
@@ -291,9 +303,9 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         " `2582be8c9168d72b46846334bbba44307d348ce6`",
     ):
         assert stale not in pointer, stale
-    # WO-004 has no acceptance and no Session B, so those keys stay absent.
+    # WO-004 has no Session B authorization or acceptance, so those keys stay
+    # absent.
     for stale in (
-        "- Session A acceptance commit:",
         "- Session B authorization commit:",
         "- Session B acceptance commit:",
     ):
@@ -398,8 +410,8 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     ]
     assert [
         line for line in wo004_lines if line.startswith("AUTHORIZATION:")
-    ] == ["AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR "
-          "FEASIBILITY PLANNING ONLY"]
+    ] == ["AUTHORIZATION: ISSUED — SESSION A ACCEPTED; NO SESSION "
+          "AUTHORIZED"]
     # The planning baseline is preserved; the issuance evidence is new and
     # distinct from it.
     assert [line for line in wo004_lines if line.startswith("BASELINE:")] == [
@@ -419,6 +431,13 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         ("SESSION_A_AUTHORIZATION_CI_JOB: `102978793893` — Lint, "
          "types, tests",
          "SESSION_A_AUTHORIZATION_CI_JOB:"),
+        ("SESSION_A_ACCEPTANCE_COMMIT:"
+         " `c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`",
+         "SESSION_A_ACCEPTANCE_COMMIT:"),
+        ("SESSION_A_ACCEPTANCE_CI_WORKFLOW: `34735715115`",
+         "SESSION_A_ACCEPTANCE_CI_WORKFLOW:"),
+        ("SESSION_A_ACCEPTANCE_CI_JOB: `103666661855` — Lint, types, tests",
+         "SESSION_A_ACCEPTANCE_CI_JOB:"),
     ):
         assert [
             candidate for candidate in wo004_lines
@@ -432,11 +451,16 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "## Session A authorization basis",
         "34509193110",
         "102978793893",
-        "NEXT GATE: fresh independent review of the complete uncommitted"
-        " Session A",
+        "## Session A decision record",
+        "34735715115",
+        "103666661855",
+        "NEXT GATE: fresh independent review of this uncommitted Session A"
+        " decision",
     ):
         assert evidence in wo004_text, evidence
     for stale in (
+        "AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR FEASIBILITY",
+        "NEXT GATE: fresh independent review of the complete uncommitted",
         "STATUS: PROPOSED",
         "AUTHORIZATION: NOT AUTHORIZED",
         "NEXT GATE: independent pre-issuance review of this revision",
@@ -746,14 +770,181 @@ _WO004_SA_NEXT_GATE = _NL.join((
 _WO004_SA_BASIS_HEADING = "## Session A authorization basis"
 
 
-def _make_wo004_session_a_case(repo_root, tmp_path, name):
-    """Copy the current Session A authorized WO-004 state."""
+# --- WO-004 Session A acceptance: the current state, and the head of the chain
+#
+# Accepting Session A moved the current state forward again, so the Session A
+# authorized state - and every historical fixture below it - is now
+# reconstructed backwards from the accepted state.
+
+_WO004_ACC_COMMIT = "c4c21caa0960c430a4bcfb90cd65ef1edfc1a790"
+_WO004_ACC_WORKFLOW = "34735715115"
+_WO004_ACC_JOB = "103666661855"
+_WO004_ACC_GATE = (
+    "WO-004 SESSION A ACCEPTED " + _EM
+    + " SESSION B IMPLEMENTATION NOT AUTHORIZED"
+)
+_WO004_ACC_MARKER = (
+    "AUTHORIZATION: ISSUED " + _EM
+    + " SESSION A ACCEPTED; NO SESSION AUTHORIZED"
+)
+_WO004_ACC_METADATA = (
+    ("SESSION_A_ACCEPTANCE_COMMIT:",
+     "SESSION_A_ACCEPTANCE_COMMIT: `" + _WO004_ACC_COMMIT + "`"),
+    ("SESSION_A_ACCEPTANCE_CI_WORKFLOW:",
+     "SESSION_A_ACCEPTANCE_CI_WORKFLOW: `" + _WO004_ACC_WORKFLOW + "`"),
+    ("SESSION_A_ACCEPTANCE_CI_JOB:",
+     "SESSION_A_ACCEPTANCE_CI_JOB: `" + _WO004_ACC_JOB + "` " + _EM
+     + " Lint, types, tests"),
+)
+_WO004_ACC_POINTER_BULLETS = _NL.join((
+    "- Session A acceptance commit: `" + _WO004_ACC_COMMIT + "`",
+    "- Session A acceptance CI workflow: `" + _WO004_ACC_WORKFLOW + "`",
+    "- Session A acceptance CI job: `" + _WO004_ACC_JOB + "` " + _EM
+    + " Lint, types, tests",
+))
+_WO004_ACC_NEXT_GATE = _NL.join((
+    "NEXT GATE: fresh independent review of this uncommitted Session A"
+    " decision and",
+    "mandate amendment, followed by a separate owner authorization for"
+    " Session B",
+    "implementation. Session B, Session C, and all live UEFN work remain"
+    " closed.",
+))
+_WO004_DECISION_HEADING = "## Session A decision record"
+_WO004_ACC_POINTER_OPENING = (
+    "At the Session A authorization gate, this pointer opened read-only"
+)
+# The Session A paragraph exactly as the authorization gate recorded it. The
+# accepted pointer restates that gate in the past tense, so the
+# reconstruction puts the original back byte for byte.
+_WO004_SA_POINTER_PARAGRAPH = _NL.join((
+    "Session A is authorized under this pointer for read-only feasibility",
+    "planning only, on the basis of commit `" + _WO004_SA_COMMIT + "`,",
+    "successful CI workflow `" + _WO004_SA_WORKFLOW + "`, and successful"
+    " required job",
+    "`" + _WO004_SA_JOB + "` (`Lint, types, tests`). It covers source and",
+    "documentation inspection and the drafting of proposed probes. No live",
+    "UEFN probe, editor launch, bridge start, official-MCP call, or level",
+    "mutation is authorized, and every proposed probe needs its own separate",
+    "owner gate. Session B and Session C stay closed, as do WO-005, WO-006,",
+    "and WO-007. Tagging, Release creation, branch-protection changes, other",
+    "repository metadata changes, and social publication all remain",
+    "unauthorized.",
+))
+
+
+def _make_wo004_accepted_case(repo_root, tmp_path, name):
+    """Copy the current Session A accepted WO-004 state."""
     case = tmp_path / name
     case.mkdir(parents=True)
     shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
     shutil.copytree(
         repo_root / "docs" / "work-orders",
         case / "docs" / "work-orders",
+    )
+    return case
+
+
+def _make_wo004_session_a_case(repo_root, tmp_path, name):
+    """Reconstruct the preserved Session A authorized WO-004 state.
+
+    Accepting Session A moved the current state forward, so the state the
+    Session A fixtures build on is now itself a reconstruction.
+
+    The pointer is restored exactly: its session, base, gate, acceptance
+    bullets, and original Session A paragraph return byte for byte.
+
+    The mandate is restored only where a Session A gate reads it: the
+    marker, the next gate, the acceptance declarations, and the removed
+    decision record. Every other amendment stays in place - the amendment
+    notes on candidate paths and status semantics, the amended Session B
+    and Session C sections, and the amended inclusions, exclusions,
+    configurations, acceptance criteria, and stop boundaries. No Session A
+    gate pins that prose, and the Session A gate still scans the mandate for
+    positive later-session language, so the amended text stays under that
+    scan instead of being hidden from it.
+    """
+    case = _make_wo004_accepted_case(repo_root, tmp_path, name)
+    issued = case / _WO004_ISSUED_REL
+    if not issued.exists():
+        # Chained from an earlier reconstruction, so there is no acceptance
+        # left to reverse.
+        assert (case / _WO004_PROPOSED_REL).exists(), (
+            "WO-004 acceptance reconstruction: WO-004 is in neither issued/ "
+            "nor proposed/ - this reconstruction is no longer anchored to "
+            "the recorded historical state"
+        )
+        return case
+    text = issued.read_text(encoding="utf-8")
+    if _WO004_ACC_MARKER not in text:
+        return case  # already reversed by a chained reconstruction
+    for old, new in (
+        (_WO004_ACC_MARKER, _WO004_SA_MARKER),
+        (_WO004_ACC_NEXT_GATE, _WO004_SA_NEXT_GATE),
+    ):
+        text = _replace_once(text, old, new,
+                             "WO-004 acceptance reconstruction")
+    for _prefix, declaration in _WO004_ACC_METADATA:
+        text = _replace_once(text, _NL + declaration + _NL, "",
+                             "WO-004 acceptance metadata excision")
+    _require_unique(
+        text, (_WO004_DECISION_HEADING, "## Planning basis"),
+        "WO-004 decision record excision",
+    )
+    text = _sub_once(
+        re.escape(_WO004_DECISION_HEADING)
+        + ".*?(?=" + re.escape("## Planning basis" + _NL) + ")",
+        "",
+        text,
+        "WO-004 decision record excision",
+        flags=re.DOTALL,
+    )
+    issued.write_text(text, encoding="utf-8")
+
+    pointer = case / "WORKORDER.md"
+    text = pointer.read_text(encoding="utf-8")
+    _require_unique(
+        text,
+        ("- Authorized session: NONE",
+         "WO-001 through WO-007 form the frozen next release train. The"
+         " release version"),
+        "WO-004 acceptance pointer restoration",
+    )
+    text = _sub_once(
+        re.escape(_WO004_ACC_POINTER_OPENING) + ".*?(?="
+        + re.escape("WO-001 through WO-007 form the frozen") + ")",
+        lambda _match: _WO004_SA_POINTER_PARAGRAPH + _NL + _NL,
+        text,
+        "WO-004 acceptance paragraph restoration",
+        flags=re.DOTALL,
+    )
+    for old, new in (
+        ("- Authorized session: NONE", "- Authorized session: A"),
+        ("- Base commit: `" + _WO004_ACC_COMMIT + "`",
+         "- Base commit: `" + _WO004_SA_COMMIT + "`"),
+        ("- Current gate: " + _WO004_ACC_GATE,
+         "- Current gate: " + _WO004_SA_GATE),
+        (_NL + _WO004_ACC_POINTER_BULLETS, ""),
+    ):
+        text = _replace_once(text, old, new, "WO-004 acceptance pointer")
+    pointer.write_text(text, encoding="utf-8")
+
+    _assert_reconstructed(
+        "WO-004 acceptance pointer", pointer.read_text(encoding="utf-8"),
+        ("- Authorized session: A",
+         "- Base commit: `" + _WO004_SA_COMMIT + "`",
+         "- Current gate: " + _WO004_SA_GATE,
+         _WO004_SA_POINTER_BULLETS, _WO004_SA_POINTER_PARAGRAPH),
+        (_WO004_ACC_GATE, _WO004_ACC_COMMIT, _WO004_ACC_WORKFLOW,
+         _WO004_ACC_JOB, _WO004_ACC_POINTER_OPENING),
+    )
+    _assert_reconstructed(
+        "WO-004 acceptance reconstruction",
+        issued.read_text(encoding="utf-8"),
+        (_WO004_SA_MARKER, _WO004_SA_NEXT_GATE, _WO004_SA_BASIS_HEADING,
+         _WO004_SA_METADATA[0][1]),
+        (_WO004_ACC_MARKER, _WO004_DECISION_HEADING,
+         "SESSION_A_ACCEPTANCE_COMMIT:", _WO004_ACC_NEXT_GATE),
     )
     return case
 
@@ -8361,8 +8552,8 @@ def _make_live_issued_case(repo_root, tmp_path, name, body, ptr, session):
     Synthesizing an issuance for the order that is actually issued would
     measure every probe against a fixture instead of the repository.
     """
-    # Session A is authorized for real, so its probes run against the
-    # live state; the closed-issuance state is the reconstruction.
+    # Session A is accepted for real. The authorized Session A state is
+    # reconstructed from that, and the closed-issuance state from it in turn.
     case = (_make_wo004_session_a_case(repo_root, tmp_path, name)
             if session == "A"
             else _make_wo004_issued_case(repo_root, tmp_path, name))
@@ -9640,201 +9831,373 @@ def test_a_completed_document_may_still_close_its_successor(
     )
 
 
-# --- WO-004 Session A authorization ---------------------------------------
+# --- WO-004 Session A authorization and acceptance ------------------------
 #
-# Authorizing a session must record new evidence WITHOUT overwriting the
-# evidence that issued the order. Every probe here is a delta against the
-# live Session A state, which the control below proves is clean.
+# Each transition must record new evidence WITHOUT overwriting the evidence
+# before it. Every probe here is a delta against a state the controls prove
+# clean: the live accepted state, and the Session A authorized state
+# reconstructed from it.
 
-_WO004_SA_SURFACES = (
-    ("pointer", "WORKORDER.md", "- Session A authorization commit:"),
-    ("mandate", _WO004_ISSUED_REL, "SESSION_A_AUTHORIZATION_COMMIT:"),
-)
 _WO004_ZERO_SHA = "0" * 40
+_WO004_STATE_CASES = {
+    "A": _make_wo004_session_a_case,
+    "ACCEPTED": _make_wo004_accepted_case,
+}
+_WO004_STATE_IDS = tuple(_WO004_STATE_CASES)
 
 
-def _sa_types(repo_root, tmp_path, monkeypatch, name, mutate):
-    """Findings for the live Session A state after one mutation."""
-    drift_check = _load_drift_check(repo_root, "sa_" + name)
-    case = _make_wo004_session_a_case(repo_root, tmp_path, "sa-" + name)
+def _wo004_state_findings(repo_root, tmp_path, monkeypatch, state, name,
+                          mutate):
+    """(type, file) findings for one WO-004 state after one mutation."""
+    drift_check = _load_drift_check(repo_root, "wo004_" + state + "_" + name)
+    case = _WO004_STATE_CASES[state](repo_root, tmp_path,
+                                     "wo004-" + state + "-" + name)
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    return {f["type"] for f in drift_check.check_work_order_contract()}
+    return {(f["type"], f["file"])
+            for f in drift_check.check_work_order_contract()}
 
 
-def test_wo004_session_a_state_is_clean(
-    repo_root, tmp_path, monkeypatch
+def _wo004_state_types(repo_root, tmp_path, monkeypatch, state, name, mutate):
+    """Finding types only, for probes that do not assert attribution."""
+    return {kind for kind, _file in _wo004_state_findings(
+        repo_root, tmp_path, monkeypatch, state, name, mutate)}
+
+
+@pytest.mark.parametrize("state", _WO004_STATE_IDS)
+def test_wo004_session_state_is_clean(
+    repo_root, tmp_path, monkeypatch, state
 ) -> None:
-    """The control: the real Session A authorization raises nothing."""
-    found = _sa_types(repo_root, tmp_path, monkeypatch, "control",
-                      lambda case: None)
+    """The controls: the live accepted state and its reconstruction are clean."""
+    found = _wo004_state_types(repo_root, tmp_path, monkeypatch, state,
+                               "control", lambda case: None)
     assert found == set(), (
-        "the live Session A state is not clean: " + repr(sorted(found))
+        "the " + state + " state is not clean: " + repr(sorted(found))
     )
+
+
+_WO004_PINNED_EVIDENCE = (
+    # (id, state, file, declaration prefix, pinned value)
+    ("A-pointer-authorization", "A", "WORKORDER.md",
+     "- Session A authorization commit:", _WO004_SA_COMMIT),
+    ("A-mandate-authorization", "A", _WO004_ISSUED_REL,
+     "SESSION_A_AUTHORIZATION_COMMIT:", _WO004_SA_COMMIT),
+    ("accepted-pointer-authorization", "ACCEPTED", "WORKORDER.md",
+     "- Session A authorization commit:", _WO004_SA_COMMIT),
+    ("accepted-mandate-authorization", "ACCEPTED", _WO004_ISSUED_REL,
+     "SESSION_A_AUTHORIZATION_COMMIT:", _WO004_SA_COMMIT),
+    ("accepted-pointer-commit", "ACCEPTED", "WORKORDER.md",
+     "- Session A acceptance commit:", _WO004_ACC_COMMIT),
+    ("accepted-pointer-workflow", "ACCEPTED", "WORKORDER.md",
+     "- Session A acceptance CI workflow:", _WO004_ACC_WORKFLOW),
+    ("accepted-pointer-job", "ACCEPTED", "WORKORDER.md",
+     "- Session A acceptance CI job:", _WO004_ACC_JOB),
+    ("accepted-mandate-commit", "ACCEPTED", _WO004_ISSUED_REL,
+     "SESSION_A_ACCEPTANCE_COMMIT:", _WO004_ACC_COMMIT),
+    ("accepted-mandate-workflow", "ACCEPTED", _WO004_ISSUED_REL,
+     "SESSION_A_ACCEPTANCE_CI_WORKFLOW:", _WO004_ACC_WORKFLOW),
+    ("accepted-mandate-job", "ACCEPTED", _WO004_ISSUED_REL,
+     "SESSION_A_ACCEPTANCE_CI_JOB:", _WO004_ACC_JOB),
+)
+_WO004_EVIDENCE_KINDS = {
+    "WORKORDER.md": {_WO004_FIELD_POINTER, _WO004_DECL_POINTER},
+    _WO004_ISSUED_REL: {_WO004_FIELD_RECORD, _WO004_DECL_RECORD},
+}
 
 
 @pytest.mark.parametrize("damage",
                          ("changed", "removed", "duplicated", "decoy"))
-@pytest.mark.parametrize(("surface", "rel", "prefix"), _WO004_SA_SURFACES,
-                         ids=[row[0] for row in _WO004_SA_SURFACES])
-def test_wo004_session_a_evidence_is_pinned(
-    repo_root, tmp_path, monkeypatch, surface, rel, prefix, damage
+@pytest.mark.parametrize(("name", "state", "rel", "prefix", "value"),
+                         _WO004_PINNED_EVIDENCE,
+                         ids=[row[0] for row in _WO004_PINNED_EVIDENCE])
+def test_wo004_session_evidence_is_pinned(
+    repo_root, tmp_path, monkeypatch, name, state, rel, prefix, value, damage
 ) -> None:
-    """The Session A authorization commit is enforced on both surfaces."""
+    """Each transition's evidence is enforced on both surfaces.
+
+    The accepted rows include the Session A AUTHORIZATION declarations, so
+    accepting the session cannot make the evidence that opened it droppable.
+    Attribution is asserted too: the finding names the damaged file.
+    """
     def mutate(case):
         target = case / rel
         text = target.read_text(encoding="utf-8")
         line = next(candidate for candidate in text.splitlines()
                     if candidate.startswith(prefix))
-        if damage == "changed":
-            new = line.replace(_WO004_SA_COMMIT, _WO004_ZERO_SHA)
-        elif damage == "removed":
-            new = ""
-        elif damage == "duplicated":
-            new = line + _NL + line
-        else:
-            new = line.replace(_WO004_SA_COMMIT, _WO004_ZERO_SHA)
+        wrong = line.replace(value, _WO004_ZERO_SHA[:len(value)])
+        assert wrong != line, "probe anchor drifted: " + prefix
+        new = {"changed": wrong, "removed": "",
+               "duplicated": line + _NL + line, "decoy": wrong}[damage]
         # The genuine declaration is corrupted first; only then is the
         # byte-correct decoy parked outside the canonical block, so the
         # replacement still has exactly one anchor to act on.
-        text = _replace_once(text, line, new, "session A " + damage)
+        text = _replace_once(text, line, new, "session evidence " + damage)
         if damage == "decoy":
             text = text.rstrip() + _NL + _NL + line + _NL
         target.write_text(text, encoding="utf-8")
 
-    found = _sa_types(repo_root, tmp_path, monkeypatch,
-                      surface + "-" + damage, mutate)
-    assert found, (
-        "a " + damage + " Session A authorization commit in the " + surface
-        + " was accepted"
+    found = _wo004_state_findings(repo_root, tmp_path, monkeypatch, state,
+                                  name + "-" + damage, mutate)
+    kinds = {kind for kind, file in found if file == rel}
+    assert kinds & _WO004_EVIDENCE_KINDS[rel], (
+        "a " + damage + " " + prefix + " declaration was accepted in the "
+        + state + " state: " + repr(sorted(found))
     )
 
 
-def test_wo004_session_a_preserves_the_issuance_record(
-    repo_root, tmp_path, monkeypatch
+_WO004_BASE_ROLLBACKS = (
+    ("A", _WO004_SA_COMMIT, _WO004_ISSUANCE_COMMIT),
+    ("ACCEPTED", _WO004_ACC_COMMIT, _WO004_SA_COMMIT),
+)
+
+
+@pytest.mark.parametrize(("state", "current", "previous"),
+                         _WO004_BASE_ROLLBACKS,
+                         ids=[row[0] for row in _WO004_BASE_ROLLBACKS])
+def test_wo004_session_base_is_repinned(
+    repo_root, tmp_path, monkeypatch, state, current, previous
 ) -> None:
-    """Moving the base must not let the issuance evidence be dropped.
-
-    This is the property the cumulative-slice design exists for: the
-    pointer base now names the Session A commit, and the issuance commit
-    still has to be declared in its own bullet beside it.
-    """
+    """The base must name the current gate's commit, not the previous one."""
     def mutate(case):
-        pointer = case / "WORKORDER.md"
-        pointer.write_text(
-            _replace_once(
-                pointer.read_text(encoding="utf-8"),
-                "- Issuance commit: `" + _WO004_ISSUANCE_COMMIT + "`" + _NL,
-                "", "issuance bullet removal"),
-            encoding="utf-8")
+        _edit(case, "WORKORDER.md", "- Base commit: `" + current + "`",
+              "- Base commit: `" + previous + "`")
 
-    found = _sa_types(repo_root, tmp_path, monkeypatch, "issuance-kept",
-                      mutate)
-    assert found, (
-        "the issuance record became droppable once Session A opened"
-    )
-
-
-def test_wo004_session_a_base_is_repinned(
-    repo_root, tmp_path, monkeypatch
-) -> None:
-    """The base must name the Session A commit, not the issuance commit."""
-    def mutate(case):
-        pointer = case / "WORKORDER.md"
-        pointer.write_text(
-            _replace_once(
-                pointer.read_text(encoding="utf-8"),
-                "- Base commit: `" + _WO004_SA_COMMIT + "`",
-                "- Base commit: `" + _WO004_ISSUANCE_COMMIT + "`",
-                "base rollback"),
-            encoding="utf-8")
-
-    found = _sa_types(repo_root, tmp_path, monkeypatch, "base-rollback",
-                      mutate)
-    assert found, "the base commit could stay at the issuance commit"
-
-
-def test_wo004_session_a_gate_cannot_be_widened(
-    repo_root, tmp_path, monkeypatch
-) -> None:
-    """Read-only feasibility must not silently become implementation."""
-    def mutate(case):
-        pointer = case / "WORKORDER.md"
-        pointer.write_text(
-            _replace_once(
-                pointer.read_text(encoding="utf-8"),
-                "- Current gate: " + _WO004_SA_GATE,
-                "- Current gate: WO-004 SESSION A AUTHORIZED " + _EM
-                + " IMPLEMENT SESSION A ONLY",
-                "gate widening"),
-            encoding="utf-8")
-
-    found = _sa_types(repo_root, tmp_path, monkeypatch, "widen-gate",
-                      mutate)
-    assert "authorized session gate" in found, (
-        "the feasibility gate was widened to implementation: "
+    found = _wo004_state_types(repo_root, tmp_path, monkeypatch, state,
+                               "base-rollback", mutate)
+    assert _WO004_DECL_POINTER in found, (
+        "the " + state + " base could stay at the previous gate's commit: "
         + repr(sorted(found))
     )
 
 
-def test_wo004_session_a_marker_cannot_be_widened(
-    repo_root, tmp_path, monkeypatch
+@pytest.mark.parametrize("state", _WO004_STATE_IDS)
+def test_wo004_session_preserves_the_issuance_record(
+    repo_root, tmp_path, monkeypatch, state
 ) -> None:
-    """The mandate marker must stay the feasibility-only one."""
-    def mutate(case):
-        target = case / _WO004_ISSUED_REL
-        target.write_text(
-            _replace_once(
-                target.read_text(encoding="utf-8"),
-                _WO004_SA_MARKER,
-                "AUTHORIZATION: ISSUED " + _EM
-                + " SESSION A AUTHORIZED FOR IMPLEMENTATION",
-                "marker widening"),
-            encoding="utf-8")
+    """Moving the base must not let the issuance evidence be dropped.
 
-    found = _sa_types(repo_root, tmp_path, monkeypatch, "widen-marker",
-                      mutate)
-    assert "issued session authorization" in found, (
-        "the feasibility-only marker was widened: " + repr(sorted(found))
+    This is the property the cumulative-slice design exists for: the pointer
+    base names the current gate's commit, and the issuance commit still has
+    to be declared in its own bullet beside it.
+    """
+    def mutate(case):
+        _edit(case, "WORKORDER.md",
+              "- Issuance commit: `" + _WO004_ISSUANCE_COMMIT + "`" + _NL, "")
+
+    found = _wo004_state_types(repo_root, tmp_path, monkeypatch, state,
+                               "issuance-kept", mutate)
+    assert {_WO004_FIELD_POINTER, _WO004_DECL_POINTER} & found, (
+        "the issuance record became droppable in the " + state + " state: "
+        + repr(sorted(found))
     )
 
 
+_WO004_GATE_TAMPERS = (
+    ("A", _WO004_SA_GATE,
+     "WO-004 SESSION A AUTHORIZED " + _EM + " IMPLEMENT SESSION A ONLY",
+     "authorized session gate"),
+    ("ACCEPTED", _WO004_ACC_GATE,
+     "WO-004 SESSION B AUTHORIZED " + _EM + " IMPLEMENT SESSION B ONLY",
+     "WO-004 Session A accepted gate"),
+)
+
+
+@pytest.mark.parametrize(("state", "gate", "widened", "expected"),
+                         _WO004_GATE_TAMPERS,
+                         ids=[row[0] for row in _WO004_GATE_TAMPERS])
+def test_wo004_session_gate_cannot_be_widened(
+    repo_root, tmp_path, monkeypatch, state, gate, widened, expected
+) -> None:
+    """Neither feasibility nor acceptance may silently become implementation."""
+    def mutate(case):
+        _edit(case, "WORKORDER.md", "- Current gate: " + gate,
+              "- Current gate: " + widened)
+
+    found = _wo004_state_types(repo_root, tmp_path, monkeypatch, state,
+                               "widen-gate", mutate)
+    assert expected in found, (
+        "the " + state + " gate was widened: " + repr(sorted(found))
+    )
+
+
+_WO004_MARKER_TAMPERS = (
+    ("A", _WO004_SA_MARKER,
+     "AUTHORIZATION: ISSUED " + _EM + " SESSION A AUTHORIZED FOR IMPLEMENTATION",
+     "issued session authorization"),
+    ("ACCEPTED", _WO004_ACC_MARKER,
+     "AUTHORIZATION: ISSUED " + _EM + " SESSION B AUTHORIZED FOR IMPLEMENTATION",
+     "WO-004 Session A accepted authorization"),
+)
+
+
+@pytest.mark.parametrize(("state", "marker", "widened", "expected"),
+                         _WO004_MARKER_TAMPERS,
+                         ids=[row[0] for row in _WO004_MARKER_TAMPERS])
+def test_wo004_session_marker_cannot_be_widened(
+    repo_root, tmp_path, monkeypatch, state, marker, widened, expected
+) -> None:
+    """The mandate marker must stay the one its gate declares."""
+    def mutate(case):
+        _edit(case, _WO004_ISSUED_REL, marker, widened)
+
+    found = _wo004_state_types(repo_root, tmp_path, monkeypatch, state,
+                               "widen-marker", mutate)
+    assert expected in found, (
+        "the " + state + " marker was widened: " + repr(sorted(found))
+    )
+
+
+_WO004_SESSION_LINES = (
+    ("A", "- Authorized session: A"),
+    ("ACCEPTED", "- Authorized session: NONE"),
+)
+
+
+@pytest.mark.parametrize(("state", "session_line"), _WO004_SESSION_LINES,
+                         ids=[row[0] for row in _WO004_SESSION_LINES])
 def test_wo004_rogue_session_cannot_silence_the_issuance_record(
-    repo_root, tmp_path, monkeypatch
+    repo_root, tmp_path, monkeypatch, state, session_line
 ) -> None:
     """An unrecognized session value is not a way to switch the record off."""
     def mutate(case):
-        pointer = case / "WORKORDER.md"
-        text = pointer.read_text(encoding="utf-8")
-        text = _replace_once(text, "- Authorized session: A",
-                             "- Authorized session: Q", "rogue session")
-        text = _replace_once(
-            text, "- Issuance CI workflow: `34441169191`",
-            "- Issuance CI workflow: `99999999999`", "rogue issuance")
-        pointer.write_text(text, encoding="utf-8")
+        _edit(case, "WORKORDER.md", session_line, "- Authorized session: Q")
+        _edit(case, "WORKORDER.md", "- Issuance CI workflow: `34441169191`",
+              "- Issuance CI workflow: `99999999999`")
 
-    found = _sa_types(repo_root, tmp_path, monkeypatch, "rogue", mutate)
-    assert "WO-004 issuance declaration (WORKORDER.md)" in found, (
+    found = _wo004_state_types(repo_root, tmp_path, monkeypatch, state,
+                               "rogue", mutate)
+    assert _WO004_DECL_POINTER in found, (
         "a rogue session value silenced the issuance record: "
         + repr(sorted(found))
     )
 
 
-def test_wo004_session_a_does_not_pin_harmless_prose(
-    repo_root, tmp_path, monkeypatch
-) -> None:
-    """Ordinary feasibility prose in the mandate must not raise findings."""
-    def mutate(case):
-        target = case / _WO004_ISSUED_REL
-        target.write_text(
-            target.read_text(encoding="utf-8") + _NL
-            + "The feasibility record notes that Session A inspected source"
-            + _NL + "and documentation only, and that no probe was run." + _NL,
-            encoding="utf-8")
+_WO004_HARMLESS_SESSION_PROSE = (
+    ("A-feasibility", "A",
+     "The feasibility record notes that Session A inspected source" + _NL
+     + "and documentation only, and that no probe was run."),
+    ("accepted-feasibility", "ACCEPTED",
+     "The feasibility record notes that Session A inspected source" + _NL
+     + "and documentation only, and that no probe was run."),
+    ("accepted-closed-session-b", "ACCEPTED",
+     "Session B remains closed until the owner records its own gate in" + _NL
+     + "root `WORKORDER.md`."),
+)
 
-    found = _sa_types(repo_root, tmp_path, monkeypatch, "prose", mutate)
+
+@pytest.mark.parametrize(("name", "state", "prose"),
+                         _WO004_HARMLESS_SESSION_PROSE,
+                         ids=[row[0] for row in _WO004_HARMLESS_SESSION_PROSE])
+def test_wo004_session_does_not_pin_harmless_prose(
+    repo_root, tmp_path, monkeypatch, name, state, prose
+) -> None:
+    """Ordinary, closed-session prose in the mandate raises no findings."""
+    def mutate(case):
+        _append(case, _WO004_ISSUED_REL, prose)
+
+    found = _wo004_state_types(repo_root, tmp_path, monkeypatch, state,
+                               "prose-" + name, mutate)
     assert found == set(), (
-        "harmless feasibility prose was pinned: " + repr(sorted(found))
+        "harmless prose was pinned: " + repr(sorted(found))
+    )
+
+
+_WO004_ACCEPTED_REOPENINGS = (
+    ("pointer-session-a", "WORKORDER.md",
+     "Session A is authorized again for feasibility work."),
+    ("pointer-session-b", "WORKORDER.md",
+     "Session B implementation is authorized."),
+    ("pointer-session-c", "WORKORDER.md",
+     "Session C live testing may begin."),
+    ("mandate-session-b", _WO004_ISSUED_REL,
+     "Session B implementation is authorized."),
+    ("mandate-session-c", _WO004_ISSUED_REL,
+     "Session C live testing may begin."),
+)
+
+
+@pytest.mark.parametrize(("name", "rel", "claim"), _WO004_ACCEPTED_REOPENINGS,
+                         ids=[row[0] for row in _WO004_ACCEPTED_REOPENINGS])
+def test_wo004_accepted_state_reopens_no_session(
+    repo_root, tmp_path, monkeypatch, name, rel, claim
+) -> None:
+    """A positive session claim is a finding against the file carrying it.
+
+    The pointer may reopen nothing. The mandate keeps Session A's historical
+    authorization basis verbatim, so its Session B, Session C, or later
+    claims are the findings there.
+    """
+    def mutate(case):
+        _append(case, rel, claim)
+
+    found = _wo004_state_findings(repo_root, tmp_path, monkeypatch,
+                                  "ACCEPTED", "reopen-" + name, mutate)
+    assert ("session authorization reopening", rel) in found, (
+        "an accepted-state claim was not attributed to " + rel + ": "
+        + repr(sorted(found))
+    )
+
+
+_WO004_ACCEPTED_RECORD_DAMAGE = (
+    ("next-gate", _WO004_ACC_NEXT_GATE,
+     "NEXT GATE: a separate owner decision, recorded later.",
+     "WO-004 next gate"),
+    ("statement", "Session A is accepted and complete.",
+     "Session A is accepted.", "WO-004 session A statement"),
+    ("decision-heading", _WO004_DECISION_HEADING + _NL, "",
+     "WO-004 Session A decision record"),
+)
+
+
+@pytest.mark.parametrize(("name", "old", "new", "expected"),
+                         _WO004_ACCEPTED_RECORD_DAMAGE,
+                         ids=[row[0] for row in _WO004_ACCEPTED_RECORD_DAMAGE])
+def test_wo004_accepted_decision_record_is_pinned(
+    repo_root, tmp_path, monkeypatch, name, old, new, expected
+) -> None:
+    """The next gate, the accepted statement, and the decision heading."""
+    def mutate(case):
+        _edit(case, _WO004_ISSUED_REL, old, new)
+
+    found = _wo004_state_findings(repo_root, tmp_path, monkeypatch,
+                                  "ACCEPTED", "record-" + name, mutate)
+    assert (expected, _WO004_ISSUED_REL) in found, (
+        "a damaged decision " + name + " was accepted: " + repr(sorted(found))
+    )
+
+
+# One acceptance signal on the closed issuance is enough to be checked as an
+# acceptance. Each expected kind is raised only by the accepted branch, so a
+# row fails if that signal's routing is removed.
+_WO004_SINGLE_ACCEPTANCE_SIGNALS = (
+    ("decision-heading-only", _WO004_ISSUED_REL, None, _WO004_DECISION_HEADING,
+     "WO-004 Session A accepted gate"),
+    ("marker-only", _WO004_ISSUED_REL, _WO004_ISSUED_MARKER, _WO004_ACC_MARKER,
+     "WO-004 Session A accepted gate"),
+    ("gate-only", "WORKORDER.md", "- Current gate: " + _WO004_ISSUED_GATE,
+     "- Current gate: " + _WO004_ACC_GATE,
+     "WO-004 Session A accepted authorization"),
+)
+
+
+@pytest.mark.parametrize(("name", "rel", "old", "new", "expected"),
+                         _WO004_SINGLE_ACCEPTANCE_SIGNALS,
+                         ids=[row[0] for row in _WO004_SINGLE_ACCEPTANCE_SIGNALS])
+def test_wo004_one_acceptance_signal_is_checked_as_acceptance(
+    repo_root, tmp_path, monkeypatch, name, rel, old, new, expected
+) -> None:
+    """A partial acceptance fails as the acceptance it claims to be."""
+    def mutate(case):
+        if old is None:
+            _append(case, rel, new)
+        else:
+            _edit(case, rel, old, new)
+
+    found = _issued_case_types(repo_root, tmp_path, monkeypatch,
+                               "signal-" + name, _WO004_ID, mutate)
+    assert expected in found, (
+        "a " + name + " acceptance was not checked as an acceptance: "
+        + repr(sorted(found))
     )
 
 
