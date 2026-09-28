@@ -2,7 +2,7 @@
 
 STATUS: ISSUED
 
-AUTHORIZATION: ISSUED — SESSION A ACCEPTED; NO SESSION AUTHORIZED
+AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR CLIENT OUTCOME SEMANTICS ONLY
 
 OWNER: Ocean Bennett
 
@@ -27,6 +27,12 @@ SESSION_A_ACCEPTANCE_COMMIT: `c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`
 SESSION_A_ACCEPTANCE_CI_WORKFLOW: `34735715115`
 
 SESSION_A_ACCEPTANCE_CI_JOB: `103666661855` — Lint, types, tests
+
+SESSION_B_AUTHORIZATION_COMMIT: `da846ec36773d673ca9dcab3025ac36555579d0f`
+
+SESSION_B_AUTHORIZATION_CI_WORKFLOW: `36375370541`
+
+SESSION_B_AUTHORIZATION_CI_JOB: `108780005124` — Lint, types, tests
 
 ## Issuance basis
 
@@ -110,9 +116,28 @@ boundaries", and the next gate are amended to match. The text before this
 amendment is preserved in the repository history at
 `c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`.
 
-Session A is accepted and complete. Session B implementation and Session C
-live testing are not authorized; each requires a separate owner gate recorded
-in root `WORKORDER.md`.
+Session A is accepted and complete. At the Session A acceptance gate, Session B
+implementation and Session C live testing were not authorized; each required a
+separate owner gate recorded in root `WORKORDER.md`.
+
+## Session B authorization basis
+
+Session B is authorized for client outcome semantics only under the current
+root `WORKORDER.md` gate alone. The recorded basis is commit
+`da846ec36773d673ca9dcab3025ac36555579d0f`; [CI workflow
+`36375370541`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36375370541)
+completed successfully, including required job
+[`108780005124` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36375370541/job/108780005124).
+
+This gate covers exactly the amended scope in "Session B — client outcome
+semantics (amended)" below: its candidate file inventory, required contract,
+exclusions, and static verification, unchanged. Session B ends with its
+worktree uncommitted for independent review. It opens no live UEFN work: no
+deploy, no editor launch, no bridge start, no MCP call, and no level mutation.
+Session C live testing remains unauthorized and needs its own owner gate
+recorded in root `WORKORDER.md`. The issuance, Session A authorization, and
+Session A acceptance evidence above are preserved unchanged, and none of them
+is the Session B basis.
 
 ## Planning basis
 
@@ -854,12 +879,12 @@ Amended by the Session A decision.
 Each is a separate owner gate and none implies the next.
 
 Completed: proposal revision → independent pre-issuance review → issuance →
-Session A gate → Session A decision.
+Session A gate → Session A decision → independent review of the decision and
+amendment → commit → push → CI → Session B gate.
 
-Remaining: independent review of this decision and amendment → commit → push →
-CI → Session B gate → Session B implementation, left uncommitted → independent
-review → Session C gate → live acceptance against that uncommitted change →
-independent acceptance review → commit → push → CI → WO-004 completion gate.
+Remaining: Session B implementation, left uncommitted → independent review →
+Session C gate → live acceptance against that uncommitted change → independent
+acceptance review → commit → push → CI → WO-004 completion gate.
 
 As issued, this chain placed commit and push before Session C. It is reordered
 because `CLAUDE.md` requires live verification before code is committed.
@@ -898,6 +923,7 @@ declared in the canonical metadata block above and in the root pointer's
 canonical bullet block. The planning basis and the issuance basis are
 distinct records and must not be conflated.
 
-NEXT GATE: fresh independent review of this uncommitted Session A decision and
-mandate amendment, followed by a separate owner authorization for Session B
-implementation. Session B, Session C, and all live UEFN work remain closed.
+NEXT GATE: fresh independent review of the complete uncommitted Session B
+implementation, which is limited to client outcome semantics, followed by a
+separate owner gate for Session C live acceptance. Session C, commit, push, and
+all live UEFN work remain closed.

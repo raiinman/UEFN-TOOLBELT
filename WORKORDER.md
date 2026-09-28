@@ -5,9 +5,9 @@ state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
 - Current issued Work Order: WO-004
-- Authorized session: NONE
-- Base commit: `c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`
-- Current gate: WO-004 SESSION A ACCEPTED — SESSION B IMPLEMENTATION NOT AUTHORIZED
+- Authorized session: B
+- Base commit: `da846ec36773d673ca9dcab3025ac36555579d0f`
+- Current gate: WO-004 SESSION B AUTHORIZED — CLIENT OUTCOME SEMANTICS ONLY
 - Issuance commit: `8444faf340afe47765c43d943200db712880817b`
 - Issuance CI workflow: `34441169191`
 - Issuance CI job: `102756337393` — Lint, types, tests
@@ -17,6 +17,9 @@ never authorizes implementation.
 - Session A acceptance commit: `c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`
 - Session A acceptance CI workflow: `34735715115`
 - Session A acceptance CI job: `103666661855` — Lint, types, tests
+- Session B authorization commit: `da846ec36773d673ca9dcab3025ac36555579d0f`
+- Session B authorization CI workflow: `36375370541`
+- Session B authorization CI job: `108780005124` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -131,11 +134,23 @@ is narrowed to client timeout and error semantics, to direct loopback client
 transport that bypasses HTTP proxies, and to no-automatic-retry guidance; modal
 detection, heartbeat and status endpoints, and further feasibility probes are
 deferred. The decision and the amended Session B and
-Session C scope are recorded in the issued mandate. Session B implementation
-and Session C live testing are not authorized, and each requires a separate
-owner gate recorded here. Tagging, Release creation, branch-protection
-changes, other repository metadata changes, and social publication all remain
-unauthorized.
+Session C scope are recorded in the issued mandate. At that gate, Session B
+implementation and Session C live testing were not authorized, and each
+required a separate owner gate recorded here.
+
+Session B is authorized under this pointer for client outcome semantics only,
+on the basis of commit `da846ec36773d673ca9dcab3025ac36555579d0f`, successful
+CI workflow `36375370541`, and successful required job `108780005124` (`Lint,
+types, tests`). It covers the amended Session B scope recorded in the issued
+mandate - client outcome classification and wording, direct loopback transport
+for bridge requests, and no-automatic-retry guidance - in `client.py`,
+`mcp_server.py`, `.claude/mcp_reference.md`, and `tests/test_mcp_security.py`
+only, and it ends with that worktree uncommitted for independent review. It
+opens no bridge change, deploy, UEFN launch, bridge start, MCP call, commit, or
+push. Session C live testing remains unauthorized and requires a separate owner
+gate recorded here. Tagging, Release creation, branch-protection changes, other
+repository metadata changes, and social publication all remain unauthorized, as
+do WO-005, WO-006, and WO-007, which stay proposed.
 
 WO-001 through WO-007 form the frozen next release train. The release version
 remains undecided and the repository stays at version 2.4.1. No tag or GitHub

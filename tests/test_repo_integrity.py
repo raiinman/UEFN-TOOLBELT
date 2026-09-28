@@ -230,16 +230,17 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         work_orders / "completed" / "WO-003-official-mcp-doc-convergence.md"
     ).exists()
     assert current == "WO-004"
-    assert session == "NONE"
-    # The base moves with the gate; the issuance and Session A authorization
-    # commits stay declared in their own bullets, so accepting Session A
-    # records new evidence without overwriting the evidence before it.
+    assert session == "B"
+    # The base moves with the gate; the issuance, Session A authorization, and
+    # Session A acceptance commits stay declared in their own bullets, so
+    # authorizing Session B records new evidence without overwriting the
+    # evidence before it.
     assert base_lines == [
-        "- Base commit: `c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`"
+        "- Base commit: `da846ec36773d673ca9dcab3025ac36555579d0f`"
     ]
     assert gate_lines == [
-        "- Current gate: WO-004 SESSION A ACCEPTED "
-        "— SESSION B IMPLEMENTATION NOT AUTHORIZED"
+        "- Current gate: WO-004 SESSION B AUTHORIZED "
+        "— CLIENT OUTCOME SEMANTICS ONLY"
     ]
     # The canonical bullet block belongs to whichever order owns the
     # pointer. WO-004's issuance evidence is declared here; WO-003's own
@@ -259,21 +260,27 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         " `c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`",
         "- Session A acceptance CI workflow: `34735715115`",
         "- Session A acceptance CI job: `103666661855` — Lint, types, tests",
+        "- Session B authorization commit:"
+        " `da846ec36773d673ca9dcab3025ac36555579d0f`",
+        "- Session B authorization CI workflow: `36375370541`",
+        "- Session B authorization CI job: `108780005124` — Lint, types, tests",
     ):
         assert line in pointer, line
-    # Session A is accepted. Its authorization basis is kept in the mandate as
-    # history; live UEFN work, the later sessions, and the publication gates
-    # all stay closed.
+    # Session B is authorized for client outcome semantics only. Session A's
+    # authorization basis and decision record are kept in the mandate as
+    # history; live UEFN work, Session C, and the publication gates all stay
+    # closed.
     wo004_live = (
         work_orders / "issued" / "WO-004-modal-observability.md"
     ).read_text(encoding="utf-8")
     assert [
         line for line in wo004_live.splitlines()
         if line.startswith("AUTHORIZATION:")
-    ] == ["AUTHORIZATION: ISSUED — SESSION A ACCEPTED; NO SESSION"
-          " AUTHORIZED"]
+    ] == ["AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR CLIENT OUTCOME"
+          " SEMANTICS ONLY"]
     assert "## Session A authorization basis" in wo004_live
     assert "## Session A decision record" in wo004_live
+    assert "## Session B authorization basis" in wo004_live
     normalized_live = " ".join(wo004_live.split())
     assert (
         "It opens no live UEFN work: no editor launch, no bridge start, no "
@@ -281,9 +288,17 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     )
     normalized_pointer_live = " ".join(pointer.split())
     assert (
-        "Session B implementation and Session C live testing are not "
-        "authorized, and each requires a separate owner gate recorded here."
-        in normalized_pointer_live
+        "At that gate, Session B implementation and Session C live testing "
+        "were not authorized, and each required a separate owner gate "
+        "recorded here." in normalized_pointer_live
+    )
+    assert (
+        "Session B is authorized under this pointer for client outcome "
+        "semantics only" in normalized_pointer_live
+    )
+    assert (
+        "Session C live testing remains unauthorized and requires a separate "
+        "owner gate recorded here." in normalized_pointer_live
     )
     assert (
         "Session A is authorized under this pointer"
@@ -303,10 +318,8 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         " `2582be8c9168d72b46846334bbba44307d348ce6`",
     ):
         assert stale not in pointer, stale
-    # WO-004 has no Session B authorization or acceptance, so those keys stay
-    # absent.
+    # WO-004 has no Session B acceptance, so that key stays absent.
     for stale in (
-        "- Session B authorization commit:",
         "- Session B acceptance commit:",
     ):
         assert stale not in pointer, stale
@@ -410,8 +423,8 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     ]
     assert [
         line for line in wo004_lines if line.startswith("AUTHORIZATION:")
-    ] == ["AUTHORIZATION: ISSUED — SESSION A ACCEPTED; NO SESSION "
-          "AUTHORIZED"]
+    ] == ["AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR CLIENT OUTCOME "
+          "SEMANTICS ONLY"]
     # The planning baseline is preserved; the issuance evidence is new and
     # distinct from it.
     assert [line for line in wo004_lines if line.startswith("BASELINE:")] == [
@@ -438,6 +451,13 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
          "SESSION_A_ACCEPTANCE_CI_WORKFLOW:"),
         ("SESSION_A_ACCEPTANCE_CI_JOB: `103666661855` — Lint, types, tests",
          "SESSION_A_ACCEPTANCE_CI_JOB:"),
+        ("SESSION_B_AUTHORIZATION_COMMIT:"
+         " `da846ec36773d673ca9dcab3025ac36555579d0f`",
+         "SESSION_B_AUTHORIZATION_COMMIT:"),
+        ("SESSION_B_AUTHORIZATION_CI_WORKFLOW: `36375370541`",
+         "SESSION_B_AUTHORIZATION_CI_WORKFLOW:"),
+        ("SESSION_B_AUTHORIZATION_CI_JOB: `108780005124` — Lint, types, tests",
+         "SESSION_B_AUTHORIZATION_CI_JOB:"),
     ):
         assert [
             candidate for candidate in wo004_lines
@@ -454,13 +474,19 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "## Session A decision record",
         "34735715115",
         "103666661855",
-        "NEXT GATE: fresh independent review of this uncommitted Session A"
-        " decision",
+        "## Session B authorization basis",
+        "36375370541",
+        "108780005124",
+        "NEXT GATE: fresh independent review of the complete uncommitted"
+        " Session B",
     ):
         assert evidence in wo004_text, evidence
     for stale in (
         "AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR FEASIBILITY",
-        "NEXT GATE: fresh independent review of the complete uncommitted",
+        "AUTHORIZATION: ISSUED — SESSION A ACCEPTED; NO SESSION AUTHORIZED",
+        "NEXT GATE: fresh independent review of the complete uncommitted"
+        " Session A",
+        "NEXT GATE: fresh independent review of this uncommitted Session A",
         "STATUS: PROPOSED",
         "AUTHORIZATION: NOT AUTHORIZED",
         "NEXT GATE: independent pre-issuance review of this revision",
@@ -468,10 +494,10 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "This proposal does not",
     ):
         assert stale not in wo004_text, stale
-    # Issuance opens no session and leaves the later orders proposed.
+    # Session B opens no live work and leaves the later orders proposed.
     normalized_wo004 = " ".join(wo004_text.split())
     assert (
-        "Session B, Session C, and all live UEFN work remain closed."
+        "Session C, commit, push, and all live UEFN work remain closed."
         in normalized_wo004
     )
     # Session A is planning only: the mandate says so in its own basis section.
@@ -833,14 +859,230 @@ _WO004_SA_POINTER_PARAGRAPH = _NL.join((
 ))
 
 
-def _make_wo004_accepted_case(repo_root, tmp_path, name):
-    """Copy the current Session A accepted WO-004 state."""
+# --- WO-004 Session B authorization: the current state, and the head of the chain
+#
+# Authorizing Session B moved the current state forward again, so the Session A
+# accepted state - and every historical fixture below it - is now
+# reconstructed backwards from the Session B state.
+
+_WO004_SB_COMMIT = "da846ec36773d673ca9dcab3025ac36555579d0f"
+_WO004_SB_WORKFLOW = "36375370541"
+_WO004_SB_JOB = "108780005124"
+_WO004_SB_GATE = (
+    "WO-004 SESSION B AUTHORIZED " + _EM + " CLIENT OUTCOME SEMANTICS ONLY"
+)
+_WO004_SB_MARKER = (
+    "AUTHORIZATION: ISSUED " + _EM
+    + " SESSION B AUTHORIZED FOR CLIENT OUTCOME SEMANTICS ONLY"
+)
+_WO004_SB_METADATA = (
+    ("SESSION_B_AUTHORIZATION_COMMIT:",
+     "SESSION_B_AUTHORIZATION_COMMIT: `" + _WO004_SB_COMMIT + "`"),
+    ("SESSION_B_AUTHORIZATION_CI_WORKFLOW:",
+     "SESSION_B_AUTHORIZATION_CI_WORKFLOW: `" + _WO004_SB_WORKFLOW + "`"),
+    ("SESSION_B_AUTHORIZATION_CI_JOB:",
+     "SESSION_B_AUTHORIZATION_CI_JOB: `" + _WO004_SB_JOB + "` " + _EM
+     + " Lint, types, tests"),
+)
+_WO004_SB_POINTER_BULLETS = _NL.join((
+    "- Session B authorization commit: `" + _WO004_SB_COMMIT + "`",
+    "- Session B authorization CI workflow: `" + _WO004_SB_WORKFLOW + "`",
+    "- Session B authorization CI job: `" + _WO004_SB_JOB + "` " + _EM
+    + " Lint, types, tests",
+))
+_WO004_SB_NEXT_GATE = _NL.join((
+    "NEXT GATE: fresh independent review of the complete uncommitted Session B",
+    "implementation, which is limited to client outcome semantics, followed by"
+    " a",
+    "separate owner gate for Session C live acceptance. Session C, commit,"
+    " push, and",
+    "all live UEFN work remain closed.",
+))
+_WO004_SB_BASIS_HEADING = "## Session B authorization basis"
+_WO004_SB_POINTER_OPENING = (
+    "Session B is authorized under this pointer for client outcome semantics"
+    " only,"
+)
+# Each pair is (as the Session B gate records it, as the accepted gate
+# recorded it). Session B restates the accepted gate's closed-session
+# sentences in the past tense and moves the stop-boundary chain forward, so
+# the reconstruction puts every original back byte for byte.
+_WO004_SB_POINTER_HISTORY = (
+    _NL.join((
+        "At that gate, Session B",
+        "implementation and Session C live testing were not authorized, and"
+        " each",
+        "required a separate owner gate recorded here.",
+    )),
+    _NL.join((
+        "Session B implementation",
+        "and Session C live testing are not authorized, and each requires a"
+        " separate",
+        "owner gate recorded here. Tagging, Release creation,"
+        " branch-protection",
+        "changes, other repository metadata changes, and social publication all"
+        " remain",
+        "unauthorized.",
+    )),
+)
+_WO004_SB_ACCEPTANCE_HISTORY = (
+    _NL.join((
+        "Session A is accepted and complete. At the Session A acceptance gate,"
+        " Session B",
+        "implementation and Session C live testing were not authorized; each"
+        " required a",
+        "separate owner gate recorded in root `WORKORDER.md`.",
+    )),
+    _NL.join((
+        "Session A is accepted and complete. Session B implementation and"
+        " Session C",
+        "live testing are not authorized; each requires a separate owner gate"
+        " recorded",
+        "in root `WORKORDER.md`.",
+    )),
+)
+_WO004_SB_STOP_HISTORY = (
+    _NL.join((
+        "Completed: proposal revision → independent pre-issuance review →"
+        " issuance →",
+        "Session A gate → Session A decision → independent review of the"
+        " decision and",
+        "amendment → commit → push → CI → Session B gate.",
+        "",
+        "Remaining: Session B implementation, left uncommitted → independent"
+        " review →",
+        "Session C gate → live acceptance against that uncommitted change →"
+        " independent",
+        "acceptance review → commit → push → CI → WO-004 completion gate.",
+    )),
+    _NL.join((
+        "Completed: proposal revision → independent pre-issuance review →"
+        " issuance →",
+        "Session A gate → Session A decision.",
+        "",
+        "Remaining: independent review of this decision and amendment → commit"
+        " → push →",
+        "CI → Session B gate → Session B implementation, left uncommitted →"
+        " independent",
+        "review → Session C gate → live acceptance against that uncommitted"
+        " change →",
+        "independent acceptance review → commit → push → CI → WO-004"
+        " completion gate.",
+    )),
+)
+
+
+def _make_wo004_session_b_case(repo_root, tmp_path, name):
+    """Copy the current Session B authorized WO-004 state."""
     case = tmp_path / name
     case.mkdir(parents=True)
     shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
     shutil.copytree(
         repo_root / "docs" / "work-orders",
         case / "docs" / "work-orders",
+    )
+    return case
+
+
+def _make_wo004_accepted_case(repo_root, tmp_path, name):
+    """Reconstruct the preserved Session A accepted WO-004 state.
+
+    Authorizing Session B moved the current state forward, so the accepted
+    state the acceptance fixtures build on is now itself a reconstruction.
+    Every Session B edit is reversed: the marker, the next gate, the Session
+    B declarations and bullets, the Session B authorization basis, the
+    past-tense acceptance sentences, the stop-boundary chain, and the
+    pointer's session, base, gate, and Session B paragraph. Both files return
+    to the accepted state byte for byte.
+    """
+    case = _make_wo004_session_b_case(repo_root, tmp_path, name)
+    issued = case / _WO004_ISSUED_REL
+    if not issued.exists():
+        # Chained from an earlier reconstruction, so there is no Session B
+        # authorization left to reverse.
+        assert (case / _WO004_PROPOSED_REL).exists(), (
+            "WO-004 Session B reconstruction: WO-004 is in neither issued/ "
+            "nor proposed/ - this reconstruction is no longer anchored to "
+            "the recorded historical state"
+        )
+        return case
+    text = issued.read_text(encoding="utf-8")
+    if _WO004_SB_MARKER not in text:
+        return case  # already reversed by a chained reconstruction
+    for old, new in (
+        (_WO004_SB_MARKER, _WO004_ACC_MARKER),
+        (_WO004_SB_NEXT_GATE, _WO004_ACC_NEXT_GATE),
+        _WO004_SB_ACCEPTANCE_HISTORY,
+        _WO004_SB_STOP_HISTORY,
+    ):
+        text = _replace_once(text, old, new,
+                             "WO-004 Session B reconstruction")
+    for _prefix, declaration in _WO004_SB_METADATA:
+        text = _replace_once(text, _NL + declaration + _NL, "",
+                             "WO-004 Session B metadata excision")
+    _require_unique(
+        text, (_WO004_SB_BASIS_HEADING, "## Planning basis"),
+        "WO-004 Session B basis excision",
+    )
+    text = _sub_once(
+        re.escape(_WO004_SB_BASIS_HEADING)
+        + ".*?(?=" + re.escape("## Planning basis" + _NL) + ")",
+        "",
+        text,
+        "WO-004 Session B basis excision",
+        flags=re.DOTALL,
+    )
+    issued.write_text(text, encoding="utf-8")
+
+    pointer = case / "WORKORDER.md"
+    text = pointer.read_text(encoding="utf-8")
+    _require_unique(
+        text,
+        ("- Authorized session: B",
+         "WO-001 through WO-007 form the frozen next release train. The"
+         " release version"),
+        "WO-004 Session B pointer excision",
+    )
+    text = _sub_once(
+        re.escape(_NL + _NL + _WO004_SB_POINTER_OPENING) + ".*?(?="
+        + re.escape(_NL + _NL + "WO-001 through WO-007 form the frozen")
+        + ")",
+        "",
+        text,
+        "WO-004 Session B paragraph excision",
+        flags=re.DOTALL,
+    )
+    for old, new in (
+        _WO004_SB_POINTER_HISTORY,
+        ("- Authorized session: B", "- Authorized session: NONE"),
+        ("- Base commit: `" + _WO004_SB_COMMIT + "`",
+         "- Base commit: `" + _WO004_ACC_COMMIT + "`"),
+        ("- Current gate: " + _WO004_SB_GATE,
+         "- Current gate: " + _WO004_ACC_GATE),
+        (_NL + _WO004_SB_POINTER_BULLETS, ""),
+    ):
+        text = _replace_once(text, old, new, "WO-004 Session B pointer")
+    pointer.write_text(text, encoding="utf-8")
+
+    _assert_reconstructed(
+        "WO-004 Session B pointer", pointer.read_text(encoding="utf-8"),
+        ("- Authorized session: NONE",
+         "- Base commit: `" + _WO004_ACC_COMMIT + "`",
+         "- Current gate: " + _WO004_ACC_GATE,
+         _WO004_ACC_POINTER_BULLETS, _WO004_SB_POINTER_HISTORY[1]),
+        (_WO004_SB_GATE, _WO004_SB_COMMIT, _WO004_SB_WORKFLOW,
+         _WO004_SB_JOB, _WO004_SB_POINTER_OPENING,
+         _WO004_SB_POINTER_HISTORY[0]),
+    )
+    _assert_reconstructed(
+        "WO-004 Session B reconstruction",
+        issued.read_text(encoding="utf-8"),
+        (_WO004_ACC_MARKER, _WO004_ACC_NEXT_GATE, _WO004_DECISION_HEADING,
+         _WO004_ACC_METADATA[0][1], _WO004_SB_ACCEPTANCE_HISTORY[1],
+         _WO004_SB_STOP_HISTORY[1]),
+        (_WO004_SB_MARKER, _WO004_SB_BASIS_HEADING,
+         "SESSION_B_AUTHORIZATION_COMMIT:", _WO004_SB_NEXT_GATE,
+         _WO004_SB_ACCEPTANCE_HISTORY[0], _WO004_SB_STOP_HISTORY[0]),
     )
     return case
 
@@ -9835,13 +10077,14 @@ def test_a_completed_document_may_still_close_its_successor(
 #
 # Each transition must record new evidence WITHOUT overwriting the evidence
 # before it. Every probe here is a delta against a state the controls prove
-# clean: the live accepted state, and the Session A authorized state
-# reconstructed from it.
+# clean: the live Session B state, and the accepted and Session A authorized
+# states reconstructed from it.
 
 _WO004_ZERO_SHA = "0" * 40
 _WO004_STATE_CASES = {
     "A": _make_wo004_session_a_case,
     "ACCEPTED": _make_wo004_accepted_case,
+    "B": _make_wo004_session_b_case,
 }
 _WO004_STATE_IDS = tuple(_WO004_STATE_CASES)
 
@@ -9868,7 +10111,7 @@ def _wo004_state_types(repo_root, tmp_path, monkeypatch, state, name, mutate):
 def test_wo004_session_state_is_clean(
     repo_root, tmp_path, monkeypatch, state
 ) -> None:
-    """The controls: the live accepted state and its reconstruction are clean."""
+    """The controls: the live Session B state and its reconstructions are clean."""
     found = _wo004_state_types(repo_root, tmp_path, monkeypatch, state,
                                "control", lambda case: None)
     assert found == set(), (
@@ -9898,6 +10141,26 @@ _WO004_PINNED_EVIDENCE = (
      "SESSION_A_ACCEPTANCE_CI_WORKFLOW:", _WO004_ACC_WORKFLOW),
     ("accepted-mandate-job", "ACCEPTED", _WO004_ISSUED_REL,
      "SESSION_A_ACCEPTANCE_CI_JOB:", _WO004_ACC_JOB),
+    ("B-pointer-authorization", "B", "WORKORDER.md",
+     "- Session A authorization commit:", _WO004_SA_COMMIT),
+    ("B-mandate-authorization", "B", _WO004_ISSUED_REL,
+     "SESSION_A_AUTHORIZATION_COMMIT:", _WO004_SA_COMMIT),
+    ("B-pointer-acceptance", "B", "WORKORDER.md",
+     "- Session A acceptance commit:", _WO004_ACC_COMMIT),
+    ("B-mandate-acceptance", "B", _WO004_ISSUED_REL,
+     "SESSION_A_ACCEPTANCE_COMMIT:", _WO004_ACC_COMMIT),
+    ("B-pointer-commit", "B", "WORKORDER.md",
+     "- Session B authorization commit:", _WO004_SB_COMMIT),
+    ("B-pointer-workflow", "B", "WORKORDER.md",
+     "- Session B authorization CI workflow:", _WO004_SB_WORKFLOW),
+    ("B-pointer-job", "B", "WORKORDER.md",
+     "- Session B authorization CI job:", _WO004_SB_JOB),
+    ("B-mandate-commit", "B", _WO004_ISSUED_REL,
+     "SESSION_B_AUTHORIZATION_COMMIT:", _WO004_SB_COMMIT),
+    ("B-mandate-workflow", "B", _WO004_ISSUED_REL,
+     "SESSION_B_AUTHORIZATION_CI_WORKFLOW:", _WO004_SB_WORKFLOW),
+    ("B-mandate-job", "B", _WO004_ISSUED_REL,
+     "SESSION_B_AUTHORIZATION_CI_JOB:", _WO004_SB_JOB),
 )
 _WO004_EVIDENCE_KINDS = {
     "WORKORDER.md": {_WO004_FIELD_POINTER, _WO004_DECL_POINTER},
@@ -9915,8 +10178,9 @@ def test_wo004_session_evidence_is_pinned(
 ) -> None:
     """Each transition's evidence is enforced on both surfaces.
 
-    The accepted rows include the Session A AUTHORIZATION declarations, so
-    accepting the session cannot make the evidence that opened it droppable.
+    The accepted rows include the Session A AUTHORIZATION declarations, and
+    the Session B rows include both Session A records, so no later transition
+    can make the evidence before it droppable.
     Attribution is asserted too: the finding names the damaged file.
     """
     def mutate(case):
@@ -9948,6 +10212,7 @@ def test_wo004_session_evidence_is_pinned(
 _WO004_BASE_ROLLBACKS = (
     ("A", _WO004_SA_COMMIT, _WO004_ISSUANCE_COMMIT),
     ("ACCEPTED", _WO004_ACC_COMMIT, _WO004_SA_COMMIT),
+    ("B", _WO004_SB_COMMIT, _WO004_ACC_COMMIT),
 )
 
 
@@ -9999,6 +10264,9 @@ _WO004_GATE_TAMPERS = (
     ("ACCEPTED", _WO004_ACC_GATE,
      "WO-004 SESSION B AUTHORIZED " + _EM + " IMPLEMENT SESSION B ONLY",
      "WO-004 Session A accepted gate"),
+    ("B", _WO004_SB_GATE,
+     "WO-004 SESSION C AUTHORIZED " + _EM + " LIVE ACCEPTANCE ONLY",
+     "authorized session gate"),
 )
 
 
@@ -10008,7 +10276,7 @@ _WO004_GATE_TAMPERS = (
 def test_wo004_session_gate_cannot_be_widened(
     repo_root, tmp_path, monkeypatch, state, gate, widened, expected
 ) -> None:
-    """Neither feasibility nor acceptance may silently become implementation."""
+    """No gate may silently widen into a later session's authority."""
     def mutate(case):
         _edit(case, "WORKORDER.md", "- Current gate: " + gate,
               "- Current gate: " + widened)
@@ -10027,6 +10295,9 @@ _WO004_MARKER_TAMPERS = (
     ("ACCEPTED", _WO004_ACC_MARKER,
      "AUTHORIZATION: ISSUED " + _EM + " SESSION B AUTHORIZED FOR IMPLEMENTATION",
      "WO-004 Session A accepted authorization"),
+    ("B", _WO004_SB_MARKER,
+     "AUTHORIZATION: ISSUED " + _EM + " SESSION C AUTHORIZED FOR LIVE ACCEPTANCE",
+     "issued session authorization"),
 )
 
 
@@ -10050,6 +10321,7 @@ def test_wo004_session_marker_cannot_be_widened(
 _WO004_SESSION_LINES = (
     ("A", "- Authorized session: A"),
     ("ACCEPTED", "- Authorized session: NONE"),
+    ("B", "- Authorized session: B"),
 )
 
 
@@ -10082,6 +10354,12 @@ _WO004_HARMLESS_SESSION_PROSE = (
     ("accepted-closed-session-b", "ACCEPTED",
      "Session B remains closed until the owner records its own gate in" + _NL
      + "root `WORKORDER.md`."),
+    ("B-closed-session-c", "B",
+     "Session C remains closed until the owner records its own gate in" + _NL
+     + "root `WORKORDER.md`."),
+    ("B-client-scope", "B",
+     "Session B changes the clients' outcome wording and nothing in the" + _NL
+     + "bridge."),
 )
 
 
@@ -10163,6 +10441,127 @@ def test_wo004_accepted_decision_record_is_pinned(
                                   "ACCEPTED", "record-" + name, mutate)
     assert (expected, _WO004_ISSUED_REL) in found, (
         "a damaged decision " + name + " was accepted: " + repr(sorted(found))
+    )
+
+
+# Session B authority is exactly Session B. A Session A, Session C, later Work
+# Order, or publication claim is still a finding, against the file carrying it.
+_WO004_SESSION_B_BOUNDARIES = (
+    ("pointer-session-a", "WORKORDER.md",
+     "Session A is authorized again for feasibility work.",
+     "later session authorization"),
+    ("pointer-session-c", "WORKORDER.md",
+     "Session C live testing may begin.", "later session authorization"),
+    ("mandate-session-a", _WO004_ISSUED_REL,
+     "Session A is authorized again for feasibility work.",
+     "session authorization reopening"),
+    ("mandate-session-c", _WO004_ISSUED_REL,
+     "Session C live testing may begin.", "session authorization reopening"),
+    ("pointer-wo005", "WORKORDER.md",
+     "WO-005 is issued and authorized.", "next work order authorization"),
+    ("mandate-wo005", _WO004_ISSUED_REL,
+     "WO-005 is issued and authorized.", "next work order authorization"),
+    ("pointer-tag", "WORKORDER.md",
+     "A tag is authorized.", "release authorization"),
+    ("mandate-tag", _WO004_ISSUED_REL,
+     "A tag is authorized.", "release authorization"),
+    ("pointer-social", "WORKORDER.md",
+     "Social publication is authorized.", "external-action boundary"),
+    ("mandate-social", _WO004_ISSUED_REL,
+     "Social publication is authorized.", "external-action boundary"),
+)
+
+
+@pytest.mark.parametrize(("name", "rel", "claim", "expected"),
+                         _WO004_SESSION_B_BOUNDARIES,
+                         ids=[row[0] for row in _WO004_SESSION_B_BOUNDARIES])
+def test_wo004_session_b_opens_nothing_else(
+    repo_root, tmp_path, monkeypatch, name, rel, claim, expected
+) -> None:
+    """Session B's gate grants no other session, order, or publication."""
+    def mutate(case):
+        _append(case, rel, claim)
+
+    found = _wo004_state_findings(repo_root, tmp_path, monkeypatch, "B",
+                                  "boundary-" + name, mutate)
+    assert (expected, rel) in found, (
+        "a Session B-state claim was not attributed to " + rel + ": "
+        + repr(sorted(found))
+    )
+
+
+_WO004_SESSION_B_RECORD_DAMAGE = (
+    ("next-gate", _WO004_SB_NEXT_GATE,
+     "NEXT GATE: a separate owner decision, recorded later.",
+     "WO-004 next gate"),
+    ("session-b-statement",
+     "Session B is authorized for client outcome semantics only under the"
+     " current",
+     "Session B is authorized for client outcome semantics under the current",
+     "WO-004 session A statement"),
+    ("session-a-authorization-statement",
+     "Session A is authorized for read-only feasibility planning under the",
+     "Session A was authorized for read-only feasibility planning under the",
+     "WO-004 Session A authorization statement"),
+    ("session-a-acceptance-statement",
+     "were not authorized; each required a",
+     "were not approved; each required a",
+     "WO-004 Session A acceptance statement"),
+    ("decision-heading", _WO004_DECISION_HEADING + _NL, "",
+     "WO-004 Session A decision record"),
+)
+
+
+@pytest.mark.parametrize(("name", "old", "new", "expected"),
+                         _WO004_SESSION_B_RECORD_DAMAGE,
+                         ids=[row[0] for row in _WO004_SESSION_B_RECORD_DAMAGE])
+def test_wo004_session_b_record_is_pinned(
+    repo_root, tmp_path, monkeypatch, name, old, new, expected
+) -> None:
+    """Session B's statement and next gate, and Session A's kept record.
+
+    The statement row's kind is the issuance check's existing label for the
+    current state's statement.
+    """
+    def mutate(case):
+        _edit(case, _WO004_ISSUED_REL, old, new)
+
+    found = _wo004_state_findings(repo_root, tmp_path, monkeypatch, "B",
+                                  "record-" + name, mutate)
+    assert (expected, _WO004_ISSUED_REL) in found, (
+        "a damaged Session B-state " + name + " was accepted: "
+        + repr(sorted(found))
+    )
+
+
+# Before the Session B scan, the historical Session A statement is removed
+# once, anchored to the heading it opens. A claim fused onto that statement
+# must still reach the scan: both edits below passed clean while the bare
+# sentence was the thing removed.
+_WO004_SA_STATEMENT_OPENING = (
+    "Session A is authorized for read-only feasibility planning under the"
+)
+_WO004_SESSION_B_FUSED_CLAIMS = (
+    ("session-c-like", "Session C, like "),
+    ("session-c-and", "Session C and "),
+)
+
+
+@pytest.mark.parametrize(("name", "prefix"), _WO004_SESSION_B_FUSED_CLAIMS,
+                         ids=[row[0] for row in _WO004_SESSION_B_FUSED_CLAIMS])
+def test_wo004_session_b_sees_a_claim_fused_to_session_a_history(
+    repo_root, tmp_path, monkeypatch, name, prefix
+) -> None:
+    """A Session C claim fused onto Session A's kept statement is a finding."""
+    def mutate(case):
+        _edit(case, _WO004_ISSUED_REL, _WO004_SA_STATEMENT_OPENING,
+              prefix + _WO004_SA_STATEMENT_OPENING)
+
+    found = _wo004_state_findings(repo_root, tmp_path, monkeypatch, "B",
+                                  "fused-" + name, mutate)
+    assert ("session authorization reopening", _WO004_ISSUED_REL) in found, (
+        "a Session C claim fused onto the Session A statement was accepted: "
+        + repr(sorted(found))
     )
 
 

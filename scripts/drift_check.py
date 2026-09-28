@@ -1811,6 +1811,76 @@ _WO004_SESSION_A_ACCEPTED_NEXT_GATE = (
     "authorization for Session B implementation. Session B, Session C, and "
     "all live UEFN work remain closed."
 )
+# Authorizing Session B adds three more declarations to each canonical block
+# and moves the base to the Session B authorization commit. Every earlier
+# declaration - issuance, Session A authorization, Session A acceptance - stays
+# inside the same exact, terminal slice.
+_WO004_SESSION_B_COMMIT = "da846ec36773d673ca9dcab3025ac36555579d0f"
+_WO004_SESSION_B_WORKFLOW = "36375370541"
+_WO004_SESSION_B_JOB = "108780005124"
+_WO004_SESSION_B_GATE = (
+    "WO-004 SESSION B AUTHORIZED — CLIENT OUTCOME SEMANTICS ONLY"
+)
+_WO004_SESSION_B_AUTH = (
+    "AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR CLIENT OUTCOME "
+    "SEMANTICS ONLY"
+)
+_WO004_SESSION_B_ISSUED_SEQUENCE = _WO004_ACCEPTED_ISSUED_SEQUENCE + (
+    "SESSION_B_AUTHORIZATION_COMMIT: `" + _WO004_SESSION_B_COMMIT + "`",
+    "SESSION_B_AUTHORIZATION_CI_WORKFLOW: `"
+    + _WO004_SESSION_B_WORKFLOW + "`",
+    "SESSION_B_AUTHORIZATION_CI_JOB: `" + _WO004_SESSION_B_JOB + "` "
+    + "— Lint, types, tests",
+)
+_WO004_SESSION_B_POINTER_SEQUENCE = _WO004_ACCEPTED_POINTER_SEQUENCE[:13] + (
+    "- Session B authorization commit: `" + _WO004_SESSION_B_COMMIT + "`",
+    "- Session B authorization CI workflow: `"
+    + _WO004_SESSION_B_WORKFLOW + "`",
+    "- Session B authorization CI job: `" + _WO004_SESSION_B_JOB + "` "
+    + "— Lint, types, tests",
+) + _WO004_ACCEPTED_POINTER_SEQUENCE[13:]
+_WO004_SESSION_B_ISSUED_KEYS = _WO004_ACCEPTED_ISSUED_KEYS + (
+    ("SESSION_B_AUTHORIZATION_COMMIT:", _WO004_SESSION_B_ISSUED_SEQUENCE[10]),
+    ("SESSION_B_AUTHORIZATION_CI_WORKFLOW:",
+     _WO004_SESSION_B_ISSUED_SEQUENCE[11]),
+    ("SESSION_B_AUTHORIZATION_CI_JOB:", _WO004_SESSION_B_ISSUED_SEQUENCE[12]),
+)
+_WO004_SESSION_B_POINTER_KEYS = (
+    (("- Base commit:",
+      "- Base commit: `" + _WO004_SESSION_B_COMMIT + "`"),)
+    + _WO004_ACCEPTED_POINTER_KEYS[1:]
+    + (("- Session B authorization commit:",
+        _WO004_SESSION_B_POINTER_SEQUENCE[13]),
+       ("- Session B authorization CI workflow:",
+        _WO004_SESSION_B_POINTER_SEQUENCE[14]),
+       ("- Session B authorization CI job:",
+        _WO004_SESSION_B_POINTER_SEQUENCE[15]))
+)
+_WO004_SESSION_B_STATEMENT = (
+    "Session B is authorized for client outcome semantics only under the "
+    "current root `WORKORDER.md` gate alone."
+)
+_WO004_SESSION_B_NEXT_GATE = (
+    "NEXT GATE: fresh independent review of the complete uncommitted Session "
+    "B implementation, which is limited to client outcome semantics, "
+    "followed by a separate owner gate for Session C live acceptance. "
+    "Session C, commit, push, and all live UEFN work remain closed."
+)
+# Once Session B is authorized, the acceptance statement is kept as history
+# in the past tense, beside the Session A authorization statement it follows.
+_WO004_SESSION_A_ACCEPTANCE_RECORD = (
+    "Session A is accepted and complete. At the Session A acceptance gate, "
+    "Session B implementation and Session C live testing were not "
+    "authorized; each required a separate owner gate recorded in root "
+    "`WORKORDER.md`."
+)
+# Session A's authorization statement, anchored to the heading it opens. The
+# Session B scan pins and removes this form rather than the bare sentence, so
+# words fused onto the statement stay in place for the scan to see.
+_WO004_SESSION_A_BASIS_HEADING = "## Session A authorization basis"
+_WO004_SESSION_A_ANCHORED = (
+    _WO004_SESSION_A_BASIS_HEADING + " " + _WO004_SESSION_A_STATEMENT
+)
 # Which canonical shape each WO-004 state must present. Adding a state here
 # is the visible act that moves the pointer's base commit. Keys come from
 # _wo004_state_key, never straight from the pointer, so a pointer cannot
@@ -1828,6 +1898,9 @@ _WO004_STATES = {
                    _WO004_ACCEPTED_ISSUED_KEYS,
                    _WO004_SESSION_A_ACCEPTED_NEXT_GATE,
                    _WO004_SESSION_A_ACCEPTED_STATEMENT),
+    "B": (_WO004_SESSION_B_POINTER_SEQUENCE, _WO004_SESSION_B_POINTER_KEYS,
+          _WO004_SESSION_B_ISSUED_SEQUENCE, _WO004_SESSION_B_ISSUED_KEYS,
+          _WO004_SESSION_B_NEXT_GATE, _WO004_SESSION_B_STATEMENT),
 }
 
 
@@ -1837,11 +1910,11 @@ def _wo004_state_key(session, current_gate, auth_lines, issued_text):
     A closed session carrying ANY Session A acceptance signal - the accepted
     gate, the accepted marker, or the decision record - is compared against
     the whole accepted shape, so a partial transition fails as the state it
-    claims to be instead of passing as the closed issuance. NONE and A are
-    the only recognized session values; anything else is rogue.
+    claims to be instead of passing as the closed issuance. NONE, A, and B
+    are the only recognized session values; anything else is rogue.
     """
-    if session == "A":
-        return "A"
+    if session in ("A", "B"):
+        return session
     if session != "NONE":
         return None
     if (current_gate == _WO004_SESSION_A_ACCEPTED_GATE
@@ -1849,6 +1922,16 @@ def _wo004_state_key(session, current_gate, auth_lines, issued_text):
             or _WO004_DECISION_HEADING in issued_text):
         return "A_ACCEPTED"
     return "NONE"
+
+
+def _wo004_decision_record_findings(issued_text, rel):
+    """The Session A decision record heading occurs exactly once."""
+    headings = [line for line in issued_text.splitlines()
+                if line.strip() == _WO004_DECISION_HEADING]
+    if len(headings) == 1:
+        return []
+    return [(rel, "WO-004 Session A decision record", str(len(headings)),
+             "exactly one " + _WO004_DECISION_HEADING)]
 
 
 def _wo004_issuance_findings(pointer, issued_text, rel, state_key):
@@ -3010,14 +3093,10 @@ def check_work_order_contract() -> list[dict]:
                     if current_gate != _WO004_SESSION_A_ACCEPTED_GATE:
                         add("WORKORDER.md", "WO-004 Session A accepted gate",
                             str(current_gate), _WO004_SESSION_A_ACCEPTED_GATE)
-                    decision_headings = [
-                        line for line in issued_text.splitlines()
-                        if line.strip() == _WO004_DECISION_HEADING
-                    ]
-                    if len(decision_headings) != 1:
-                        add(rel, "WO-004 Session A decision record",
-                            str(len(decision_headings)),
-                            "exactly one " + _WO004_DECISION_HEADING)
+                    for _f, _k, _found, _want in (
+                        _wo004_decision_record_findings(issued_text, rel)
+                    ):
+                        add(_f, _k, _found, _want)
                     # This branch does not scan the pointer for a reopened
                     # labeled session. The completed-WO-003 boundary at the end
                     # of this function does, and it runs whenever a non-empty
@@ -3155,15 +3234,20 @@ def check_work_order_contract() -> list[dict]:
                             "authorized only under root WORKORDER.md")
             elif session == "B":
                 wo003_session_b = issued[0].name == _WO003_NAME
-                expected_gate = (
-                    _WO003_SESSION_B_GATE if wo003_session_b else
-                    f"{issued_id} SESSION B AUTHORIZED "
-                    f"{chr(8212)} EXECUTE EXTERNAL PROOF ONLY"
-                )
-                expected_auth = (
-                    _ISSUED_SESSION_B_DRAFT_AUTH if wo003_session_b else
-                    _ISSUED_SESSION_B_AUTH
-                )
+                wo004_session_b = (issued[0].name == _WO004_NAME
+                                   and issued_id == _WO004_ID)
+                if wo003_session_b:
+                    expected_gate = _WO003_SESSION_B_GATE
+                    expected_auth = _ISSUED_SESSION_B_DRAFT_AUTH
+                elif wo004_session_b:
+                    expected_gate = _WO004_SESSION_B_GATE
+                    expected_auth = _WO004_SESSION_B_AUTH
+                else:
+                    expected_gate = (
+                        f"{issued_id} SESSION B AUTHORIZED "
+                        f"{chr(8212)} EXECUTE EXTERNAL PROOF ONLY"
+                    )
+                    expected_auth = _ISSUED_SESSION_B_AUTH
                 if auth_lines != [expected_auth]:
                     add(issued[0].relative_to(root).as_posix(),
                         "issued session authorization", repr(auth_lines),
@@ -3177,6 +3261,45 @@ def check_work_order_contract() -> list[dict]:
                     add("WORKORDER.md", "later session authorization",
                         "positive permission for a non-current session",
                         "only Session B authorized")
+                if wo004_session_b:
+                    # The canonical slices, the base commit, the next gate,
+                    # and the Session B statement are enforced by
+                    # _wo004_issuance_findings. Session A's record stays in
+                    # place beside them: its authorization statement, its
+                    # acceptance statement, and the decision record, each
+                    # exactly once.
+                    wo004_rel = issued[0].relative_to(root).as_posix()
+                    normalized_wo004 = " ".join(issued_text.split())
+                    for required, kind in (
+                        (_WO004_SESSION_A_ANCHORED,
+                         "WO-004 Session A authorization statement"),
+                        (_WO004_SESSION_A_ACCEPTANCE_RECORD,
+                         "WO-004 Session A acceptance statement"),
+                    ):
+                        if normalized_wo004.count(required) != 1:
+                            add(wo004_rel, kind,
+                                str(normalized_wo004.count(required)),
+                                "exactly one " + required)
+                    for _f, _k, _found, _want in (
+                        _wo004_decision_record_findings(issued_text,
+                                                        wo004_rel)
+                    ):
+                        add(_f, _k, _found, _want)
+                    # The mandate keeps Session A's authorization statement
+                    # verbatim as history. Its heading-anchored form is pinned
+                    # above, and that same form is removed once before the
+                    # existing scanner looks for a positive statement about
+                    # any session other than B.
+                    if _has_other_session_authorization(
+                        "",
+                        normalized_wo004.replace(
+                            _WO004_SESSION_A_ANCHORED, "", 1),
+                        session,
+                    ):
+                        add(wo004_rel, "session authorization reopening",
+                            "positive permission for Session A, Session C, "
+                            "or later",
+                            "only Session B authorized")
                 if wo003_session_b:
                     wo003_rel = issued[0].relative_to(root).as_posix()
                     for _f, _k, _found, _want in _wo003_record_findings(
