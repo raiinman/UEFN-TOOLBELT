@@ -87,7 +87,7 @@ SCAN_FILES = [
     "docs/work-orders/completed/WO-002-epic-toolset-integration.md",
     "docs/work-orders/completed/WO-003-official-mcp-doc-convergence.md",
     "docs/work-orders/completed/WO-004-modal-observability.md",
-    "docs/work-orders/proposed/WO-005-coverage-source-of-truth.md",
+    "docs/work-orders/issued/WO-005-coverage-source-of-truth.md",
     "docs/work-orders/proposed/WO-006-official-vs-toolbelt-benchmark.md",
     "docs/work-orders/proposed/WO-007-public-mcp-explainer.md",
     "Content/Python/UEFN_Toolbelt/dashboard_pyside6.py",
@@ -2025,10 +2025,18 @@ _WO004_COMPLETED_POINTER_KEYS = (
        ("- Completion basis CI job:",
         _WO004_COMPLETED_POINTER_SEQUENCE[21]))
 )
-# Pinned exactly once on BOTH surfaces: the completed mandate and the pointer.
+# Pinned exactly once in the completed mandate, a frozen record of what was
+# true at its own gate, which keeps the clause about WO-005's state.
 _WO004_COMPLETED_STATEMENT = (
     "WO-004 is complete; no session is authorized. WO-005 remains proposed "
     "and unauthorized."
+)
+# The root pointer is the LIVE authority surface, where that clause goes stale
+# the moment WO-005 is issued, so the pointer pins only this prefix - the same
+# deletion issuing WO-004 made for WO-003's clause (_WO003_COMPLETED_POINTER_
+# CLAUSE). A pointer that still carries the full statement also carries this.
+_WO004_COMPLETED_POINTER_CLAUSE = (
+    "WO-004 is complete; no session is authorized."
 )
 _WO004_COMPLETED_NEXT_GATE = (
     "NEXT GATE: separate owner authorization for a fresh independent WO-005 "
@@ -2240,6 +2248,83 @@ def _wo004_issuance_findings(pointer, issued_text, rel, state_key,
         if normalized.count(wording) != 1:
             out.append((rel, kind, str(normalized.count(wording)),
                         "exactly one " + wording))
+    return out
+
+
+# WO-005's issuance record, with the same two canonical surfaces as WO-004's:
+# the root pointer's bullet block and the mandate's metadata block. Each is an
+# exact, contiguous, terminal slice whose keys are also counted, so a
+# restatement, a decoy, or a duplicate cannot satisfy a corrupted or missing
+# declaration. The issuance evidence identifies the accepted proposal commit,
+# not the later transition commit, and the planning baseline stays at the
+# revision the proposal was reviewed against.
+_WO005_ID, _WO005_NAME = _RELEASE_TRAIN[4]
+_WO005_PLANNING_BASELINE = "1925ba8a09c3696d25de7ffc3f23caf970362c4d"
+_WO005_ISSUANCE_COMMIT = "528f1962c0c45c0631bab3637f3fd40db6317027"
+_WO005_ISSUANCE_WORKFLOW = "36529997892"
+_WO005_ISSUANCE_JOB = "109281301869"
+_WO005_ISSUED_SEQUENCE = (
+    "BASELINE: `" + _WO005_PLANNING_BASELINE + "`",
+    "ISSUANCE_COMMIT: `" + _WO005_ISSUANCE_COMMIT + "`",
+    "ISSUANCE_CI_WORKFLOW: `" + _WO005_ISSUANCE_WORKFLOW + "`",
+    "ISSUANCE_CI_JOB: `" + _WO005_ISSUANCE_JOB + "` — Lint, types, tests",
+)
+# Unlike WO-004's, whose base moved with every session gate, this slice pins
+# the base value itself, so a corrupted base cannot hide behind a byte-correct
+# copy parked elsewhere. These pins cover evidence only: they do not restrict
+# the authorized-session value, and a later transition that changes the base
+# must update them.
+_WO005_POINTER_SEQUENCE = (
+    "- Current issued Work Order:",
+    "- Authorized session:",
+    "- Base commit: `" + _WO005_ISSUANCE_COMMIT + "`",
+    "- Current gate:",
+    "- Issuance commit: `" + _WO005_ISSUANCE_COMMIT + "`",
+    "- Issuance CI workflow: `" + _WO005_ISSUANCE_WORKFLOW + "`",
+    "- Issuance CI job: `" + _WO005_ISSUANCE_JOB + "` — Lint, types, tests",
+    "- Release train:",
+    "- Release gate:",
+)
+_WO005_POINTER_KEYS = (
+    ("- Base commit:", _WO005_POINTER_SEQUENCE[2]),
+    ("- Issuance commit:", _WO005_POINTER_SEQUENCE[4]),
+    ("- Issuance CI workflow:", _WO005_POINTER_SEQUENCE[5]),
+    ("- Issuance CI job:", _WO005_POINTER_SEQUENCE[6]),
+)
+_WO005_ISSUED_KEYS = (
+    ("BASELINE:", _WO005_ISSUED_SEQUENCE[0]),
+    ("ISSUANCE_COMMIT:", _WO005_ISSUED_SEQUENCE[1]),
+    ("ISSUANCE_CI_WORKFLOW:", _WO005_ISSUED_SEQUENCE[2]),
+    ("ISSUANCE_CI_JOB:", _WO005_ISSUED_SEQUENCE[3]),
+)
+
+
+def _wo005_issuance_findings(pointer, issued_text, rel):
+    """WO-005's issuance record on the two surfaces that declare it.
+
+    This pins the issuance evidence and the root base value. It does not
+    itself restrict the authorized-session value. A later transition that
+    changes the base commit must update these pins - the visible act the
+    governance model wants.
+    """
+    out = []
+    for target, text, stop, sequence, keys, where in (
+        ("WORKORDER.md", pointer,
+         lambda line: _WO001_COMPLETED_LINK in line,
+         _WO005_POINTER_SEQUENCE, _WO005_POINTER_KEYS, "WORKORDER.md"),
+        (rel, issued_text, lambda line: line.startswith("## "),
+         _WO005_ISSUED_SEQUENCE, _WO005_ISSUED_KEYS, "issued record"),
+    ):
+        for kind, found, want in _canonical_field_findings(
+            text, sequence, stop, where,
+            exact={item for item in sequence if "`" in item},
+            terminal=True, label="WO-005 issuance field",
+        ):
+            out.append((target, kind, found, want))
+        for kind, found, want in _canonical_key_findings(
+            text, stop, keys, "WO-005 issuance declaration (" + where + ")",
+        ):
+            out.append((target, kind, found, want))
     return out
 
 
@@ -3135,6 +3220,13 @@ def check_work_order_contract() -> list[dict]:
                                      issued_text),
                 ):
                     add(_f, _k, _found, _want)
+            if (issued[0].name == _WO005_NAME
+                    and issued_id == _WO005_ID):
+                for _f, _k, _found, _want in _wo005_issuance_findings(
+                    pointer, issued_text,
+                    issued[0].relative_to(root).as_posix(),
+                ):
+                    add(_f, _k, _found, _want)
             if issued[0].name == _WO002_NAME:
                 rel = issued[0].relative_to(root).as_posix()
                 baseline_lines = [
@@ -3889,10 +3981,10 @@ def check_work_order_contract() -> list[dict]:
                 "repository metadata, branch-protection, and social "
                 "publication remain unauthorized")
         normalized_pointer = " ".join(pointer.split())
-        if normalized_pointer.count(_WO004_COMPLETED_STATEMENT) != 1:
+        if normalized_pointer.count(_WO004_COMPLETED_POINTER_CLAUSE) != 1:
             add("WORKORDER.md", "WO-004 completion pointer statement",
-                str(normalized_pointer.count(_WO004_COMPLETED_STATEMENT)),
-                "exactly one " + _WO004_COMPLETED_STATEMENT)
+                str(normalized_pointer.count(_WO004_COMPLETED_POINTER_CLAUSE)),
+                "exactly one " + _WO004_COMPLETED_POINTER_CLAUSE)
 
     return findings
 

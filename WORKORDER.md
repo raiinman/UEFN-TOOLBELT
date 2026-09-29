@@ -4,28 +4,13 @@ This file is the repository's sole authority pointer for current Work Order
 state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
-- Current issued Work Order: NONE
+- Current issued Work Order: WO-005
 - Authorized session: NONE
-- Base commit: `b4fa0a5245944fd992b6a2b52dbac1e59de242ae`
-- Current gate: WO-004 COMPLETED — WO-005 PROPOSED AND NOT AUTHORIZED
-- Issuance commit: `8444faf340afe47765c43d943200db712880817b`
-- Issuance CI workflow: `34441169191`
-- Issuance CI job: `102756337393` — Lint, types, tests
-- Session A authorization commit: `f9fc7268d63dad92f5dd009bbf20e11477b8f926`
-- Session A authorization CI workflow: `34509193110`
-- Session A authorization CI job: `102978793893` — Lint, types, tests
-- Session A acceptance commit: `c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`
-- Session A acceptance CI workflow: `34735715115`
-- Session A acceptance CI job: `103666661855` — Lint, types, tests
-- Session B authorization commit: `da846ec36773d673ca9dcab3025ac36555579d0f`
-- Session B authorization CI workflow: `36375370541`
-- Session B authorization CI job: `108780005124` — Lint, types, tests
-- Session C authorization commit: `17b5afe3f50bfa3ab882ff362a10eef70750c694`
-- Session C authorization CI workflow: `36385787242`
-- Session C authorization CI job: `108810759914` — Lint, types, tests
-- Completion basis commit: `b4fa0a5245944fd992b6a2b52dbac1e59de242ae`
-- Completion basis CI workflow: `36494750779`
-- Completion basis CI job: `109171582586` — Lint, types, tests
+- Base commit: `528f1962c0c45c0631bab3637f3fd40db6317027`
+- Current gate: WO-005 ISSUED — SESSION A IMPLEMENTATION NOT AUTHORIZED
+- Issuance commit: `528f1962c0c45c0631bab3637f3fd40db6317027`
+- Issuance CI workflow: `36529997892`
+- Issuance CI job: `109281301869` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -111,12 +96,12 @@ after [CI workflow
 completed successfully, including required job
 [`102756337393` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/34441169191/job/102756337393).
 
-At that gate, issuance granted no implementation authority and opened no
+At that gate, issuance gave no implementation authority and opened no
 session. Session A feasibility work needed its own separate owner gate recorded
 in this pointer, and Session B and Session C stayed closed behind it. Tagging,
 Release creation, branch-protection changes, other repository metadata
-changes, and social publication all remain unauthorized, as do WO-005,
-WO-006, and WO-007, which stay proposed.
+changes, and social publication remained unauthorized, as did WO-005,
+WO-006, and WO-007, which stayed proposed.
 
 At the Session A authorization gate, this pointer opened read-only
 feasibility planning only, on the basis of commit
@@ -152,7 +137,7 @@ scope recorded in the issued mandate - client outcome classification and
 wording, direct loopback transport for bridge requests, and no-automatic-retry
 guidance - in `client.py`, `mcp_server.py`, `.claude/mcp_reference.md`, and
 `tests/test_mcp_security.py` only, ending with that worktree uncommitted for
-independent review. It opened no bridge change, deploy, UEFN launch, bridge start,
+independent review. It opened no bridge change, deploy, UEFN launch, bridge startup,
 MCP call, commit, or push, and Session C live testing was not authorized
 at that gate.
 
@@ -176,11 +161,25 @@ Session C authorization transition, and the independently accepted [Session C
 live-acceptance record](docs/audits/2026-09-28-wo004-session-c-live-acceptance.md)
 with its evidence. Completion accepts the narrowed client-outcome work only; it
 claims no modal detection, exactly-once execution, MCP-host integration, or
-bridge exception fix. WO-004 is complete; no session is authorized. WO-005
-remains proposed and unauthorized. Any later session, tagging, Release
+bridge exception fix. WO-004 is complete; no session is authorized. WO-006 and
+WO-007 stay proposed. Any later session, tagging, Release creation,
+branch-protection changes, other repository metadata changes, and social
+publication all remain unauthorized.
+
+[`WO-005`](docs/work-orders/issued/WO-005-coverage-source-of-truth.md) is
+issued. Its planning baseline is `1925ba8a09c3696d25de7ffc3f23caf970362c4d`;
+the independently accepted proposal was committed as
+`528f1962c0c45c0631bab3637f3fd40db6317027` after [CI workflow
+`36529997892`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36529997892)
+completed successfully, including required job
+[`109281301869` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36529997892/job/109281301869).
+
+Issuance grants no implementation authority and opens no session. Session A
+needs its own separate owner gate recorded in this pointer, and the
+live-verification exemption proposed for it is not accepted. Tagging, Release
 creation, branch-protection changes, other repository metadata changes, and
-social publication all remain unauthorized, as do WO-006 and WO-007, which stay
-proposed.
+social publication all remain unauthorized, as do WO-006 and WO-007, which
+stay proposed.
 
 WO-001 through WO-007 form the frozen next release train. The release version
 remains undecided and the repository stays at version 2.4.1. No tag or GitHub

@@ -1,14 +1,35 @@
 # WO-005 — Registry-Derived Coverage Source of Truth
 
-STATUS: PROPOSED
+STATUS: ISSUED
 
-AUTHORIZATION: NOT AUTHORIZED
+AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED
 
 OWNER: Ocean Bennett
 
 PRIORITY: P2
 
 BASELINE: `1925ba8a09c3696d25de7ffc3f23caf970362c4d`
+
+ISSUANCE_COMMIT: `528f1962c0c45c0631bab3637f3fd40db6317027`
+
+ISSUANCE_CI_WORKFLOW: `36529997892`
+
+ISSUANCE_CI_JOB: `109281301869` — Lint, types, tests
+
+## Issuance basis
+
+The independently accepted revision of this mandate was committed as
+`528f1962c0c45c0631bab3637f3fd40db6317027`; [CI workflow
+`36529997892`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36529997892)
+completed successfully, including required job
+[`109281301869` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36529997892/job/109281301869).
+Those identify the accepted proposal, not the later commit that records this
+issuance. The planning baseline above is preserved unchanged.
+
+Issuance alone grants no implementation authority. A session becomes
+implementable only when the owner names it in root `WORKORDER.md`. The
+live-verification exemption proposed for Session A is not accepted by
+issuance; it remains a separate owner decision.
 
 ## Revision provenance
 
@@ -374,6 +395,7 @@ Session A.
 
 WO-006 and WO-007 remain proposed and unauthorized.
 
-NEXT GATE: focused independent confirmation of this revision. Issuing WO-005
-remains a separate owner decision after that, and this proposal grants no
-review, commit, push, issuance, or session authority.
+NEXT GATE: separate owner authorization for Session A only, recorded in root
+`WORKORDER.md`, together with the owner's decision on its proposed
+live-verification exemption. Issuance authorizes no session, and this mandate
+grants no review, commit, push, or session authority.
