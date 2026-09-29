@@ -2,7 +2,7 @@
 
 STATUS: ISSUED
 
-AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED
+AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR OFFLINE COVERAGE MODEL ONLY
 
 OWNER: Ocean Bennett
 
@@ -16,6 +16,12 @@ ISSUANCE_CI_WORKFLOW: `36529997892`
 
 ISSUANCE_CI_JOB: `109281301869` — Lint, types, tests
 
+SESSION_A_AUTHORIZATION_COMMIT: `867074f8a520450ef6073b4c922079a897a83886`
+
+SESSION_A_AUTHORIZATION_CI_WORKFLOW: `36596756689`
+
+SESSION_A_AUTHORIZATION_CI_JOB: `109503539592` — Lint, types, tests
+
 ## Issuance basis
 
 The independently accepted revision of this mandate was committed as
@@ -28,8 +34,44 @@ issuance. The planning baseline above is preserved unchanged.
 
 Issuance alone grants no implementation authority. A session becomes
 implementable only when the owner names it in root `WORKORDER.md`. The
-live-verification exemption proposed for Session A is not accepted by
-issuance; it remains a separate owner decision.
+live-verification exemption proposed for Session A was not accepted by
+issuance; at that gate it remained a separate owner decision.
+
+## Session A authorization basis
+
+Session A is authorized for the offline coverage model only under the current
+root `WORKORDER.md` gate alone. The recorded basis is commit
+`867074f8a520450ef6073b4c922079a897a83886`; [CI workflow
+`36596756689`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36596756689)
+completed successfully, including required job
+[`109503539592` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36596756689/job/109503539592).
+
+This gate covers exactly the scope in "Proposed Session A — offline coverage
+model" below: its six-path file scope, the migration shim, the acceptance
+tests, the static gates, the cleanup duties, and the exclusions, unchanged.
+Session A ends with its worktree uncommitted for independent review. It opens
+no deploy, editor launch, bridge startup, MCP call, commit, or push. The
+planning baseline and the issuance evidence above are preserved unchanged, and
+neither is the Session A basis.
+
+## Session A live-verification exemption
+
+The owner accepted the live-verification exemption proposed for Session A
+under "Live verification" below, on these terms only:
+
+- It applies only to the offline Session A scope accepted above.
+- Session A changes no tool, registry, startup, bridge, dashboard, or editor
+  behaviour.
+- The only `Content/Python/` change permitted during implementation is the
+  standalone `list_untested.py` migration shim specified under "Migration
+  shim" below.
+- Offline tests and source mappings are not live execution evidence.
+- Any editor or runtime impact discovered during implementation stops
+  Session A for a new owner decision; it does not silently widen this
+  exemption.
+- The eventual implementation commit must explain this exemption truthfully
+  through the existing `Live-Verification: not-required — <reason>` trailer.
+- This exemption grants no commit, push, deployment, or live-run permission.
 
 ## Revision provenance
 
@@ -179,8 +221,8 @@ This work order imports no new evidence and authorizes no live run.
 ## Owner decisions for this revision (2026-09-29)
 
 1. `list_untested.py` stays as a minimal migration shim.
-2. Session A is offline only. The live-verification exemption below goes to
-   independent review and owner acceptance; it is not granted here.
+2. Session A is offline only. The live-verification exemption below was sent
+   to independent review and owner acceptance; this revision did not grant it.
 3. The optional live integration run is deferred and is not required to close
    WO-005.
 4. One hardened enumerator is shared with `drift_check._registered_tools()`,
@@ -334,8 +376,9 @@ registry, bridge, UI, or editor behaviour. The only `Content/Python/` change is
 the shim, which nothing in the runtime imports: `register_all_tools()` and the
 startup script never load `list_untested.py`, and its current docstring says
 "Run from any Python (outside UEFN is fine)". On that basis a narrowly reasoned
-`not-required` exemption is proposed, for independent review and owner
-acceptance; this proposal does not grant it.
+`not-required` exemption was proposed, for independent review and owner
+acceptance; the proposal did not grant it. The owner later accepted it, bounded
+as recorded under "Session A live-verification exemption" above.
 
 **Cleanup duties.** Session A creates synthetic test fixtures only under
 pytest's `tmp_path`, and leaves no cache, report output, or scratch file in the
@@ -395,7 +438,7 @@ Session A.
 
 WO-006 and WO-007 remain proposed and unauthorized.
 
-NEXT GATE: separate owner authorization for Session A only, recorded in root
-`WORKORDER.md`, together with the owner's decision on its proposed
-live-verification exemption. Issuance authorizes no session, and this mandate
-grants no review, commit, push, or session authority.
+NEXT GATE: fresh independent review of the complete uncommitted Session A
+implementation, which is limited to the offline coverage model, followed by
+separate owner gates for its commit and its push. Deploy, live runs, the
+deferred integration run, and WO-005 completion remain closed.

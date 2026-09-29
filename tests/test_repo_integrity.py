@@ -232,21 +232,46 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert not (work_orders / "issued" / "WO-004-modal-observability.md").exists()
     assert not (work_orders / "proposed" / "WO-005-coverage-source-of-truth.md").exists()
     assert current == "WO-005"
-    assert session == "NONE"
-    # The base is the accepted WO-005 proposal commit, which is also the
-    # issuance commit declared in its own bullet.
+    assert session == "A"
+    # The base is the Session A authorization commit, declared in its own
+    # bullet beside the issuance evidence it follows.
     assert base_lines == [
-        "- Base commit: `528f1962c0c45c0631bab3637f3fd40db6317027`"
+        "- Base commit: `867074f8a520450ef6073b4c922079a897a83886`"
     ]
     assert gate_lines == [
-        "- Current gate: WO-005 ISSUED — SESSION A IMPLEMENTATION NOT AUTHORIZED"
+        "- Current gate: WO-005 SESSION A AUTHORIZED — OFFLINE COVERAGE MODEL"
+        " ONLY"
     ]
     for line in (
         "- Issuance commit: `528f1962c0c45c0631bab3637f3fd40db6317027`",
         "- Issuance CI workflow: `36529997892`",
         "- Issuance CI job: `109281301869` — Lint, types, tests",
+        "- Session A authorization commit:"
+        " `867074f8a520450ef6073b4c922079a897a83886`",
+        "- Session A authorization CI workflow: `36596756689`",
+        "- Session A authorization CI job: `109503539592` — Lint, types, tests",
     ):
         assert line in pointer, line
+    # The mandate records Session A's basis and the accepted exemption; the
+    # roadmap summary says the same and nothing more.
+    wo005_live = (
+        work_orders / "issued" / "WO-005-coverage-source-of-truth.md"
+    ).read_text(encoding="utf-8")
+    assert [
+        line for line in wo005_live.splitlines()
+        if line.startswith("AUTHORIZATION:")
+    ] == [
+        "AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR OFFLINE COVERAGE"
+        " MODEL ONLY"
+    ]
+    assert "## Session A authorization basis" in wo005_live
+    assert "## Session A live-verification exemption" in wo005_live
+    assert "BASELINE: `1925ba8a09c3696d25de7ffc3f23caf970362c4d`" in wo005_live
+    roadmap = (repo_root / "ROADMAP.md").read_text(encoding="utf-8")
+    assert (
+        "WO-005 is issued, and its Session A is authorized for the offline"
+        " coverage model only." in " ".join(roadmap.replace(">", " ").split())
+    )
     # The canonical bullet block belongs to whichever order owns the pointer.
     # WO-004's issuance, session, and completion bullets left it at WO-005's
     # issuance; they are preserved in WO-004's completed document and in the
@@ -341,17 +366,23 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert (
         "WO-005 remains proposed and\nunauthorized." in wo004_live
     )
-    # WO-005's issuance is recorded once, with its accepted proposal evidence,
-    # and opens no session; the exemption is not accepted.
+    # WO-005's issuance is recorded once, with its accepted proposal evidence.
+    # What it left closed is now history, and Session A is authorized once,
+    # with the accepted exemption bounded to its offline scope.
     assert (
         "[`WO-005`](docs/work-orders/issued/WO-005-coverage-source-of-truth.md)"
         " is issued." in normalized_pointer_live
     )
     assert (
-        "Issuance grants no implementation authority and opens no session. "
-        "Session A needs its own separate owner gate recorded in this pointer, "
-        "and the live-verification exemption proposed for it is not accepted."
+        "At its issuance gate, WO-005 gave no implementation authority and "
+        "opened no session. Session A needed its own separate owner gate "
+        "recorded in this pointer, and the live-verification exemption "
+        "proposed for it was not accepted at that gate."
         in normalized_pointer_live
+    )
+    assert (
+        "the live-verification exemption proposed for it is not accepted"
+        not in normalized_pointer_live
     )
     assert "36529997892" in normalized_pointer_live
     assert "109281301869" in normalized_pointer_live
@@ -359,9 +390,14 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "Session B is authorized under this pointer"
         not in normalized_pointer_live
     )
+    assert normalized_pointer_live.count(
+        "Session A is authorized under this pointer for the offline coverage "
+        "model only"
+    ) == 1
     assert (
-        "Session A is authorized under this pointer"
-        not in normalized_pointer_live
+        "The owner accepted the proposed live-verification exemption for that "
+        "offline scope only, on the terms recorded in the mandate; it grants "
+        "no commit, push, deploy, or live run." in normalized_pointer_live
     )
     # WO-003's own session bullets are gone from the pointer - they live in
     # its completed document now. WO-004 declares a Session A
@@ -466,10 +502,10 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "proposed." in normalized_pointer
     )
     assert "UEFN launch, bridge startup," in pointer
-    # The present-tense issuance statement now belongs to WO-005 alone.
+    # WO-005's issuance note is history too, now that Session A is open.
     assert normalized_pointer.count(
         "Issuance grants no implementation authority and opens no session."
-    ) == 1
+    ) == 0
     assert "docs/work-orders/proposed/WO-004-modal-observability.md" not in pointer
     assert "- Release train: WO-001 through WO-007" in pointer
     assert (
@@ -1484,11 +1520,11 @@ _WO004_DONE_POINTER_HISTORY = (
 )
 
 
-# --- WO-005 issuance: the current state, and the head of the chain -------
+# --- WO-005 issuance: one step behind the head of the chain --------------
 #
 # Issuing WO-005 moved the current state forward again, so the completed-WO-004
 # state - and every historical fixture below it - is reconstructed backwards
-# from the issued-WO-005 state.
+# from the issued-WO-005 state, itself reconstructed from Session A's below.
 
 _WO005_ISS_PROPOSED_REL = (
     "docs/work-orders/proposed/WO-005-coverage-source-of-truth.md"
@@ -1587,14 +1623,239 @@ _WO005_ISS_POINTER_HISTORY = (
 )
 
 
-def _make_wo005_issued_case(repo_root, tmp_path, name):
-    """Copy the current issued-WO-005 state."""
+# --- WO-005 Session A authorization: the current state, the head ----------
+#
+# Authorizing Session A moved the current state forward again, so the
+# issued-WO-005 state is reconstructed backwards from the Session A state. The
+# reversal is kept as named steps, so partial transitions are built from the
+# very edits the reconstruction makes.
+
+_WO005_SA_COMMIT = "867074f8a520450ef6073b4c922079a897a83886"
+_WO005_SA_WORKFLOW = "36596756689"
+_WO005_SA_JOB = "109503539592"
+_WO005_SA_GATE = (
+    "WO-005 SESSION A AUTHORIZED " + _EM + " OFFLINE COVERAGE MODEL ONLY"
+)
+_WO005_SA_MARKER = (
+    "AUTHORIZATION: ISSUED " + _EM
+    + " SESSION A AUTHORIZED FOR OFFLINE COVERAGE MODEL ONLY"
+)
+_WO005_SA_METADATA = (
+    ("SESSION_A_AUTHORIZATION_COMMIT:",
+     "SESSION_A_AUTHORIZATION_COMMIT: `" + _WO005_SA_COMMIT + "`"),
+    ("SESSION_A_AUTHORIZATION_CI_WORKFLOW:",
+     "SESSION_A_AUTHORIZATION_CI_WORKFLOW: `" + _WO005_SA_WORKFLOW + "`"),
+    ("SESSION_A_AUTHORIZATION_CI_JOB:",
+     "SESSION_A_AUTHORIZATION_CI_JOB: `" + _WO005_SA_JOB + "` " + _EM
+     + " Lint, types, tests"),
+)
+_WO005_SA_POINTER_BULLETS = (
+    ("- Session A authorization commit:",
+     "- Session A authorization commit: `" + _WO005_SA_COMMIT + "`"),
+    ("- Session A authorization CI workflow:",
+     "- Session A authorization CI workflow: `" + _WO005_SA_WORKFLOW + "`"),
+    ("- Session A authorization CI job:",
+     "- Session A authorization CI job: `" + _WO005_SA_JOB + "` " + _EM
+     + " Lint, types, tests"),
+)
+_WO005_SA_BASIS_HEADING = "## Session A authorization basis"
+_WO005_SA_EXEMPTION_HEADING = "## Session A live-verification exemption"
+_WO005_SA_POINTER_OPENING = (
+    "Session A is authorized under this pointer for the offline coverage model"
+)
+# Each pair is (as the Session A state records it, as the issued-WO-005 state
+# recorded it), so the reconstruction puts every original back byte for byte.
+_WO005_SA_MANDATE_HISTORY = (
+    (_NL.join((
+        "live-verification exemption proposed for Session A was not accepted"
+        " by",
+        "issuance; at that gate it remained a separate owner decision.",
+    )), _NL.join((
+        "live-verification exemption proposed for Session A is not accepted by",
+        "issuance; it remains a separate owner decision.",
+    ))),
+    (_NL.join((
+        "2. Session A is offline only. The live-verification exemption below"
+        " was sent",
+        "   to independent review and owner acceptance; this revision did not"
+        " grant it.",
+    )), _NL.join((
+        "2. Session A is offline only. The live-verification exemption below"
+        " goes to",
+        "   independent review and owner acceptance; it is not granted here.",
+    ))),
+    (_NL.join((
+        "`not-required` exemption was proposed, for independent review and"
+        " owner",
+        "acceptance; the proposal did not grant it. The owner later accepted"
+        " it, bounded",
+        'as recorded under "Session A live-verification exemption" above.',
+    )), _NL.join((
+        "`not-required` exemption is proposed, for independent review and"
+        " owner",
+        "acceptance; this proposal does not grant it.",
+    ))),
+    (_NL.join((
+        "NEXT GATE: fresh independent review of the complete uncommitted"
+        " Session A",
+        "implementation, which is limited to the offline coverage model,"
+        " followed by",
+        "separate owner gates for its commit and its push. Deploy, live runs,"
+        " the",
+        "deferred integration run, and WO-005 completion remain closed.",
+    )), _WO005_ISS_MANDATE_HISTORY[2][0]),
+)
+_WO005_SA_POINTER_HISTORY = (
+    (_NL.join((
+        "- Current issued Work Order: WO-005",
+        "- Authorized session: A",
+        "- Base commit: `" + _WO005_SA_COMMIT + "`",
+        "- Current gate: " + _WO005_SA_GATE,
+        "- Issuance commit: `" + _WO005_ISS_COMMIT + "`",
+        "- Issuance CI workflow: `" + _WO005_ISS_WORKFLOW + "`",
+        "- Issuance CI job: `" + _WO005_ISS_JOB + "` " + _EM
+        + " Lint, types, tests",
+    ) + tuple(line for _prefix, line in _WO005_SA_POINTER_BULLETS)),
+     _WO005_ISS_POINTER_HISTORY[0][0]),
+    (_NL.join((
+        "At its issuance gate, WO-005 gave no implementation authority and"
+        " opened no",
+        "session. Session A needed its own separate owner gate recorded in"
+        " this",
+        "pointer, and the live-verification exemption proposed for it was not"
+        " accepted",
+        "at that gate.",
+        "",
+        _WO005_SA_POINTER_OPENING,
+        "only, on the basis of commit `" + _WO005_SA_COMMIT + "`,",
+        "successful CI workflow `" + _WO005_SA_WORKFLOW + "`, and successful"
+        " required job",
+        "`" + _WO005_SA_JOB + "` (`Lint, types, tests`). It covers the Session"
+        " A scope recorded",
+        "in the issued mandate, unchanged, and ends with that worktree"
+        " uncommitted for",
+        "independent review. The owner accepted the proposed"
+        " live-verification",
+        "exemption for that offline scope only, on the terms recorded in the"
+        " mandate;",
+        "it grants no commit, push, deploy, or live run. Session A opens no"
+        " deploy, UEFN",
+        "launch, bridge startup, MCP call, commit, or push. Tagging, Release"
+        " creation,",
+        "branch-protection changes, other repository metadata changes, and"
+        " social",
+        "publication all remain unauthorized, as do WO-006 and WO-007, which"
+        " stay",
+        "proposed, and the deferred integration run.",
+    )), _NL.join((
+        "Issuance grants no implementation authority and opens no session."
+        " Session A",
+        "needs its own separate owner gate recorded in this pointer, and the",
+        "live-verification exemption proposed for it is not accepted. Tagging,"
+        " Release",
+        "creation, branch-protection changes, other repository metadata"
+        " changes, and",
+        "social publication all remain unauthorized, as do WO-006 and WO-007,"
+        " which",
+        "stay proposed.",
+    ))),
+)
+
+
+def _wo005_sa_revert_marker(case):
+    _edit(case, _WO005_ISS_REL, _WO005_SA_MARKER, _WO005_ISS_MARKER)
+
+
+def _wo005_sa_revert_evidence(case):
+    for _prefix, declaration in _WO005_SA_METADATA:
+        _edit(case, _WO005_ISS_REL, _NL + declaration + _NL, "")
+
+
+def _wo005_sa_revert_record(case):
+    target = case / _WO005_ISS_REL
+    text = target.read_text(encoding="utf-8")
+    _require_unique(
+        text, (_WO005_SA_BASIS_HEADING, _WO005_SA_EXEMPTION_HEADING,
+               "## Revision provenance"),
+        "WO-005 Session A record excision",
+    )
+    text = _sub_once(
+        re.escape(_WO005_SA_BASIS_HEADING)
+        + ".*?(?=" + re.escape("## Revision provenance" + _NL) + ")",
+        "",
+        text,
+        "WO-005 Session A record excision",
+        flags=re.DOTALL,
+    )
+    target.write_text(text, encoding="utf-8")
+
+
+def _wo005_sa_revert_mandate_history(case):
+    for old, new in _WO005_SA_MANDATE_HISTORY:
+        _edit(case, _WO005_ISS_REL, old, new)
+
+
+def _wo005_sa_revert_pointer_bullets(case):
+    _edit(case, "WORKORDER.md", *_WO005_SA_POINTER_HISTORY[0])
+
+
+def _wo005_sa_revert_pointer_statement(case):
+    _edit(case, "WORKORDER.md", *_WO005_SA_POINTER_HISTORY[1])
+
+
+# The Session A authorization transition, as reversible steps.
+_WO005_SA_REVERSAL = (
+    ("mandate-marker", _wo005_sa_revert_marker),
+    ("mandate-evidence", _wo005_sa_revert_evidence),
+    ("mandate-record", _wo005_sa_revert_record),
+    ("mandate-history", _wo005_sa_revert_mandate_history),
+    ("pointer-bullets", _wo005_sa_revert_pointer_bullets),
+    ("pointer-statement", _wo005_sa_revert_pointer_statement),
+)
+
+
+def _make_wo005_session_a_case(repo_root, tmp_path, name):
+    """Copy the current WO-005 Session A state."""
     case = tmp_path / name
     case.mkdir(parents=True)
     shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
     shutil.copytree(
         repo_root / "docs" / "work-orders",
         case / "docs" / "work-orders",
+    )
+    return case
+
+
+def _make_wo005_issued_case(repo_root, tmp_path, name):
+    """Reconstruct the preserved issued-WO-005 state.
+
+    Authorizing Session A moved the current state forward, so the issued state
+    every earlier fixture builds on is now itself a reconstruction. Every step
+    of the authorization is reversed: in the mandate, the marker, the Session A
+    declarations, the authorization basis and exemption sections, and the
+    reworded history and next gate; in the pointer, the bullet block and the
+    Session A paragraphs. Both files return to the issued state byte for byte.
+    """
+    case = _make_wo005_session_a_case(repo_root, tmp_path, name)
+    issued = case / _WO005_ISS_REL
+    if (not issued.exists()
+            or _WO005_SA_MARKER not in issued.read_text(encoding="utf-8")):
+        # Already a pre-authorization tree: nothing to reverse.
+        return case
+    for _step, revert in _WO005_SA_REVERSAL:
+        revert(case)
+    _assert_reconstructed(
+        "WO-005 Session A pointer",
+        (case / "WORKORDER.md").read_text(encoding="utf-8"),
+        (_WO005_ISS_POINTER_HISTORY[0][0], _WO005_SA_POINTER_HISTORY[1][1]),
+        (_WO005_SA_GATE, _WO005_SA_WORKFLOW, _WO005_SA_JOB,
+         _WO005_SA_POINTER_OPENING, "- Authorized session: A"),
+    )
+    _assert_reconstructed(
+        "WO-005 Session A reconstruction", issued.read_text(encoding="utf-8"),
+        (_WO005_ISS_MARKER, _WO005_ISS_MANDATE_HISTORY[2][0]),
+        (_WO005_SA_MARKER, _WO005_SA_BASIS_HEADING,
+         _WO005_SA_EXEMPTION_HEADING, "SESSION_A_AUTHORIZATION_COMMIT:"),
     )
     return case
 
@@ -9732,31 +9993,25 @@ def _make_live_issued_case(repo_root, tmp_path, name, body, ptr, session):
 
 def _make_live_wo005_issued_case(repo_root, tmp_path, name, body, ptr,
                                  session):
-    """WO-005 is issued for real, so its probes run against that state.
+    """WO-005 is issued, and its Session A authorized, for real, so its probes
+    run against those states.
 
-    The Session A variant applies the same marker, gate, and session edits the
-    synthetic builder below uses, on top of the real issuance record.
+    Session A is the live state and the closed issuance is reconstructed from
+    it. Any other session label is set on the Session A state, which leaves a
+    rogue session for the checker to reject.
     """
-    case = _make_wo005_issued_case(repo_root, tmp_path, name)
+    case = (_make_wo005_issued_case(repo_root, tmp_path, name)
+            if session == "NONE"
+            else _make_wo005_session_a_case(repo_root, tmp_path, name))
     issued = case / _WO005_ISS_REL
     pointer = case / "WORKORDER.md"
-    if session != "NONE":
-        issued.write_text(
-            _replace_once(
-                issued.read_text(encoding="utf-8"), _WO005_ISS_MARKER,
-                "AUTHORIZATION: ISSUED " + _EM
-                + " SESSION A AUTHORIZED FOR IMPLEMENTATION",
-                "live WO-005 fixture authorization"),
+    if session not in ("NONE", "A"):
+        pointer.write_text(
+            _replace_once(pointer.read_text(encoding="utf-8"),
+                          "- Authorized session: A",
+                          "- Authorized session: " + session,
+                          "live WO-005 fixture session"),
             encoding="utf-8")
-        text = pointer.read_text(encoding="utf-8")
-        for old, new in (
-            ("- Authorized session: NONE", "- Authorized session: " + session),
-            ("- Current gate: " + _WO005_ISS_GATE,
-             "- Current gate: WO-005 SESSION A AUTHORIZED " + _EM
-             + " IMPLEMENT SESSION A ONLY"),
-        ):
-            text = _replace_once(text, old, new, "live WO-005 fixture gate")
-        pointer.write_text(text, encoding="utf-8")
     for path, extra in ((issued, body), (pointer, ptr)):
         if extra:
             path.write_text(
@@ -12222,13 +12477,14 @@ def test_wo004_completion_does_not_pin_harmless_prose(
 
 
 def _make_wo005_owner_case(repo_root, tmp_path, name):
-    """A legitimate later pointer owner: WO-005, issued for real.
+    """A legitimate later pointer owner: WO-005, with Session A authorized
+    for real.
 
-    This fixture used to synthesize that issuance on top of the completed
-    WO-004 state. WO-005 is now issued, so the real state is the owner, and the
-    completed-WO-004 checks are probed against it.
+    This fixture used to synthesize WO-005's issuance on top of the completed
+    WO-004 state. WO-005 now owns the pointer for real, so the live state is
+    the owner, and the completed-WO-004 checks are probed against it.
     """
-    return _make_wo005_issued_case(repo_root, tmp_path, name)
+    return _make_wo005_session_a_case(repo_root, tmp_path, name)
 
 
 def _wo005_owner_findings(repo_root, tmp_path, monkeypatch, name, mutate):
@@ -12301,11 +12557,12 @@ def test_completed_wo004_checks_survive_a_later_pointer_owner(
     )
 
 
-# --- WO-005 issuance: the live state -------------------------------------
+# --- WO-005 issuance: the issued state ------------------------------------
 #
 # The issuance record sits on the same two canonical surfaces as WO-004's:
 # the root pointer's bullet block and the mandate's metadata block. Each probe
-# is a delta against the live issued state, with nothing set aside.
+# is a delta against the issued state, reconstructed from the live Session A
+# state, with nothing set aside.
 
 _WO005_ISS_KINDS = {
     "WORKORDER.md": {"WO-005 issuance field (WORKORDER.md)",
@@ -12417,3 +12674,532 @@ def test_wo005_owner_keeps_the_wo004_pointer_pin(
     assert ("WO-004 completion pointer statement", "WORKORDER.md") in found, (
         repr(sorted(found))
     )
+
+
+# --- WO-005 Session A authorization: the live state ----------------------
+#
+# Authorizing Session A adds its evidence to both canonical blocks, moves the
+# base, and records the Session A basis and the accepted exemption. Each probe
+# is a delta against the live Session A state; the issued state it was built
+# from stays enforced above. Partial transitions are built from the same
+# reversal steps the issued-state reconstruction uses.
+
+_WO005_SA_RECORD_KINDS = {
+    "WORKORDER.md": {"WO-005 Session A pointer statement"},
+    _WO005_ISS_REL: {"WO-005 Session A record heading",
+                     "WO-005 Session A authorization statement",
+                     "WO-005 Session A exemption record",
+                     "WO-005 next gate"},
+}
+
+
+def _wo005_sa_findings(repo_root, tmp_path, monkeypatch, name, mutate):
+    """(type, file) findings for the live WO-005 Session A state after one
+    mutation."""
+    drift_check = _load_drift_check(repo_root, "wo005_sa_" + name)
+    case = _make_wo005_session_a_case(repo_root, tmp_path, "wo005-sa-" + name)
+    mutate(case)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return {(f["type"], f["file"])
+            for f in drift_check.check_work_order_contract()}
+
+
+def test_wo005_session_a_state_is_clean(repo_root, tmp_path,
+                                        monkeypatch) -> None:
+    """The control: the live Session A state has no finding at all."""
+    found = _wo005_sa_findings(repo_root, tmp_path, monkeypatch, "control",
+                               lambda case: None)
+    assert found == set(), (
+        "the WO-005 Session A state is not clean: " + repr(sorted(found))
+    )
+
+
+_WO005_SA_EVIDENCE = (
+    # (id, file, declaration prefix, pinned value)
+    ("pointer-base", "WORKORDER.md", "- Base commit:", _WO005_SA_COMMIT),
+    ("pointer-issuance-commit", "WORKORDER.md", "- Issuance commit:",
+     _WO005_ISS_COMMIT),
+    ("pointer-issuance-workflow", "WORKORDER.md", "- Issuance CI workflow:",
+     _WO005_ISS_WORKFLOW),
+    ("pointer-issuance-job", "WORKORDER.md", "- Issuance CI job:",
+     _WO005_ISS_JOB),
+) + tuple(
+    ("pointer-session-a-" + label, "WORKORDER.md", prefix, value)
+    for label, (prefix, _line), value in zip(
+        ("commit", "workflow", "job"), _WO005_SA_POINTER_BULLETS,
+        (_WO005_SA_COMMIT, _WO005_SA_WORKFLOW, _WO005_SA_JOB), strict=True)
+) + (
+    ("mandate-baseline", _WO005_ISS_REL, "BASELINE:", _WO005_ISS_BASELINE),
+    ("mandate-issuance-commit", _WO005_ISS_REL, "ISSUANCE_COMMIT:",
+     _WO005_ISS_COMMIT),
+    ("mandate-issuance-workflow", _WO005_ISS_REL, "ISSUANCE_CI_WORKFLOW:",
+     _WO005_ISS_WORKFLOW),
+    ("mandate-issuance-job", _WO005_ISS_REL, "ISSUANCE_CI_JOB:",
+     _WO005_ISS_JOB),
+) + tuple(
+    ("mandate-session-a-" + label, _WO005_ISS_REL, prefix, value)
+    for label, (prefix, _line), value in zip(
+        ("commit", "workflow", "job"), _WO005_SA_METADATA,
+        (_WO005_SA_COMMIT, _WO005_SA_WORKFLOW, _WO005_SA_JOB), strict=True)
+)
+
+
+@pytest.mark.parametrize("damage",
+                         ("changed", "removed", "duplicated", "decoy",
+                          "echoed"))
+@pytest.mark.parametrize(("name", "rel", "prefix", "value"),
+                         _WO005_SA_EVIDENCE,
+                         ids=[row[0] for row in _WO005_SA_EVIDENCE])
+def test_wo005_session_a_evidence_is_pinned(
+    repo_root, tmp_path, monkeypatch, name, rel, prefix, value, damage
+) -> None:
+    """The moved base, the issuance evidence, and the Session A authorization
+    evidence are each enforced on the surface that declares them, and the
+    finding names that file."""
+    def mutate(case):
+        target = case / rel
+        text = target.read_text(encoding="utf-8")
+        line = next(candidate for candidate in text.splitlines()
+                    if candidate.startswith(prefix))
+        wrong = line.replace(value, _WO004_ZERO_SHA[:len(value)])
+        assert wrong != line, "probe anchor drifted: " + prefix
+        new = {"changed": wrong, "removed": "",
+               "duplicated": line + _NL + line, "decoy": wrong,
+               "echoed": line}[damage]
+        text = _replace_once(text, line, new,
+                             "WO-005 Session A evidence " + damage)
+        if damage in ("decoy", "echoed"):
+            # A byte-correct copy is parked outside the canonical block,
+            # where it must not count: beside a corrupted genuine
+            # declaration (decoy), or beside an intact one (echoed).
+            text = text.rstrip() + _NL + _NL + line + _NL
+        target.write_text(text, encoding="utf-8")
+
+    found = _wo005_sa_findings(repo_root, tmp_path, monkeypatch,
+                               name + "-" + damage, mutate)
+    kinds = {kind for kind, file in found if file == rel}
+    assert kinds & _WO005_ISS_KINDS[rel], (
+        "a " + damage + " " + prefix + " declaration was accepted in the "
+        "WO-005 Session A state: " + repr(sorted(found))
+    )
+
+
+def test_wo005_session_a_base_cannot_stay_at_the_issuance_commit(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Opening Session A moves the base to its authorization commit; a base
+    left at the issuance commit is a partial transition."""
+    found = _wo005_sa_findings(
+        repo_root, tmp_path, monkeypatch, "base-stale",
+        lambda case: _edit(case, "WORKORDER.md",
+                           "- Base commit: `" + _WO005_SA_COMMIT + "`",
+                           "- Base commit: `" + _WO005_ISS_COMMIT + "`"))
+    assert ("WO-005 issuance declaration (WORKORDER.md)",
+            "WORKORDER.md") in found, repr(sorted(found))
+
+
+_WO005_SA_GENERIC_PAIR = (
+    ("generic-gate", "WORKORDER.md", "- Current gate: " + _WO005_SA_GATE,
+     "- Current gate: WO-005 SESSION A AUTHORIZED " + _EM
+     + " IMPLEMENT SESSION A ONLY",
+     "authorized session gate"),
+    ("generic-marker", _WO005_ISS_REL, _WO005_SA_MARKER,
+     "AUTHORIZATION: ISSUED " + _EM + " SESSION A AUTHORIZED FOR IMPLEMENTATION",
+     "issued session authorization"),
+)
+
+
+@pytest.mark.parametrize(("name", "rel", "old", "new", "kind"),
+                         _WO005_SA_GENERIC_PAIR,
+                         ids=[row[0] for row in _WO005_SA_GENERIC_PAIR])
+def test_wo005_session_a_keeps_its_own_gate_and_marker(
+    repo_root, tmp_path, monkeypatch, name, rel, old, new, kind
+) -> None:
+    """WO-005's Session A is the offline coverage model only. The generic
+    implementation gate or marker does not stand in for its own pair."""
+    found = _wo005_sa_findings(repo_root, tmp_path, monkeypatch, name,
+                               lambda case: _edit(case, rel, old, new))
+    assert (kind, rel) in found, repr(sorted(found))
+
+
+def _wo005_sa_span(text, start, end):
+    """The exact text from `start` up to, not including, `end`, or to the end
+    of the file when `end` is None."""
+    assert text.count(start) == 1, "probe anchor drifted: " + start
+    begin = text.index(start)
+    stop = text.index(end, begin) if end else len(text.rstrip())
+    return text[begin:stop]
+
+
+_WO005_SA_RECORDS = (
+    # (id, file, span start, span end, a wording change inside the span)
+    ("statement", _WO005_ISS_REL, _WO005_SA_BASIS_HEADING,
+     _NL + _NL + _WO005_SA_EXEMPTION_HEADING,
+     ("offline coverage model only under the current",
+      "offline coverage model under the current")),
+    ("exemption", _WO005_ISS_REL, _WO005_SA_EXEMPTION_HEADING,
+     _NL + _NL + "## Revision provenance",
+     ("It applies only to the offline Session A scope",
+      "It applies to the offline Session A scope")),
+    ("next-gate", _WO005_ISS_REL, "NEXT GATE:", None,
+     ("Deploy, live runs, the", "Live runs, the")),
+    ("pointer-statement", "WORKORDER.md", "At its issuance gate, WO-005",
+     " Session A opens no deploy",
+     ("exemption for that offline scope only, on",
+      "exemption for Session A, on")),
+)
+
+
+@pytest.mark.parametrize("damage",
+                         ("changed", "removed", "duplicated", "decoy"))
+@pytest.mark.parametrize(("name", "rel", "start", "end", "change"),
+                         _WO005_SA_RECORDS,
+                         ids=[row[0] for row in _WO005_SA_RECORDS])
+def test_wo005_session_a_record_is_pinned(
+    repo_root, tmp_path, monkeypatch, name, rel, start, end, change, damage
+) -> None:
+    """The Session A statement, the exemption terms, the next gate, and the
+    pointer statement are each pinned once, in place, and reported against
+    the file that carries them."""
+    def mutate(case):
+        target = case / rel
+        text = target.read_text(encoding="utf-8")
+        span = _wo005_sa_span(text, start, end)
+        old, new = change
+        assert span.count(old) == 1, "probe anchor drifted: " + old
+        wrong = span.replace(old, new)
+        replacement = {"changed": wrong, "removed": "",
+                       "duplicated": span + _NL + _NL + span,
+                       "decoy": wrong}[damage]
+        text = _replace_once(text, span, replacement,
+                             "WO-005 Session A record " + damage)
+        if damage == "decoy":
+            # The genuine record is corrupted; a byte-correct copy is parked
+            # at the end of the file, where it must not count.
+            text = text.rstrip() + _NL + _NL + span + _NL
+        target.write_text(text, encoding="utf-8")
+
+    found = _wo005_sa_findings(repo_root, tmp_path, monkeypatch,
+                               "record-" + name + "-" + damage, mutate)
+    kinds = {kind for kind, file in found if file == rel}
+    assert kinds & _WO005_SA_RECORD_KINDS[rel], (
+        "a " + damage + " " + name + " record was accepted in the WO-005 "
+        "Session A state: " + repr(sorted(found))
+    )
+
+
+_WO005_SA_EXEMPTION_TERMS = (
+    # (id, accepted wording, widened wording)
+    ("terms-only", "on these terms only:", "on these terms:"),
+    ("offline-scope-only",
+     "- It applies only to the offline Session A scope accepted above.",
+     "- It applies to the offline Session A scope accepted above."),
+    ("no-behaviour-change", "bridge, dashboard, or editor",
+     "bridge, or editor"),
+    ("shim-only", "- The only `Content/Python/` change permitted",
+     "- Any `Content/Python/` change permitted"),
+    ("not-live-evidence", "are not live execution evidence",
+     "are live execution evidence"),
+    ("stops-on-impact", "it does not silently widen this",
+     "it silently widens this"),
+    ("truthful-trailer",
+     "through the existing `Live-Verification: not-required " + _EM
+     + " <reason>` trailer.",
+     "through a `Verified-Live:` trailer."),
+    ("no-further-permission",
+     "grants no commit, push, deployment, or live-run permission.",
+     "grants commit and push permission."),
+)
+
+
+@pytest.mark.parametrize(("name", "old", "new"), _WO005_SA_EXEMPTION_TERMS,
+                         ids=[row[0] for row in _WO005_SA_EXEMPTION_TERMS])
+def test_wo005_session_a_exemption_terms_are_each_pinned(
+    repo_root, tmp_path, monkeypatch, name, old, new
+) -> None:
+    """Each accepted term bounds the exemption; widening any one of them is a
+    finding against the mandate."""
+    found = _wo005_sa_findings(
+        repo_root, tmp_path, monkeypatch, "term-" + name,
+        lambda case: _edit(case, _WO005_ISS_REL, old, new))
+    assert ("WO-005 Session A exemption record", _WO005_ISS_REL) in found, (
+        repr(sorted(found))
+    )
+
+
+@pytest.mark.parametrize(("step", "revert"), _WO005_SA_REVERSAL,
+                         ids=[row[0] for row in _WO005_SA_REVERSAL])
+def test_wo005_session_a_rejects_a_partly_reverted_transition(
+    repo_root, tmp_path, monkeypatch, step, revert
+) -> None:
+    """Undoing any one step of the authorization leaves a state the checker
+    rejects."""
+    found = _wo005_sa_findings(repo_root, tmp_path, monkeypatch,
+                               "undo-" + step, revert)
+    assert found, "undoing only " + step + " was accepted"
+
+
+# Applied alone to the issued state, the history step is accepted, because
+# the issued state does not pin its mandate prose - a gap deferred for now.
+# That state grants nothing, but it is not harmless history either: its
+# mandate says the exemption was later accepted and points to a Session A
+# exemption section that does not exist. Every other step is caught alone.
+_WO005_SA_AUTHORITY_STEPS = tuple(
+    row for row in _WO005_SA_REVERSAL if row[0] != "mandate-history"
+)
+
+
+@pytest.mark.parametrize("step", [row[0] for row in _WO005_SA_AUTHORITY_STEPS])
+def test_wo005_issued_state_rejects_a_partly_applied_transition(
+    repo_root, tmp_path, monkeypatch, step
+) -> None:
+    """Applying any one authority-bearing step of the authorization to the
+    issued state, and nothing else, leaves a state the checker rejects."""
+    def mutate(case):
+        for other, revert in _WO005_SA_REVERSAL:
+            if other != step:
+                revert(case)
+
+    found = _wo005_sa_findings(repo_root, tmp_path, monkeypatch,
+                               "only-" + step, mutate)
+    assert found, "applying only " + step + " was accepted"
+
+
+# --- WO-005 Session A records are closed, ordered, and anchored ----------
+#
+# The two mandate sections must equal their accepted text, their headings
+# must stand in the canonical order, and the pointer's record must stay
+# anchored to the note before it. Each probe widens, fuses, displaces, or
+# duplicates part of a record and must be reported against the file that
+# carries it; reflowed or unrelated prose stays accepted.
+
+_WO005_SA_ACCEPTED_TERM = (
+    "- It applies only to the offline Session A scope accepted above."
+)
+_WO005_SA_LAST_TERM = (
+    "- This exemption grants no commit, push, deployment, or live-run"
+    " permission."
+)
+_WO005_SA_POINTER_RECORD_END = "MCP call, commit, or push."
+
+
+def _wo005_sa_mandate_section(text, heading):
+    """A mandate section as written, from its heading to the blank line
+    before the next heading."""
+    start = text.index(heading + _NL)
+    end = text.index(_NL + _NL + "## ", start)
+    return text[start:end]
+
+
+def _wo005_sa_pointer_record(text):
+    """The pointer's Session A record as written, restriction included."""
+    start = text.index(_WO005_SA_POINTER_OPENING)
+    end = text.index(_WO005_SA_POINTER_RECORD_END, start)
+    return text[start:end + len(_WO005_SA_POINTER_RECORD_END)]
+
+
+def _wo005_sa_rewrite(rel, change):
+    def mutate(case):
+        target = case / rel
+        target.write_text(change(target.read_text(encoding="utf-8")),
+                          encoding="utf-8")
+    return mutate
+
+
+def _wo005_sa_park(text, copy):
+    return text.rstrip() + _NL + _NL + copy + _NL
+
+
+def _wo005_sa_renamed_decoy(heading, widen):
+    """Rename the original heading, widen the original, and park a
+    byte-correct copy of the accepted section at the end of the file."""
+    def change(text):
+        accepted = _wo005_sa_mandate_section(text, heading)
+        widened = _replace_once(accepted, heading + _NL,
+                                heading + ", as widened" + _NL,
+                                "renamed heading")
+        widened = _replace_once(widened, *widen, "widened term")
+        return _wo005_sa_park(
+            _replace_once(text, accepted, widened, "renamed decoy"), accepted)
+    return change
+
+
+def _wo005_sa_headless_decoy(heading, corrupt):
+    """Corrupt the original in place and park the accepted body, without its
+    heading, at the end of the file."""
+    def change(text):
+        accepted = _wo005_sa_mandate_section(text, heading)
+        body = accepted[len(heading + _NL):].strip()
+        return _wo005_sa_park(
+            _replace_once(text, accepted, accepted.replace(*corrupt, 1),
+                          "headless decoy"), body)
+    return change
+
+
+def _wo005_sa_swap_sections(text):
+    basis = _wo005_sa_mandate_section(text, _WO005_SA_BASIS_HEADING)
+    exemption = _wo005_sa_mandate_section(text, _WO005_SA_EXEMPTION_HEADING)
+    return _replace_once(text, basis + _NL + _NL + exemption,
+                         exemption + _NL + _NL + basis, "swapped sections")
+
+
+def _wo005_sa_pointer_decoy(text):
+    """Corrupt the pointer record in place and park the accepted record,
+    without the note it is anchored to, at the end of the pointer."""
+    accepted = _wo005_sa_pointer_record(text)
+    corrupted = _replace_once(
+        accepted, "exemption for that offline scope only,",
+        "exemption for all Session A work,", "pointer decoy")
+    return _wo005_sa_park(
+        _replace_once(text, accepted, corrupted, "pointer decoy"), accepted)
+
+
+def _wo005_sa_pointer_inline_duplicate(text):
+    accepted = _wo005_sa_pointer_record(text)
+    return _replace_once(text, accepted, accepted + " " + accepted,
+                         "pointer inline duplicate")
+
+
+def _wo005_sa_exemption_inline_duplicate(text):
+    accepted = _wo005_sa_mandate_section(text, _WO005_SA_EXEMPTION_HEADING)
+    terms = accepted[accepted.index(_WO005_SA_ACCEPTED_TERM):]
+    return _replace_once(text, accepted, accepted + _NL + terms,
+                         "exemption inline duplicate")
+
+
+_WO005_SA_STATEMENT_KIND = "WO-005 Session A authorization statement"
+_WO005_SA_EXEMPTION_KIND = "WO-005 Session A exemption record"
+_WO005_SA_HEADING_KIND = "WO-005 Session A record heading"
+_WO005_SA_POINTER_KIND = "WO-005 Session A pointer statement"
+
+_WO005_SA_WIDENING = (
+    # (id, file, change to that file's text, expected kind)
+    ("exemption-appended-term", _WO005_ISS_REL,
+     lambda text: _replace_once(
+         text, _WO005_SA_LAST_TERM,
+         _WO005_SA_LAST_TERM + _NL
+         + "- It also covers the deferred integration run and any deploy.",
+         "appended term"),
+     _WO005_SA_EXEMPTION_KIND),
+    ("exemption-fused-suffix", _WO005_ISS_REL,
+     lambda text: _replace_once(
+         text, "live-run permission.",
+         "live-run permission. Session A may commit and push its"
+         " implementation.", "fused suffix"),
+     _WO005_SA_EXEMPTION_KIND),
+    ("exemption-extra-paragraph", _WO005_ISS_REL,
+     lambda text: _replace_once(
+         text, _WO005_SA_LAST_TERM + _NL,
+         _WO005_SA_LAST_TERM + _NL + _NL
+         + "The exemption also extends to Session B and to live runs." + _NL,
+         "extra paragraph"),
+     _WO005_SA_EXEMPTION_KIND),
+    ("exemption-inline-duplicate", _WO005_ISS_REL,
+     _wo005_sa_exemption_inline_duplicate, _WO005_SA_EXEMPTION_KIND),
+    ("exemption-renamed-decoy", _WO005_ISS_REL,
+     _wo005_sa_renamed_decoy(
+         _WO005_SA_EXEMPTION_HEADING,
+         (_WO005_SA_ACCEPTED_TERM,
+          "- It applies to all of WO-005, including live runs.")),
+     _WO005_SA_HEADING_KIND),
+    ("exemption-headless-decoy", _WO005_ISS_REL,
+     _wo005_sa_headless_decoy(
+         _WO005_SA_EXEMPTION_HEADING,
+         ("It applies only to the offline", "It applies to the")),
+     _WO005_SA_EXEMPTION_KIND),
+    ("basis-restriction-inverted", _WO005_ISS_REL,
+     lambda text: _replace_once(
+         text,
+         "no deploy, editor launch, bridge startup, MCP call, commit, or push.",
+         "deploy, editor launch, bridge startup, MCP call, commit, and push.",
+         "basis restriction"),
+     _WO005_SA_STATEMENT_KIND),
+    ("basis-fused-suffix", _WO005_ISS_REL,
+     lambda text: _replace_once(
+         text, "neither is the Session A basis.",
+         "neither is the Session A basis. Session A may also deploy.",
+         "basis suffix"),
+     _WO005_SA_STATEMENT_KIND),
+    ("basis-renamed-decoy", _WO005_ISS_REL,
+     _wo005_sa_renamed_decoy(
+         _WO005_SA_BASIS_HEADING,
+         ("the offline coverage model only under",
+          "the coverage model and live runs under")),
+     _WO005_SA_HEADING_KIND),
+    ("basis-headless-decoy", _WO005_ISS_REL,
+     _wo005_sa_headless_decoy(
+         _WO005_SA_BASIS_HEADING,
+         ("offline coverage model only", "coverage model")),
+     _WO005_SA_STATEMENT_KIND),
+    ("sections-swapped", _WO005_ISS_REL, _wo005_sa_swap_sections,
+     _WO005_SA_HEADING_KIND),
+    ("pointer-restriction-inverted", "WORKORDER.md",
+     lambda text: _replace_once(
+         text, "Session A opens no deploy, UEFN" + _NL + "launch,",
+         "Session A may deploy, UEFN" + _NL + "launch,",
+         "pointer restriction"),
+     _WO005_SA_POINTER_KIND),
+    ("pointer-fused-claim", "WORKORDER.md",
+     lambda text: _replace_once(
+         text, "live run. Session A opens no deploy",
+         "live run. Session A may nevertheless push. Session A opens no"
+         " deploy", "pointer fused claim"),
+     _WO005_SA_POINTER_KIND),
+    ("pointer-statement-only-decoy", "WORKORDER.md", _wo005_sa_pointer_decoy,
+     _WO005_SA_POINTER_KIND),
+    ("pointer-inline-duplicate", "WORKORDER.md",
+     _wo005_sa_pointer_inline_duplicate, _WO005_SA_POINTER_KIND),
+)
+
+
+@pytest.mark.parametrize(("name", "rel", "change", "kind"),
+                         _WO005_SA_WIDENING,
+                         ids=[row[0] for row in _WO005_SA_WIDENING])
+def test_wo005_session_a_record_cannot_be_widened_or_displaced(
+    repo_root, tmp_path, monkeypatch, name, rel, change, kind
+) -> None:
+    """Widening, fusing, displacing, or duplicating any part of the Session A
+    record is a finding against the file that carries it."""
+    found = _wo005_sa_findings(repo_root, tmp_path, monkeypatch,
+                               "widen-" + name, _wo005_sa_rewrite(rel, change))
+    assert (kind, rel) in found, (
+        name + " was not reported as " + kind + " against " + rel + ": "
+        + repr(sorted(found))
+    )
+
+
+def _wo005_sa_reflow(text):
+    """Rewrap the authorization basis without changing a word."""
+    accepted = _wo005_sa_mandate_section(text, _WO005_SA_BASIS_HEADING)
+    heading, body = accepted.split(_NL, 1)
+    paragraphs = [" ".join(block.split()) for block in body.split(_NL + _NL)]
+    return _replace_once(text, accepted,
+                         heading + _NL + (_NL + _NL).join(paragraphs),
+                         "reflowed basis")
+
+
+_WO005_SA_HARMLESS = (
+    ("basis-reflowed", _WO005_ISS_REL, _wo005_sa_reflow),
+    ("provenance-note", _WO005_ISS_REL,
+     lambda text: _replace_once(
+         text, "## Revision provenance" + _NL + _NL,
+         "## Revision provenance" + _NL + _NL
+         + "Formatting of this section was checked." + _NL + _NL,
+         "provenance note")),
+    ("pointer-note", "WORKORDER.md",
+     lambda text: text.rstrip() + _NL + _NL
+     + "This pointer is read before each gate." + _NL),
+)
+
+
+@pytest.mark.parametrize(("name", "rel", "change"), _WO005_SA_HARMLESS,
+                         ids=[row[0] for row in _WO005_SA_HARMLESS])
+def test_wo005_session_a_records_leave_other_prose_alone(
+    repo_root, tmp_path, monkeypatch, name, rel, change
+) -> None:
+    """Reflowing a record or adding prose outside the bounded records is not
+    a finding."""
+    found = _wo005_sa_findings(repo_root, tmp_path, monkeypatch,
+                               "harmless-" + name,
+                               _wo005_sa_rewrite(rel, change))
+    assert found == set(), name + " was reported: " + repr(sorted(found))

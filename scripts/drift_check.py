@@ -2297,23 +2297,231 @@ _WO005_ISSUED_KEYS = (
     ("ISSUANCE_CI_WORKFLOW:", _WO005_ISSUED_SEQUENCE[2]),
     ("ISSUANCE_CI_JOB:", _WO005_ISSUED_SEQUENCE[3]),
 )
+# Authorizing Session A adds three declarations to each canonical block and
+# moves the base to the Session A authorization commit. The issuance
+# declarations stay inside the same exact, terminal slice.
+_WO005_SESSION_A_COMMIT = "867074f8a520450ef6073b4c922079a897a83886"
+_WO005_SESSION_A_WORKFLOW = "36596756689"
+_WO005_SESSION_A_JOB = "109503539592"
+_WO005_SESSION_A_GATE = (
+    "WO-005 SESSION A AUTHORIZED — OFFLINE COVERAGE MODEL ONLY"
+)
+_WO005_SESSION_A_AUTH = (
+    "AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR OFFLINE COVERAGE "
+    "MODEL ONLY"
+)
+_WO005_SESSION_A_ISSUED_SEQUENCE = _WO005_ISSUED_SEQUENCE + (
+    "SESSION_A_AUTHORIZATION_COMMIT: `" + _WO005_SESSION_A_COMMIT + "`",
+    "SESSION_A_AUTHORIZATION_CI_WORKFLOW: `"
+    + _WO005_SESSION_A_WORKFLOW + "`",
+    "SESSION_A_AUTHORIZATION_CI_JOB: `" + _WO005_SESSION_A_JOB + "` "
+    + "— Lint, types, tests",
+)
+_WO005_SESSION_A_POINTER_SEQUENCE = (
+    _WO005_POINTER_SEQUENCE[:2]
+    + ("- Base commit: `" + _WO005_SESSION_A_COMMIT + "`",)
+    + _WO005_POINTER_SEQUENCE[3:7]
+    + ("- Session A authorization commit: `"
+       + _WO005_SESSION_A_COMMIT + "`",
+       "- Session A authorization CI workflow: `"
+       + _WO005_SESSION_A_WORKFLOW + "`",
+       "- Session A authorization CI job: `" + _WO005_SESSION_A_JOB + "` "
+       + "— Lint, types, tests")
+    + _WO005_POINTER_SEQUENCE[7:]
+)
+_WO005_SESSION_A_POINTER_KEYS = (
+    (("- Base commit:", _WO005_SESSION_A_POINTER_SEQUENCE[2]),)
+    + _WO005_POINTER_KEYS[1:]
+    + (("- Session A authorization commit:",
+        _WO005_SESSION_A_POINTER_SEQUENCE[7]),
+       ("- Session A authorization CI workflow:",
+        _WO005_SESSION_A_POINTER_SEQUENCE[8]),
+       ("- Session A authorization CI job:",
+        _WO005_SESSION_A_POINTER_SEQUENCE[9]))
+)
+_WO005_SESSION_A_ISSUED_KEYS = _WO005_ISSUED_KEYS + (
+    ("SESSION_A_AUTHORIZATION_COMMIT:", _WO005_SESSION_A_ISSUED_SEQUENCE[4]),
+    ("SESSION_A_AUTHORIZATION_CI_WORKFLOW:",
+     _WO005_SESSION_A_ISSUED_SEQUENCE[5]),
+    ("SESSION_A_AUTHORIZATION_CI_JOB:", _WO005_SESSION_A_ISSUED_SEQUENCE[6]),
+)
+# The Session A record in the mandate. Each of its two sections is a closed
+# record: everything from its heading to the next heading must normalize to
+# the accepted text exactly, so an added term, a fused sentence, or an extra
+# paragraph fails. The four headings around them are unique and consecutive in
+# the canonical order, so a renamed original cannot hide behind a correct copy
+# parked elsewhere.
+_WO005_SESSION_A_BASIS_HEADING = "## Session A authorization basis"
+_WO005_EXEMPTION_HEADING = "## Session A live-verification exemption"
+_WO005_SESSION_A_HEADINGS = (
+    "## Issuance basis",
+    _WO005_SESSION_A_BASIS_HEADING,
+    _WO005_EXEMPTION_HEADING,
+    "## Revision provenance",
+)
+_WO005_SESSION_A_RUN_URL = (
+    "https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _WO005_SESSION_A_WORKFLOW
+)
+_WO005_SESSION_A_BASIS_RECORD = (
+    _WO005_SESSION_A_BASIS_HEADING + " Session A is authorized for the "
+    "offline coverage model only under the current root `WORKORDER.md` gate "
+    "alone. The recorded basis is commit `" + _WO005_SESSION_A_COMMIT
+    + "`; [CI workflow `" + _WO005_SESSION_A_WORKFLOW + "`]("
+    + _WO005_SESSION_A_RUN_URL + ") completed successfully, including "
+    "required job [`" + _WO005_SESSION_A_JOB + "` — Lint, types, tests]("
+    + _WO005_SESSION_A_RUN_URL + "/job/" + _WO005_SESSION_A_JOB + "). This "
+    "gate covers exactly the scope in \"Proposed Session A — offline "
+    "coverage model\" below: its six-path file scope, the migration shim, the "
+    "acceptance tests, the static gates, the cleanup duties, and the "
+    "exclusions, unchanged. Session A ends with its worktree uncommitted for "
+    "independent review. It opens no deploy, editor launch, bridge startup, "
+    "MCP call, commit, or push. The planning baseline and the issuance "
+    "evidence above are preserved unchanged, and neither is the Session A "
+    "basis."
+)
+_WO005_EXEMPTION_RECORD = (
+    _WO005_EXEMPTION_HEADING + " The owner accepted the live-verification "
+    "exemption proposed for Session A under \"Live verification\" below, on "
+    "these terms only: - It applies only to the offline Session A scope "
+    "accepted above. - Session A changes no tool, registry, startup, bridge, "
+    "dashboard, or editor behaviour. - The only `Content/Python/` change "
+    "permitted during implementation is the standalone `list_untested.py` "
+    "migration shim specified under \"Migration shim\" below. - Offline tests "
+    "and source mappings are not live execution evidence. - Any editor or "
+    "runtime impact discovered during implementation stops Session A for a "
+    "new owner decision; it does not silently widen this exemption. - The "
+    "eventual implementation commit must explain this exemption truthfully "
+    "through the existing `Live-Verification: not-required — <reason>` "
+    "trailer. - This exemption grants no commit, push, deployment, or "
+    "live-run permission."
+)
+_WO005_SESSION_A_NEXT_GATE = (
+    "NEXT GATE: fresh independent review of the complete uncommitted Session "
+    "A implementation, which is limited to the offline coverage model, "
+    "followed by separate owner gates for its commit and its push. Deploy, "
+    "live runs, the deferred integration run, and WO-005 completion remain "
+    "closed."
+)
+# The pointer's own Session A record: the statement with its basis evidence
+# and the accepted exemption, then the restriction that follows it. The record
+# occurs once, and once more anchored to the historical issuance note before
+# it, which occurs once too - so neither a duplicate nor a decoy copy can
+# stand in for it.
+_WO005_ISSUANCE_POINTER_HISTORY = (
+    "At its issuance gate, WO-005 gave no implementation authority and opened "
+    "no session. Session A needed its own separate owner gate recorded in "
+    "this pointer, and the live-verification exemption proposed for it was "
+    "not accepted at that gate."
+)
+_WO005_SESSION_A_POINTER_RECORD = (
+    "Session A is authorized under this pointer for the offline coverage "
+    "model only, on the basis of commit `" + _WO005_SESSION_A_COMMIT + "`, "
+    "successful CI workflow `" + _WO005_SESSION_A_WORKFLOW + "`, and "
+    "successful required job `" + _WO005_SESSION_A_JOB + "` (`Lint, types, "
+    "tests`). It covers the Session A scope recorded in the issued mandate, "
+    "unchanged, and ends with that worktree uncommitted for independent "
+    "review. The owner accepted the proposed live-verification exemption for "
+    "that offline scope only, on the terms recorded in the mandate; it grants "
+    "no commit, push, deploy, or live run. Session A opens no deploy, UEFN "
+    "launch, bridge startup, MCP call, commit, or push."
+)
+_WO005_SESSION_A_POINTER_ANCHORED = (
+    _WO005_ISSUANCE_POINTER_HISTORY + " " + _WO005_SESSION_A_POINTER_RECORD
+)
 
 
-def _wo005_issuance_findings(pointer, issued_text, rel):
-    """WO-005's issuance record on the two surfaces that declare it.
+def _wo005_closed_section(lines, heading):
+    """The normalized text from `heading` up to the next heading."""
+    start = lines.index(heading)
+    end = next((index for index in range(start + 1, len(lines))
+                if lines[index].startswith("## ")), len(lines))
+    return " ".join(" ".join(lines[start:end]).split())
 
-    This pins the issuance evidence and the root base value. It does not
-    itself restrict the authorized-session value. A later transition that
-    changes the base commit must update these pins - the visible act the
-    governance model wants.
+
+def _wo005_session_a_record_findings(pointer, issued_text, rel):
+    """Session A's record while Session A is open.
+
+    In the mandate, the four headings around the record are unique and
+    consecutive in the canonical order; the authorization basis and the
+    exemption are closed records, each equal to its accepted text; and the
+    next gate occurs once, with no second next gate beside it. In the pointer,
+    the issuance note, the Session A record, and the record anchored to the
+    note each occur exactly once.
     """
     out = []
-    for target, text, stop, sequence, keys, where in (
+    normalized_pointer = " ".join(pointer.split())
+    for required in (_WO005_ISSUANCE_POINTER_HISTORY,
+                     _WO005_SESSION_A_POINTER_RECORD,
+                     _WO005_SESSION_A_POINTER_ANCHORED):
+        if normalized_pointer.count(required) != 1:
+            out.append(("WORKORDER.md", "WO-005 Session A pointer statement",
+                        str(normalized_pointer.count(required)),
+                        "exactly one " + required))
+    lines = [line.strip() for line in issued_text.splitlines()]
+    headings = [line for line in lines if line.startswith("## ")]
+    unique = True
+    for heading in _WO005_SESSION_A_HEADINGS:
+        if headings.count(heading) != 1:
+            unique = False
+            out.append((rel, "WO-005 Session A record heading",
+                        str(headings.count(heading)), "exactly one " + heading))
+    if unique:
+        first = headings.index(_WO005_SESSION_A_HEADINGS[0])
+        found = tuple(headings[first:first + len(_WO005_SESSION_A_HEADINGS)])
+        if found != _WO005_SESSION_A_HEADINGS:
+            out.append((rel, "WO-005 Session A record heading",
+                        " / ".join(found),
+                        "consecutive " + " / ".join(_WO005_SESSION_A_HEADINGS)))
+    for heading, record, kind in (
+        (_WO005_SESSION_A_BASIS_HEADING, _WO005_SESSION_A_BASIS_RECORD,
+         "WO-005 Session A authorization statement"),
+        (_WO005_EXEMPTION_HEADING, _WO005_EXEMPTION_RECORD,
+         "WO-005 Session A exemption record"),
+    ):
+        if headings.count(heading) == 1:
+            section = _wo005_closed_section(lines, heading)
+            if section != record:
+                out.append((rel, kind, "a section that differs from the "
+                            "accepted record", "exactly " + record))
+    normalized = " ".join(issued_text.split())
+    if normalized.count(_WO005_SESSION_A_NEXT_GATE) != 1:
+        out.append((rel, "WO-005 next gate",
+                    str(normalized.count(_WO005_SESSION_A_NEXT_GATE)),
+                    "exactly one " + _WO005_SESSION_A_NEXT_GATE))
+    gates = [line for line in lines if line.startswith("NEXT GATE:")]
+    if len(gates) != 1:
+        out.append((rel, "WO-005 next gate", str(len(gates)),
+                    "exactly one NEXT GATE"))
+    return out
+
+
+def _wo005_issuance_findings(pointer, issued_text, rel, session):
+    """WO-005's issuance record on the two surfaces that declare it.
+
+    This pins the issuance evidence and the root base value, and once Session
+    A is authorized, the Session A authorization evidence beside them. The
+    session value only selects which of those two shapes applies; the gate
+    and the marker are checked by the session branches. A later transition
+    that changes the base commit must update these pins - the visible act the
+    governance model wants.
+    """
+    shapes: tuple[tuple[tuple[str, ...], tuple[tuple[str, str], ...]], ...]
+    if session == "A":
+        shapes = ((_WO005_SESSION_A_POINTER_SEQUENCE,
+                   _WO005_SESSION_A_POINTER_KEYS),
+                  (_WO005_SESSION_A_ISSUED_SEQUENCE,
+                   _WO005_SESSION_A_ISSUED_KEYS))
+    else:
+        shapes = ((_WO005_POINTER_SEQUENCE, _WO005_POINTER_KEYS),
+                  (_WO005_ISSUED_SEQUENCE, _WO005_ISSUED_KEYS))
+    out = []
+    for target, text, stop, (sequence, keys), where in (
         ("WORKORDER.md", pointer,
          lambda line: _WO001_COMPLETED_LINK in line,
-         _WO005_POINTER_SEQUENCE, _WO005_POINTER_KEYS, "WORKORDER.md"),
+         shapes[0], "WORKORDER.md"),
         (rel, issued_text, lambda line: line.startswith("## "),
-         _WO005_ISSUED_SEQUENCE, _WO005_ISSUED_KEYS, "issued record"),
+         shapes[1], "issued record"),
     ):
         for kind, found, want in _canonical_field_findings(
             text, sequence, stop, where,
@@ -3224,7 +3432,7 @@ def check_work_order_contract() -> list[dict]:
                     and issued_id == _WO005_ID):
                 for _f, _k, _found, _want in _wo005_issuance_findings(
                     pointer, issued_text,
-                    issued[0].relative_to(root).as_posix(),
+                    issued[0].relative_to(root).as_posix(), session,
                 ):
                     add(_f, _k, _found, _want)
             if issued[0].name == _WO002_NAME:
@@ -3530,16 +3738,24 @@ def check_work_order_contract() -> list[dict]:
             elif session == "A":
                 # WO-004's Session A is read-only feasibility planning, not
                 # implementation, so it carries its own gate and marker
-                # rather than the generic implementation pair.
+                # rather than the generic implementation pair. WO-005's is
+                # limited to the offline coverage model, and carries its own
+                # pair for the same reason.
                 wo004_session_a = issued[0].name == _WO004_NAME
-                expected_gate = (
-                    _WO004_SESSION_A_GATE if wo004_session_a else
-                    f"{issued_id} SESSION A AUTHORIZED — IMPLEMENT SESSION A ONLY"
-                )
-                expected_session_a_auth = (
-                    _WO004_SESSION_A_AUTH if wo004_session_a
-                    else _ISSUED_SESSION_A_AUTH
-                )
+                wo005_session_a = (issued[0].name == _WO005_NAME
+                                   and issued_id == _WO005_ID)
+                if wo004_session_a:
+                    expected_gate = _WO004_SESSION_A_GATE
+                    expected_session_a_auth = _WO004_SESSION_A_AUTH
+                elif wo005_session_a:
+                    expected_gate = _WO005_SESSION_A_GATE
+                    expected_session_a_auth = _WO005_SESSION_A_AUTH
+                else:
+                    expected_gate = (
+                        f"{issued_id} SESSION A AUTHORIZED — IMPLEMENT "
+                        "SESSION A ONLY"
+                    )
+                    expected_session_a_auth = _ISSUED_SESSION_A_AUTH
                 if auth_lines != [expected_session_a_auth]:
                     add(issued[0].relative_to(root).as_posix(),
                         "issued session authorization", repr(auth_lines),
@@ -3551,6 +3767,17 @@ def check_work_order_contract() -> list[dict]:
                     add("WORKORDER.md", "later session authorization",
                         "positive permission for a non-current session",
                         "only Session A authorized")
+                if wo005_session_a:
+                    # The canonical slices and the base commit are enforced by
+                    # _wo005_issuance_findings; this adds the Session A record
+                    # and its accepted exemption terms, in the mandate and in
+                    # the pointer statement.
+                    for _f, _k, _found, _want in (
+                        _wo005_session_a_record_findings(
+                            pointer, issued_text,
+                            issued[0].relative_to(root).as_posix())
+                    ):
+                        add(_f, _k, _found, _want)
                 if issued[0].name == _WO003_NAME:
                     wo003_rel = issued[0].relative_to(root).as_posix()
                     for _f, _k, _found, _want in _wo003_record_findings(
