@@ -1,8 +1,8 @@
 # WO-004 — Modal Observability and Human-Safe Blocking
 
-STATUS: ISSUED
+STATUS: COMPLETED
 
-AUTHORIZATION: ISSUED — SESSION C AUTHORIZED FOR LIVE ACCEPTANCE ONLY
+AUTHORIZATION: COMPLETED — NO SESSION AUTHORIZED
 
 OWNER: Ocean Bennett
 
@@ -39,6 +39,12 @@ SESSION_C_AUTHORIZATION_COMMIT: `17b5afe3f50bfa3ab882ff362a10eef70750c694`
 SESSION_C_AUTHORIZATION_CI_WORKFLOW: `36385787242`
 
 SESSION_C_AUTHORIZATION_CI_JOB: `108810759914` — Lint, types, tests
+
+COMPLETION_BASIS_COMMIT: `b4fa0a5245944fd992b6a2b52dbac1e59de242ae`
+
+COMPLETION_BASIS_CI_WORKFLOW: `36494750779`
+
+COMPLETION_BASIS_CI_JOB: `109171582586` — Lint, types, tests
 
 ## Issuance basis
 
@@ -146,16 +152,16 @@ preserved unchanged, and none of them is the Session B basis.
 
 ## Session C authorization basis
 
-Session C is authorized for owner-operated live acceptance only under the
-current root `WORKORDER.md` gate alone. The recorded basis is commit
-`17b5afe3f50bfa3ab882ff362a10eef70750c694`; [CI workflow
+At the Session C authorization gate, Session C was authorized for
+owner-operated live acceptance only under the root `WORKORDER.md` gate. The
+recorded basis is commit `17b5afe3f50bfa3ab882ff362a10eef70750c694`; [CI workflow
 `36385787242`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36385787242)
 completed successfully, including required job
 [`108810759914` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36385787242/job/108810759914).
 
 That CI ran on the base commit, which does not contain the Session B
-implementation. The implementation is uncommitted, and its evidence is local
-checks and independent static review, not CI. On Windows 11 with Python
+implementation. At that gate the implementation was uncommitted, and its
+evidence was local checks and independent static review, not CI. On Windows 11 with Python
 3.13.5, the full suite gave 1443 passed and 10 skipped; the security tests gave
 175 passed on Python 3.13.5 and on Python 3.12.10; and ruff, the drift check,
 and the API manifest check were clean. The configured mypy files include
@@ -175,11 +181,35 @@ in the reviewed snapshot `wo004-session-b-cleanup-2026-09-28`:
 Each Git blob is the line-ending-normalized identity Git would commit; each
 SHA-256 is of the reviewed worktree bytes.
 
-This gate covers the owner-operated procedure in "Session C — live acceptance,
+That gate covered the owner-operated procedure in "Session C — live acceptance,
 owner-operated (amended)" below, unchanged, including its runtime prerequisites
-and the updated-editor prerequisite. The owner operates UEFN. Session C changes
-no implementation file: a defect found live stops the session and is reported
-for a separate owner decision. It opens no commit, push, or WO-004 completion.
+and the updated-editor prerequisite. The owner operated UEFN. Session C changed
+no implementation file: a defect found live would have stopped the session for
+a separate owner decision. It opened no commit, push, or WO-004 completion.
+
+## Completion record
+
+WO-004 is completed as `b4fa0a5245944fd992b6a2b52dbac1e59de242ae`; [CI workflow
+`36494750779`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36494750779)
+completed successfully, including required job
+[`109171582586` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36494750779/job/109171582586).
+That commit carries the independently accepted Session B client implementation,
+unchanged from the identities listed above; the Session C authorization
+transition; and the independently accepted [Session C live-acceptance
+record](../../audits/2026-09-28-wo004-session-c-live-acceptance.md) with its
+evidence directory.
+
+Completion accepts the narrowed client-outcome work only: client outcome
+classification and wording, direct loopback transport for bridge requests, and
+the no-automatic-retry guidance. It claims no modal detection or diagnosis, no
+exactly-once execution, no MCP-host or stdio integration, and no fix for the
+bridge's unhandled `ConnectionAbortedError`, which stays deferred with the rest
+of `mcp_bridge.py`. The coverage limits recorded in the Session C record stay in
+force. The optional wording findings raised by the independent acceptance
+review of that record stay deferred; they are not listed in the record itself.
+
+WO-004 is complete; no session is authorized. WO-005 remains proposed and
+unauthorized.
 
 ## Planning basis
 
@@ -923,10 +953,13 @@ Each is a separate owner gate and none implies the next.
 Completed: proposal revision → independent pre-issuance review → issuance →
 Session A gate → Session A decision → independent review of the decision and
 amendment → commit → push → CI → Session B gate → Session B implementation,
-left uncommitted → independent review → Session C gate.
+left uncommitted → independent review → Session C gate → live acceptance
+against that uncommitted change → independent acceptance review → commit →
+push → CI → WO-004 completion gate.
 
-Remaining: live acceptance against that uncommitted change → independent
-acceptance review → commit → push → CI → WO-004 completion gate.
+Remaining within WO-004: none. The completion transition has its own
+independent review, commit, and push gates, and WO-005 needs its own issuance
+gate.
 
 As issued, this chain placed commit and push before Session C. It is reordered
 because `CLAUDE.md` requires live verification before code is committed.
@@ -965,7 +998,7 @@ declared in the canonical metadata block above and in the root pointer's
 canonical bullet block. The planning basis and the issuance basis are
 distinct records and must not be conflated.
 
-NEXT GATE: owner-operated Session C live acceptance of the reviewed uncommitted
-Session B implementation, followed by fresh independent review of the recorded
-evidence. Any change to the implementation, commit, push, and WO-004 completion
-remain closed.
+NEXT GATE: separate owner authorization for a fresh independent WO-005
+pre-issuance review, after this completion transition is accepted, committed,
+pushed, and green. Completion of WO-004 does not issue or authorize WO-005,
+which remains proposed and unauthorized.

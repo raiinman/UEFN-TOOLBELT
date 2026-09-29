@@ -4,10 +4,10 @@ This file is the repository's sole authority pointer for current Work Order
 state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
-- Current issued Work Order: WO-004
-- Authorized session: C
-- Base commit: `17b5afe3f50bfa3ab882ff362a10eef70750c694`
-- Current gate: WO-004 SESSION C AUTHORIZED — OWNER-OPERATED LIVE ACCEPTANCE ONLY
+- Current issued Work Order: NONE
+- Authorized session: NONE
+- Base commit: `b4fa0a5245944fd992b6a2b52dbac1e59de242ae`
+- Current gate: WO-004 COMPLETED — WO-005 PROPOSED AND NOT AUTHORIZED
 - Issuance commit: `8444faf340afe47765c43d943200db712880817b`
 - Issuance CI workflow: `34441169191`
 - Issuance CI job: `102756337393` — Lint, types, tests
@@ -23,6 +23,9 @@ never authorizes implementation.
 - Session C authorization commit: `17b5afe3f50bfa3ab882ff362a10eef70750c694`
 - Session C authorization CI workflow: `36385787242`
 - Session C authorization CI job: `108810759914` — Lint, types, tests
+- Completion basis commit: `b4fa0a5245944fd992b6a2b52dbac1e59de242ae`
+- Completion basis CI workflow: `36494750779`
+- Completion basis CI job: `109171582586` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -99,8 +102,8 @@ authorized. Session C or any later session, tagging, Release creation,
 branch-protection changes, other repository metadata changes, and social
 publication all remain unauthorized.
 
-[`WO-004`](docs/work-orders/issued/WO-004-modal-observability.md) is
-issued. Its accepted planning baseline is
+[`WO-004`](docs/work-orders/completed/WO-004-modal-observability.md) is
+completed. Its accepted planning baseline is
 `0d513f1639cf197707132205f4074d0fe3a750cc`; the independently accepted
 proposal was committed as `8444faf340afe47765c43d943200db712880817b`
 after [CI workflow
@@ -108,9 +111,9 @@ after [CI workflow
 completed successfully, including required job
 [`102756337393` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/34441169191/job/102756337393).
 
-Issuance grants no implementation authority and opens no session. Session
-A feasibility work needs its own separate owner gate recorded in this
-pointer, and Session B and Session C stay closed behind it. Tagging,
+At that gate, issuance granted no implementation authority and opened no
+session. Session A feasibility work needed its own separate owner gate recorded
+in this pointer, and Session B and Session C stayed closed behind it. Tagging,
 Release creation, branch-protection changes, other repository metadata
 changes, and social publication all remain unauthorized, as do WO-005,
 WO-006, and WO-007, which stay proposed.
@@ -149,24 +152,35 @@ scope recorded in the issued mandate - client outcome classification and
 wording, direct loopback transport for bridge requests, and no-automatic-retry
 guidance - in `client.py`, `mcp_server.py`, `.claude/mcp_reference.md`, and
 `tests/test_mcp_security.py` only, ending with that worktree uncommitted for
-independent review. It opened no bridge change, deploy, UEFN launch, bridge
-start, MCP call, commit, or push, and Session C live testing was not authorized
+independent review. It opened no bridge change, deploy, UEFN launch, bridge start,
+MCP call, commit, or push, and Session C live testing was not authorized
 at that gate.
 
-Session C is authorized under this pointer for owner-operated live acceptance
-only, on the basis of commit `17b5afe3f50bfa3ab882ff362a10eef70750c694`, successful CI
-workflow `36385787242`, and successful required job `108810759914` (`Lint,
-types, tests`). That CI ran on the base commit, which does not contain the
-Session B implementation. The implementation is uncommitted; it was accepted on
-local checks and independent static review only, and the issued mandate records
-its reviewed file identities. Session C covers the owner-operated live
-acceptance procedure in the issued mandate, including its runtime and
-updated-editor prerequisites, against exactly that uncommitted implementation.
-It changes no implementation file and opens no commit or push; a defect found
-live stops the session for a separate owner decision. Tagging, Release
+At the Session C authorization gate, this pointer opened owner-operated live
+acceptance only, on the basis of commit `17b5afe3f50bfa3ab882ff362a10eef70750c694`,
+successful CI workflow `36385787242`, and successful required job
+`108810759914` (`Lint, types, tests`). That CI ran on the base commit, which did
+not contain the Session B implementation. At that gate the implementation was
+uncommitted; it had been accepted on local checks and independent static review
+only, and the mandate records its reviewed file identities. That gate covered
+the owner-operated live acceptance procedure in the mandate, including its
+runtime and updated-editor prerequisites, against exactly that uncommitted
+implementation. It changed no implementation file and opened no commit or push.
+
+WO-004 is completed as `b4fa0a5245944fd992b6a2b52dbac1e59de242ae`; [CI workflow
+`36494750779`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36494750779)
+completed successfully, including required job
+[`109171582586` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36494750779/job/109171582586).
+That commit carries the independently accepted client implementation, the
+Session C authorization transition, and the independently accepted [Session C
+live-acceptance record](docs/audits/2026-09-28-wo004-session-c-live-acceptance.md)
+with its evidence. Completion accepts the narrowed client-outcome work only; it
+claims no modal detection, exactly-once execution, MCP-host integration, or
+bridge exception fix. WO-004 is complete; no session is authorized. WO-005
+remains proposed and unauthorized. Any later session, tagging, Release
 creation, branch-protection changes, other repository metadata changes, and
-social publication all remain unauthorized, as do WO-005, WO-006, and WO-007,
-which stay proposed.
+social publication all remain unauthorized, as do WO-006 and WO-007, which stay
+proposed.
 
 WO-001 through WO-007 form the frozen next release train. The release version
 remains undecided and the repository stays at version 2.4.1. No tag or GitHub
