@@ -2923,29 +2923,24 @@ def check_game_path_defaults() -> list[dict]:
 
 
 def _registered_tools() -> dict:
-    """Map every @register_tool name to its category, parsed from source."""
-    import ast
-    tools = {}
+    """Map every @register_tool name to its category, parsed from source.
+
+    Delegates to the shared enumerator in coverage_report.py beside this file,
+    loaded by path so `scripts/` need not be on sys.path. The package still
+    resolves from ROOT. An unparseable file, a duplicate name, or a
+    non-constant name raises RegistryDefect naming each site, rather than
+    being skipped or overwritten.
+    """
+    import importlib.util
     from pathlib import Path
+    spec = importlib.util.spec_from_file_location(
+        "_coverage_report", Path(__file__).resolve().parent / "coverage_report.py")
+    assert spec is not None and spec.loader is not None
+    coverage_report = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(coverage_report)
     pkg = Path(ROOT) / "Content" / "Python" / "UEFN_Toolbelt"
-    for path in pkg.rglob("*.py"):
-        try:
-            tree = ast.parse(path.read_text(encoding="utf-8"))
-        except SyntaxError:
-            continue
-        for node in ast.walk(tree):
-            if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                continue
-            for dec in node.decorator_list:
-                if not (isinstance(dec, ast.Call)
-                        and getattr(dec.func, "id", "") == "register_tool"):
-                    continue
-                kw = {k.arg: k.value for k in dec.keywords}
-                name, cat = kw.get("name"), kw.get("category")
-                if isinstance(name, ast.Constant):
-                    tools[name.value] = (cat.value if isinstance(cat, ast.Constant)
-                                         else "?")
-    return tools
+    return {site.name: site.category
+            for site in coverage_report.enumerate_registrations(pkg)}
 
 
 def check_ui_coverage() -> list[dict]:

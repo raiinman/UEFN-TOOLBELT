@@ -1,0 +1,2103 @@
+{
+  "description": "WO-005 coverage evidence. `mappings` are explicit check-to-tool entries; only these can raise a tool above registration-only, and only when scripts/coverage_report.py finds the check obeys the promotion rules. `registration_only` records explicit reasons. `flags` are availability flags. `run_evidence` holds recorded observations and never contributes to source coverage. Mapping method: a check is attributed only when exactly one tool is invoked between the previous success record and it in the same function; records in exception handlers or early-return branches are not mapped; checks whose assertion is only a self-reported status or result type are mapped as defined-execution.",
+  "mappings": [
+    {
+      "source": "integration",
+      "section": "Materials",
+      "label": "Apply Preset",
+      "line": 233,
+      "tools": [
+        "material_apply_preset"
+      ],
+      "category": "defined-outcome",
+      "assertion": "bool(is_instance and named_for_preset and parent_ok)"
+    },
+    {
+      "source": "integration",
+      "section": "Bulk Ops",
+      "label": "Align X (First Actor)",
+      "line": 258,
+      "tools": [
+        "bulk_align"
+      ],
+      "category": "defined-outcome",
+      "assertion": "abs(l1.x - 0.0) < 1.0 and abs(l2.x - 0.0) < 1.0 and abs(l3.x - 0.0) < 1.0"
+    },
+    {
+      "source": "integration",
+      "section": "Bulk Ops",
+      "label": "Distribute X",
+      "line": 276,
+      "tools": [
+        "bulk_distribute"
+      ],
+      "category": "defined-outcome",
+      "assertion": "_assert_delta(l2.x, 500.0)"
+    },
+    {
+      "source": "integration",
+      "section": "Bulk Ops",
+      "label": "Snap to 100",
+      "line": 288,
+      "tools": [
+        "bulk_snap_to_grid"
+      ],
+      "category": "defined-outcome",
+      "assertion": "_assert_delta(l.x, 100) and _assert_delta(l.y, 500) and _assert_delta(l.z, 800)"
+    },
+    {
+      "source": "integration",
+      "section": "Bulk Ops",
+      "label": "Randomize (Rot)",
+      "line": 305,
+      "tools": [
+        "bulk_randomize"
+      ],
+      "category": "defined-outcome",
+      "assertion": "abs(r.pitch) < 0.01 and abs(r.roll) < 0.01"
+    },
+    {
+      "source": "integration",
+      "section": "Bulk Ops",
+      "label": "Stack Z",
+      "line": 323,
+      "tools": [
+        "bulk_stack"
+      ],
+      "category": "defined-outcome",
+      "assertion": "_assert_delta(l.z, 150.0)"
+    },
+    {
+      "source": "integration",
+      "section": "Bulk Ops",
+      "label": "Reset Transforms",
+      "line": 337,
+      "tools": [
+        "bulk_reset"
+      ],
+      "category": "defined-outcome",
+      "assertion": "_assert_delta(r.pitch, 0) and _assert_delta(s.x, 1) and _assert_delta(l.x, 1)"
+    },
+    {
+      "source": "integration",
+      "section": "Bulk Ops",
+      "label": "Mirror X",
+      "line": 365,
+      "tools": [
+        "bulk_mirror"
+      ],
+      "category": "defined-outcome",
+      "assertion": "_assert_delta(a_mirror_1.get_actor_location().x, 200) and _assert_delta(a_mirror_2.get_actor_location().x, 100)"
+    },
+    {
+      "source": "integration",
+      "section": "Bulk Ops",
+      "label": "Normalize Scale",
+      "line": 377,
+      "tools": [
+        "bulk_normalize_scale"
+      ],
+      "category": "defined-outcome",
+      "assertion": "_assert_delta(s.x, 1.5) and _assert_delta(s.y, 1.5) and _assert_delta(s.z, 1.5)"
+    },
+    {
+      "source": "integration",
+      "section": "Bulk Ops",
+      "label": "Face Camera",
+      "line": 387,
+      "tools": [
+        "bulk_face_camera"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Patterns",
+      "label": "Grid Spawn (2x2)",
+      "line": 403,
+      "tools": [
+        "pattern_grid"
+      ],
+      "category": "defined-outcome",
+      "assertion": "len(pattern_actors) >= 4"
+    },
+    {
+      "source": "integration",
+      "section": "Patterns",
+      "label": "Clear All",
+      "line": 409,
+      "tools": [
+        "pattern_clear"
+      ],
+      "category": "defined-outcome",
+      "assertion": "len(pattern_actors_after) == 0"
+    },
+    {
+      "source": "integration",
+      "section": "Patterns",
+      "label": "Circle (Radius/Count)",
+      "line": 438,
+      "tools": [
+        "pattern_circle"
+      ],
+      "category": "defined-outcome",
+      "assertion": "passed_count and passed_dist"
+    },
+    {
+      "source": "integration",
+      "section": "Patterns",
+      "label": "Helix Spawn (Count=24)",
+      "line": 492,
+      "tools": [
+        "pattern_helix"
+      ],
+      "category": "defined-outcome",
+      "assertion": "len(pattern_actors) >= 24"
+    },
+    {
+      "source": "integration",
+      "section": "Snapshots",
+      "label": "Save JSON",
+      "line": 534,
+      "tools": [
+        "snapshot_save"
+      ],
+      "category": "defined-outcome",
+      "assertion": "os.path.exists(snap_file)"
+    },
+    {
+      "source": "integration",
+      "section": "Snapshots",
+      "label": "Export JSON",
+      "line": 539,
+      "tools": [
+        "snapshot_export"
+      ],
+      "category": "defined-outcome",
+      "assertion": "os.path.exists(export_path)"
+    },
+    {
+      "source": "integration",
+      "section": "Snapshots",
+      "label": "Import JSON",
+      "line": 544,
+      "tools": [
+        "snapshot_import"
+      ],
+      "category": "defined-outcome",
+      "assertion": "os.path.exists(imported_file)"
+    },
+    {
+      "source": "integration",
+      "section": "Snapshots",
+      "label": "Compare Live",
+      "line": 551,
+      "tools": [
+        "snapshot_compare_live"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Snapshots",
+      "label": "Restore Transforms",
+      "line": 563,
+      "tools": [
+        "snapshot_restore"
+      ],
+      "category": "defined-outcome",
+      "assertion": "_assert_delta(a_diff.get_actor_location().x, 100)"
+    },
+    {
+      "source": "integration",
+      "section": "Snapshots",
+      "label": "Delete JSON",
+      "line": 573,
+      "tools": [
+        "snapshot_delete"
+      ],
+      "category": "defined-outcome",
+      "assertion": "not os.path.exists(snap_file)"
+    },
+    {
+      "source": "integration",
+      "section": "Crawler",
+      "label": "Level Crawl JSON",
+      "line": 590,
+      "tools": [
+        "api_crawl_level_classes"
+      ],
+      "category": "defined-outcome",
+      "assertion": "os.path.exists(out_path)"
+    },
+    {
+      "source": "integration",
+      "section": "Crawler",
+      "label": "Selection Crawl JSON",
+      "line": 599,
+      "tools": [
+        "api_crawl_selection"
+      ],
+      "category": "defined-outcome",
+      "assertion": "os.path.exists(out_path_sel)"
+    },
+    {
+      "source": "integration",
+      "section": "Asset Tagger",
+      "label": "Add Tag",
+      "line": 633,
+      "tools": [
+        "tag_add"
+      ],
+      "category": "defined-outcome",
+      "assertion": "added.get(\"status\") == \"ok\" and added.get(\"tagged\") == 1"
+    },
+    {
+      "source": "integration",
+      "section": "Asset Tagger",
+      "label": "Show Tags",
+      "line": 645,
+      "tools": [
+        "tag_show"
+      ],
+      "category": "defined-outcome",
+      "assertion": "shown.get(\"status\") == \"ok\" and shown_tags.get(tag_name) == \"verified\""
+    },
+    {
+      "source": "integration",
+      "section": "Asset Tagger",
+      "label": "Search finds the tag it just wrote",
+      "line": 653,
+      "tools": [
+        "tag_search"
+      ],
+      "category": "defined-outcome",
+      "assertion": "any(asset_path in str(h) for h in hits)"
+    },
+    {
+      "source": "integration",
+      "section": "Asset Tagger",
+      "label": "List All",
+      "line": 658,
+      "tools": [
+        "tag_list_all"
+      ],
+      "category": "defined-outcome",
+      "assertion": "all_tags.get(tag_name) == 1"
+    },
+    {
+      "source": "integration",
+      "section": "Asset Tagger",
+      "label": "Export Tags",
+      "line": 664,
+      "tools": [
+        "tag_export"
+      ],
+      "category": "defined-outcome",
+      "assertion": "os.path.exists(export_path)"
+    },
+    {
+      "source": "integration",
+      "section": "Asset Tagger",
+      "label": "Remove Tag",
+      "line": 667,
+      "tools": [
+        "tag_remove"
+      ],
+      "category": "defined-outcome",
+      "assertion": "removed.get(\"status\") == \"ok\" and removed.get(\"removed\") == 1"
+    },
+    {
+      "source": "integration",
+      "section": "Asset Tagger",
+      "label": "Search no longer finds it after removal",
+      "line": 675,
+      "tools": [
+        "tag_search"
+      ],
+      "category": "defined-outcome",
+      "assertion": "not any(asset_path in str(h) for h in gone_hits)"
+    },
+    {
+      "source": "integration",
+      "section": "Verse",
+      "label": "List Snippets",
+      "line": 690,
+      "tools": [
+        "verse_list_snippets"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Verse",
+      "label": "Gen Device Declarations",
+      "line": 696,
+      "tools": [
+        "verse_gen_device_declarations"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Screenshots",
+      "label": "Timed Series",
+      "line": 755,
+      "tools": [
+        "screenshot_timed_series"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Scatter",
+      "label": "HISM Instances",
+      "line": 794,
+      "tools": [
+        "scatter_hism"
+      ],
+      "category": "defined-outcome",
+      "assertion": "count == 50"
+    },
+    {
+      "source": "integration",
+      "section": "Scatter",
+      "label": "Clear",
+      "line": 800,
+      "tools": [
+        "scatter_clear"
+      ],
+      "category": "defined-outcome",
+      "assertion": "len(remaining) == 0"
+    },
+    {
+      "source": "integration",
+      "section": "Spline",
+      "label": "Export JSON",
+      "line": 838,
+      "tools": [
+        "spline_export_json"
+      ],
+      "category": "defined-outcome",
+      "assertion": "os.path.exists(export_path)"
+    },
+    {
+      "source": "integration",
+      "section": "Spline",
+      "label": "Clear Props",
+      "line": 845,
+      "tools": [
+        "spline_clear_props"
+      ],
+      "category": "defined-outcome",
+      "assertion": "not left"
+    },
+    {
+      "source": "integration",
+      "section": "Assets",
+      "label": "Rename Dry Run",
+      "line": 860,
+      "tools": [
+        "rename_dry_run"
+      ],
+      "category": "defined-outcome",
+      "assertion": "os.path.exists(report_path)"
+    },
+    {
+      "source": "integration",
+      "section": "Assets",
+      "label": "Enforce Conventions",
+      "line": 885,
+      "tools": [
+        "rename_enforce_conventions"
+      ],
+      "category": "defined-outcome",
+      "assertion": "enforced.get(\"status\") in (\"ok\", \"partial\") and enforced.get(\"renamed\", 0) > 0"
+    },
+    {
+      "source": "integration",
+      "section": "Assets",
+      "label": "Strip Prefix",
+      "line": 897,
+      "tools": [
+        "rename_strip_prefix"
+      ],
+      "category": "defined-outcome",
+      "assertion": "stripped.get(\"status\") in (\"ok\", \"partial\") and stripped.get(\"done\", 0) > 0"
+    },
+    {
+      "source": "integration",
+      "section": "Optimization",
+      "label": "Memory Scan JSON",
+      "line": 917,
+      "tools": [
+        "memory_scan"
+      ],
+      "category": "defined-outcome",
+      "assertion": "os.path.exists(report_path)"
+    },
+    {
+      "source": "integration",
+      "section": "Optimization",
+      "label": "Scan Textures",
+      "line": 921,
+      "tools": [
+        "memory_scan_textures"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Optimization",
+      "label": "Scan Meshes",
+      "line": 924,
+      "tools": [
+        "memory_scan_meshes"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Optimization",
+      "label": "Top Offenders",
+      "line": 927,
+      "tools": [
+        "memory_top_offenders"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Optimization",
+      "label": "Auto-Fix LODs",
+      "line": 937,
+      "tools": [
+        "memory_autofix_lods"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Assets",
+      "label": "Audit Orphans",
+      "line": 953,
+      "tools": [
+        "ref_audit_orphans"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Assets",
+      "label": "Audit Redirectors",
+      "line": 956,
+      "tools": [
+        "ref_audit_redirectors"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Assets",
+      "label": "Audit Duplicates",
+      "line": 959,
+      "tools": [
+        "ref_audit_duplicates"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Assets",
+      "label": "Audit Unused Textures",
+      "line": 962,
+      "tools": [
+        "ref_audit_unused_textures"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Assets",
+      "label": "Ref Aud Full Report",
+      "line": 967,
+      "tools": [
+        "ref_full_report"
+      ],
+      "category": "defined-outcome",
+      "assertion": "os.path.exists(report_path)"
+    },
+    {
+      "source": "integration",
+      "section": "Project",
+      "label": "Scaffold Preview",
+      "line": 984,
+      "tools": [
+        "scaffold_preview"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Project",
+      "label": "Scaffold Generate",
+      "line": 990,
+      "tools": [
+        "scaffold_generate"
+      ],
+      "category": "defined-outcome",
+      "assertion": "unreal.EditorAssetLibrary.does_directory_exist(maps_path)"
+    },
+    {
+      "source": "integration",
+      "section": "Procedural",
+      "label": "Text Place",
+      "line": 1020,
+      "tools": [
+        "text_place"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result1, dict) and result1.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Procedural",
+      "label": "Text Paint Grid",
+      "line": 1030,
+      "tools": [
+        "text_paint_grid"
+      ],
+      "category": "defined-outcome",
+      "assertion": "len(grid_actors) == 4"
+    },
+    {
+      "source": "integration",
+      "section": "Procedural",
+      "label": "Text Save Style",
+      "line": 1034,
+      "tools": [
+        "text_save_style"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Procedural",
+      "label": "Text Label Selection",
+      "line": 1044,
+      "tools": [
+        "text_label_selection"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Procedural",
+      "label": "Text Clear",
+      "line": 1057,
+      "tools": [
+        "text_clear_folder"
+      ],
+      "category": "defined-outcome",
+      "assertion": "len(remaining) == 0"
+    },
+    {
+      "source": "integration",
+      "section": "Materials",
+      "label": "Randomize Colors",
+      "line": 1077,
+      "tools": [
+        "material_randomize_colors"
+      ],
+      "category": "defined-outcome",
+      "assertion": "r.get(\"status\") == \"ok\" and r.get(\"count\") == r.get(\"attempted\") == 3"
+    },
+    {
+      "source": "integration",
+      "section": "Materials",
+      "label": "Gradient Painter",
+      "line": 1083,
+      "tools": [
+        "material_gradient_painter"
+      ],
+      "category": "defined-outcome",
+      "assertion": "r.get(\"status\") == \"ok\" and r.get(\"count\") == r.get(\"attempted\") == 3"
+    },
+    {
+      "source": "integration",
+      "section": "Materials",
+      "label": "Team Color Split",
+      "line": 1092,
+      "tools": [
+        "material_team_color_split"
+      ],
+      "category": "defined-outcome",
+      "assertion": "r.get(\"status\") == \"ok\" and red + blue == 3"
+    },
+    {
+      "source": "integration",
+      "section": "Materials",
+      "label": "Pattern Painter",
+      "line": 1098,
+      "tools": [
+        "material_pattern_painter"
+      ],
+      "category": "defined-outcome",
+      "assertion": "r.get(\"status\") == \"ok\" and r.get(\"count\") == r.get(\"attempted\") == 3"
+    },
+    {
+      "source": "integration",
+      "section": "Materials",
+      "label": "Glow Pulse Preview",
+      "line": 1104,
+      "tools": [
+        "material_glow_pulse_preview"
+      ],
+      "category": "defined-outcome",
+      "assertion": "r.get(\"status\") == \"ok\" and r.get(\"count\") == r.get(\"attempted\") == 3"
+    },
+    {
+      "source": "integration",
+      "section": "Materials",
+      "label": "Color Harmony",
+      "line": 1110,
+      "tools": [
+        "material_color_harmony"
+      ],
+      "category": "defined-outcome",
+      "assertion": "r.get(\"status\") == \"ok\" and r.get(\"count\") == r.get(\"attempted\") == 3\n                and r.get(\"harmony\") == \"triadic\""
+    },
+    {
+      "source": "integration",
+      "section": "Materials",
+      "label": "Bulk Swap",
+      "line": 1136,
+      "tools": [
+        "material_bulk_swap"
+      ],
+      "category": "defined-outcome",
+      "assertion": "r.get(\"status\") == \"ok\" and r.get(\"total_slots\", 0) > 0"
+    },
+    {
+      "source": "integration",
+      "section": "Materials",
+      "label": "Bulk Swap reports a miss as error",
+      "line": 1150,
+      "tools": [
+        "material_bulk_swap"
+      ],
+      "category": "defined-outcome",
+      "assertion": "miss.get(\"status\") == \"error\"\n                and miss.get(\"total_slots\", -1) == 0\n                and miss.get(\"reason\") == \"no_slots_matched\""
+    },
+    {
+      "source": "integration",
+      "section": "LODs",
+      "label": "Audit Folder",
+      "line": 1302,
+      "tools": [
+        "lod_audit_folder"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Arena",
+      "label": "Generate",
+      "line": 1331,
+      "tools": [
+        "arena_generate"
+      ],
+      "category": "defined-outcome",
+      "assertion": "len(arena_actors) > 10"
+    },
+    {
+      "source": "integration",
+      "section": "Scatter",
+      "label": "Along Path",
+      "line": 1358,
+      "tools": [
+        "scatter_along_path"
+      ],
+      "category": "defined-outcome",
+      "assertion": "len(actors) == 4"
+    },
+    {
+      "source": "integration",
+      "section": "Scatter",
+      "label": "Cleanup",
+      "line": 1365,
+      "tools": [
+        "scatter_clear"
+      ],
+      "category": "defined-outcome",
+      "assertion": "not left"
+    },
+    {
+      "source": "integration",
+      "section": "Assets",
+      "label": "Enforce Conventions",
+      "line": 1388,
+      "tools": [
+        "rename_enforce_conventions"
+      ],
+      "category": "defined-outcome",
+      "assertion": "enforced.get(\"renamed\", 0) > 0"
+    },
+    {
+      "source": "integration",
+      "section": "Assets",
+      "label": "Organize Assets",
+      "line": 1399,
+      "tools": [
+        "organize_assets"
+      ],
+      "category": "defined-outcome",
+      "assertion": "preview.get(\"dry_run\") is True and preview.get(\"moved\") == 0\n                    and moved.get(\"moved\", 0) > 0"
+    },
+    {
+      "source": "integration",
+      "section": "Cooker",
+      "label": "mark_selection status matches the count",
+      "line": 1455,
+      "tools": [
+        "cooker_mark_selection"
+      ],
+      "category": "defined-outcome",
+      "assertion": "(st == \"ok\" and changed and not failed)\n            or (st == \"partial\" and changed and failed)\n            or (st == \"error\" and not changed and failed)",
+      "basis": "accepts a documented refusal as well as success; the check fails on any other result"
+    },
+    {
+      "source": "integration",
+      "section": "Cooker",
+      "label": "mark_selection(False) status matches the count",
+      "line": 1474,
+      "tools": [
+        "cooker_mark_selection"
+      ],
+      "category": "defined-outcome",
+      "assertion": "(c_st == \"ok\" and c_changed and not c_failed)\n            or (c_st == \"partial\" and c_changed and c_failed)\n            or (c_st == \"error\" and not c_changed and c_failed)",
+      "basis": "accepts a documented refusal as well as success; the check fails on any other result"
+    },
+    {
+      "source": "integration",
+      "section": "Curves",
+      "label": "returned path exists on disk",
+      "line": 1509,
+      "tools": [
+        "curve_create"
+      ],
+      "category": "defined-outcome",
+      "assertion": "bool(path) and unreal.EditorAssetLibrary.does_asset_exist(path)",
+      "basis": "checks that the asset path curve_create returned exists, via unreal.EditorAssetLibrary.does_asset_exist; a reading of the check's source, not evidence from a fresh run"
+    },
+    {
+      "source": "integration",
+      "section": "Measurement",
+      "label": "Measure Distance",
+      "line": 1539,
+      "tools": [
+        "measure_distance"
+      ],
+      "category": "defined-outcome",
+      "assertion": "_assert_delta(dist, 1000.0)"
+    },
+    {
+      "source": "integration",
+      "section": "Measurement",
+      "label": "Travel Time (Run)",
+      "line": 1544,
+      "tools": [
+        "measure_travel_time"
+      ],
+      "category": "defined-outcome",
+      "assertion": "_assert_delta(res[\"time_seconds\"], 1000.0 / 450.0, tolerance=0.1)"
+    },
+    {
+      "source": "integration",
+      "section": "Localization",
+      "label": "Export Manifest",
+      "line": 1566,
+      "tools": [
+        "text_export_manifest"
+      ],
+      "category": "defined-outcome",
+      "assertion": "out_path is not None and os.path.exists(out_path)"
+    },
+    {
+      "source": "integration",
+      "section": "Localization",
+      "label": "Apply Translation",
+      "line": 1589,
+      "tools": [
+        "text_apply_translation"
+      ],
+      "category": "defined-outcome",
+      "assertion": "\"Grok_Translated\" in current_text"
+    },
+    {
+      "source": "integration",
+      "section": "Environmental",
+      "label": "Audit Brushes",
+      "line": 1607,
+      "tools": [
+        "foliage_audit_brushes"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(audit_result, dict) and audit_result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Environmental",
+      "label": "Convert Props",
+      "line": 1615,
+      "tools": [
+        "foliage_convert_selected_to_actor"
+      ],
+      "category": "defined-outcome",
+      "assertion": "converted > 0"
+    },
+    {
+      "source": "integration",
+      "section": "Entities",
+      "label": "List Kits",
+      "line": 1625,
+      "tools": [
+        "entity_list_kits"
+      ],
+      "category": "defined-outcome",
+      "assertion": "\"Lobby Starter\" in kits.get(\"kits\", [])"
+    },
+    {
+      "source": "integration",
+      "section": "Entities",
+      "label": "Spawn Kit",
+      "line": 1634,
+      "tools": [
+        "entity_spawn_kit"
+      ],
+      "category": "defined-outcome",
+      "assertion": "(status == \"ok\" and count > 0) or (status in (\"error\", \"partial\") and count < spawned.get(\"requested\", 0))",
+      "basis": "accepts a documented refusal as well as success; the check fails on any other result"
+    },
+    {
+      "source": "integration",
+      "section": "Selection",
+      "label": "Select in Radius",
+      "line": 1666,
+      "tools": [
+        "select_in_radius"
+      ],
+      "category": "defined-outcome",
+      "assertion": "a1 in selected and a2 in selected and a3 not in selected"
+    },
+    {
+      "source": "integration",
+      "section": "Selection",
+      "label": "Select by Property",
+      "line": 1678,
+      "tools": [
+        "select_by_property"
+      ],
+      "category": "defined-outcome",
+      "assertion": "a1 in selected and len(selected) == 1"
+    },
+    {
+      "source": "integration",
+      "section": "Lighting",
+      "label": "Apply Preset (Cyberpunk)",
+      "line": 1691,
+      "tools": [
+        "light_cinematic_preset"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Lighting",
+      "label": "Randomize Sky",
+      "line": 1693,
+      "tools": [
+        "light_randomize_sky"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Project Admin",
+      "label": "Perf Audit",
+      "line": 1703,
+      "tools": [
+        "system_perf_audit"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "Zone",
+      "label": "zone_spawn",
+      "line": 1718,
+      "tools": [
+        "zone_spawn"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Zone",
+      "label": "zone_list",
+      "line": 1723,
+      "tools": [
+        "zone_list"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Zone",
+      "label": "zone_select_contents",
+      "line": 1735,
+      "tools": [
+        "zone_select_contents"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Zone",
+      "label": "zone_snap_to_selection",
+      "line": 1740,
+      "tools": [
+        "zone_snap_to_selection"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Zone",
+      "label": "zone_fill_scatter",
+      "line": 1748,
+      "tools": [
+        "zone_fill_scatter"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Stamps",
+      "label": "stamp_save",
+      "line": 1778,
+      "tools": [
+        "stamp_save"
+      ],
+      "category": "defined-outcome",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"\n                  and saved == len(actors)"
+    },
+    {
+      "source": "integration",
+      "section": "Stamps",
+      "label": "stamp_list",
+      "line": 1784,
+      "tools": [
+        "stamp_list"
+      ],
+      "category": "defined-outcome",
+      "assertion": "passed and has_stamp"
+    },
+    {
+      "source": "integration",
+      "section": "Stamps",
+      "label": "stamp_info",
+      "line": 1790,
+      "tools": [
+        "stamp_info"
+      ],
+      "category": "defined-outcome",
+      "assertion": "passed and info_actors == len(actors)"
+    },
+    {
+      "source": "integration",
+      "section": "Stamps",
+      "label": "stamp_place",
+      "line": 1798,
+      "tools": [
+        "stamp_place"
+      ],
+      "category": "defined-outcome",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"\n                   and stamped == total and stamped"
+    },
+    {
+      "source": "integration",
+      "section": "Stamps",
+      "label": "stamp_import",
+      "line": 1815,
+      "tools": [
+        "stamp_import"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Stamps",
+      "label": "stamp_delete",
+      "line": 1822,
+      "tools": [
+        "stamp_delete"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "ActorOrg",
+      "label": "actor_move_to_folder",
+      "line": 1847,
+      "tools": [
+        "actor_move_to_folder"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "ActorOrg",
+      "label": "actor_folder_list",
+      "line": 1854,
+      "tools": [
+        "actor_folder_list"
+      ],
+      "category": "defined-outcome",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"\n                   and \"TOOLBELT_TEST_OrgFolder\" in folders"
+    },
+    {
+      "source": "integration",
+      "section": "ActorOrg",
+      "label": "actor_select_by_folder",
+      "line": 1860,
+      "tools": [
+        "actor_select_by_folder"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "ActorOrg",
+      "label": "actor_select_by_class",
+      "line": 1865,
+      "tools": [
+        "actor_select_by_class"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "ActorOrg",
+      "label": "actor_match_transform",
+      "line": 1872,
+      "tools": [
+        "actor_match_transform"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "ActorOrg",
+      "label": "actor_move_to_root",
+      "line": 1878,
+      "tools": [
+        "actor_move_to_root"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "ActorOrg",
+      "label": "actor_attach_to_parent",
+      "line": 1884,
+      "tools": [
+        "actor_attach_to_parent"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "ActorOrg",
+      "label": "actor_detach",
+      "line": 1889,
+      "tools": [
+        "actor_detach"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Proximity",
+      "label": "actor_place_next_to",
+      "line": 1910,
+      "tools": [
+        "actor_place_next_to"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Proximity",
+      "label": "actor_chain_place",
+      "line": 1916,
+      "tools": [
+        "actor_chain_place"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Proximity",
+      "label": "actor_duplicate_offset",
+      "line": 1925,
+      "tools": [
+        "actor_duplicate_offset"
+      ],
+      "category": "defined-outcome",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"\n                   and spawned == 2"
+    },
+    {
+      "source": "integration",
+      "section": "Proximity",
+      "label": "actor_copy_to_positions",
+      "line": 1936,
+      "tools": [
+        "actor_copy_to_positions"
+      ],
+      "category": "defined-outcome",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"\n                   and spawned == 2"
+    },
+    {
+      "source": "integration",
+      "section": "Proximity",
+      "label": "actor_cluster_to_folder",
+      "line": 1945,
+      "tools": [
+        "actor_cluster_to_folder"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Proximity",
+      "label": "actor_replace_class (dry_run)",
+      "line": 1951,
+      "tools": [
+        "actor_replace_class"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "AdvAlign",
+      "label": "align_to_reference",
+      "line": 1977,
+      "tools": [
+        "align_to_reference"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "AdvAlign",
+      "label": "distribute_with_gap",
+      "line": 1982,
+      "tools": [
+        "distribute_with_gap"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "AdvAlign",
+      "label": "rotate_around_pivot",
+      "line": 1987,
+      "tools": [
+        "rotate_around_pivot"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "AdvAlign",
+      "label": "match_spacing",
+      "line": 1992,
+      "tools": [
+        "match_spacing"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "AdvAlign",
+      "label": "align_to_surface",
+      "line": 2007,
+      "tools": [
+        "align_to_surface"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and (\n            result.get(\"status\") == \"ok\"\n            or result.get(\"reason\") == \"engine_api_unavailable\"\n        )",
+      "basis": "accepts self-reported success or the documented engine_api_unavailable refusal; it does not check the resulting alignment"
+    },
+    {
+      "source": "integration",
+      "section": "AdvAlign",
+      "label": "align_to_grid_two_points",
+      "line": 2012,
+      "tools": [
+        "align_to_grid_two_points"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Signs",
+      "label": "sign_spawn_bulk",
+      "line": 2028,
+      "tools": [
+        "sign_spawn_bulk"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Signs",
+      "label": "sign_list",
+      "line": 2032,
+      "tools": [
+        "sign_list"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Signs",
+      "label": "sign_batch_edit",
+      "line": 2041,
+      "tools": [
+        "sign_batch_edit"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Signs",
+      "label": "sign_batch_rename",
+      "line": 2047,
+      "tools": [
+        "sign_batch_rename"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Signs",
+      "label": "sign_batch_set_text",
+      "line": 2053,
+      "tools": [
+        "sign_batch_set_text"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Signs",
+      "label": "label_attach",
+      "line": 2062,
+      "tools": [
+        "label_attach"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Signs",
+      "label": "sign_clear (publish-safe cleanup)",
+      "line": 2071,
+      "tools": [
+        "sign_clear"
+      ],
+      "category": "defined-outcome",
+      "assertion": "result.get(\"status\") == \"ok\" and not remaining_text"
+    },
+    {
+      "source": "integration",
+      "section": "PostProcess",
+      "label": "postprocess_spawn",
+      "line": 2089,
+      "tools": [
+        "postprocess_spawn"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "PostProcess",
+      "label": "postprocess_set",
+      "line": 2094,
+      "tools": [
+        "postprocess_set"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "PostProcess",
+      "label": "postprocess_preset (cinematic)",
+      "line": 2099,
+      "tools": [
+        "postprocess_preset"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "PostProcess",
+      "label": "postprocess_preset (reset)",
+      "line": 2103,
+      "tools": [
+        "postprocess_preset"
+      ],
+      "category": "defined-execution",
+      "assertion": "True",
+      "basis": "verified=False"
+    },
+    {
+      "source": "integration",
+      "section": "PostProcess",
+      "label": "world_settings_set (gravity)",
+      "line": 2122,
+      "tools": [
+        "world_settings_set"
+      ],
+      "category": "defined-outcome",
+      "assertion": "(status == \"ok\" and result.get(\"applied\", {}).get(\"gravity\") == -980.0)\n            or (status == \"error\"\n                and result.get(\"reason\") == \"properties_not_exposed\"\n                and \"gravity\" in result.get(\"unavailable\", {}))",
+      "basis": "accepts a documented refusal as well as success; the check fails on any other result"
+    },
+    {
+      "source": "integration",
+      "section": "Audio",
+      "label": "audio_place",
+      "line": 2139,
+      "tools": [
+        "audio_place"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Audio",
+      "label": "audio_list",
+      "line": 2144,
+      "tools": [
+        "audio_list"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Audio",
+      "label": "audio_set_volume",
+      "line": 2153,
+      "tools": [
+        "audio_set_volume"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Audio",
+      "label": "audio_set_radius",
+      "line": 2158,
+      "tools": [
+        "audio_set_radius"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "LevelHealth",
+      "label": "level_health_report",
+      "line": 2176,
+      "tools": [
+        "level_health_report"
+      ],
+      "category": "defined-outcome",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"\n                  and \"score\" in result"
+    },
+    {
+      "source": "integration",
+      "section": "LevelHealth",
+      "label": "rogue_actor_scan",
+      "line": 2183,
+      "tools": [
+        "rogue_actor_scan"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Config",
+      "label": "config_list",
+      "line": 2196,
+      "tools": [
+        "config_list"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Config",
+      "label": "config_set",
+      "line": 2201,
+      "tools": [
+        "config_set"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Config",
+      "label": "config_get",
+      "line": 2206,
+      "tools": [
+        "config_get"
+      ],
+      "category": "defined-outcome",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"\n                  and result.get(\"value\") == \"TOOLBELT_TEST_Config\""
+    },
+    {
+      "source": "integration",
+      "section": "Config",
+      "label": "config_reset",
+      "line": 2210,
+      "tools": [
+        "config_reset"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Lighting",
+      "label": "light_place (point)",
+      "line": 2224,
+      "tools": [
+        "light_place"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Lighting",
+      "label": "light_list",
+      "line": 2228,
+      "tools": [
+        "light_list"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Lighting",
+      "label": "light_set",
+      "line": 2236,
+      "tools": [
+        "light_set"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Lighting",
+      "label": "sky_set_time",
+      "line": 2242,
+      "tools": [
+        "sky_set_time"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict)",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "WorldState",
+      "label": "world_state_export",
+      "line": 2260,
+      "tools": [
+        "world_state_export"
+      ],
+      "category": "defined-outcome",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"\n                  and result.get(\"count\", 0) > 0"
+    },
+    {
+      "source": "integration",
+      "section": "WorldState",
+      "label": "device_catalog_scan",
+      "line": 2265,
+      "tools": [
+        "device_catalog_scan"
+      ],
+      "category": "defined-execution",
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Visibility",
+      "label": "actor_hide",
+      "line": 2285,
+      "tools": [
+        "actor_hide"
+      ],
+      "category": "defined-outcome",
+      "assertion": "result.get(\"status\") == \"ok\" and result.get(\"hidden\", 0) == 2"
+    },
+    {
+      "source": "integration",
+      "section": "Visibility",
+      "label": "actor_show",
+      "line": 2289,
+      "tools": [
+        "actor_show"
+      ],
+      "category": "defined-outcome",
+      "assertion": "result.get(\"status\") == \"ok\" and result.get(\"shown\", 0) == 2"
+    },
+    {
+      "source": "integration",
+      "section": "Visibility",
+      "label": "actor_isolate",
+      "line": 2294,
+      "tools": [
+        "actor_isolate"
+      ],
+      "category": "defined-outcome",
+      "assertion": "result.get(\"status\") == \"ok\" and result.get(\"visible\", 0) == 2"
+    },
+    {
+      "source": "integration",
+      "section": "Visibility",
+      "label": "actor_show_all",
+      "line": 2299,
+      "tools": [
+        "actor_show_all"
+      ],
+      "category": "defined-outcome",
+      "assertion": "result.get(\"status\") == \"ok\" and result.get(\"restored\", 0) > 0"
+    },
+    {
+      "source": "integration",
+      "section": "Visibility",
+      "label": "actor_lock (runs ok)",
+      "line": 2304,
+      "tools": [
+        "actor_lock"
+      ],
+      "category": "defined-execution",
+      "assertion": "result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Visibility",
+      "label": "actor_unlock (runs ok)",
+      "line": 2306,
+      "tools": [
+        "actor_unlock"
+      ],
+      "category": "defined-execution",
+      "assertion": "result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Viewport",
+      "label": "viewport_showflag (clean)",
+      "line": 2321,
+      "tools": [
+        "viewport_showflag"
+      ],
+      "category": "defined-execution",
+      "assertion": "result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Viewport",
+      "label": "viewport_showflag (reset)",
+      "line": 2324,
+      "tools": [
+        "viewport_showflag"
+      ],
+      "category": "defined-execution",
+      "assertion": "result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Viewport",
+      "label": "viewport_bookmark_save",
+      "line": 2329,
+      "tools": [
+        "viewport_bookmark_save"
+      ],
+      "category": "defined-outcome",
+      "assertion": "result.get(\"status\") == \"ok\" and \"location\" in result"
+    },
+    {
+      "source": "integration",
+      "section": "Viewport",
+      "label": "viewport_bookmark_list",
+      "line": 2333,
+      "tools": [
+        "viewport_bookmark_list"
+      ],
+      "category": "defined-outcome",
+      "assertion": "result.get(\"status\") == \"ok\" and \"_integration_test\" in result.get(\"bookmarks\", {})"
+    },
+    {
+      "source": "integration",
+      "section": "Viewport",
+      "label": "viewport_bookmark_jump",
+      "line": 2336,
+      "tools": [
+        "viewport_bookmark_jump"
+      ],
+      "category": "defined-execution",
+      "assertion": "result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "Viewport",
+      "label": "viewport_showflag (unknown preset = error)",
+      "line": 2340,
+      "tools": [
+        "viewport_showflag"
+      ],
+      "category": "defined-execution",
+      "assertion": "result.get(\"status\") == \"error\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "SelectionSets",
+      "label": "selection_save",
+      "line": 2357,
+      "tools": [
+        "selection_save"
+      ],
+      "category": "defined-outcome",
+      "assertion": "result.get(\"status\") == \"ok\" and result.get(\"count\", 0) == 2"
+    },
+    {
+      "source": "integration",
+      "section": "SelectionSets",
+      "label": "selection_list",
+      "line": 2361,
+      "tools": [
+        "selection_list"
+      ],
+      "category": "defined-outcome",
+      "assertion": "result.get(\"status\") == \"ok\" and \"_integration_test\" in result.get(\"sets\", {})"
+    },
+    {
+      "source": "integration",
+      "section": "SelectionSets",
+      "label": "selection_restore",
+      "line": 2367,
+      "tools": [
+        "selection_restore"
+      ],
+      "category": "defined-outcome",
+      "assertion": "result.get(\"status\") == \"ok\" and result.get(\"matched\", 0) == 2 and result.get(\"missing\", 0) == 0"
+    },
+    {
+      "source": "integration",
+      "section": "SelectionSets",
+      "label": "selection_restore (unknown = error)",
+      "line": 2372,
+      "tools": [
+        "selection_restore"
+      ],
+      "category": "defined-execution",
+      "assertion": "result.get(\"status\") == \"error\"",
+      "basis": "self-reported status or type only"
+    },
+    {
+      "source": "integration",
+      "section": "ProjectAdmin",
+      "label": "save_all_dirty",
+      "line": 2387,
+      "tools": [
+        "save_all_dirty"
+      ],
+      "category": "defined-execution",
+      "assertion": "result.get(\"status\") == \"ok\"",
+      "basis": "self-reported status or type only"
+    }
+  ],
+  "registration_only": [
+    {
+      "tool": "material_list_presets",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "material_save_preset",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "mcp_start",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "mcp_status",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "mcp_stop",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "pattern_arc",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "pattern_line",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "pattern_radial_rows",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "pattern_spiral",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "pattern_wave",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "rename_report",
+      "reason": "ambiguous",
+      "note": "rename_report's check tests a report path that rename_dry_run already created, so it cannot show rename_report ran"
+    },
+    {
+      "tool": "scaffold_delete_template",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "scaffold_list_templates",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "scaffold_save_template",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "scatter_props",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "screenshot_focus_selection",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "screenshot_open_folder",
+      "reason": "ambiguous",
+      "note": "its Capture Paths check asserts the path returned by screenshot_take; screenshot_open_folder's own result is discarded"
+    },
+    {
+      "tool": "screenshot_take",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "snapshot_diff",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "spline_place_props",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "spline_to_verse_patrol",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "spline_to_verse_points",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "spline_to_verse_zone_boundary",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "stamp_export",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "text_color_cycle",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "text_list_styles",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "verse_bulk_set_property",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "verse_export_report",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "verse_gen_custom",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "verse_gen_elimination_handler",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "verse_gen_game_skeleton",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "verse_gen_prop_spawner",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "verse_gen_scoring_tracker",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "verse_list_devices",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "verse_select_by_class",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    },
+    {
+      "tool": "verse_select_by_name",
+      "reason": "ambiguous",
+      "note": "invoked in the integration suite, but no check can be attributed to it alone"
+    }
+  ],
+  "flags": [
+    {
+      "tool": "lod_auto_generate_selection",
+      "flag": "stubbed-operation",
+      "reason": "Mesh reduction crashes UEFN (Quirk #18), so the operation is stubbed; it calls `_apply_lods` directly",
+      "sources": [
+        "Content/Python/UEFN_Toolbelt/tools/lod_tools.py:141-163, 166-217",
+        "TOOL_STATUS.md, Disabled Tools table",
+        "docs/UEFN_QUIRKS.md #18"
+      ],
+      "enforcement": "Code only: `_apply_lods` never calls the crashing reduction API (`set_lods_with_notification`); it logs an error and reports the mesh as failed. There is no registry-level disabling: the tool stays registered, callable, and reachable from the dashboard, and the folder tools return status ok with the meshes counted as failed."
+    },
+    {
+      "tool": "lod_auto_generate_folder",
+      "flag": "stubbed-operation",
+      "reason": "Mesh reduction crashes UEFN (Quirk #18), so the operation is stubbed; it calls `_apply_lods` directly",
+      "sources": [
+        "Content/Python/UEFN_Toolbelt/tools/lod_tools.py:141-163, 220-273",
+        "TOOL_STATUS.md, Disabled Tools table",
+        "docs/UEFN_QUIRKS.md #18"
+      ],
+      "enforcement": "Code only: `_apply_lods` never calls the crashing reduction API (`set_lods_with_notification`); it logs an error and reports the mesh as failed. There is no registry-level disabling: the tool stays registered, callable, and reachable from the dashboard, and the folder tools return status ok with the meshes counted as failed."
+    },
+    {
+      "tool": "memory_autofix_lods",
+      "flag": "stubbed-operation",
+      "reason": "Wrapper: calls `lod_auto_generate_folder`, whose mesh reduction is stubbed (Quirk #18)",
+      "sources": [
+        "Content/Python/UEFN_Toolbelt/tools/memory_profiler.py:465-493",
+        "docs/UEFN_QUIRKS.md #18"
+      ],
+      "enforcement": "Code only: `_apply_lods` never calls the crashing reduction API (`set_lods_with_notification`); it logs an error and reports the mesh as failed. There is no registry-level disabling: the tool stays registered, callable, and reachable from the dashboard, and the folder tools return status ok with the meshes counted as failed."
+    }
+  ],
+  "run_evidence": [
+    {
+      "scope": "integration",
+      "build": "UEFN 42.00, publishing hardening build based on 112671c",
+      "date": "2026-08-23",
+      "result": "190/190 checks passed (163 with verified true, 27 execution-only)",
+      "source": "TOOL_STATUS.md, Automated Verification Status (narrative)",
+      "limitation": "Narrative only: the results file is not preserved and the harness source that run used is not identified. A check-level result, never converted into per-tool verification."
+    },
+    {
+      "scope": "other",
+      "build": "++Fortnite+Release-42.20-CL-58011042",
+      "date": "2026-09-28",
+      "result": "After a deploy and full restart the editor log reported a registry count of 362, and the registered tools mcp_start and mcp_stop were run from the console",
+      "source": "docs/audits/2026-09-28-wo004-session-c-live-acceptance.md",
+      "limitation": "One machine and one boot, not a general result. Not an integration or smoke run; never promoted into integration coverage or per-tool outcome verification."
+    }
+  ]
+}
