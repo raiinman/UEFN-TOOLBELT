@@ -5,12 +5,15 @@ state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
 - Current issued Work Order: WO-006
-- Authorized session: NONE
-- Base commit: `0c0bf26191ee953c7a27237109b4a91a4db97275`
-- Current gate: WO-006 ISSUED — SESSION A IMPLEMENTATION NOT AUTHORIZED
+- Authorized session: A
+- Base commit: `d46a30ed9de54ec01536d132e1032fcf762fa3c7`
+- Current gate: WO-006 SESSION A AUTHORIZED — OFFLINE DESIGN AND HARNESS ONLY
 - Issuance commit: `0c0bf26191ee953c7a27237109b4a91a4db97275`
 - Issuance CI workflow: `36743995194`
 - Issuance CI job: `109985389182` — Lint, types, tests
+- Session A authorization commit: `d46a30ed9de54ec01536d132e1032fcf762fa3c7`
+- Session A authorization CI workflow: `36756889729`
+- Session A authorization CI job: `110029304446` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -212,12 +215,23 @@ the independently accepted proposal was committed as
 completed successfully, including required job
 [`109985389182` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36743995194/job/109985389182).
 
-Issuance grants no implementation authority and opens no session. Session A,
-the offline design and harness, needs its own separate owner gate recorded in
-this pointer, and Session B, the owner-operated live measurement, stays closed
-behind it. Tagging, Release creation, branch-protection changes, other
-repository metadata changes, and social publication all remain unauthorized,
-as does WO-007, which stays proposed.
+At its issuance gate, WO-006 gave no implementation authority and opened no
+session. Session A, the offline design and harness, needed its own separate
+owner gate recorded in this pointer, and Session B, the owner-operated live
+measurement, stayed closed behind it.
+
+Session A is authorized under this pointer for the offline design and harness
+only, on the basis of commit `d46a30ed9de54ec01536d132e1032fcf762fa3c7`,
+successful CI workflow `36756889729`, and successful required job
+`110029304446` (`Lint, types, tests`). That evidence establishes the issued
+mandate, not any harness implementation or test result. It covers the Session
+A scope recorded in the issued mandate, unchanged, changes no repository file,
+and ends with its private artifacts held for independent review. Session A
+opens no deploy, UEFN launch, bridge startup, MCP call, connection to a real
+editor endpoint, live measurement, commit, or push, and Session B stays
+closed. Tagging, Release creation, branch-protection changes, other repository
+metadata changes, and social publication all remain unauthorized, as does
+WO-007, which stays proposed.
 
 WO-001 through WO-007 form the frozen next release train. The release version
 remains undecided and the repository stays at version 2.4.1. No tag or GitHub

@@ -2,7 +2,7 @@
 
 STATUS: ISSUED
 
-AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED
+AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR OFFLINE DESIGN AND HARNESS ONLY
 
 OWNER: Ocean Bennett
 
@@ -15,6 +15,12 @@ ISSUANCE_COMMIT: `0c0bf26191ee953c7a27237109b4a91a4db97275`
 ISSUANCE_CI_WORKFLOW: `36743995194`
 
 ISSUANCE_CI_JOB: `109985389182` — Lint, types, tests
+
+SESSION_A_AUTHORIZATION_COMMIT: `d46a30ed9de54ec01536d132e1032fcf762fa3c7`
+
+SESSION_A_AUTHORIZATION_CI_WORKFLOW: `36756889729`
+
+SESSION_A_AUTHORIZATION_CI_JOB: `110029304446` — Lint, types, tests
 
 ## Issuance basis
 
@@ -35,6 +41,30 @@ The four items for that review are the triggering pair's outcome after a
 failed barrier, classification of unsupported protocol versions or
 capabilities, timeouts for notifications/initialized and session DELETE, and
 matching command responses among other SSE messages.
+
+## Session A authorization basis
+
+Session A is authorized for the offline design and harness only under the
+current root `WORKORDER.md` gate alone. The recorded basis is commit
+`d46a30ed9de54ec01536d132e1032fcf762fa3c7`; [CI workflow
+`36756889729`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36756889729)
+completed successfully, including required job
+[`110029304446` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36756889729/job/110029304446).
+That commit and its CI are evidence for this issued mandate; they establish no
+harness implementation and no test result.
+
+This gate covers exactly the scope in "Proposed Session A — offline design and
+harness" below, unchanged: `harness.py` and the data-only `config.json`,
+`analysis.py` and `plan.md`, the synthetic results and summary, and testing
+against local stubs, with the artifacts and their SHA-256 hashes kept in the
+owner's private evidence folder. Session A changes no repository file. The
+four clarifications recorded under "Issuance basis" remain questions for
+`plan.md` to settle and for its review to examine; this gate decides none of
+them. Session A ends with its artifacts held for independent review. It opens
+no deploy, editor launch, bridge startup, MCP call, connection to a real
+editor endpoint, live measurement, commit, or push, and Session B stays
+closed. The planning baseline and the issuance evidence above are preserved
+unchanged, and neither is the Session A basis.
 
 ## Revision provenance
 
@@ -613,6 +643,7 @@ owner decision, and neither stands in for one. Tagging, GitHub Release
 creation, repository metadata changes, branch-protection changes, and social
 publication are outside WO-006 and remain unauthorized.
 
-NEXT GATE: separate owner authorization for Session A's offline design and
-harness only, recorded in root `WORKORDER.md`. Issuance authorizes no session,
-and this mandate grants no review, commit, push, or session authority.
+NEXT GATE: execution of the accepted offline Session A scope, limited to the
+offline design and harness, ending with its private artifacts held for
+independent review. Session B, connections to real editor endpoints, deploy,
+live measurement, commit, push, and WO-006 completion remain closed.
