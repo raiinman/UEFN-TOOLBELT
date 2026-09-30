@@ -1,14 +1,40 @@
 # WO-006 — Official MCP Versus Toolbelt Benchmark
 
-STATUS: PROPOSED
+STATUS: ISSUED
 
-AUTHORIZATION: NOT AUTHORIZED
+AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED
 
 OWNER: Ocean Bennett
 
 PRIORITY: P2
 
 BASELINE: `f9354feaf4ab072c9941ab4d6ec8337395ce18a0`
+
+ISSUANCE_COMMIT: `0c0bf26191ee953c7a27237109b4a91a4db97275`
+
+ISSUANCE_CI_WORKFLOW: `36743995194`
+
+ISSUANCE_CI_JOB: `109985389182` — Lint, types, tests
+
+## Issuance basis
+
+The independently accepted revision of this mandate was committed as
+`0c0bf26191ee953c7a27237109b4a91a4db97275`; [CI workflow
+`36743995194`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36743995194)
+completed successfully, including required job
+[`109985389182` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36743995194/job/109985389182).
+Those identify the accepted proposal, not the later commit that records this
+issuance. The planning baseline above is preserved unchanged.
+
+Issuance alone grants no implementation authority. A session becomes
+implementable only when the owner names it in root `WORKORDER.md`. Four
+optional clarifications from the delta review of revision 3 are left to the
+review of Session A's `plan.md`, and issuance does not change the accepted
+benchmark design.
+The four items for that review are the triggering pair's outcome after a
+failed barrier, classification of unsupported protocol versions or
+capabilities, timeouts for notifications/initialized and session DELETE, and
+matching command responses among other SSE messages.
 
 ## Revision provenance
 
@@ -587,6 +613,6 @@ owner decision, and neither stands in for one. Tagging, GitHub Release
 creation, repository metadata changes, branch-protection changes, and social
 publication are outside WO-006 and remain unauthorized.
 
-NEXT GATE: focused independent re-review of this revision. Issuing WO-006
-remains a separate owner decision after that, and this proposal grants no
-review, commit, push, issuance, or session authority.
+NEXT GATE: separate owner authorization for Session A's offline design and
+harness only, recorded in root `WORKORDER.md`. Issuance authorizes no session,
+and this mandate grants no review, commit, push, or session authority.

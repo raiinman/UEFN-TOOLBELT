@@ -88,7 +88,7 @@ SCAN_FILES = [
     "docs/work-orders/completed/WO-003-official-mcp-doc-convergence.md",
     "docs/work-orders/completed/WO-004-modal-observability.md",
     "docs/work-orders/completed/WO-005-coverage-source-of-truth.md",
-    "docs/work-orders/proposed/WO-006-official-vs-toolbelt-benchmark.md",
+    "docs/work-orders/issued/WO-006-official-vs-toolbelt-benchmark.md",
     "docs/work-orders/proposed/WO-007-public-mcp-explainer.md",
     "Content/Python/UEFN_Toolbelt/dashboard_pyside6.py",
     # Both carried stale counts that no check could see, because neither was
@@ -2644,6 +2644,78 @@ def _wo005_issuance_findings(pointer, issued_text, rel, session,
     return out
 
 
+# WO-006's issuance record, on the same two canonical surfaces as WO-005's:
+# the root pointer's bullet block and the mandate's metadata block, each an
+# exact, contiguous, terminal slice whose keys are also counted. The evidence
+# identifies the accepted proposal commit, not the later transition commit,
+# and the planning baseline stays at the revision the proposal was reviewed
+# against. These pins cover evidence only; a later transition that changes
+# the base must update them.
+_WO006_ID, _WO006_NAME = _RELEASE_TRAIN[5]
+_WO006_PLANNING_BASELINE = "f9354feaf4ab072c9941ab4d6ec8337395ce18a0"
+_WO006_ISSUANCE_COMMIT = "0c0bf26191ee953c7a27237109b4a91a4db97275"
+_WO006_ISSUANCE_WORKFLOW = "36743995194"
+_WO006_ISSUANCE_JOB = "109985389182"
+_WO006_ISSUED_SEQUENCE = (
+    "BASELINE: `" + _WO006_PLANNING_BASELINE + "`",
+    "ISSUANCE_COMMIT: `" + _WO006_ISSUANCE_COMMIT + "`",
+    "ISSUANCE_CI_WORKFLOW: `" + _WO006_ISSUANCE_WORKFLOW + "`",
+    "ISSUANCE_CI_JOB: `" + _WO006_ISSUANCE_JOB + "` — Lint, types, tests",
+)
+_WO006_POINTER_SEQUENCE = (
+    "- Current issued Work Order:",
+    "- Authorized session:",
+    "- Base commit: `" + _WO006_ISSUANCE_COMMIT + "`",
+    "- Current gate:",
+    "- Issuance commit: `" + _WO006_ISSUANCE_COMMIT + "`",
+    "- Issuance CI workflow: `" + _WO006_ISSUANCE_WORKFLOW + "`",
+    "- Issuance CI job: `" + _WO006_ISSUANCE_JOB + "` — Lint, types, tests",
+    "- Release train:",
+    "- Release gate:",
+)
+_WO006_POINTER_KEYS = (
+    ("- Base commit:", _WO006_POINTER_SEQUENCE[2]),
+    ("- Issuance commit:", _WO006_POINTER_SEQUENCE[4]),
+    ("- Issuance CI workflow:", _WO006_POINTER_SEQUENCE[5]),
+    ("- Issuance CI job:", _WO006_POINTER_SEQUENCE[6]),
+)
+_WO006_ISSUED_KEYS = (
+    ("BASELINE:", _WO006_ISSUED_SEQUENCE[0]),
+    ("ISSUANCE_COMMIT:", _WO006_ISSUED_SEQUENCE[1]),
+    ("ISSUANCE_CI_WORKFLOW:", _WO006_ISSUED_SEQUENCE[2]),
+    ("ISSUANCE_CI_JOB:", _WO006_ISSUED_SEQUENCE[3]),
+)
+
+
+def _wo006_issuance_findings(pointer, issued_text, rel):
+    """WO-006's issuance record on the two surfaces that declare it.
+
+    The same canonical-slice checks WO-005's issuance used, with WO-006's
+    evidence. It pins the issuance evidence and the root base value; the
+    gate, the marker, and the session value are checked by the branches
+    that call this.
+    """
+    out = []
+    for target, text, stop, sequence, keys, where in (
+        ("WORKORDER.md", pointer,
+         lambda line: _WO001_COMPLETED_LINK in line,
+         _WO006_POINTER_SEQUENCE, _WO006_POINTER_KEYS, "WORKORDER.md"),
+        (rel, issued_text, lambda line: line.startswith("## "),
+         _WO006_ISSUED_SEQUENCE, _WO006_ISSUED_KEYS, "issued record"),
+    ):
+        for kind, found, want in _canonical_field_findings(
+            text, sequence, stop, where,
+            exact={item for item in sequence if "`" in item},
+            terminal=True, label="WO-006 issuance field",
+        ):
+            out.append((target, kind, found, want))
+        for kind, found, want in _canonical_key_findings(
+            text, stop, keys, "WO-006 issuance declaration (" + where + ")",
+        ):
+            out.append((target, kind, found, want))
+    return out
+
+
 def _accepted_record_findings(
     pointer: str, issued_text: str, rel: str
 ) -> list[tuple[str, str, str, str]]:
@@ -3573,6 +3645,13 @@ def check_work_order_contract() -> list[dict]:
                 for _f, _k, _found, _want in _wo005_issuance_findings(
                     pointer, issued_text,
                     issued[0].relative_to(root).as_posix(), session,
+                ):
+                    add(_f, _k, _found, _want)
+            if (issued[0].name == _WO006_NAME
+                    and issued_id == _WO006_ID):
+                for _f, _k, _found, _want in _wo006_issuance_findings(
+                    pointer, issued_text,
+                    issued[0].relative_to(root).as_posix(),
                 ):
                     add(_f, _k, _found, _want)
             if issued[0].name == _WO002_NAME:

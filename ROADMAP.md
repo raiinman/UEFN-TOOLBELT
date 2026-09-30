@@ -3,9 +3,9 @@
 > This is a living document. Items move between phases as priorities shift.
 > Current version: **v2.4.1** · Last completed phase: **21**
 >
-> Work Order track: WO-001 through WO-005 are completed. The frozen release
-> train remains WO-001 through WO-007; WO-006 and WO-007 remain proposed and
-> unauthorized.
+> Work Order track: WO-001 through WO-005 are completed. WO-006 is issued with
+> no session authorized. The frozen release train remains WO-001 through
+> WO-007; WO-007 remains proposed and unauthorized.
 > This roadmap grants no implementation authority — root
 > [`WORKORDER.md`](WORKORDER.md) is the sole current gate.
 

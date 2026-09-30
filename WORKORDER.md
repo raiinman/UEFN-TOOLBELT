@@ -4,19 +4,13 @@ This file is the repository's sole authority pointer for current Work Order
 state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
-- Current issued Work Order: NONE
+- Current issued Work Order: WO-006
 - Authorized session: NONE
-- Base commit: `5ef3aef2934b33a357ab9114e68aae41bc78639c`
-- Current gate: WO-005 COMPLETED — WO-006 PROPOSED AND NOT AUTHORIZED
-- Issuance commit: `528f1962c0c45c0631bab3637f3fd40db6317027`
-- Issuance CI workflow: `36529997892`
-- Issuance CI job: `109281301869` — Lint, types, tests
-- Session A authorization commit: `867074f8a520450ef6073b4c922079a897a83886`
-- Session A authorization CI workflow: `36596756689`
-- Session A authorization CI job: `109503539592` — Lint, types, tests
-- Completion basis commit: `5ef3aef2934b33a357ab9114e68aae41bc78639c`
-- Completion basis CI workflow: `36662471593`
-- Completion basis CI job: `109719997181` — Lint, types, tests
+- Base commit: `0c0bf26191ee953c7a27237109b4a91a4db97275`
+- Current gate: WO-006 ISSUED — SESSION A IMPLEMENTATION NOT AUTHORIZED
+- Issuance commit: `0c0bf26191ee953c7a27237109b4a91a4db97275`
+- Issuance CI workflow: `36743995194`
+- Issuance CI job: `109985389182` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -168,7 +162,7 @@ live-acceptance record](docs/audits/2026-09-28-wo004-session-c-live-acceptance.m
 with its evidence. Completion accepts the narrowed client-outcome work only; it
 claims no modal detection, exactly-once execution, MCP-host integration, or
 bridge exception fix. WO-004 is complete; no session is authorized. WO-006 and
-WO-007 stay proposed. Any later session, tagging, Release creation,
+WO-007 stayed proposed. Any later session, tagging, Release creation,
 branch-protection changes, other repository metadata changes, and social
 publication all remain unauthorized.
 
@@ -205,10 +199,25 @@ tests, the generated `TOOL_STATUS.md` block with the named corrections, the
 shared registry enumerator behind `drift_check`, and the `list_untested.py`
 migration shim. Source categories describe what test code is written to
 check; they establish no live verification of any tool. WO-005 is complete;
-no session is authorized. WO-006 and WO-007 stay proposed, and the optional
-integration run stays deferred. Any later session, tagging, Release creation,
+no session is authorized. WO-006 and WO-007 stayed proposed, and the optional
+integration run stayed deferred. Any later session, tagging, Release creation,
 branch-protection changes, other repository metadata changes, and social
 publication all remain unauthorized.
+
+[`WO-006`](docs/work-orders/issued/WO-006-official-vs-toolbelt-benchmark.md) is
+issued. Its planning baseline is `f9354feaf4ab072c9941ab4d6ec8337395ce18a0`;
+the independently accepted proposal was committed as
+`0c0bf26191ee953c7a27237109b4a91a4db97275` after [CI workflow
+`36743995194`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36743995194)
+completed successfully, including required job
+[`109985389182` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36743995194/job/109985389182).
+
+Issuance grants no implementation authority and opens no session. Session A,
+the offline design and harness, needs its own separate owner gate recorded in
+this pointer, and Session B, the owner-operated live measurement, stays closed
+behind it. Tagging, Release creation, branch-protection changes, other
+repository metadata changes, and social publication all remain unauthorized,
+as does WO-007, which stays proposed.
 
 WO-001 through WO-007 form the frozen next release train. The release version
 remains undecided and the repository stays at version 2.4.1. No tag or GitHub
