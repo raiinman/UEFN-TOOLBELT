@@ -4,16 +4,19 @@ This file is the repository's sole authority pointer for current Work Order
 state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
-- Current issued Work Order: WO-005
-- Authorized session: A
-- Base commit: `867074f8a520450ef6073b4c922079a897a83886`
-- Current gate: WO-005 SESSION A AUTHORIZED — OFFLINE COVERAGE MODEL ONLY
+- Current issued Work Order: NONE
+- Authorized session: NONE
+- Base commit: `5ef3aef2934b33a357ab9114e68aae41bc78639c`
+- Current gate: WO-005 COMPLETED — WO-006 PROPOSED AND NOT AUTHORIZED
 - Issuance commit: `528f1962c0c45c0631bab3637f3fd40db6317027`
 - Issuance CI workflow: `36529997892`
 - Issuance CI job: `109281301869` — Lint, types, tests
 - Session A authorization commit: `867074f8a520450ef6073b4c922079a897a83886`
 - Session A authorization CI workflow: `36596756689`
 - Session A authorization CI job: `109503539592` — Lint, types, tests
+- Completion basis commit: `5ef3aef2934b33a357ab9114e68aae41bc78639c`
+- Completion basis CI workflow: `36662471593`
+- Completion basis CI job: `109719997181` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -169,8 +172,8 @@ WO-007 stay proposed. Any later session, tagging, Release creation,
 branch-protection changes, other repository metadata changes, and social
 publication all remain unauthorized.
 
-[`WO-005`](docs/work-orders/issued/WO-005-coverage-source-of-truth.md) is
-issued. Its planning baseline is `1925ba8a09c3696d25de7ffc3f23caf970362c4d`;
+[`WO-005`](docs/work-orders/completed/WO-005-coverage-source-of-truth.md) is
+completed. Its planning baseline is `1925ba8a09c3696d25de7ffc3f23caf970362c4d`;
 the independently accepted proposal was committed as
 `528f1962c0c45c0631bab3637f3fd40db6317027` after [CI workflow
 `36529997892`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36529997892)
@@ -182,18 +185,30 @@ session. Session A needed its own separate owner gate recorded in this
 pointer, and the live-verification exemption proposed for it was not accepted
 at that gate.
 
-Session A is authorized under this pointer for the offline coverage model
-only, on the basis of commit `867074f8a520450ef6073b4c922079a897a83886`,
+At the Session A authorization gate, this pointer opened the offline coverage
+model only, on the basis of commit `867074f8a520450ef6073b4c922079a897a83886`,
 successful CI workflow `36596756689`, and successful required job
-`109503539592` (`Lint, types, tests`). It covers the Session A scope recorded
-in the issued mandate, unchanged, and ends with that worktree uncommitted for
-independent review. The owner accepted the proposed live-verification
+`109503539592` (`Lint, types, tests`). That gate covered the Session A scope
+recorded in the mandate, unchanged, and ended with that worktree uncommitted
+for independent review. The owner accepted the proposed live-verification
 exemption for that offline scope only, on the terms recorded in the mandate;
-it grants no commit, push, deploy, or live run. Session A opens no deploy, UEFN
-launch, bridge startup, MCP call, commit, or push. Tagging, Release creation,
+it gave no commit, push, deploy, or live-run permission. That gate opened no
+deploy, UEFN launch, bridge startup, MCP call, commit, or push.
+
+WO-005 is completed as `5ef3aef2934b33a357ab9114e68aae41bc78639c`; [CI workflow
+`36662471593`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36662471593)
+completed successfully, including required job
+[`109719997181` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36662471593/job/109719997181).
+That commit carries the independently accepted Session A implementation: the
+registry-derived coverage report with its explicit evidence mappings and
+tests, the generated `TOOL_STATUS.md` block with the named corrections, the
+shared registry enumerator behind `drift_check`, and the `list_untested.py`
+migration shim. Source categories describe what test code is written to
+check; they establish no live verification of any tool. WO-005 is complete;
+no session is authorized. WO-006 and WO-007 stay proposed, and the optional
+integration run stays deferred. Any later session, tagging, Release creation,
 branch-protection changes, other repository metadata changes, and social
-publication all remain unauthorized, as do WO-006 and WO-007, which stay
-proposed, and the deferred integration run.
+publication all remain unauthorized.
 
 WO-001 through WO-007 form the frozen next release train. The release version
 remains undecided and the repository stays at version 2.4.1. No tag or GitHub

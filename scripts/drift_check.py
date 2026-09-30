@@ -87,7 +87,7 @@ SCAN_FILES = [
     "docs/work-orders/completed/WO-002-epic-toolset-integration.md",
     "docs/work-orders/completed/WO-003-official-mcp-doc-convergence.md",
     "docs/work-orders/completed/WO-004-modal-observability.md",
-    "docs/work-orders/issued/WO-005-coverage-source-of-truth.md",
+    "docs/work-orders/completed/WO-005-coverage-source-of-truth.md",
     "docs/work-orders/proposed/WO-006-official-vs-toolbelt-benchmark.md",
     "docs/work-orders/proposed/WO-007-public-mcp-explainer.md",
     "Content/Python/UEFN_Toolbelt/dashboard_pyside6.py",
@@ -2429,6 +2429,89 @@ _WO005_SESSION_A_POINTER_RECORD = (
 _WO005_SESSION_A_POINTER_ANCHORED = (
     _WO005_ISSUANCE_POINTER_HISTORY + " " + _WO005_SESSION_A_POINTER_RECORD
 )
+# Completing WO-005 adds the completion basis - the implementation commit and
+# its CI - to each canonical block and moves the base to that commit. The
+# completion transition's own commit is not recorded: it does not exist when
+# the transition is written. Every earlier declaration stays inside the same
+# exact, terminal slice.
+_WO005_COMPLETION_COMMIT = "5ef3aef2934b33a357ab9114e68aae41bc78639c"
+_WO005_COMPLETION_WORKFLOW = "36662471593"
+_WO005_COMPLETION_JOB = "109719997181"
+_WO005_COMPLETED_GATE = (
+    "WO-005 COMPLETED — WO-006 PROPOSED AND NOT AUTHORIZED"
+)
+_WO005_COMPLETED_ISSUED_SEQUENCE = _WO005_SESSION_A_ISSUED_SEQUENCE + (
+    "COMPLETION_BASIS_COMMIT: `" + _WO005_COMPLETION_COMMIT + "`",
+    "COMPLETION_BASIS_CI_WORKFLOW: `" + _WO005_COMPLETION_WORKFLOW + "`",
+    "COMPLETION_BASIS_CI_JOB: `" + _WO005_COMPLETION_JOB + "` "
+    + "— Lint, types, tests",
+)
+_WO005_COMPLETED_POINTER_SEQUENCE = (
+    _WO005_SESSION_A_POINTER_SEQUENCE[:2]
+    + ("- Base commit: `" + _WO005_COMPLETION_COMMIT + "`",)
+    + _WO005_SESSION_A_POINTER_SEQUENCE[3:10]
+    + ("- Completion basis commit: `" + _WO005_COMPLETION_COMMIT + "`",
+       "- Completion basis CI workflow: `"
+       + _WO005_COMPLETION_WORKFLOW + "`",
+       "- Completion basis CI job: `" + _WO005_COMPLETION_JOB + "` "
+       + "— Lint, types, tests")
+    + _WO005_SESSION_A_POINTER_SEQUENCE[10:]
+)
+_WO005_COMPLETED_POINTER_KEYS = (
+    (("- Base commit:", _WO005_COMPLETED_POINTER_SEQUENCE[2]),)
+    + _WO005_SESSION_A_POINTER_KEYS[1:]
+    + (("- Completion basis commit:", _WO005_COMPLETED_POINTER_SEQUENCE[10]),
+       ("- Completion basis CI workflow:",
+        _WO005_COMPLETED_POINTER_SEQUENCE[11]),
+       ("- Completion basis CI job:", _WO005_COMPLETED_POINTER_SEQUENCE[12]))
+)
+_WO005_COMPLETED_ISSUED_KEYS = _WO005_SESSION_A_ISSUED_KEYS + (
+    ("COMPLETION_BASIS_COMMIT:", _WO005_COMPLETED_ISSUED_SEQUENCE[7]),
+    ("COMPLETION_BASIS_CI_WORKFLOW:", _WO005_COMPLETED_ISSUED_SEQUENCE[8]),
+    ("COMPLETION_BASIS_CI_JOB:", _WO005_COMPLETED_ISSUED_SEQUENCE[9]),
+)
+# Once WO-005 is completed, its mandate records Session A's authorization as
+# history, adds the completion record, and keeps the accepted exemption terms
+# unchanged. The same closed-record and heading checks keep running against it.
+_WO005_COMPLETION_HEADING = "## Completion record"
+_WO005_COMPLETED_HEADINGS = (
+    _WO005_SESSION_A_HEADINGS[:3] + (_WO005_COMPLETION_HEADING,)
+    + _WO005_SESSION_A_HEADINGS[3:]
+)
+_WO005_COMPLETED_BASIS_RECORD = (
+    _WO005_SESSION_A_BASIS_HEADING + " At the Session A authorization gate, "
+    "Session A was authorized for the offline coverage model only under the "
+    "root `WORKORDER.md` gate. The recorded basis is commit `"
+    + _WO005_SESSION_A_COMMIT + "`; [CI workflow `"
+    + _WO005_SESSION_A_WORKFLOW + "`](" + _WO005_SESSION_A_RUN_URL
+    + ") completed successfully, including required job [`"
+    + _WO005_SESSION_A_JOB + "` — Lint, types, tests]("
+    + _WO005_SESSION_A_RUN_URL + "/job/" + _WO005_SESSION_A_JOB + "). That "
+    "gate covered exactly the scope in \"Proposed Session A — offline "
+    "coverage model\" below: its six-path file scope, the migration shim, "
+    "the acceptance tests, the static gates, the cleanup duties, and the "
+    "exclusions, unchanged. Session A ended with its worktree uncommitted for "
+    "independent review. It opened no deploy, editor launch, bridge startup, "
+    "MCP call, commit, or push. The planning baseline and the issuance "
+    "evidence above are preserved unchanged, and neither is the Session A "
+    "basis."
+)
+# Pinned exactly once in the completed mandate, a frozen record of what was
+# true at its own gate, which keeps the clause about WO-006's state. The root
+# pointer pins only the prefix, which stays true when WO-006 is issued.
+_WO005_COMPLETED_STATEMENT = (
+    "WO-005 is complete; no session is authorized. WO-006 remains proposed "
+    "and unauthorized."
+)
+_WO005_COMPLETED_POINTER_CLAUSE = (
+    "WO-005 is complete; no session is authorized."
+)
+_WO005_COMPLETED_NEXT_GATE = (
+    "NEXT GATE: separate owner authorization for a fresh independent WO-006 "
+    "pre-issuance review, after this completion transition is accepted, "
+    "committed, pushed, and green. Completion of WO-005 does not issue or "
+    "authorize WO-006, which remains proposed and unauthorized."
+)
 
 
 def _wo005_closed_section(lines, heading):
@@ -2439,42 +2522,55 @@ def _wo005_closed_section(lines, heading):
     return " ".join(" ".join(lines[start:end]).split())
 
 
-def _wo005_session_a_record_findings(pointer, issued_text, rel):
-    """Session A's record while Session A is open.
+def _wo005_session_a_record_findings(pointer, issued_text, rel,
+                                     completed=False):
+    """Session A's record while Session A is open, and after completion.
 
-    In the mandate, the four headings around the record are unique and
-    consecutive in the canonical order; the authorization basis and the
-    exemption are closed records, each equal to its accepted text; and the
-    next gate occurs once, with no second next gate beside it. In the pointer,
-    the issuance note, the Session A record, and the record anchored to the
-    note each occur exactly once.
+    In the mandate, the headings around the record are unique and consecutive
+    in the canonical order; the authorization basis and the exemption are
+    closed records, each equal to its accepted text; and the next gate occurs
+    once, with no second next gate beside it. While Session A is open, the
+    pointer's issuance note, Session A record, and the record anchored to the
+    note each occur exactly once. Once WO-005 is completed, the basis is its
+    past-tense record, the completion record joins the headings, the next gate
+    is the completion gate, and the pointer's Session A record is history.
     """
     out = []
-    normalized_pointer = " ".join(pointer.split())
-    for required in (_WO005_ISSUANCE_POINTER_HISTORY,
-                     _WO005_SESSION_A_POINTER_RECORD,
-                     _WO005_SESSION_A_POINTER_ANCHORED):
-        if normalized_pointer.count(required) != 1:
-            out.append(("WORKORDER.md", "WO-005 Session A pointer statement",
-                        str(normalized_pointer.count(required)),
-                        "exactly one " + required))
+    headings_wanted: tuple[str, ...]
+    if completed:
+        headings_wanted = _WO005_COMPLETED_HEADINGS
+        basis_record = _WO005_COMPLETED_BASIS_RECORD
+        next_gate = _WO005_COMPLETED_NEXT_GATE
+    else:
+        headings_wanted = _WO005_SESSION_A_HEADINGS
+        basis_record = _WO005_SESSION_A_BASIS_RECORD
+        next_gate = _WO005_SESSION_A_NEXT_GATE
+        normalized_pointer = " ".join(pointer.split())
+        for required in (_WO005_ISSUANCE_POINTER_HISTORY,
+                         _WO005_SESSION_A_POINTER_RECORD,
+                         _WO005_SESSION_A_POINTER_ANCHORED):
+            if normalized_pointer.count(required) != 1:
+                out.append(("WORKORDER.md",
+                            "WO-005 Session A pointer statement",
+                            str(normalized_pointer.count(required)),
+                            "exactly one " + required))
     lines = [line.strip() for line in issued_text.splitlines()]
     headings = [line for line in lines if line.startswith("## ")]
     unique = True
-    for heading in _WO005_SESSION_A_HEADINGS:
+    for heading in headings_wanted:
         if headings.count(heading) != 1:
             unique = False
             out.append((rel, "WO-005 Session A record heading",
                         str(headings.count(heading)), "exactly one " + heading))
     if unique:
-        first = headings.index(_WO005_SESSION_A_HEADINGS[0])
-        found = tuple(headings[first:first + len(_WO005_SESSION_A_HEADINGS)])
-        if found != _WO005_SESSION_A_HEADINGS:
+        first = headings.index(headings_wanted[0])
+        found = tuple(headings[first:first + len(headings_wanted)])
+        if found != headings_wanted:
             out.append((rel, "WO-005 Session A record heading",
                         " / ".join(found),
-                        "consecutive " + " / ".join(_WO005_SESSION_A_HEADINGS)))
+                        "consecutive " + " / ".join(headings_wanted)))
     for heading, record, kind in (
-        (_WO005_SESSION_A_BASIS_HEADING, _WO005_SESSION_A_BASIS_RECORD,
+        (_WO005_SESSION_A_BASIS_HEADING, basis_record,
          "WO-005 Session A authorization statement"),
         (_WO005_EXEMPTION_HEADING, _WO005_EXEMPTION_RECORD,
          "WO-005 Session A exemption record"),
@@ -2485,10 +2581,10 @@ def _wo005_session_a_record_findings(pointer, issued_text, rel):
                 out.append((rel, kind, "a section that differs from the "
                             "accepted record", "exactly " + record))
     normalized = " ".join(issued_text.split())
-    if normalized.count(_WO005_SESSION_A_NEXT_GATE) != 1:
+    if normalized.count(next_gate) != 1:
         out.append((rel, "WO-005 next gate",
-                    str(normalized.count(_WO005_SESSION_A_NEXT_GATE)),
-                    "exactly one " + _WO005_SESSION_A_NEXT_GATE))
+                    str(normalized.count(next_gate)),
+                    "exactly one " + next_gate))
     gates = [line for line in lines if line.startswith("NEXT GATE:")]
     if len(gates) != 1:
         out.append((rel, "WO-005 next gate", str(len(gates)),
@@ -2496,18 +2592,28 @@ def _wo005_session_a_record_findings(pointer, issued_text, rel):
     return out
 
 
-def _wo005_issuance_findings(pointer, issued_text, rel, session):
+def _wo005_issuance_findings(pointer, issued_text, rel, session,
+                             surface="both"):
     """WO-005's issuance record on the two surfaces that declare it.
 
     This pins the issuance evidence and the root base value, and once Session
-    A is authorized, the Session A authorization evidence beside them. The
-    session value only selects which of those two shapes applies; the gate
-    and the marker are checked by the session branches. A later transition
-    that changes the base commit must update these pins - the visible act the
-    governance model wants.
+    A is authorized, the Session A authorization evidence beside them; once
+    WO-005 is completed ("COMPLETED"), the completion basis too. The session
+    value only selects which shape applies; the gate and the marker are
+    checked by the branches that call this. A later transition that changes
+    the base commit must update these pins - the visible act the governance
+    model wants. `surface` limits the check to the pointer or the document,
+    so the document half can keep running under a later pointer owner.
     """
+    if surface not in ("both", "pointer", "document"):
+        raise ValueError("unknown surface: " + repr(surface))
     shapes: tuple[tuple[tuple[str, ...], tuple[tuple[str, str], ...]], ...]
-    if session == "A":
+    if session == "COMPLETED":
+        shapes = ((_WO005_COMPLETED_POINTER_SEQUENCE,
+                   _WO005_COMPLETED_POINTER_KEYS),
+                  (_WO005_COMPLETED_ISSUED_SEQUENCE,
+                   _WO005_COMPLETED_ISSUED_KEYS))
+    elif session == "A":
         shapes = ((_WO005_SESSION_A_POINTER_SEQUENCE,
                    _WO005_SESSION_A_POINTER_KEYS),
                   (_WO005_SESSION_A_ISSUED_SEQUENCE,
@@ -2523,6 +2629,8 @@ def _wo005_issuance_findings(pointer, issued_text, rel, session):
         (rel, issued_text, lambda line: line.startswith("## "),
          shapes[1], "issued record"),
     ):
+        if surface == ("document" if target == "WORKORDER.md" else "pointer"):
+            continue
         for kind, found, want in _canonical_field_findings(
             text, sequence, stop, where,
             exact={item for item in sequence if "`" in item},
@@ -3193,6 +3301,7 @@ def check_work_order_contract() -> list[dict]:
 
     wo003_paths = [path for path in state_paths if path.name == _WO003_NAME]
     wo004_paths = [path for path in state_paths if path.name == _WO004_NAME]
+    wo005_paths = [path for path in state_paths if path.name == _WO005_NAME]
 
     # WO-002 completion is terminal. This checker carries the WO-002 completion
     # contract, so no rollback of the documents alone - however internally
@@ -3280,6 +3389,22 @@ def check_work_order_contract() -> list[dict]:
             "WO-004 exclusively under completed/ with the completed status "
             "and closed authorization markers")
 
+    # Completing WO-005 is one-way in the same way, and locks the document,
+    # not the pointer.
+    terminal_wo005_path = completed_dir / _WO005_NAME
+    completed_wo005_status, completed_wo005_auth, _text = (
+        completed_metadata.get(_WO005_NAME, ([], [], ""))
+    )
+    if not (
+        wo005_paths == [terminal_wo005_path]
+        and completed_wo005_status == ["STATUS: COMPLETED"]
+        and completed_wo005_auth == [_COMPLETED_NO_SESSION_AUTH]
+    ):
+        add("docs/work-orders", "completed WO-005 state",
+            "the completed WO-005 state was removed or changed",
+            "WO-005 exclusively under completed/ with the completed status "
+            "and closed authorization markers")
+
     wo001_name = "WO-001-custom-mcp-security.md"
     wo001_path = completed_dir / wo001_name
     wo001_completed_text = ""
@@ -3310,6 +3435,10 @@ def check_work_order_contract() -> list[dict]:
     if _WO004_NAME in completed_metadata:
         wo004_completed_text = completed_metadata[_WO004_NAME][2]
 
+    wo005_completed_text = ""
+    if _WO005_NAME in completed_metadata:
+        wo005_completed_text = completed_metadata[_WO005_NAME][2]
+
     # Whichever Work Order closed last owns the pointer's base and gate,
     # and its document is the basis for the successor guard. Selecting it
     # here rather than inside the branch below is what lets the ARTIFACT
@@ -3318,7 +3447,12 @@ def check_work_order_contract() -> list[dict]:
     # pointer. Leaving the whole guard in the NONE branch meant issuing
     # WO-004 silenced the scan of WO-003's completed document - exactly
     # the failure the WO-002 hoist below exists to prevent.
-    if wo004_completed_text:
+    if wo005_completed_text:
+        next_order, basis_name = "WO-006", _WO005_NAME
+        basis_text = wo005_completed_text
+        expected_base = _WO005_COMPLETION_COMMIT
+        expected_closed_gate = _WO005_COMPLETED_GATE
+    elif wo004_completed_text:
         next_order, basis_name = "WO-005", _WO004_NAME
         basis_text = wo004_completed_text
         expected_base = _WO004_COMPLETION_COMMIT
@@ -3365,7 +3499,18 @@ def check_work_order_contract() -> list[dict]:
         if current_gate != expected_closed_gate:
             add("WORKORDER.md", "completed work order gate", str(current_gate),
                 expected_closed_gate)
-        if wo004_completed_text:
+        if wo005_completed_text:
+            # WO-005 closed last, so it owns the pointer's canonical slice:
+            # its issuance, Session A authorization, and completion basis,
+            # with the base on the completion commit. Pointer-bound half
+            # only; the document half runs outside this branch.
+            for _f, _k, _found, _want in _wo005_issuance_findings(
+                pointer, wo005_completed_text,
+                (completed_dir / _WO005_NAME).relative_to(root).as_posix(),
+                "COMPLETED", surface="pointer",
+            ):
+                add(_f, _k, _found, _want)
+        elif wo004_completed_text:
             # WO-004 closed last, so it owns the pointer's canonical slice:
             # every WO-004 bullet from issuance through Session C, then the
             # completion basis, with the base on the completion commit.
@@ -4207,6 +4352,62 @@ def check_work_order_contract() -> list[dict]:
             add("WORKORDER.md", "WO-004 completion pointer statement",
                 str(normalized_pointer.count(_WO004_COMPLETED_POINTER_CLAUSE)),
                 "exactly one " + _WO004_COMPLETED_POINTER_CLAUSE)
+
+    # WO-005's completed document is bound to the artifact the same way:
+    # the canonical slice with its completion basis, the Session A record and
+    # accepted exemption terms, the completion statement, and the release,
+    # external-action, and session boundaries keep running whoever owns the
+    # pointer.
+    if wo005_completed_text:
+        wo005_rel = (completed_dir / _WO005_NAME).relative_to(root).as_posix()
+        for _f, _k, _found, _want in (
+            _wo005_issuance_findings(pointer, wo005_completed_text, wo005_rel,
+                                     "COMPLETED", surface="document")
+            + _wo005_session_a_record_findings(pointer, wo005_completed_text,
+                                               wo005_rel, completed=True)
+        ):
+            add(_f, _k, _found, _want)
+        normalized_wo005 = " ".join(wo005_completed_text.split())
+        if normalized_wo005.count(_WO005_COMPLETED_STATEMENT) != 1:
+            add(wo005_rel, "WO-005 completion statement",
+                str(normalized_wo005.count(_WO005_COMPLETED_STATEMENT)),
+                "exactly one " + _WO005_COMPLETED_STATEMENT)
+        # The kept records name Session A beside words the scanner reads as
+        # grants, so their pinned forms are removed once each before it looks
+        # for a positive statement about ANY session.
+        scannable = normalized_wo005
+        for kept in (_WO005_COMPLETED_BASIS_RECORD, _WO005_EXEMPTION_RECORD):
+            scannable = scannable.replace(kept, "", 1)
+        if _has_other_session_authorization("", scannable, ""):
+            add(wo005_rel, "session authorization reopening",
+                "positive permission for a WO-005 session",
+                "WO-005 is completed and no session is authorized")
+        # Same scanners and attribution rule as the completed WO-004 block.
+        if (not _has_release_authorization(pointer)
+                and _has_release_authorization(pointer,
+                                               wo005_completed_text)):
+            add(wo005_rel, "release authorization",
+                "positive release permission", _CLOSED_RELEASE_GATE)
+        wo005_allowed_history: tuple[str, ...] = ()
+        if wo003_completed_text:
+            wo005_allowed_history = (
+                _WO003_PRE_APPLICATION_POINTER_STATEMENT,
+                _WO003_COMPLETED_APPLIED_POINTER_STATEMENT,
+                _WO003_COMPLETION_POINTER_STATEMENT,
+            )
+        if (not _has_session_b_external_action_authorization(
+                pointer, wo005_allowed_history)
+                and _has_session_b_external_action_authorization(
+                    pointer, wo005_allowed_history, normalized_wo005)):
+            add(wo005_rel, "external-action boundary",
+                "positive permission for a further external action",
+                "repository metadata, branch-protection, and social "
+                "publication remain unauthorized")
+        wo005_pointer = " ".join(pointer.split())
+        if wo005_pointer.count(_WO005_COMPLETED_POINTER_CLAUSE) != 1:
+            add("WORKORDER.md", "WO-005 completion pointer statement",
+                str(wo005_pointer.count(_WO005_COMPLETED_POINTER_CLAUSE)),
+                "exactly one " + _WO005_COMPLETED_POINTER_CLAUSE)
 
     return findings
 

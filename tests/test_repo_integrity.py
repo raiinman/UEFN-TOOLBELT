@@ -144,7 +144,7 @@ def test_drift_check_covers_agent_context_surfaces(repo_root):
         "docs/work-orders/completed/WO-002-epic-toolset-integration.md",
         "docs/work-orders/completed/WO-003-official-mcp-doc-convergence.md",
         "docs/work-orders/completed/WO-004-modal-observability.md",
-        "docs/work-orders/issued/WO-005-coverage-source-of-truth.md",
+        "docs/work-orders/completed/WO-005-coverage-source-of-truth.md",
         "docs/work-orders/proposed/WO-006-official-vs-toolbelt-benchmark.md",
         "docs/work-orders/proposed/WO-007-public-mcp-explainer.md",
         ".agents/workflows/add_new_tool.md",
@@ -215,32 +215,32 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
               if path.name.lower() != "readme.md"]
     completed = [path for path in (work_orders / "completed").glob("*.md")
                  if path.name.lower() != "readme.md"]
-    assert [path.name for path in issued] == [
-        "WO-005-coverage-source-of-truth.md"
-    ]
+    assert issued == []
     assert {path.name for path in completed} == {
         "WO-001-custom-mcp-security.md",
         "WO-002-epic-toolset-integration.md",
         "WO-003-official-mcp-doc-convergence.md",
         "WO-004-modal-observability.md",
+        "WO-005-coverage-source-of-truth.md",
     }
-    assert len(completed) == 4
+    assert len(completed) == 5
     assert (work_orders / "completed" / "WO-002-epic-toolset-integration.md").exists()
     assert (
         work_orders / "completed" / "WO-003-official-mcp-doc-convergence.md"
     ).exists()
     assert not (work_orders / "issued" / "WO-004-modal-observability.md").exists()
     assert not (work_orders / "proposed" / "WO-005-coverage-source-of-truth.md").exists()
-    assert current == "WO-005"
-    assert session == "A"
-    # The base is the Session A authorization commit, declared in its own
-    # bullet beside the issuance evidence it follows.
+    assert not (work_orders / "issued" / "WO-005-coverage-source-of-truth.md").exists()
+    assert current == "NONE"
+    assert session == "NONE"
+    # The base is the implementation commit WO-005 completed on, declared in
+    # its own completion-basis bullet after the issuance and Session A
+    # evidence it follows.
     assert base_lines == [
-        "- Base commit: `867074f8a520450ef6073b4c922079a897a83886`"
+        "- Base commit: `5ef3aef2934b33a357ab9114e68aae41bc78639c`"
     ]
     assert gate_lines == [
-        "- Current gate: WO-005 SESSION A AUTHORIZED — OFFLINE COVERAGE MODEL"
-        " ONLY"
+        "- Current gate: WO-005 COMPLETED — WO-006 PROPOSED AND NOT AUTHORIZED"
     ]
     for line in (
         "- Issuance commit: `528f1962c0c45c0631bab3637f3fd40db6317027`",
@@ -250,27 +250,39 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         " `867074f8a520450ef6073b4c922079a897a83886`",
         "- Session A authorization CI workflow: `36596756689`",
         "- Session A authorization CI job: `109503539592` — Lint, types, tests",
+        "- Completion basis commit:"
+        " `5ef3aef2934b33a357ab9114e68aae41bc78639c`",
+        "- Completion basis CI workflow: `36662471593`",
+        "- Completion basis CI job: `109719997181` — Lint, types, tests",
     ):
         assert line in pointer, line
-    # The mandate records Session A's basis and the accepted exemption; the
-    # roadmap summary says the same and nothing more.
+    # The completed mandate keeps Session A's basis as history and the
+    # accepted exemption terms, adds the completion record, and says source
+    # categories are not live verification. The roadmap says WO-005 is done.
     wo005_live = (
-        work_orders / "issued" / "WO-005-coverage-source-of-truth.md"
+        work_orders / "completed" / "WO-005-coverage-source-of-truth.md"
     ).read_text(encoding="utf-8")
     assert [
         line for line in wo005_live.splitlines()
-        if line.startswith("AUTHORIZATION:")
-    ] == [
-        "AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR OFFLINE COVERAGE"
-        " MODEL ONLY"
-    ]
+        if line.startswith(("STATUS:", "AUTHORIZATION:"))
+    ] == ["STATUS: COMPLETED", "AUTHORIZATION: COMPLETED — NO SESSION AUTHORIZED"]
     assert "## Session A authorization basis" in wo005_live
     assert "## Session A live-verification exemption" in wo005_live
+    assert "## Completion record" in wo005_live
     assert "BASELINE: `1925ba8a09c3696d25de7ffc3f23caf970362c4d`" in wo005_live
+    normalized_wo005 = " ".join(wo005_live.split())
+    assert (
+        "They do not establish live verification of any tool, and completion "
+        "adds no live evidence." in normalized_wo005
+    )
+    assert normalized_wo005.count(
+        "WO-005 is complete; no session is authorized. WO-006 remains "
+        "proposed and unauthorized."
+    ) == 1
     roadmap = (repo_root / "ROADMAP.md").read_text(encoding="utf-8")
     assert (
-        "WO-005 is issued, and its Session A is authorized for the offline"
-        " coverage model only." in " ".join(roadmap.replace(">", " ").split())
+        "WO-001 through WO-005 are completed."
+        in " ".join(roadmap.replace(">", " ").split())
     )
     # The canonical bullet block belongs to whichever order owns the pointer.
     # WO-004's issuance, session, and completion bullets left it at WO-005's
@@ -367,11 +379,11 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "WO-005 remains proposed and\nunauthorized." in wo004_live
     )
     # WO-005's issuance is recorded once, with its accepted proposal evidence.
-    # What it left closed is now history, and Session A is authorized once,
-    # with the accepted exemption bounded to its offline scope.
+    # What it left closed, and the Session A gate, are history now, and the
+    # completion is recorded once.
     assert (
-        "[`WO-005`](docs/work-orders/issued/WO-005-coverage-source-of-truth.md)"
-        " is issued." in normalized_pointer_live
+        "[`WO-005`](docs/work-orders/completed/WO-005-coverage-source-of-truth"
+        ".md) is completed." in normalized_pointer_live
     )
     assert (
         "At its issuance gate, WO-005 gave no implementation authority and "
@@ -390,14 +402,19 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "Session B is authorized under this pointer"
         not in normalized_pointer_live
     )
+    assert (
+        "Session A is authorized under this pointer" not in normalized_pointer_live
+    )
+    assert (
+        "At the Session A authorization gate, this pointer opened the offline "
+        "coverage model only" in normalized_pointer_live
+    )
     assert normalized_pointer_live.count(
-        "Session A is authorized under this pointer for the offline coverage "
-        "model only"
+        "WO-005 is completed as `5ef3aef2934b33a357ab9114e68aae41bc78639c`;"
     ) == 1
     assert (
-        "The owner accepted the proposed live-verification exemption for that "
-        "offline scope only, on the terms recorded in the mandate; it grants "
-        "no commit, push, deploy, or live run." in normalized_pointer_live
+        "they establish no live verification of any tool. WO-005 is complete; "
+        "no session is authorized." in normalized_pointer_live
     )
     # WO-003's own session bullets are gone from the pointer - they live in
     # its completed document now. WO-004 declares a Session A
@@ -502,7 +519,7 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "proposed." in normalized_pointer
     )
     assert "UEFN launch, bridge startup," in pointer
-    # WO-005's issuance note is history too, now that Session A is open.
+    # WO-005's issuance note is history too, now that WO-005 is completed.
     assert normalized_pointer.count(
         "Issuance grants no implementation authority and opens no session."
     ) == 0
@@ -1814,14 +1831,260 @@ _WO005_SA_REVERSAL = (
 )
 
 
-def _make_wo005_session_a_case(repo_root, tmp_path, name):
-    """Copy the current WO-005 Session A state."""
+# --- WO-005 completion: the current state, the head of the chain ---------
+#
+# Completing WO-005 moved the current state forward again, so the Session A
+# state - and every historical fixture below it - is reconstructed backwards
+# from the completed state. The reversal is kept as named steps, as Session
+# A's is.
+
+_WO005_DONE_REL = (
+    "docs/work-orders/completed/WO-005-coverage-source-of-truth.md"
+)
+_WO005_DONE_COMMIT = "5ef3aef2934b33a357ab9114e68aae41bc78639c"
+_WO005_DONE_WORKFLOW = "36662471593"
+_WO005_DONE_JOB = "109719997181"
+_WO005_DONE_RUN = (
+    "https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _WO005_DONE_WORKFLOW
+)
+_WO005_DONE_GATE = (
+    "WO-005 COMPLETED " + _EM + " WO-006 PROPOSED AND NOT AUTHORIZED"
+)
+_WO005_DONE_MARKER = "AUTHORIZATION: COMPLETED " + _EM + " NO SESSION AUTHORIZED"
+_WO005_DONE_METADATA = (
+    ("COMPLETION_BASIS_COMMIT:",
+     "COMPLETION_BASIS_COMMIT: `" + _WO005_DONE_COMMIT + "`"),
+    ("COMPLETION_BASIS_CI_WORKFLOW:",
+     "COMPLETION_BASIS_CI_WORKFLOW: `" + _WO005_DONE_WORKFLOW + "`"),
+    ("COMPLETION_BASIS_CI_JOB:",
+     "COMPLETION_BASIS_CI_JOB: `" + _WO005_DONE_JOB + "` " + _EM
+     + " Lint, types, tests"),
+)
+_WO005_DONE_POINTER_BULLETS = (
+    ("- Completion basis commit:",
+     "- Completion basis commit: `" + _WO005_DONE_COMMIT + "`"),
+    ("- Completion basis CI workflow:",
+     "- Completion basis CI workflow: `" + _WO005_DONE_WORKFLOW + "`"),
+    ("- Completion basis CI job:",
+     "- Completion basis CI job: `" + _WO005_DONE_JOB + "` " + _EM
+     + " Lint, types, tests"),
+)
+_WO005_DONE_HEADING = "## Completion record"
+_WO005_DONE_STATEMENT = (
+    "WO-005 is complete; no session is authorized. WO-006 remains proposed"
+    " and unauthorized."
+)
+_WO005_DONE_POINTER_CLAUSE = "WO-005 is complete; no session is authorized."
+# Each pair is (as the completed state records it, as the Session A state
+# recorded it), so the reconstruction puts every original back byte for byte.
+_WO005_DONE_MANDATE_HISTORY = (
+    (_NL.join((
+        "At the Session A authorization gate, Session A was authorized for"
+        " the offline",
+        "coverage model only under the root `WORKORDER.md` gate. The recorded"
+        " basis is commit",
+    )), _NL.join((
+        "Session A is authorized for the offline coverage model only under the"
+        " current",
+        "root `WORKORDER.md` gate alone. The recorded basis is commit",
+    ))),
+    (_NL.join((
+        "That gate covered exactly the scope in \"Proposed Session A " + _EM
+        + " offline coverage",
+        "model\" below: its six-path file scope, the migration shim, the"
+        " acceptance",
+        "tests, the static gates, the cleanup duties, and the exclusions,"
+        " unchanged.",
+        "Session A ended with its worktree uncommitted for independent review."
+        " It opened",
+    )), _NL.join((
+        "This gate covers exactly the scope in \"Proposed Session A " + _EM
+        + " offline coverage",
+        "model\" below: its six-path file scope, the migration shim, the"
+        " acceptance",
+        "tests, the static gates, the cleanup duties, and the exclusions,"
+        " unchanged.",
+        "Session A ends with its worktree uncommitted for independent review."
+        " It opens",
+    ))),
+    (_NL.join((
+        "NEXT GATE: separate owner authorization for a fresh independent"
+        " WO-006",
+        "pre-issuance review, after this completion transition is accepted,"
+        " committed,",
+        "pushed, and green. Completion of WO-005 does not issue or authorize"
+        " WO-006,",
+        "which remains proposed and unauthorized.",
+    )), _WO005_SA_MANDATE_HISTORY[3][0]),
+)
+_WO005_DONE_POINTER_HISTORY = (
+    (_NL.join((
+        "- Current issued Work Order: NONE",
+        "- Authorized session: NONE",
+        "- Base commit: `" + _WO005_DONE_COMMIT + "`",
+        "- Current gate: " + _WO005_DONE_GATE,
+    )), _NL.join((
+        "- Current issued Work Order: WO-005",
+        "- Authorized session: A",
+        "- Base commit: `" + _WO005_SA_COMMIT + "`",
+        "- Current gate: " + _WO005_SA_GATE,
+    ))),
+    (_NL.join((
+        "[`WO-005`](docs/work-orders/completed/WO-005-coverage-source-of-truth"
+        ".md) is",
+        "completed. Its planning baseline",
+    )), _NL.join((
+        "[`WO-005`](docs/work-orders/issued/WO-005-coverage-source-of-truth"
+        ".md) is",
+        "issued. Its planning baseline",
+    ))),
+    (_NL.join((
+        "At the Session A authorization gate, this pointer opened the offline"
+        " coverage",
+        "model only, on the basis of commit `" + _WO005_SA_COMMIT + "`,",
+        "successful CI workflow `" + _WO005_SA_WORKFLOW + "`, and successful"
+        " required job",
+        "`" + _WO005_SA_JOB + "` (`Lint, types, tests`). That gate covered"
+        " the Session A scope",
+        "recorded in the mandate, unchanged, and ended with that worktree"
+        " uncommitted",
+        "for independent review. The owner accepted the proposed"
+        " live-verification",
+        "exemption for that offline scope only, on the terms recorded in the"
+        " mandate;",
+        "it gave no commit, push, deploy, or live-run permission. That gate"
+        " opened no",
+        "deploy, UEFN launch, bridge startup, MCP call, commit, or push.",
+        "",
+        "WO-005 is completed as `" + _WO005_DONE_COMMIT + "`; [CI workflow",
+        "`" + _WO005_DONE_WORKFLOW + "`](" + _WO005_DONE_RUN + ")",
+        "completed successfully, including required job",
+        "[`" + _WO005_DONE_JOB + "` " + _EM + " Lint, types, tests]("
+        + _WO005_DONE_RUN + "/job/" + _WO005_DONE_JOB + ").",
+        "That commit carries the independently accepted Session A"
+        " implementation: the",
+        "registry-derived coverage report with its explicit evidence mappings"
+        " and",
+        "tests, the generated `TOOL_STATUS.md` block with the named"
+        " corrections, the",
+        "shared registry enumerator behind `drift_check`, and the"
+        " `list_untested.py`",
+        "migration shim. Source categories describe what test code is written"
+        " to",
+        "check; they establish no live verification of any tool. WO-005 is"
+        " complete;",
+        "no session is authorized. WO-006 and WO-007 stay proposed, and the"
+        " optional",
+        "integration run stays deferred. Any later session, tagging, Release"
+        " creation,",
+        "branch-protection changes, other repository metadata changes, and"
+        " social",
+        "publication all remain unauthorized.",
+    )), _WO005_SA_POINTER_HISTORY[1][0].split(_NL + _NL, 1)[1]),
+)
+
+
+def _wo005_done_revert_move(case):
+    (case / _WO005_DONE_REL).rename(case / _WO005_ISS_REL)
+
+
+def _wo005_done_revert_marker(case):
+    _edit(case, _WO005_ISS_REL, "STATUS: COMPLETED", "STATUS: ISSUED")
+    _edit(case, _WO005_ISS_REL, _WO005_DONE_MARKER, _WO005_SA_MARKER)
+
+
+def _wo005_done_revert_evidence(case):
+    for _prefix, declaration in _WO005_DONE_METADATA:
+        _edit(case, _WO005_ISS_REL, _NL + declaration + _NL, "")
+
+
+def _wo005_done_revert_record(case):
+    target = case / _WO005_ISS_REL
+    text = target.read_text(encoding="utf-8")
+    _require_unique(
+        text, (_WO005_DONE_HEADING, "## Revision provenance"),
+        "WO-005 completion record excision",
+    )
+    text = _sub_once(
+        re.escape(_WO005_DONE_HEADING)
+        + ".*?(?=" + re.escape("## Revision provenance" + _NL) + ")",
+        "", text, "WO-005 completion record excision", flags=re.DOTALL,
+    )
+    target.write_text(text, encoding="utf-8")
+
+
+def _wo005_done_revert_mandate_history(case):
+    for old, new in _WO005_DONE_MANDATE_HISTORY:
+        _edit(case, _WO005_ISS_REL, old, new)
+
+
+def _wo005_done_revert_pointer_bullets(case):
+    _edit(case, "WORKORDER.md", *_WO005_DONE_POINTER_HISTORY[0])
+    for _prefix, bullet in _WO005_DONE_POINTER_BULLETS:
+        _edit(case, "WORKORDER.md", bullet + _NL, "")
+
+
+def _wo005_done_revert_pointer_history(case):
+    for old, new in _WO005_DONE_POINTER_HISTORY[1:]:
+        _edit(case, "WORKORDER.md", old, new)
+
+
+# The WO-005 completion transition, as reversible steps. The move comes
+# first: every mandate step edits the issued path.
+_WO005_DONE_REVERSAL = (
+    ("mandate-move", _wo005_done_revert_move),
+    ("mandate-marker", _wo005_done_revert_marker),
+    ("mandate-evidence", _wo005_done_revert_evidence),
+    ("mandate-record", _wo005_done_revert_record),
+    ("mandate-history", _wo005_done_revert_mandate_history),
+    ("pointer-bullets", _wo005_done_revert_pointer_bullets),
+    ("pointer-history", _wo005_done_revert_pointer_history),
+)
+
+
+def _make_wo005_completed_case(repo_root, tmp_path, name):
+    """Copy the current completed-WO-005 state."""
     case = tmp_path / name
     case.mkdir(parents=True)
     shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
     shutil.copytree(
         repo_root / "docs" / "work-orders",
         case / "docs" / "work-orders",
+    )
+    return case
+
+
+def _make_wo005_session_a_case(repo_root, tmp_path, name):
+    """Reconstruct the preserved WO-005 Session A state.
+
+    Completing WO-005 moved the current state forward, so the Session A state
+    every earlier fixture builds on is now itself a reconstruction. Every
+    completion edit is reversed: the move to completed/, the markers, the
+    completion basis declarations and bullets, the completion record, the
+    past-tense Session A basis and next gate, and the pointer's order,
+    session, base, gate, link, and Session A and completion paragraphs. Both
+    files return to the Session A state byte for byte.
+    """
+    case = _make_wo005_completed_case(repo_root, tmp_path, name)
+    if not (case / _WO005_DONE_REL).exists():
+        # Already a pre-completion tree: nothing to reverse.
+        return case
+    for _step, revert in _WO005_DONE_REVERSAL:
+        revert(case)
+    _assert_reconstructed(
+        "WO-005 completion pointer",
+        (case / "WORKORDER.md").read_text(encoding="utf-8"),
+        (_WO005_SA_POINTER_HISTORY[0][0], _WO005_SA_POINTER_HISTORY[1][0]),
+        (_WO005_DONE_GATE, _WO005_DONE_WORKFLOW, _WO005_DONE_JOB,
+         _WO005_DONE_POINTER_CLAUSE),
+    )
+    _assert_reconstructed(
+        "WO-005 completion reconstruction",
+        (case / _WO005_ISS_REL).read_text(encoding="utf-8"),
+        (_WO005_SA_MARKER, _WO005_SA_MANDATE_HISTORY[3][0]),
+        (_WO005_DONE_MARKER, _WO005_DONE_HEADING, "COMPLETION_BASIS_COMMIT:",
+         _WO005_DONE_STATEMENT),
     )
     return case
 
@@ -4214,6 +4477,7 @@ _ISSUED_REL = "docs/work-orders/issued/WO-002-epic-toolset-integration.md"
 _TERMINAL_WO002_FINDING = "completed WO-002 state"
 _TERMINAL_WO003_FINDING = "completed WO-003 state"
 _TERMINAL_WO004_FINDING = "completed WO-004 state"
+_TERMINAL_WO005_FINDING = "completed WO-005 state"
 
 
 def _without_terminal_lock(finding_types):
@@ -4227,6 +4491,7 @@ def _without_terminal_lock(finding_types):
         _TERMINAL_WO002_FINDING,
         _TERMINAL_WO003_FINDING,
         _TERMINAL_WO004_FINDING,
+        _TERMINAL_WO005_FINDING,
     }
 
 
@@ -4239,7 +4504,18 @@ def _pre_completion_findings(drift_check):
     every other finding, including the older locks, is still returned.
     """
     return [finding for finding in drift_check.check_work_order_contract()
-            if finding["type"] != _TERMINAL_WO004_FINDING]
+            if finding["type"] not in (_TERMINAL_WO004_FINDING,
+                                       _TERMINAL_WO005_FINDING)]
+
+
+def _before_wo005_completion(drift_check):
+    """The work-order findings less WO-005's one-way completion lock only.
+
+    For fixtures after WO-004's completion but before WO-005's, which trip
+    that one lock and must still see every other finding, WO-004's included.
+    """
+    return [finding for finding in drift_check.check_work_order_contract()
+            if finding["type"] != _TERMINAL_WO005_FINDING]
 
 
 _RECONSTRUCTION_FAILURE = (
@@ -12150,7 +12426,7 @@ def _wo004_done_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+            for f in _before_wo005_completion(drift_check)}
 
 
 def _wo004_done_types(repo_root, tmp_path, monkeypatch, name, mutate):
@@ -12329,7 +12605,7 @@ def test_wo004_completion_cannot_be_rolled_back(
     case = _make_wo004_session_c_case(repo_root, tmp_path,
                                       "wo004-done-rollback")
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    found = {f["type"] for f in drift_check.check_work_order_contract()}
+    found = {f["type"] for f in _before_wo005_completion(drift_check)}
     assert found == {_TERMINAL_WO004_FINDING}, (
         "a coherent rollback to Session C was not caught by the lock alone: "
         + repr(sorted(found))
@@ -12495,7 +12771,7 @@ def _wo005_owner_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+            for f in _before_wo005_completion(drift_check)}
 
 
 def test_wo005_owner_fixture_is_clean(repo_root, tmp_path,
@@ -12580,7 +12856,7 @@ def _wo005_iss_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+            for f in _before_wo005_completion(drift_check)}
 
 
 def test_wo005_issued_state_is_clean(repo_root, tmp_path, monkeypatch) -> None:
@@ -12701,7 +12977,7 @@ def _wo005_sa_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+            for f in _before_wo005_completion(drift_check)}
 
 
 def test_wo005_session_a_state_is_clean(repo_root, tmp_path,
@@ -13203,3 +13479,279 @@ def test_wo005_session_a_records_leave_other_prose_alone(
                                "harmless-" + name,
                                _wo005_sa_rewrite(rel, change))
     assert found == set(), name + " was reported: " + repr(sorted(found))
+
+
+# --- WO-005 completion: the live state -----------------------------------
+#
+# Completion adds the completion basis to both canonical blocks, moves the
+# base, locks the document under completed/, and keeps the Session A record,
+# the accepted exemption terms, and the release, external-action, session, and
+# successor boundaries in force - also once a later Work Order owns the
+# pointer.
+
+_WO005_DONE_KINDS = {
+    "WORKORDER.md": _WO005_ISS_KINDS["WORKORDER.md"],
+    _WO005_DONE_REL: _WO005_ISS_KINDS[_WO005_ISS_REL],
+}
+
+
+def _wo005_done_findings(repo_root, tmp_path, monkeypatch, name, mutate,
+                         build=None):
+    """(type, file) findings for the completed-WO-005 state, or a state
+    built on it, after one mutation."""
+    drift_check = _load_drift_check(repo_root, "wo005_done_" + name)
+    case = (build or _make_wo005_completed_case)(repo_root, tmp_path,
+                                                 "wo005-done-" + name)
+    mutate(case)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return {(f["type"], f["file"])
+            for f in drift_check.check_work_order_contract()}
+
+
+def test_wo005_completed_state_is_clean(repo_root, tmp_path,
+                                        monkeypatch) -> None:
+    """The control: the live completed state has no finding at all."""
+    found = _wo005_done_findings(repo_root, tmp_path, monkeypatch, "control",
+                                 lambda case: None)
+    assert found == set(), (
+        "the completed WO-005 state is not clean: " + repr(sorted(found))
+    )
+
+
+_WO005_DONE_EVIDENCE = (
+    # (id, file, declaration prefix, pinned value)
+    ("pointer-base", "WORKORDER.md", "- Base commit:", _WO005_DONE_COMMIT),
+    ("pointer-session-a-commit", "WORKORDER.md",
+     "- Session A authorization commit:", _WO005_SA_COMMIT),
+    ("mandate-baseline", _WO005_DONE_REL, "BASELINE:", _WO005_ISS_BASELINE),
+    ("mandate-issuance-commit", _WO005_DONE_REL, "ISSUANCE_COMMIT:",
+     _WO005_ISS_COMMIT),
+) + tuple(
+    ("pointer-completion-" + label, "WORKORDER.md", prefix, value)
+    for label, (prefix, _line), value in zip(
+        ("commit", "workflow", "job"), _WO005_DONE_POINTER_BULLETS,
+        (_WO005_DONE_COMMIT, _WO005_DONE_WORKFLOW, _WO005_DONE_JOB),
+        strict=True)
+) + tuple(
+    ("mandate-completion-" + label, _WO005_DONE_REL, prefix, value)
+    for label, (prefix, _line), value in zip(
+        ("commit", "workflow", "job"), _WO005_DONE_METADATA,
+        (_WO005_DONE_COMMIT, _WO005_DONE_WORKFLOW, _WO005_DONE_JOB),
+        strict=True)
+)
+
+
+@pytest.mark.parametrize("damage", ("changed", "removed", "decoy"))
+@pytest.mark.parametrize(("name", "rel", "prefix", "value"),
+                         _WO005_DONE_EVIDENCE,
+                         ids=[row[0] for row in _WO005_DONE_EVIDENCE])
+def test_wo005_completion_evidence_is_pinned(
+    repo_root, tmp_path, monkeypatch, name, rel, prefix, value, damage
+) -> None:
+    """The completion basis, the moved base, and the earlier evidence it
+    follows are each enforced on the surface that declares them."""
+    def mutate(case):
+        target = case / rel
+        text = target.read_text(encoding="utf-8")
+        line = next(candidate for candidate in text.splitlines()
+                    if candidate.startswith(prefix))
+        wrong = line.replace(value, _WO004_ZERO_SHA[:len(value)])
+        assert wrong != line, "probe anchor drifted: " + prefix
+        text = _replace_once(text, line, {"changed": wrong, "removed": "",
+                                          "decoy": wrong}[damage],
+                             "WO-005 completion evidence " + damage)
+        if damage == "decoy":
+            text = text.rstrip() + _NL + _NL + line + _NL
+        target.write_text(text, encoding="utf-8")
+
+    found = _wo005_done_findings(repo_root, tmp_path, monkeypatch,
+                                 "evidence-" + name + "-" + damage, mutate)
+    kinds = {kind for kind, file in found if file == rel}
+    assert kinds & _WO005_DONE_KINDS[rel], (
+        "a " + damage + " " + prefix + " declaration was accepted in the "
+        "completed WO-005 state: " + repr(sorted(found))
+    )
+
+
+def _wo005_done_rollback(steps):
+    def mutate(case):
+        for step, revert in _WO005_DONE_REVERSAL:
+            if step in steps:
+                revert(case)
+    return mutate
+
+
+_WO005_DONE_ROLLBACKS = (
+    ("moved-back", lambda case: (case / _WO005_DONE_REL).rename(
+        case / _WO005_ISS_REL)),
+    ("status-reverted", lambda case: _edit(
+        case, _WO005_DONE_REL, "STATUS: COMPLETED", "STATUS: ISSUED")),
+    ("marker-reverted", lambda case: _edit(
+        case, _WO005_DONE_REL, _WO005_DONE_MARKER, _WO005_SA_MARKER)),
+    ("document-rolled-back", _wo005_done_rollback(
+        {"mandate-move", "mandate-marker", "mandate-evidence",
+         "mandate-record", "mandate-history"})),
+    ("coherent-rollback", _wo005_done_rollback(
+        {step for step, _revert in _WO005_DONE_REVERSAL})),
+)
+
+
+@pytest.mark.parametrize(("name", "mutate"), _WO005_DONE_ROLLBACKS,
+                         ids=[row[0] for row in _WO005_DONE_ROLLBACKS])
+def test_wo005_completion_cannot_be_rolled_back(
+    repo_root, tmp_path, monkeypatch, name, mutate
+) -> None:
+    """Completion is one-way: any rollback of the document, including a
+    coherent rollback of both files to the exact Session A state, trips the
+    lock."""
+    found = _wo005_done_findings(repo_root, tmp_path, monkeypatch,
+                                 "rollback-" + name, mutate)
+    assert (_TERMINAL_WO005_FINDING, "docs/work-orders") in found, (
+        repr(sorted(found))
+    )
+    if name == "coherent-rollback":
+        assert found == {(_TERMINAL_WO005_FINDING, "docs/work-orders")}, (
+            "the coherent rollback was caught by more than the lock: "
+            + repr(sorted(found))
+        )
+
+
+def _wo005_done_append(rel, claim):
+    def mutate(case):
+        target = case / rel
+        target.write_text(target.read_text(encoding="utf-8").rstrip() + _NL
+                          + _NL + claim + _NL, encoding="utf-8")
+    return mutate
+
+
+_WO005_DONE_DAMAGE = (
+    # (id, change, expected kind, file it is reported against)
+    ("exemption-widened",
+     lambda case: _edit(case, _WO005_DONE_REL,
+                        "- It applies only to the offline Session A scope",
+                        "- It applies to the offline Session A scope"),
+     "WO-005 Session A exemption record", _WO005_DONE_REL),
+    ("basis-widened",
+     lambda case: _edit(case, _WO005_DONE_REL,
+                        "Session A was authorized for the offline",
+                        "Session A was authorized for any"),
+     "WO-005 Session A authorization statement", _WO005_DONE_REL),
+    ("completion-statement",
+     lambda case: _edit(case, _WO005_DONE_REL,
+                        "WO-005 is complete; no session is authorized.",
+                        "WO-005 is complete."),
+     "WO-005 completion statement", _WO005_DONE_REL),
+    ("next-gate",
+     lambda case: _edit(case, _WO005_DONE_REL,
+                        "NEXT GATE: separate owner authorization for a fresh",
+                        "NEXT GATE: owner authorization for a fresh"),
+     "WO-005 next gate", _WO005_DONE_REL),
+    ("completion-heading",
+     lambda case: _edit(case, _WO005_DONE_REL, _WO005_DONE_HEADING + _NL,
+                        "## Completion notes" + _NL),
+     "WO-005 Session A record heading", _WO005_DONE_REL),
+    ("session-reopened",
+     _wo005_done_append(_WO005_DONE_REL,
+                        "Session B is authorized and may begin."),
+     "session authorization reopening", _WO005_DONE_REL),
+    ("release-claim",
+     _wo005_done_append(_WO005_DONE_REL,
+                        "A GitHub Release for WO-005 is authorized."),
+     "release authorization", _WO005_DONE_REL),
+    ("metadata-claim",
+     _wo005_done_append(_WO005_DONE_REL,
+                        "Repository metadata changes are authorized."),
+     "external-action boundary", _WO005_DONE_REL),
+    ("successor-in-mandate",
+     _wo005_done_append(_WO005_DONE_REL, "WO-006 is issued and authorized."),
+     "next work order authorization", _WO005_DONE_REL),
+    ("successor-in-pointer",
+     _wo005_done_append("WORKORDER.md", "WO-006 is issued and authorized."),
+     "next work order authorization", "WORKORDER.md"),
+    ("pointer-clause",
+     lambda case: _edit(case, "WORKORDER.md",
+                        "WO-005 is complete;" + _NL
+                        + "no session is authorized.",
+                        "WO-005 is complete."),
+     "WO-005 completion pointer statement", "WORKORDER.md"),
+    ("pointer-gate",
+     lambda case: _edit(case, "WORKORDER.md",
+                        "- Current gate: " + _WO005_DONE_GATE,
+                        "- Current gate: WO-005 COMPLETED"),
+     "completed work order gate", "WORKORDER.md"),
+    ("pointer-session",
+     lambda case: _edit(case, "WORKORDER.md", "- Authorized session: NONE",
+                        "- Authorized session: A"),
+     "authorization without issued work order", "WORKORDER.md"),
+)
+
+
+@pytest.mark.parametrize(("name", "mutate", "kind", "rel"),
+                         _WO005_DONE_DAMAGE,
+                         ids=[row[0] for row in _WO005_DONE_DAMAGE])
+def test_wo005_completed_records_and_boundaries_are_enforced(
+    repo_root, tmp_path, monkeypatch, name, mutate, kind, rel
+) -> None:
+    """The completed mandate's records and boundaries, and the pointer's
+    completed state, are enforced and attributed to the file at fault."""
+    found = _wo005_done_findings(repo_root, tmp_path, monkeypatch,
+                                 "damage-" + name, mutate)
+    assert (kind, rel) in found, repr(sorted(found))
+
+
+def _make_wo006_owner_case(repo_root, tmp_path, name):
+    """A later pointer owner: WO-006 issued, with no session, on top of the
+    completed-WO-005 state."""
+    case = _make_wo005_completed_case(repo_root, tmp_path, name)
+    work_orders = case / "docs" / "work-orders"
+    wo006 = "WO-006-official-vs-toolbelt-benchmark.md"
+    source, target = work_orders / "proposed" / wo006, work_orders / "issued" / wo006
+    text = _replace_once(source.read_text(encoding="utf-8"),
+                         "STATUS: PROPOSED", "STATUS: ISSUED",
+                         "WO-006 owner status")
+    text = _replace_once(text, "AUTHORIZATION: NOT AUTHORIZED",
+                         "AUTHORIZATION: ISSUED " + _EM
+                         + " SESSION NOT AUTHORIZED",
+                         "WO-006 owner authorization")
+    target.write_text(text, encoding="utf-8")
+    source.unlink()
+    _edit(case, "WORKORDER.md", "- Current issued Work Order: NONE",
+          "- Current issued Work Order: WO-006")
+    _edit(case, "WORKORDER.md", "- Current gate: " + _WO005_DONE_GATE,
+          "- Current gate: WO-006 ISSUED " + _EM
+          + " SESSION A IMPLEMENTATION NOT AUTHORIZED")
+    return case
+
+
+_WO005_LATER_OWNER_DAMAGE = tuple(
+    row for row in _WO005_DONE_DAMAGE
+    if row[0] in ("exemption-widened", "basis-widened", "completion-statement",
+                  "release-claim", "metadata-claim", "pointer-clause")
+) + (
+    ("completion-evidence",
+     lambda case: _edit(case, _WO005_DONE_REL,
+                        "COMPLETION_BASIS_COMMIT: `" + _WO005_DONE_COMMIT,
+                        "COMPLETION_BASIS_COMMIT: `" + _WO004_ZERO_SHA),
+     "WO-005 issuance field (issued record)", _WO005_DONE_REL),
+)
+
+
+@pytest.mark.parametrize(("name", "mutate", "kind", "rel"),
+                         _WO005_LATER_OWNER_DAMAGE,
+                         ids=[row[0] for row in _WO005_LATER_OWNER_DAMAGE])
+def test_completed_wo005_checks_survive_a_later_pointer_owner(
+    repo_root, tmp_path, monkeypatch, name, mutate, kind, rel
+) -> None:
+    """With WO-006 owning the pointer, damage to the completed WO-005 record
+    is still caught and attributed. Measured against the later-owner control,
+    so whatever that synthetic issuance itself raises is not credited."""
+    control = _wo005_done_findings(repo_root, tmp_path, monkeypatch,
+                                   "owner-control-" + name, lambda case: None,
+                                   build=_make_wo006_owner_case)
+    found = _wo005_done_findings(repo_root, tmp_path, monkeypatch,
+                                 "owner-" + name, mutate,
+                                 build=_make_wo006_owner_case)
+    assert (kind, rel) in found - control, (
+        name + " was not caught under a later pointer owner: "
+        + repr(sorted(found - control))
+    )

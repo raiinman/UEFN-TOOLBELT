@@ -1,8 +1,8 @@
 # WO-005 — Registry-Derived Coverage Source of Truth
 
-STATUS: ISSUED
+STATUS: COMPLETED
 
-AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR OFFLINE COVERAGE MODEL ONLY
+AUTHORIZATION: COMPLETED — NO SESSION AUTHORIZED
 
 OWNER: Ocean Bennett
 
@@ -22,6 +22,12 @@ SESSION_A_AUTHORIZATION_CI_WORKFLOW: `36596756689`
 
 SESSION_A_AUTHORIZATION_CI_JOB: `109503539592` — Lint, types, tests
 
+COMPLETION_BASIS_COMMIT: `5ef3aef2934b33a357ab9114e68aae41bc78639c`
+
+COMPLETION_BASIS_CI_WORKFLOW: `36662471593`
+
+COMPLETION_BASIS_CI_JOB: `109719997181` — Lint, types, tests
+
 ## Issuance basis
 
 The independently accepted revision of this mandate was committed as
@@ -39,17 +45,17 @@ issuance; at that gate it remained a separate owner decision.
 
 ## Session A authorization basis
 
-Session A is authorized for the offline coverage model only under the current
-root `WORKORDER.md` gate alone. The recorded basis is commit
+At the Session A authorization gate, Session A was authorized for the offline
+coverage model only under the root `WORKORDER.md` gate. The recorded basis is commit
 `867074f8a520450ef6073b4c922079a897a83886`; [CI workflow
 `36596756689`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36596756689)
 completed successfully, including required job
 [`109503539592` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36596756689/job/109503539592).
 
-This gate covers exactly the scope in "Proposed Session A — offline coverage
+That gate covered exactly the scope in "Proposed Session A — offline coverage
 model" below: its six-path file scope, the migration shim, the acceptance
 tests, the static gates, the cleanup duties, and the exclusions, unchanged.
-Session A ends with its worktree uncommitted for independent review. It opens
+Session A ended with its worktree uncommitted for independent review. It opened
 no deploy, editor launch, bridge startup, MCP call, commit, or push. The
 planning baseline and the issuance evidence above are preserved unchanged, and
 neither is the Session A basis.
@@ -72,6 +78,37 @@ under "Live verification" below, on these terms only:
 - The eventual implementation commit must explain this exemption truthfully
   through the existing `Live-Verification: not-required — <reason>` trailer.
 - This exemption grants no commit, push, deployment, or live-run permission.
+
+## Completion record
+
+WO-005 is completed as `5ef3aef2934b33a357ab9114e68aae41bc78639c`; [CI workflow
+`36662471593`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36662471593)
+completed successfully, including required job
+[`109719997181` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36662471593/job/109719997181).
+That commit carries the independently accepted Session A implementation, the
+six-path scope in "Proposed Session A — offline coverage model" below.
+
+Completion delivers:
+
+- A registry-derived coverage report, `py -3 scripts/coverage_report.py`. Its
+  registry comes from one hardened enumerator, shared with `drift_check`, that
+  fails loudly on an unparseable file, a duplicate name, or a non-constant
+  name.
+- Corrected source-coverage attribution. A tool rises above
+  `registration-only` only through an explicit, validated mapping, and the
+  counts are generated into `TOOL_STATUS.md` rather than written by hand.
+- Run evidence kept separate from source coverage, each record with its build,
+  date, and limitation, and no invented smoke run.
+- `list_untested.py` replaced by a migration shim that points to the new
+  report and exits with status 3.
+
+Source categories describe what the test code is written to check. They do
+not establish live verification of any tool, and completion adds no live
+evidence. The availability flags and their code-level enforcement are
+unchanged, and the optional owner-operated integration run stays deferred.
+
+WO-005 is complete; no session is authorized. WO-006 remains proposed and
+unauthorized.
 
 ## Revision provenance
 
@@ -438,7 +475,7 @@ Session A.
 
 WO-006 and WO-007 remain proposed and unauthorized.
 
-NEXT GATE: fresh independent review of the complete uncommitted Session A
-implementation, which is limited to the offline coverage model, followed by
-separate owner gates for its commit and its push. Deploy, live runs, the
-deferred integration run, and WO-005 completion remain closed.
+NEXT GATE: separate owner authorization for a fresh independent WO-006
+pre-issuance review, after this completion transition is accepted, committed,
+pushed, and green. Completion of WO-005 does not issue or authorize WO-006,
+which remains proposed and unauthorized.
