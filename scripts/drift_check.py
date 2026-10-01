@@ -2806,6 +2806,19 @@ _WO006_SESSION_A_POINTER_ANCHORED = (
 )
 
 
+# The only statements allowed to grant WO-006's Session A anything: the
+# pinned records - the gate and marker, checked exactly by the Session A
+# branch, and the records _wo006_session_a_record_findings checks exactly.
+_WO006_SESSION_A_CANONICAL = (
+    _WO006_SESSION_A_GATE,
+    _WO006_SESSION_A_AUTH,
+    _WO006_SESSION_A_BASIS_RECORD,
+    _WO006_SESSION_A_POINTER_RECORD,
+    _WO006_ISSUANCE_POINTER_HISTORY,
+    _WO006_SESSION_A_NEXT_GATE,
+)
+
+
 def _wo006_session_a_record_findings(pointer, issued_text, rel):
     """Session A's record while WO-006 Session A is open.
 
@@ -3054,6 +3067,76 @@ def _has_other_session_authorization(
         if positive.search(residual):
             return True
     return False
+
+
+_CURRENT_SESSION_GRANT = re.compile(
+    r"\b(?:authorized|permitted|approved|allowed|cleared|granted|unlocked|"
+    r"entitled|free\s+to|may|can|go[- ]ahead|green\s+light|begin|start|"
+    r"commence|proceed|resume)\b",
+    re.IGNORECASE,
+)
+# Words that may sit inside a denial or a past-tense phrase ("not yet
+# authorized", "was previously approved"). A conjunction or a present-tense
+# auxiliary may not, so "was authorized ... and is now permitted" and "not
+# idle and authorized" keep their present grant.
+_CURRENT_SESSION_SPAN = r"(?:(?!(?:and|or|but|is|are|now|be|being)\b)\w+\s+){0,2}"
+# A denial also consumes the activation verb it governs: "not authorized to
+# start", "may not begin", and "must not proceed" grant nothing, so the verb
+# must not survive to be read as a grant. A separate grant elsewhere in the
+# sentence ("..., but it may connect") is untouched.
+_CURRENT_SESSION_CLOSED = re.compile(
+    r"\b(?:not\s+" + _CURRENT_SESSION_SPAN
+    + r"(?:authorized|permitted|approved|allowed|cleared|granted|unlocked|"
+    r"entitled)|unauthorized|cannot|can\s+not|may\s+not|must\s+not|"
+    r"remains?\s+closed|stays?\s+closed|"
+    r"requires?\s+(?:a\s+)?separate\s+(?:owner\s+)?gate)"
+    r"(?:\s+(?:to\s+)?(?:begin|start|commence|proceed|resume)\b)?\b",
+    re.IGNORECASE,
+)
+# Past-tense history ("was authorized at that gate") records an earlier state
+# and grants nothing now.
+_CURRENT_SESSION_HISTORY = re.compile(
+    r"\b(?:was|were|had\s+been)\s+" + _CURRENT_SESSION_SPAN
+    + r"(?:authorized|permitted|approved|allowed|cleared|granted|unlocked)\b",
+    re.IGNORECASE,
+)
+
+
+def _current_session_widening(text: str, label: str,
+                              canonical: tuple[str, ...]) -> list[str]:
+    """Statements that grant the CURRENT session anything beyond its pinned
+    records.
+
+    _has_other_session_authorization deliberately skips statements that name
+    only the current session, so extra prose such as "Session A is also
+    authorized to connect to the running editor" was never scanned. Here the
+    pinned canonical records are removed first (they are enforced exactly,
+    elsewhere); any remaining statement that names the current session, by
+    label or as "the current session" / "this session", and still carries a
+    present-tense grant once closed and past-tense wording is removed, is
+    reported. Whitespace is normalized first, so reflowed prose is unaffected.
+    """
+    normalized = " ".join(text.split())
+    for record in canonical:
+        normalized = normalized.replace(record, " ")
+    mention = re.compile(
+        rf"\bsession\s+{re.escape(label)}\b|"
+        r"\b(?:the\s+)?(?:current|open|active)\s+session\b|\bthis\s+session\b",
+        re.IGNORECASE,
+    )
+    # Whole sentences, not clauses: splitting at "but" would separate the label
+    # from a grant carried by a pronoun ("... not authorized to deploy, but it
+    # may connect to the editor").
+    statements = re.split(r"[.!?;:|]|##", normalized)
+    out = []
+    for statement in statements:
+        if not mention.search(statement):
+            continue
+        residual = _CURRENT_SESSION_HISTORY.sub(" ", statement)
+        residual = _CURRENT_SESSION_CLOSED.sub(" ", residual)
+        if _CURRENT_SESSION_GRANT.search(residual):
+            out.append(" ".join(statement.split()))
+    return out
 
 
 def _has_next_work_order_authorization(
@@ -4194,6 +4277,20 @@ def check_work_order_contract() -> list[dict]:
                             issued[0].relative_to(root).as_posix())
                     ):
                         add(_f, _k, _found, _want)
+                    # P2-A: no prose outside those pinned records may widen
+                    # Session A. Each surface is scanned alone, so a finding
+                    # names the file that carries the grant.
+                    for _file, _text in (
+                        ("WORKORDER.md", pointer),
+                        (issued[0].relative_to(root).as_posix(), issued_text),
+                    ):
+                        for _statement in _current_session_widening(
+                            _text, "A", _WO006_SESSION_A_CANONICAL
+                        ):
+                            add(_file, "current session widening",
+                                _statement[:200],
+                                "no grant to Session A beyond its pinned "
+                                "records")
                 if issued[0].name == _WO003_NAME:
                     wo003_rel = issued[0].relative_to(root).as_posix()
                     for _f, _k, _found, _want in _wo003_record_findings(
