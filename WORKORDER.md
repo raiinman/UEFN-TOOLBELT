@@ -5,15 +5,18 @@ state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
 - Current issued Work Order: WO-006
-- Authorized session: A
-- Base commit: `d46a30ed9de54ec01536d132e1032fcf762fa3c7`
-- Current gate: WO-006 SESSION A AUTHORIZED — OFFLINE DESIGN AND HARNESS ONLY
+- Authorized session: B
+- Base commit: `8667b0e0ef78d504586d710984ef1a1fef7263b2`
+- Current gate: WO-006 SESSION B AUTHORIZED — OWNER-OPERATED LIVE MEASUREMENT ONLY
 - Issuance commit: `0c0bf26191ee953c7a27237109b4a91a4db97275`
 - Issuance CI workflow: `36743995194`
 - Issuance CI job: `109985389182` — Lint, types, tests
 - Session A authorization commit: `d46a30ed9de54ec01536d132e1032fcf762fa3c7`
 - Session A authorization CI workflow: `36756889729`
 - Session A authorization CI job: `110029304446` — Lint, types, tests
+- Session B authorization commit: `8667b0e0ef78d504586d710984ef1a1fef7263b2`
+- Session B authorization CI workflow: `36801338578`
+- Session B authorization CI job: `110176132684` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -220,18 +223,41 @@ session. Session A, the offline design and harness, needed its own separate
 owner gate recorded in this pointer, and Session B, the owner-operated live
 measurement, stayed closed behind it.
 
-Session A is authorized under this pointer for the offline design and harness
-only, on the basis of commit `d46a30ed9de54ec01536d132e1032fcf762fa3c7`,
+At the Session A authorization gate, this pointer opened the offline design and
+harness only, on the basis of commit `d46a30ed9de54ec01536d132e1032fcf762fa3c7`,
 successful CI workflow `36756889729`, and successful required job
-`110029304446` (`Lint, types, tests`). That evidence establishes the issued
-mandate, not any harness implementation or test result. It covers the Session
-A scope recorded in the issued mandate, unchanged, changes no repository file,
-and ends with its private artifacts held for independent review. Session A
-opens no deploy, UEFN launch, bridge startup, MCP call, connection to a real
-editor endpoint, live measurement, commit, or push, and Session B stays
-closed. Tagging, Release creation, branch-protection changes, other repository
-metadata changes, and social publication all remain unauthorized, as does
-WO-007, which stays proposed.
+`110029304446` (`Lint, types, tests`). That evidence established the issued
+mandate, not any harness implementation or test result. That gate covered the
+Session A scope recorded in the issued mandate, unchanged, changed no
+repository file, and ended with its private artifacts held for independent
+review. It opened no deploy, UEFN launch, bridge startup, MCP call, connection
+to a real editor endpoint, live measurement, commit, or push, and Session B
+stayed closed at that gate.
+
+The owner accepted Session A's private offline artifacts after independent
+review, as offline preparation only and not as proof of live compatibility.
+The accepted harness package and its preserved independent review are kept in
+the owner's private evidence folder, identified by their `SHA256SUMS` digests
+`f17a44a477b2fb2d3d347a75232c7076516ce110308aeb25c0efefad90dff3f8` and
+`a856bdfff88565831905b0e1fcd77862e408b0eb704774ac1631da9225ac94c1`. The
+harness and its stub tests ran offline on the owner's Windows machine only;
+they have never run in GitHub CI, and no repository commit or CI run attests
+to them. Session A is accepted and closed.
+
+Session B is authorized under this pointer for owner-operated live measurement
+only, on the basis of commit `8667b0e0ef78d504586d710984ef1a1fef7263b2`,
+successful CI workflow `36801338578`, and successful required job
+`110176132684` (`Lint, types, tests`). That CI tested the repository's checker
+and tests, not the private harness, and establishes no live result. It covers
+the Session B scope recorded in the issued mandate, unchanged: the owner
+operates UEFN and performs the owner checks, and the accepted harness runs
+only after the owner's separate, explicit instruction to begin the live run.
+Session B changes no repository file and ends with its private artifacts held
+for independent review. It opens no code change, fallback, emulation, policy
+change, live repair, commit, or push, and the evidence-recording transition
+and WO-006 completion stay closed. Tagging, Release creation, branch-protection
+changes, other repository metadata changes, and social publication all remain
+unauthorized, as does WO-007, which stays proposed.
 
 WO-001 through WO-007 form the frozen next release train. The release version
 remains undecided and the repository stays at version 2.4.1. No tag or GitHub

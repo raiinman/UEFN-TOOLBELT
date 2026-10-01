@@ -2,7 +2,7 @@
 
 STATUS: ISSUED
 
-AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR OFFLINE DESIGN AND HARNESS ONLY
+AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR OWNER-OPERATED LIVE MEASUREMENT ONLY
 
 OWNER: Ocean Bennett
 
@@ -21,6 +21,12 @@ SESSION_A_AUTHORIZATION_COMMIT: `d46a30ed9de54ec01536d132e1032fcf762fa3c7`
 SESSION_A_AUTHORIZATION_CI_WORKFLOW: `36756889729`
 
 SESSION_A_AUTHORIZATION_CI_JOB: `110029304446` — Lint, types, tests
+
+SESSION_B_AUTHORIZATION_COMMIT: `8667b0e0ef78d504586d710984ef1a1fef7263b2`
+
+SESSION_B_AUTHORIZATION_CI_WORKFLOW: `36801338578`
+
+SESSION_B_AUTHORIZATION_CI_JOB: `110176132684` — Lint, types, tests
 
 ## Issuance basis
 
@@ -65,6 +71,82 @@ no deploy, editor launch, bridge startup, MCP call, connection to a real
 editor endpoint, live measurement, commit, or push, and Session B stays
 closed. The planning baseline and the issuance evidence above are preserved
 unchanged, and neither is the Session A basis.
+
+## Session A acceptance record
+
+The owner accepted Session A's private offline artifacts after independent
+review, as offline preparation only and not as proof of live compatibility.
+The accepted harness package is identified by its `SHA256SUMS` digest
+`f17a44a477b2fb2d3d347a75232c7076516ce110308aeb25c0efefad90dff3f8`, and its
+preserved independent review by the `SHA256SUMS` digest
+`a856bdfff88565831905b0e1fcd77862e408b0eb704774ac1631da9225ac94c1`; both are
+kept in the owner's private evidence folder. The first review required fixes,
+the second revision made them, and the review of that revision accepted it
+with its limitations disclosed. `plan.md` settles the four clarifications
+recorded under "Issuance basis", and the first review examined them.
+
+The harness and its stub tests ran offline on the owner's Windows machine
+only. They have never run in GitHub CI, and no repository commit or CI run
+attests to them. Session A changed no repository file, made no live contact,
+and took no measurement. Session A is closed, and its authorization basis
+above is kept verbatim as the record of that gate.
+
+## Session B authorization basis
+
+Session B is authorized for owner-operated live measurement only under the
+current root `WORKORDER.md` gate alone. The recorded basis is commit
+`8667b0e0ef78d504586d710984ef1a1fef7263b2`; [CI workflow
+`36801338578`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36801338578)
+completed successfully, including required job
+[`110176132684` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36801338578/job/110176132684).
+That CI tested the repository's checker and tests at that commit. It did not
+run the private harness, and it establishes no live result.
+
+This gate covers exactly the scope in "Proposed Session B — owner-operated
+live measurement" below, unchanged, together with the operator procedure in
+the accepted `plan.md`. The owner operates UEFN and performs every owner check
+and attestation. The harness runs only after the owner's separate, explicit
+instruction to begin the live run, invoked by the owner or by the agent under
+the owner's direct supervision.
+
+The run uses the accepted harness files unchanged, each verified against the
+accepted package's `SHA256SUMS` before use, and `client.py` unchanged from the
+repository at the base commit above. The data-only configuration is filled
+from live `describe_toolset` output in a separate live copy, recorded with its
+SHA-256; the accepted package's stub configuration and every other file stay
+unchanged. The run uses the verified Python 3.13.5 interpreter.
+
+Actual response classes and measured wall times are preserved. An actual
+Toolbelt timeout remains UNKNOWN and follows the abort and barrier rules. The
+Toolbelt client applies its 10-second timeout to each socket operation, not to
+the whole call, so a confirmed response can take longer than 10 seconds. Any
+such response keeps its response class, is flagged explicitly wherever the
+results are reported, and is never presented as meeting a hard 10-second
+whole-call deadline. The official client enforces a whole-call deadline with a
+watchdog whose overhead falls inside the official timing window only. Both
+asymmetries are disclosed with the results, and no estimated constant is
+subtracted.
+
+The owner accepted the harness's recorded limitations for this run, with no
+further harness revision. A timed-out call is not cancelled and may still act.
+SSE resumption, server-initiated requests, and unsupported protocol versions
+are not implemented and end their pair HARNESS-LIMITED. Discovery matches tool
+names by substring, and the confirmation calls back it up. Toolbelt
+exclusivity rests on the owner's attestation, because a caller in lockstep
+with the harness cannot be detected. A harness programming defect stops the
+run, and its record can then show the in-flight slot as NOT ATTEMPTED or, late
+in the run, lack the closing footer; a harness `ValueError` inside the official
+exchange reads conservatively as UNKNOWN. The stub tests ran on Windows only,
+against stubs that are not Epic's server.
+
+Session B ends with its private artifacts held for independent review. It
+opens no code change, fallback, emulation, policy change, live repair, commit,
+or push. A runtime defect, or any apparent need to change bridge, client,
+transport, harness, or policy code, stops the session for a new owner
+decision. The evidence-recording transition, WO-006 completion, and WO-007
+remain closed. The planning baseline, the issuance evidence, and the Session A
+authorization evidence above are preserved unchanged, and none of them is the
+Session B basis.
 
 ## Revision provenance
 
@@ -643,7 +725,7 @@ owner decision, and neither stands in for one. Tagging, GitHub Release
 creation, repository metadata changes, branch-protection changes, and social
 publication are outside WO-006 and remain unauthorized.
 
-NEXT GATE: execution of the accepted offline Session A scope, limited to the
-offline design and harness, ending with its private artifacts held for
-independent review. Session B, connections to real editor endpoints, deploy,
-live measurement, commit, push, and WO-006 completion remain closed.
+NEXT GATE: owner-operated execution of the accepted Session B scope, after the
+owner's separate instruction to begin the live run, ending with its private
+artifacts held for independent review. The evidence-recording transition,
+commit, push, WO-006 completion, and WO-007 remain closed.

@@ -2808,7 +2808,7 @@ _WO006_SESSION_A_POINTER_ANCHORED = (
 
 # The only statements allowed to grant WO-006's Session A anything: the
 # pinned records - the gate and marker, checked exactly by the Session A
-# branch, and the records _wo006_session_a_record_findings checks exactly.
+# branch, and the records _wo006_session_record_findings checks exactly.
 _WO006_SESSION_A_CANONICAL = (
     _WO006_SESSION_A_GATE,
     _WO006_SESSION_A_AUTH,
@@ -2817,51 +2817,318 @@ _WO006_SESSION_A_CANONICAL = (
     _WO006_ISSUANCE_POINTER_HISTORY,
     _WO006_SESSION_A_NEXT_GATE,
 )
+# Authorizing Session B records Session A's private acceptance and adds three
+# more declarations to each canonical block, moving the base to the Session B
+# authorization commit. That commit's CI tested the repository's checker and
+# tests; it never ran the private harness, and the records say so. Session A's
+# authorization basis stays in the mandate verbatim, as WO-004's did once its
+# Session B opened, while the pointer's Session A record becomes history.
+_WO006_SESSION_B_COMMIT = "8667b0e0ef78d504586d710984ef1a1fef7263b2"
+_WO006_SESSION_B_WORKFLOW = "36801338578"
+_WO006_SESSION_B_JOB = "110176132684"
+_WO006_SESSION_B_GATE = (
+    "WO-006 SESSION B AUTHORIZED — OWNER-OPERATED LIVE MEASUREMENT ONLY"
+)
+_WO006_SESSION_B_AUTH = (
+    "AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR OWNER-OPERATED LIVE "
+    "MEASUREMENT ONLY"
+)
+_WO006_SESSION_B_ISSUED_SEQUENCE = _WO006_SESSION_A_ISSUED_SEQUENCE + (
+    "SESSION_B_AUTHORIZATION_COMMIT: `" + _WO006_SESSION_B_COMMIT + "`",
+    "SESSION_B_AUTHORIZATION_CI_WORKFLOW: `"
+    + _WO006_SESSION_B_WORKFLOW + "`",
+    "SESSION_B_AUTHORIZATION_CI_JOB: `" + _WO006_SESSION_B_JOB + "` "
+    + "— Lint, types, tests",
+)
+_WO006_SESSION_B_POINTER_SEQUENCE = (
+    _WO006_SESSION_A_POINTER_SEQUENCE[:2]
+    + ("- Base commit: `" + _WO006_SESSION_B_COMMIT + "`",)
+    + _WO006_SESSION_A_POINTER_SEQUENCE[3:10]
+    + ("- Session B authorization commit: `"
+       + _WO006_SESSION_B_COMMIT + "`",
+       "- Session B authorization CI workflow: `"
+       + _WO006_SESSION_B_WORKFLOW + "`",
+       "- Session B authorization CI job: `" + _WO006_SESSION_B_JOB + "` "
+       + "— Lint, types, tests")
+    + _WO006_SESSION_A_POINTER_SEQUENCE[10:]
+)
+_WO006_SESSION_B_POINTER_KEYS = (
+    (("- Base commit:", _WO006_SESSION_B_POINTER_SEQUENCE[2]),)
+    + _WO006_SESSION_A_POINTER_KEYS[1:]
+    + (("- Session B authorization commit:",
+        _WO006_SESSION_B_POINTER_SEQUENCE[10]),
+       ("- Session B authorization CI workflow:",
+        _WO006_SESSION_B_POINTER_SEQUENCE[11]),
+       ("- Session B authorization CI job:",
+        _WO006_SESSION_B_POINTER_SEQUENCE[12]))
+)
+_WO006_SESSION_B_ISSUED_KEYS = _WO006_SESSION_A_ISSUED_KEYS + (
+    ("SESSION_B_AUTHORIZATION_COMMIT:", _WO006_SESSION_B_ISSUED_SEQUENCE[7]),
+    ("SESSION_B_AUTHORIZATION_CI_WORKFLOW:",
+     _WO006_SESSION_B_ISSUED_SEQUENCE[8]),
+    ("SESSION_B_AUTHORIZATION_CI_JOB:", _WO006_SESSION_B_ISSUED_SEQUENCE[9]),
+)
+# Three closed sections in the mandate now, each equal to its accepted text:
+# Session A's authorization basis (unchanged), its acceptance record, and the
+# Session B authorization basis. The acceptance identifies the private
+# artifacts by digest only and claims no CI run of the harness.
+_WO006_SESSION_A_ACCEPTANCE_HEADING = "## Session A acceptance record"
+_WO006_SESSION_B_BASIS_HEADING = "## Session B authorization basis"
+_WO006_SESSION_B_HEADINGS = (
+    "## Issuance basis",
+    _WO006_SESSION_A_BASIS_HEADING,
+    _WO006_SESSION_A_ACCEPTANCE_HEADING,
+    _WO006_SESSION_B_BASIS_HEADING,
+    "## Revision provenance",
+)
+_WO006_HARNESS_PACKAGE_SHA256 = (
+    "f17a44a477b2fb2d3d347a75232c7076516ce110308aeb25c0efefad90dff3f8"
+)
+_WO006_HARNESS_REVIEW_SHA256 = (
+    "a856bdfff88565831905b0e1fcd77862e408b0eb704774ac1631da9225ac94c1"
+)
+_WO006_SESSION_A_ACCEPTANCE_RECORD = (
+    _WO006_SESSION_A_ACCEPTANCE_HEADING + " The owner accepted Session A's "
+    "private offline artifacts after independent review, as offline "
+    "preparation only and not as proof of live compatibility. The accepted "
+    "harness package is identified by its `SHA256SUMS` digest `"
+    + _WO006_HARNESS_PACKAGE_SHA256 + "`, and its preserved independent "
+    "review by the `SHA256SUMS` digest `" + _WO006_HARNESS_REVIEW_SHA256
+    + "`; both are kept in the owner's private evidence folder. The first "
+    "review required fixes, the second revision made them, and the review of "
+    "that revision accepted it with its limitations disclosed. `plan.md` "
+    "settles the four clarifications recorded under \"Issuance basis\", and "
+    "the first review examined them. The harness and its stub tests ran "
+    "offline on the owner's Windows machine only. They have never run in "
+    "GitHub CI, and no repository commit or CI run attests to them. Session A "
+    "changed no repository file, made no live contact, and took no "
+    "measurement. Session A is closed, and its authorization basis above is "
+    "kept verbatim as the record of that gate."
+)
+_WO006_SESSION_B_RUN_URL = (
+    "https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _WO006_SESSION_B_WORKFLOW
+)
+_WO006_SESSION_B_BASIS_RECORD = (
+    _WO006_SESSION_B_BASIS_HEADING + " Session B is authorized for "
+    "owner-operated live measurement only under the current root "
+    "`WORKORDER.md` gate alone. The recorded basis is commit `"
+    + _WO006_SESSION_B_COMMIT + "`; [CI workflow `"
+    + _WO006_SESSION_B_WORKFLOW + "`](" + _WO006_SESSION_B_RUN_URL
+    + ") completed successfully, including required job [`"
+    + _WO006_SESSION_B_JOB + "` — Lint, types, tests]("
+    + _WO006_SESSION_B_RUN_URL + "/job/" + _WO006_SESSION_B_JOB + "). That "
+    "CI tested the repository's checker and tests at that commit. It did not "
+    "run the private harness, and it establishes no live result. This gate "
+    "covers exactly the scope in \"Proposed Session B — owner-operated live "
+    "measurement\" below, unchanged, together with the operator procedure in "
+    "the accepted `plan.md`. The owner operates UEFN and performs every owner "
+    "check and attestation. The harness runs only after the owner's "
+    "separate, explicit instruction to begin the live run, invoked by the "
+    "owner or by the agent under the owner's direct supervision. The run uses "
+    "the accepted harness files unchanged, each verified against the "
+    "accepted package's `SHA256SUMS` before use, and `client.py` unchanged "
+    "from the repository at the base commit above. The data-only "
+    "configuration is filled from live `describe_toolset` output in a "
+    "separate live copy, recorded with its SHA-256; the accepted package's "
+    "stub configuration and every other file stay unchanged. The run uses the "
+    "verified Python 3.13.5 interpreter. Actual response classes and "
+    "measured wall times are preserved. An actual Toolbelt timeout remains "
+    "UNKNOWN and follows the abort and barrier rules. The Toolbelt client "
+    "applies its 10-second timeout to each socket operation, not to the whole "
+    "call, so a confirmed response can take longer than 10 seconds. Any such "
+    "response keeps its response class, is flagged explicitly wherever the "
+    "results are reported, and is never presented as meeting a hard "
+    "10-second whole-call deadline. The official client enforces a whole-call "
+    "deadline with a watchdog whose overhead falls inside the official timing "
+    "window only. Both asymmetries are disclosed with the results, and no "
+    "estimated constant is subtracted. The owner accepted the harness's "
+    "recorded limitations for this run, with no further harness revision. A "
+    "timed-out call is not cancelled and may still act. SSE resumption, "
+    "server-initiated requests, and unsupported protocol versions are not "
+    "implemented and end their pair HARNESS-LIMITED. Discovery matches tool "
+    "names by substring, and the confirmation calls back it up. Toolbelt "
+    "exclusivity rests on the owner's attestation, because a caller in "
+    "lockstep with the harness cannot be detected. A harness programming "
+    "defect stops the run, and its record can then show the in-flight slot "
+    "as NOT ATTEMPTED or, late in the run, lack the closing footer; a harness "
+    "`ValueError` inside the official exchange reads conservatively as "
+    "UNKNOWN. The stub tests ran on Windows only, against stubs that are not "
+    "Epic's server. "
+    "Session B ends with its private artifacts held for independent review. "
+    "It opens no code change, fallback, emulation, policy change, live "
+    "repair, commit, or push. A runtime defect, or any apparent need to "
+    "change bridge, client, transport, harness, or policy code, stops the "
+    "session for a new owner decision. The evidence-recording transition, "
+    "WO-006 completion, and WO-007 remain closed. The planning baseline, the "
+    "issuance evidence, and the Session A authorization evidence above are "
+    "preserved unchanged, and none of them is the Session B basis."
+)
+_WO006_SESSION_B_NEXT_GATE = (
+    "NEXT GATE: owner-operated execution of the accepted Session B scope, "
+    "after the owner's separate instruction to begin the live run, ending "
+    "with its private artifacts held for independent review. The "
+    "evidence-recording transition, commit, push, WO-006 completion, and "
+    "WO-007 remain closed."
+)
+# The pointer keeps the issuance note, turns Session A's record into history,
+# records Session A's acceptance, and adds the one present-tense Session B
+# record. Each occurs once, and once more anchored in that order.
+_WO006_SESSION_A_POINTER_HISTORY = (
+    "At the Session A authorization gate, this pointer opened the offline "
+    "design and harness only, on the basis of commit `"
+    + _WO006_SESSION_A_COMMIT + "`, successful CI workflow `"
+    + _WO006_SESSION_A_WORKFLOW + "`, and successful required job `"
+    + _WO006_SESSION_A_JOB + "` (`Lint, types, tests`). That evidence "
+    "established the issued mandate, not any harness implementation or test "
+    "result. That gate covered the Session A scope recorded in the issued "
+    "mandate, unchanged, changed no repository file, and ended with its "
+    "private artifacts held for independent review. It opened no deploy, "
+    "UEFN launch, bridge startup, MCP call, connection to a real editor "
+    "endpoint, live measurement, commit, or push, and Session B stayed closed "
+    "at that gate."
+)
+_WO006_SESSION_A_POINTER_ACCEPTANCE = (
+    "The owner accepted Session A's private offline artifacts after "
+    "independent review, as offline preparation only and not as proof of "
+    "live compatibility. The accepted harness package and its preserved "
+    "independent review are kept in the owner's private evidence folder, "
+    "identified by their `SHA256SUMS` digests `"
+    + _WO006_HARNESS_PACKAGE_SHA256 + "` and `"
+    + _WO006_HARNESS_REVIEW_SHA256 + "`. The harness and its stub tests ran "
+    "offline on the owner's Windows machine only; they have never run in "
+    "GitHub CI, and no repository commit or CI run attests to them. Session A "
+    "is accepted and closed."
+)
+_WO006_SESSION_B_POINTER_RECORD = (
+    "Session B is authorized under this pointer for owner-operated live "
+    "measurement only, on the basis of commit `" + _WO006_SESSION_B_COMMIT
+    + "`, successful CI workflow `" + _WO006_SESSION_B_WORKFLOW + "`, and "
+    "successful required job `" + _WO006_SESSION_B_JOB + "` (`Lint, types, "
+    "tests`). That CI tested the repository's checker and tests, not the "
+    "private harness, and establishes no live result. It covers the Session B "
+    "scope recorded in the issued mandate, unchanged: the owner operates UEFN "
+    "and performs the owner checks, and the accepted harness runs only after "
+    "the owner's separate, explicit instruction to begin the live run. "
+    "Session B changes no repository file and ends with its private artifacts "
+    "held for independent review. It opens no code change, fallback, "
+    "emulation, policy change, live repair, commit, or push, and the "
+    "evidence-recording transition and WO-006 completion stay closed."
+)
+_WO006_SESSION_B_POINTER_ANCHORED = " ".join((
+    _WO006_ISSUANCE_POINTER_HISTORY,
+    _WO006_SESSION_A_POINTER_HISTORY,
+    _WO006_SESSION_A_POINTER_ACCEPTANCE,
+    _WO006_SESSION_B_POINTER_RECORD,
+))
+# The mandate's unchanged technical body says the live configuration is
+# something "Session B may fill". That one complete sentence, through its
+# list, must occur exactly once in the mandate, and only that occurrence is
+# exempt from the Session B widening scan. It is not exempt anywhere else,
+# so a widened list, a grant fused after the colon, a second copy, or a copy
+# in WORKORDER.md is still scanned.
+_WO006_SESSION_B_CONFIG_SENTENCE = (
+    "The harness takes a data-only configuration file that Session B may "
+    "fill from the live `describe_toolset` output and record as evidence: "
+    "official toolset and tool names, parameter names, the actor-identifier "
+    "encoding, and the transform and rotation shapes for each surface."
+)
 
 
-def _wo006_session_a_record_findings(pointer, issued_text, rel):
-    """Session A's record while WO-006 Session A is open.
+# The only statements allowed to grant WO-006's Session B anything, in
+# either file: the gate and marker, and the records
+# _wo006_session_record_findings checks exactly. The current-session guard is
+# reused unchanged with label "B" and this set; its known limits carry over.
+_WO006_SESSION_B_CANONICAL = (
+    _WO006_SESSION_B_GATE,
+    _WO006_SESSION_B_AUTH,
+    _WO006_SESSION_A_BASIS_RECORD,
+    _WO006_SESSION_A_ACCEPTANCE_RECORD,
+    _WO006_SESSION_B_BASIS_RECORD,
+    _WO006_SESSION_B_NEXT_GATE,
+    _WO006_ISSUANCE_POINTER_HISTORY,
+    _WO006_SESSION_A_POINTER_HISTORY,
+    _WO006_SESSION_A_POINTER_ACCEPTANCE,
+    _WO006_SESSION_B_POINTER_RECORD,
+)
 
-    The WO-005 Session A pattern, with WO-006's one closed section and no
-    exemption: the headings are unique and consecutive, the basis section
-    equals its accepted text, the next gate occurs once with no second next
-    gate, and the pointer's issuance note, Session A record, and anchored
-    record each occur exactly once.
+
+def _wo006_session_record_findings(pointer, issued_text, rel, session="A"):
+    """The current session's records while WO-006 Session A or B is open.
+
+    The WO-005 Session A pattern: the headings are unique and consecutive,
+    each closed section equals its accepted text, the next gate occurs once
+    with no second next gate, and the pointer's statements and their anchored
+    form each occur exactly once. For Session A that is one closed section,
+    the issuance note, and the Session A record. For Session B the closed
+    sections are Session A's authorization basis, kept verbatim, its
+    acceptance record, and the Session B basis; the pointer carries the
+    issuance note, Session A's history and acceptance, and the Session B
+    record.
     """
+    statements: tuple[str, ...]
+    headings_wanted: tuple[str, ...]
+    sections: tuple[tuple[str, str, str], ...]
+    if session == "B":
+        statements = (_WO006_ISSUANCE_POINTER_HISTORY,
+                      _WO006_SESSION_A_POINTER_HISTORY,
+                      _WO006_SESSION_A_POINTER_ACCEPTANCE,
+                      _WO006_SESSION_B_POINTER_RECORD,
+                      _WO006_SESSION_B_POINTER_ANCHORED)
+        headings_wanted = _WO006_SESSION_B_HEADINGS
+        sections = (
+            (_WO006_SESSION_A_BASIS_HEADING, _WO006_SESSION_A_BASIS_RECORD,
+             "WO-006 Session A authorization statement"),
+            (_WO006_SESSION_A_ACCEPTANCE_HEADING,
+             _WO006_SESSION_A_ACCEPTANCE_RECORD,
+             "WO-006 Session A acceptance record"),
+            (_WO006_SESSION_B_BASIS_HEADING, _WO006_SESSION_B_BASIS_RECORD,
+             "WO-006 Session B authorization statement"),
+        )
+        next_gate = _WO006_SESSION_B_NEXT_GATE
+    else:
+        statements = (_WO006_ISSUANCE_POINTER_HISTORY,
+                      _WO006_SESSION_A_POINTER_RECORD,
+                      _WO006_SESSION_A_POINTER_ANCHORED)
+        headings_wanted = _WO006_SESSION_A_HEADINGS
+        sections = (
+            (_WO006_SESSION_A_BASIS_HEADING, _WO006_SESSION_A_BASIS_RECORD,
+             "WO-006 Session A authorization statement"),
+        )
+        next_gate = _WO006_SESSION_A_NEXT_GATE
+    label = "WO-006 Session " + session
     out = []
     normalized_pointer = " ".join(pointer.split())
-    for required in (_WO006_ISSUANCE_POINTER_HISTORY,
-                     _WO006_SESSION_A_POINTER_RECORD,
-                     _WO006_SESSION_A_POINTER_ANCHORED):
+    for required in statements:
         if normalized_pointer.count(required) != 1:
-            out.append(("WORKORDER.md", "WO-006 Session A pointer statement",
+            out.append(("WORKORDER.md", label + " pointer statement",
                         str(normalized_pointer.count(required)),
                         "exactly one " + required))
     lines = [line.strip() for line in issued_text.splitlines()]
     headings = [line for line in lines if line.startswith("## ")]
     unique = True
-    for heading in _WO006_SESSION_A_HEADINGS:
+    for heading in headings_wanted:
         if headings.count(heading) != 1:
             unique = False
-            out.append((rel, "WO-006 Session A record heading",
+            out.append((rel, label + " record heading",
                         str(headings.count(heading)), "exactly one " + heading))
     if unique:
-        first = headings.index(_WO006_SESSION_A_HEADINGS[0])
-        found = tuple(headings[first:first + len(_WO006_SESSION_A_HEADINGS)])
-        if found != _WO006_SESSION_A_HEADINGS:
-            out.append((rel, "WO-006 Session A record heading",
+        first = headings.index(headings_wanted[0])
+        found = tuple(headings[first:first + len(headings_wanted)])
+        if found != headings_wanted:
+            out.append((rel, label + " record heading",
                         " / ".join(found),
-                        "consecutive " + " / ".join(_WO006_SESSION_A_HEADINGS)))
-        section = _wo005_closed_section(lines, _WO006_SESSION_A_BASIS_HEADING)
-        if section != _WO006_SESSION_A_BASIS_RECORD:
-            out.append((rel, "WO-006 Session A authorization statement",
-                        "a section that differs from the accepted record",
-                        "exactly " + _WO006_SESSION_A_BASIS_RECORD))
+                        "consecutive " + " / ".join(headings_wanted)))
+        for heading, record, kind in sections:
+            if _wo005_closed_section(lines, heading) != record:
+                out.append((rel, kind,
+                            "a section that differs from the accepted record",
+                            "exactly " + record))
     normalized = " ".join(issued_text.split())
-    if normalized.count(_WO006_SESSION_A_NEXT_GATE) != 1:
+    if normalized.count(next_gate) != 1:
         out.append((rel, "WO-006 next gate",
-                    str(normalized.count(_WO006_SESSION_A_NEXT_GATE)),
-                    "exactly one " + _WO006_SESSION_A_NEXT_GATE))
+                    str(normalized.count(next_gate)),
+                    "exactly one " + next_gate))
     gates = [line for line in lines if line.startswith("NEXT GATE:")]
     if len(gates) != 1:
         out.append((rel, "WO-006 next gate", str(len(gates)),
@@ -2875,12 +3142,18 @@ def _wo006_issuance_findings(pointer, issued_text, rel, session="NONE"):
     The same canonical-slice checks WO-005's issuance used, with WO-006's
     evidence. It pins the issuance evidence and the root base value, and once
     Session A is authorized, the Session A authorization evidence beside
-    them. The session value only selects which shape applies; the gate, the
-    marker, and the session value itself are checked by the branches that
-    call this.
+    them, and once Session B is authorized, the Session B authorization
+    evidence after that. The session value only selects which shape applies;
+    the gate, the marker, and the session value itself are checked by the
+    branches that call this.
     """
     shapes: tuple[tuple[tuple[str, ...], tuple[tuple[str, str], ...]], ...]
-    if session == "A":
+    if session == "B":
+        shapes = ((_WO006_SESSION_B_POINTER_SEQUENCE,
+                   _WO006_SESSION_B_POINTER_KEYS),
+                  (_WO006_SESSION_B_ISSUED_SEQUENCE,
+                   _WO006_SESSION_B_ISSUED_KEYS))
+    elif session == "A":
         shapes = ((_WO006_SESSION_A_POINTER_SEQUENCE,
                    _WO006_SESSION_A_POINTER_KEYS),
                   (_WO006_SESSION_A_ISSUED_SEQUENCE,
@@ -4272,7 +4545,7 @@ def check_work_order_contract() -> list[dict]:
                     # Session A record, the next gate, and the pointer
                     # statement.
                     for _f, _k, _found, _want in (
-                        _wo006_session_a_record_findings(
+                        _wo006_session_record_findings(
                             pointer, issued_text,
                             issued[0].relative_to(root).as_posix())
                     ):
@@ -4344,12 +4617,18 @@ def check_work_order_contract() -> list[dict]:
                 wo003_session_b = issued[0].name == _WO003_NAME
                 wo004_session_b = (issued[0].name == _WO004_NAME
                                    and issued_id == _WO004_ID)
+                # WO-006's is owner-operated live measurement only.
+                wo006_session_b = (issued[0].name == _WO006_NAME
+                                   and issued_id == _WO006_ID)
                 if wo003_session_b:
                     expected_gate = _WO003_SESSION_B_GATE
                     expected_auth = _ISSUED_SESSION_B_DRAFT_AUTH
                 elif wo004_session_b:
                     expected_gate = _WO004_SESSION_B_GATE
                     expected_auth = _WO004_SESSION_B_AUTH
+                elif wo006_session_b:
+                    expected_gate = _WO006_SESSION_B_GATE
+                    expected_auth = _WO006_SESSION_B_AUTH
                 else:
                     expected_gate = (
                         f"{issued_id} SESSION B AUTHORIZED "
@@ -4408,6 +4687,56 @@ def check_work_order_contract() -> list[dict]:
                             "positive permission for Session A, Session C, "
                             "or later",
                             "only Session B authorized")
+                if wo006_session_b:
+                    # The canonical slices and base come from
+                    # _wo006_issuance_findings; this adds the closed records,
+                    # the next gate, and the pointer statements.
+                    wo006_rel = issued[0].relative_to(root).as_posix()
+                    for _f, _k, _found, _want in (
+                        _wo006_session_record_findings(
+                            pointer, issued_text, wo006_rel, "B")
+                    ):
+                        add(_f, _k, _found, _want)
+                    # The mandate keeps Session A's authorization basis
+                    # verbatim. Its closed section is pinned above, and that
+                    # same text is removed once before the existing scanner
+                    # looks for a positive statement about any session other
+                    # than B.
+                    if _has_other_session_authorization(
+                        "",
+                        " ".join(issued_text.split()).replace(
+                            _WO006_SESSION_A_BASIS_RECORD, "", 1),
+                        session,
+                    ):
+                        add(wo006_rel, "session authorization reopening",
+                            "positive permission for Session A, Session C, "
+                            "or later",
+                            "only Session B authorized")
+                    # The mandate's configuration sentence is required exactly
+                    # once, and that one occurrence alone is exempt below.
+                    normalized_wo006 = " ".join(issued_text.split())
+                    if normalized_wo006.count(
+                        _WO006_SESSION_B_CONFIG_SENTENCE
+                    ) != 1:
+                        add(wo006_rel, "WO-006 Session B configuration sentence",
+                            str(normalized_wo006.count(
+                                _WO006_SESSION_B_CONFIG_SENTENCE)),
+                            "exactly one " + _WO006_SESSION_B_CONFIG_SENTENCE)
+                    # P2-A for Session B: the Session A guard, reused with
+                    # Session B's pinned records. Each surface is scanned
+                    # alone, so a finding names the file that carries it.
+                    for _file, _text in (
+                        ("WORKORDER.md", pointer),
+                        (wo006_rel, normalized_wo006.replace(
+                            _WO006_SESSION_B_CONFIG_SENTENCE, " ", 1)),
+                    ):
+                        for _statement in _current_session_widening(
+                            _text, "B", _WO006_SESSION_B_CANONICAL
+                        ):
+                            add(_file, "current session widening",
+                                _statement[:200],
+                                "no grant to Session B beyond its pinned "
+                                "records")
                 if wo003_session_b:
                     wo003_rel = issued[0].relative_to(root).as_posix()
                     for _f, _k, _found, _want in _wo003_record_findings(
