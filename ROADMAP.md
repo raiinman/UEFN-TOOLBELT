@@ -3,10 +3,10 @@
 > This is a living document. Items move between phases as priorities shift.
 > Current version: **v2.4.1** · Last completed phase: **21**
 >
-> Work Order track: WO-001 through WO-005 are completed. WO-006 is issued; its
-> Session A is accepted, and its Session B is authorized for owner-operated
-> live measurement only. The frozen release train remains WO-001 through
-> WO-007; WO-007 remains proposed and unauthorized.
+> Work Order track: WO-001 through WO-005 are completed. WO-006 is closed as
+> superseded without an accepted measurement; no session is authorized. The
+> frozen release train remains WO-001 through WO-007, with WO-006 resolved as
+> superseded rather than completed; WO-007 remains proposed and unauthorized.
 > This roadmap grants no implementation authority — root
 > [`WORKORDER.md`](WORKORDER.md) is the sole current gate.
 

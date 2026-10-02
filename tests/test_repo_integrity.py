@@ -145,7 +145,7 @@ def test_drift_check_covers_agent_context_surfaces(repo_root):
         "docs/work-orders/completed/WO-003-official-mcp-doc-convergence.md",
         "docs/work-orders/completed/WO-004-modal-observability.md",
         "docs/work-orders/completed/WO-005-coverage-source-of-truth.md",
-        "docs/work-orders/issued/WO-006-official-vs-toolbelt-benchmark.md",
+        "docs/work-orders/superseded/WO-006-official-vs-toolbelt-benchmark.md",
         "docs/work-orders/proposed/WO-007-public-mcp-explainer.md",
         ".agents/workflows/add_new_tool.md",
         ".agents/workflows/run_tests.md",
@@ -214,7 +214,12 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
               if path.name.lower() != "readme.md"]
     completed = [path for path in (work_orders / "completed").glob("*.md")
                  if path.name.lower() != "readme.md"]
-    assert [path.name for path in issued] == [
+    superseded = [path for path in (work_orders / "superseded").glob("*.md")
+                  if path.name.lower() != "readme.md"]
+    # WO-006 closed as superseded without an accepted measurement, so nothing
+    # is issued and it is the one superseded order.
+    assert issued == []
+    assert [path.name for path in superseded] == [
         "WO-006-official-vs-toolbelt-benchmark.md"
     ]
     assert {path.name for path in completed} == {
@@ -235,16 +240,18 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert not (
         work_orders / "proposed" / "WO-006-official-vs-toolbelt-benchmark.md"
     ).exists()
-    assert current == "WO-006"
-    assert session == "B"
-    # The base is the commit that Session B is authorized on, declared in its
-    # own bullet after the Session A evidence it follows.
+    assert not (
+        work_orders / "issued" / "WO-006-official-vs-toolbelt-benchmark.md"
+    ).exists()
+    assert current == "NONE"
+    assert session == "NONE"
+    # The base is the closure basis commit, an existing commit with recorded
+    # CI, declared in its own bullet after the Session B evidence it follows.
     assert base_lines == [
-        "- Base commit: `8667b0e0ef78d504586d710984ef1a1fef7263b2`"
+        "- Base commit: `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`"
     ]
     assert gate_lines == [
-        "- Current gate: WO-006 SESSION B AUTHORIZED — OWNER-OPERATED LIVE"
-        " MEASUREMENT ONLY"
+        "- Current gate: WO-006 SUPERSEDED — WO-007 PROPOSED AND NOT AUTHORIZED"
     ]
     for line in (
         "- Issuance commit: `0c0bf26191ee953c7a27237109b4a91a4db97275`",
@@ -258,6 +265,9 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         " `8667b0e0ef78d504586d710984ef1a1fef7263b2`",
         "- Session B authorization CI workflow: `36801338578`",
         "- Session B authorization CI job: `110176132684` — Lint, types, tests",
+        "- Closure basis commit: `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`",
+        "- Closure basis CI workflow: `36817435116`",
+        "- Closure basis CI job: `110225453445` — Lint, types, tests",
     ):
         assert line in pointer, line
     # WO-005's issuance, Session A, and completion bullets left the canonical
@@ -305,28 +315,33 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     normalized_roadmap = " ".join(roadmap.replace(">", " ").split())
     assert "WO-001 through WO-005 are completed." in normalized_roadmap
     assert (
-        "WO-006 is issued; its Session A is accepted, and its Session B is "
-        "authorized for owner-operated live measurement only."
+        "WO-006 is closed as superseded without an accepted measurement; no "
+        "session is authorized. The frozen release train remains WO-001 "
+        "through WO-007, with WO-006 resolved as superseded rather than "
+        "completed; WO-007 remains proposed and unauthorized."
         in normalized_roadmap
     )
+    assert "Session B is authorized" not in normalized_roadmap
+    assert "WO-006 is issued" not in normalized_roadmap
     assert "WO-006 is issued with no session authorized." not in (
         normalized_roadmap)
     assert "its Session A is authorized" not in normalized_roadmap
     assert "WO-007 remains proposed and unauthorized." in normalized_roadmap
     assert "WO-006 and WO-007 remain proposed" not in normalized_roadmap
-    # The issued WO-006 mandate: the Session B marker, the preserved planning
-    # baseline, issuance, and Session A evidence, the Session B evidence, the
-    # closed records, and a next gate that opens only the live run.
+    # The superseded WO-006 mandate: the closed markers, the preserved
+    # planning baseline, issuance, Session A and Session B evidence, the
+    # closure basis, the kept records, the closure record, and a terminal next
+    # gate.
     wo006_live = (
-        work_orders / "issued" / "WO-006-official-vs-toolbelt-benchmark.md"
+        work_orders / "superseded" / "WO-006-official-vs-toolbelt-benchmark.md"
     ).read_text(encoding="utf-8")
     wo006_lines = wo006_live.splitlines()
     assert [
         line for line in wo006_lines
         if line.startswith(("STATUS:", "AUTHORIZATION:"))
-    ] == ["STATUS: ISSUED",
-          "AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR OWNER-OPERATED"
-          " LIVE MEASUREMENT ONLY"]
+    ] == ["STATUS: SUPERSEDED",
+          "AUTHORIZATION: SUPERSEDED — CLOSED WITHOUT AN ACCEPTED MEASUREMENT;"
+          " NO SESSION AUTHORIZED"]
     for line in (
         "BASELINE: `f9354feaf4ab072c9941ab4d6ec8337395ce18a0`",
         "ISSUANCE_COMMIT: `0c0bf26191ee953c7a27237109b4a91a4db97275`",
@@ -340,6 +355,9 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         " `8667b0e0ef78d504586d710984ef1a1fef7263b2`",
         "SESSION_B_AUTHORIZATION_CI_WORKFLOW: `36801338578`",
         "SESSION_B_AUTHORIZATION_CI_JOB: `110176132684` — Lint, types, tests",
+        "CLOSURE_BASIS_COMMIT: `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`",
+        "CLOSURE_BASIS_CI_WORKFLOW: `36817435116`",
+        "CLOSURE_BASIS_CI_JOB: `110225453445` — Lint, types, tests",
     ):
         assert wo006_lines.count(line) == 1, line
     normalized_wo006 = " ".join(wo006_live.split())
@@ -377,14 +395,32 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "a hard 10-second whole-call deadline." in normalized_wo006
     )
     assert "C:\\Users" not in wo006_live
+    # The closure records what live-1 established separately from why it was
+    # rejected, keeps the cadence cause qualified, and closes the order for
+    # good. The kept bases grant nothing, and no timing figure is published.
+    assert wo006_lines.count("## Closure amendment (owner decision)") == 1
+    for statement in (
+        "The Session A and Session B authorization bases above are kept "
+        "verbatim as the records of their gates; neither grants anything.",
+        "Each of the 72 transform sets was followed by a same-surface restore "
+        "and a verifying re-read, and both final re-reads verified.",
+        "That is consistent with, but not established as, background "
+        "throttling",
+        "None of the three saves fell inside the timed window.",
+        "No timing figure from the rejected run is published.",
+        "it gives no support for removing, replacing, or deprecating the "
+        "custom bridge.",
+        "WO-006 cannot be resumed or completed; any future benchmark needs a "
+        "new proposal.",
+    ):
+        assert normalized_wo006.count(statement) == 1, statement
     assert normalized_wo006.count("NEXT GATE:") == 1
     assert normalized_wo006.count(
-        "NEXT GATE: owner-operated execution of the accepted Session B scope, "
-        "after the owner's separate instruction to begin the live run, ending "
-        "with its private artifacts held for independent review. The "
-        "evidence-recording transition, commit, push, WO-006 completion, and "
-        "WO-007 remain closed."
+        "NEXT GATE: none for WO-006. It is superseded and cannot be resumed or "
+        "completed; any future benchmark needs a new proposal. WO-007 remains "
+        "proposed and unauthorized."
     ) == 1
+    assert "NEXT GATE: owner-operated execution" not in normalized_wo006
     # The canonical bullet block belongs to whichever order owns the pointer.
     # WO-004's issuance, session, and completion bullets left it at WO-005's
     # issuance; they are preserved in WO-004's completed document and in the
@@ -480,19 +516,19 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         in normalized_pointer_live
     )
     # WO-006's issuance is recorded once, with its accepted proposal
-    # evidence, and opens no session.
+    # evidence, on its superseded path, and opens no session.
+    assert "docs/work-orders/issued/WO-006" not in pointer
     assert normalized_pointer_live.count(
-        "[`WO-006`](docs/work-orders/issued/WO-006-official-vs-toolbelt-"
-        "benchmark.md) is issued. Its planning baseline is "
+        "[`WO-006`](docs/work-orders/superseded/WO-006-official-vs-toolbelt-"
+        "benchmark.md) is superseded. Its planning baseline is "
         "`f9354feaf4ab072c9941ab4d6ec8337395ce18a0`; the independently "
         "accepted proposal was committed as "
         "`0c0bf26191ee953c7a27237109b4a91a4db97275` after [CI workflow "
         "`36743995194`]"
     ) == 1
     assert "109985389182" in normalized_pointer_live
-    # The issuance note and the Session A record are history now, Session A's
-    # acceptance is recorded once, and Session B is authorized once, for
-    # owner-operated live measurement only.
+    # The issuance note, the Session A record, Session A's acceptance, and the
+    # Session B record are all history now, each recorded once.
     assert (
         "At its issuance gate, WO-006 gave no implementation authority and "
         "opened no session. Session A, the offline design and harness, needed "
@@ -515,14 +551,32 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "Session A is accepted and closed."
     ) == 1
     assert normalized_pointer_live.count(
-        "Session B is authorized under this pointer for owner-operated live "
-        "measurement only, on the basis of commit "
+        "At the Session B authorization gate, this pointer opened "
+        "owner-operated live measurement only, on the basis of commit "
         "`8667b0e0ef78d504586d710984ef1a1fef7263b2`"
     ) == 1
     assert (
         "That CI tested the repository's checker and tests, not the private "
-        "harness, and establishes no live result." in normalized_pointer_live
+        "harness, and established no live result." in normalized_pointer_live
     )
+    assert (
+        "the evidence-recording transition and WO-006 completion stayed closed "
+        "at that gate." in normalized_pointer_live
+    )
+    # The closure is recorded once, and the owner's release-train amendment
+    # resolves WO-006 for the train without completing it or opening anything.
+    assert normalized_pointer_live.count(
+        "is superseded. It closed without an accepted measurement under the "
+        "owner's closure decision recorded in its mandate, which keeps its "
+        "unmet requirements. WO-006 cannot be resumed or completed, and no "
+        "session is authorized. WO-007 remains proposed and unauthorized."
+    ) == 1
+    assert normalized_pointer_live.count(
+        "It is resolved for this train, not completed, and its unmet "
+        "requirements stay recorded in its mandate. For the release gate "
+        "above, the frozen train is complete when WO-001 through WO-005 and "
+        "WO-007 are completed and WO-006 remains superseded."
+    ) == 1
     assert (
         "as does WO-007, which stays proposed." in normalized_pointer_live
     )
@@ -554,10 +608,11 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     )
     assert "36529997892" in normalized_pointer_live
     assert "109281301869" in normalized_pointer_live
-    # The one present-tense session record is WO-006's Session B record.
+    # No present-tense session record remains: WO-006's Session B record is
+    # history now.
     assert normalized_pointer_live.count(
         "Session B is authorized under this pointer"
-    ) == 1
+    ) == 0
     # WO-005's and WO-006's Session A records are both history.
     assert (
         "Session A is authorized under this pointer for the offline coverage"
@@ -680,7 +735,7 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "proposed." in normalized_pointer
     )
     assert "UEFN launch, bridge startup," in pointer
-    # Every issuance note is history now that WO-006's Session B is open.
+    # Every issuance note is history now that WO-006 is superseded.
     assert normalized_pointer.count(
         "Issuance grants no implementation authority and opens no session."
     ) == 0
@@ -2659,14 +2714,280 @@ _WO006_SB_REVERSAL = (
 )
 
 
-def _make_wo006_session_b_case(repo_root, tmp_path, name):
-    """Copy the current WO-006 Session B state."""
+# --- WO-006 closure: the current state, and the head of the chain ---------
+#
+# Closing WO-006 as superseded, without an accepted measurement, moved the
+# current state forward again, so the Session B state - and every historical
+# fixture below it - is reconstructed backwards from the superseded state.
+
+_WO006_SUP_REL = (
+    "docs/work-orders/superseded/WO-006-official-vs-toolbelt-benchmark.md"
+)
+_WO006_SUP_COMMIT = "13e0bbb67f98ac3f33aff917737fcf9b77a3d64c"
+_WO006_SUP_WORKFLOW = "36817435116"
+_WO006_SUP_JOB = "110225453445"
+_WO006_SUP_GATE = (
+    "WO-006 SUPERSEDED " + _EM + " WO-007 PROPOSED AND NOT AUTHORIZED"
+)
+_WO006_SUP_MARKER = (
+    "AUTHORIZATION: SUPERSEDED " + _EM
+    + " CLOSED WITHOUT AN ACCEPTED MEASUREMENT; NO SESSION AUTHORIZED"
+)
+_WO006_SUP_METADATA = (
+    ("CLOSURE_BASIS_COMMIT:",
+     "CLOSURE_BASIS_COMMIT: `" + _WO006_SUP_COMMIT + "`"),
+    ("CLOSURE_BASIS_CI_WORKFLOW:",
+     "CLOSURE_BASIS_CI_WORKFLOW: `" + _WO006_SUP_WORKFLOW + "`"),
+    ("CLOSURE_BASIS_CI_JOB:",
+     "CLOSURE_BASIS_CI_JOB: `" + _WO006_SUP_JOB + "` " + _EM
+     + " Lint, types, tests"),
+)
+_WO006_SUP_POINTER_BULLETS = (
+    ("- Closure basis commit:",
+     "- Closure basis commit: `" + _WO006_SUP_COMMIT + "`"),
+    ("- Closure basis CI workflow:",
+     "- Closure basis CI workflow: `" + _WO006_SUP_WORKFLOW + "`"),
+    ("- Closure basis CI job:",
+     "- Closure basis CI job: `" + _WO006_SUP_JOB + "` " + _EM
+     + " Lint, types, tests"),
+)
+_WO006_CLOSURE_HEADING = "## Closure amendment (owner decision)"
+_WO006_KEPT_BASES_NOTE = (
+    "The Session A and Session B authorization bases above are kept verbatim"
+    " as the records of their gates; neither grants anything."
+)
+_WO006_SUP_NEXT_GATE = (
+    "NEXT GATE: none for WO-006. It is superseded and cannot be resumed or"
+    " completed; any future benchmark needs a new proposal. WO-007 remains"
+    " proposed and unauthorized."
+)
+_WO006_SUP_POINTER_CLAUSE = (
+    "[`WO-006`](docs/work-orders/superseded/WO-006-official-vs-toolbelt-"
+    "benchmark.md) is superseded. It closed without an accepted measurement"
+    " under the owner's closure decision recorded in its mandate, which keeps"
+    " its unmet requirements. WO-006 cannot be resumed or completed, and no"
+    " session is authorized."
+)
+_WO006_RELEASE_TRAIN_AMENDMENT = (
+    "Release-train amendment (owner decision): the frozen train remains WO-001"
+    " through WO-007. WO-006 is closed as superseded without an accepted"
+    " measurement. It is resolved for this train, not completed, and its"
+    " unmet requirements stay recorded in its mandate. For the release gate"
+    " above, the frozen train is complete when WO-001 through WO-005 and"
+    " WO-007 are completed and WO-006 remains superseded. This amendment"
+    " opens no session and grants nothing: WO-007 remains proposed and"
+    " unauthorized, and the final integration/repository-truth audit and a"
+    " separate owner decision on any release remain required."
+)
+_WO006_SB_POINTER_HISTORY_OPENING = (
+    "At the Session B authorization gate, this pointer opened owner-operated"
+    " live measurement only"
+)
+# Each pair is (as the superseded state records it, as the Session B state
+# recorded it), so the reconstruction puts every original back byte for byte.
+_WO006_SUP_NEXT_GATE_HISTORY = (
+    _NL.join((
+        "NEXT GATE: none for WO-006. It is superseded and cannot be resumed or"
+        " completed;",
+        "any future benchmark needs a new proposal. WO-007 remains proposed"
+        " and",
+        "unauthorized.",
+    )), _WO006_SB_NEXT_GATE_HISTORY[0],
+)
+_WO006_SUP_POINTER_HISTORY = (
+    (_NL.join((
+        "- Current issued Work Order: NONE",
+        "- Authorized session: NONE",
+        "- Base commit: `" + _WO006_SUP_COMMIT + "`",
+        "- Current gate: " + _WO006_SUP_GATE,
+    )), _NL.join((
+        "- Current issued Work Order: WO-006",
+        "- Authorized session: B",
+        "- Base commit: `" + _WO006_SB_COMMIT + "`",
+        "- Current gate: " + _WO006_SB_GATE,
+    ))),
+    (_NL.join((
+        "[`WO-006`](docs/work-orders/superseded/WO-006-official-vs-toolbelt"
+        "-benchmark.md) is",
+        "superseded. Its planning baseline",
+    )), _NL.join((
+        "[`WO-006`](docs/work-orders/issued/WO-006-official-vs-toolbelt"
+        "-benchmark.md) is",
+        "issued. Its planning baseline",
+    ))),
+    (_NL.join((
+        "At the Session B authorization gate, this pointer opened"
+        " owner-operated live",
+        "measurement only, on the basis of commit",
+        "`" + _WO006_SB_COMMIT + "`, successful CI workflow",
+        "`" + _WO006_SB_WORKFLOW + "`, and successful required job `"
+        + _WO006_SB_JOB + "` (`Lint, types,",
+        "tests`). That CI tested the repository's checker and tests, not the"
+        " private",
+        "harness, and established no live result. That gate covered the"
+        " Session B scope",
+        "recorded in the issued mandate, unchanged: the owner operated UEFN"
+        " and",
+        "performed the owner checks, and the accepted harness ran only after"
+        " the",
+        "owner's separate, explicit instruction to begin the live run. It"
+        " changed no",
+        "repository file and ended with its private artifacts held for"
+        " independent",
+        "review. It opened no code change, fallback, emulation, policy change,"
+        " live",
+        "repair, commit, or push, and the evidence-recording transition and"
+        " WO-006",
+        "completion stayed closed at that gate. Tagging, Release creation,",
+        "branch-protection changes, other repository metadata changes, and"
+        " social",
+        "publication all remain unauthorized, as does WO-007, which stays"
+        " proposed.",
+        "",
+        "[`WO-006`](docs/work-orders/superseded/WO-006-official-vs-toolbelt"
+        "-benchmark.md)",
+        "is superseded. It closed without an accepted measurement under the"
+        " owner's",
+        "closure decision recorded in its mandate, which keeps its unmet"
+        " requirements.",
+        "WO-006 cannot be resumed or completed, and no session is authorized."
+        " WO-007",
+        "remains proposed and unauthorized.",
+    )), _WO006_SB_POINTER_HISTORY[1][0].split(_NL + _NL)[2]),
+    (_NL.join((
+        "",
+        "",
+        "Release-train amendment (owner decision): the frozen train remains"
+        " WO-001",
+        "through WO-007. WO-006 is closed as superseded without an accepted",
+        "measurement. It is resolved for this train, not completed, and its"
+        " unmet",
+        "requirements stay recorded in its mandate. For the release gate"
+        " above, the",
+        "frozen train is complete when WO-001 through WO-005 and WO-007 are"
+        " completed",
+        "and WO-006 remains superseded. This amendment opens no session and"
+        " grants",
+        "nothing: WO-007 remains proposed and unauthorized, and the final",
+        "integration/repository-truth audit and a separate owner decision on"
+        " any",
+        "release remain required.",
+    )), ""),
+)
+
+
+def _wo006_sup_revert_move(case):
+    (case / _WO006_SUP_REL).rename(case / _WO006_ISS_REL)
+
+
+def _wo006_sup_revert_marker(case):
+    _edit(case, _WO006_ISS_REL, "STATUS: SUPERSEDED", "STATUS: ISSUED")
+    _edit(case, _WO006_ISS_REL, _WO006_SUP_MARKER, _WO006_SB_MARKER)
+
+
+def _wo006_sup_revert_evidence(case):
+    for _prefix, declaration in _WO006_SUP_METADATA:
+        _edit(case, _WO006_ISS_REL, _NL + declaration + _NL, "")
+
+
+def _wo006_sup_revert_record(case):
+    target = case / _WO006_ISS_REL
+    text = target.read_text(encoding="utf-8")
+    _require_unique(
+        text, (_WO006_CLOSURE_HEADING, "## Revision provenance"),
+        "WO-006 closure record excision",
+    )
+    text = _sub_once(
+        re.escape(_WO006_CLOSURE_HEADING)
+        + ".*?(?=" + re.escape("## Revision provenance" + _NL) + ")",
+        "", text, "WO-006 closure record excision", flags=re.DOTALL,
+    )
+    target.write_text(text, encoding="utf-8")
+
+
+def _wo006_sup_revert_next_gate(case):
+    _edit(case, _WO006_ISS_REL, *_WO006_SUP_NEXT_GATE_HISTORY)
+
+
+def _wo006_sup_revert_pointer_bullets(case):
+    _edit(case, "WORKORDER.md", *_WO006_SUP_POINTER_HISTORY[0])
+    for _prefix, bullet in _WO006_SUP_POINTER_BULLETS:
+        _edit(case, "WORKORDER.md", bullet + _NL, "")
+
+
+def _wo006_sup_revert_pointer_link(case):
+    _edit(case, "WORKORDER.md", *_WO006_SUP_POINTER_HISTORY[1])
+
+
+def _wo006_sup_revert_pointer_statement(case):
+    _edit(case, "WORKORDER.md", *_WO006_SUP_POINTER_HISTORY[2])
+
+
+def _wo006_sup_revert_pointer_amendment(case):
+    _edit(case, "WORKORDER.md", *_WO006_SUP_POINTER_HISTORY[3])
+
+
+# The WO-006 closure transition, as reversible steps. The move comes first:
+# every mandate step edits the issued path.
+_WO006_SUP_REVERSAL = (
+    ("mandate-move", _wo006_sup_revert_move),
+    ("mandate-marker", _wo006_sup_revert_marker),
+    ("mandate-evidence", _wo006_sup_revert_evidence),
+    ("mandate-record", _wo006_sup_revert_record),
+    ("mandate-next-gate", _wo006_sup_revert_next_gate),
+    ("pointer-bullets", _wo006_sup_revert_pointer_bullets),
+    ("pointer-link", _wo006_sup_revert_pointer_link),
+    ("pointer-statement", _wo006_sup_revert_pointer_statement),
+    ("pointer-amendment", _wo006_sup_revert_pointer_amendment),
+)
+
+
+def _make_wo006_superseded_case(repo_root, tmp_path, name):
+    """Copy the current superseded-WO-006 state."""
     case = tmp_path / name
     case.mkdir(parents=True)
     shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
     shutil.copytree(
         repo_root / "docs" / "work-orders",
         case / "docs" / "work-orders",
+    )
+    return case
+
+
+def _make_wo006_session_b_case(repo_root, tmp_path, name):
+    """Reconstruct the preserved WO-006 Session B state.
+
+    Closing WO-006 as superseded moved the current state forward, so the
+    Session B state every earlier fixture builds on is now itself a
+    reconstruction. Every step of the closure is reversed: in the mandate,
+    the move to superseded/, the status and marker, the closure-basis
+    declarations, the closure section, and the next gate; in the pointer, the
+    session, base, gate, and closure-basis bullets, the link sentence, the
+    Session B history and closure paragraphs, and the release-train
+    amendment. Both files return to the Session B state byte for byte.
+    """
+    case = _make_wo006_superseded_case(repo_root, tmp_path, name)
+    if not (case / _WO006_SUP_REL).exists():
+        # Already a pre-closure tree: nothing to reverse.
+        return case
+    for _step, revert in _WO006_SUP_REVERSAL:
+        revert(case)
+    _assert_reconstructed(
+        "WO-006 closure pointer",
+        (case / "WORKORDER.md").read_text(encoding="utf-8"),
+        (_WO006_SB_POINTER_HISTORY[0][0], _WO006_SB_POINTER_OPENING,
+         "- Authorized session: B"),
+        (_WO006_SUP_GATE, _WO006_SUP_WORKFLOW, _WO006_SUP_JOB,
+         "docs/work-orders/superseded/", "Release-train amendment",
+         _WO006_SB_POINTER_HISTORY_OPENING),
+    )
+    _assert_reconstructed(
+        "WO-006 closure reconstruction",
+        (case / _WO006_ISS_REL).read_text(encoding="utf-8"),
+        (_WO006_SB_MARKER, _WO006_SB_BASIS_HEADING,
+         _WO006_SB_NEXT_GATE_HISTORY[0], "STATUS: ISSUED"),
+        (_WO006_SUP_MARKER, _WO006_CLOSURE_HEADING, "CLOSURE_BASIS_COMMIT:",
+         _WO006_SUP_NEXT_GATE_HISTORY[0]),
     )
     return case
 
@@ -5244,6 +5565,7 @@ _TERMINAL_WO002_FINDING = "completed WO-002 state"
 _TERMINAL_WO003_FINDING = "completed WO-003 state"
 _TERMINAL_WO004_FINDING = "completed WO-004 state"
 _TERMINAL_WO005_FINDING = "completed WO-005 state"
+_TERMINAL_WO006_FINDING = "superseded WO-006 state"
 
 
 def _without_terminal_lock(finding_types):
@@ -5258,6 +5580,7 @@ def _without_terminal_lock(finding_types):
         _TERMINAL_WO003_FINDING,
         _TERMINAL_WO004_FINDING,
         _TERMINAL_WO005_FINDING,
+        _TERMINAL_WO006_FINDING,
     }
 
 
@@ -5271,17 +5594,32 @@ def _pre_completion_findings(drift_check):
     """
     return [finding for finding in drift_check.check_work_order_contract()
             if finding["type"] not in (_TERMINAL_WO004_FINDING,
-                                       _TERMINAL_WO005_FINDING)]
+                                       _TERMINAL_WO005_FINDING,
+                                       _TERMINAL_WO006_FINDING)]
 
 
 def _before_wo005_completion(drift_check):
-    """The work-order findings less WO-005's one-way completion lock only.
+    """The work-order findings less WO-005's one-way completion lock, and
+    WO-006's later one-way closure lock, which every such fixture also trips.
 
     For fixtures after WO-004's completion but before WO-005's, which trip
-    that one lock and must still see every other finding, WO-004's included.
+    those locks and must still see every other finding, WO-004's included.
     """
     return [finding for finding in drift_check.check_work_order_contract()
-            if finding["type"] != _TERMINAL_WO005_FINDING]
+            if finding["type"] not in (_TERMINAL_WO005_FINDING,
+                                       _TERMINAL_WO006_FINDING)]
+
+
+def _before_wo006_closure(findings):
+    """(type, file) findings less WO-006's one-way closure lock only.
+
+    Every fixture reconstructed below the superseded head is a state from
+    before WO-006 was closed, so it necessarily trips that lock, exactly as
+    older fixtures trip the completion locks. Only that one finding is set
+    aside; every other finding, the older locks included, is still returned.
+    """
+    return {(kind, rel) for kind, rel in findings
+            if kind != _TERMINAL_WO006_FINDING}
 
 
 _RECONSTRUCTION_FAILURE = (
@@ -14303,8 +14641,8 @@ def _wo005_done_findings(repo_root, tmp_path, monkeypatch, name, mutate,
                                                  "wo005-done-" + name)
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+    return _before_wo006_closure({(f["type"], f["file"])
+                                  for f in drift_check.check_work_order_contract()})
 
 
 def test_wo005_completed_state_is_clean(repo_root, tmp_path,
@@ -14563,8 +14901,8 @@ def _wo006_iss_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     case = _make_wo006_issued_case(repo_root, tmp_path, "wo006-iss-" + name)
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+    return _before_wo006_closure({(f["type"], f["file"])
+                                  for f in drift_check.check_work_order_contract()})
 
 
 def test_wo006_issued_state_is_clean(repo_root, tmp_path, monkeypatch) -> None:
@@ -14589,8 +14927,8 @@ def test_wo006_reconstruction_reaches_the_completed_wo005_state(
             if line.startswith(("STATUS:", "AUTHORIZATION:"))] == [
         "STATUS: PROPOSED", "AUTHORIZATION: NOT AUTHORIZED"]
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    found = {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()}
+    found = _before_wo006_closure({(f["type"], f["file"])
+                                   for f in drift_check.check_work_order_contract()})
     assert found == set(), repr(sorted(found))
 
 
@@ -14736,8 +15074,8 @@ def _wo006_sa_findings(repo_root, tmp_path, monkeypatch, name, mutate):
                                       "wo006-sa-" + name)
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+    return _before_wo006_closure({(f["type"], f["file"])
+                                  for f in drift_check.check_work_order_contract()})
 
 
 def test_wo006_session_a_state_is_clean(repo_root, tmp_path,
@@ -15060,8 +15398,8 @@ def _wo006_sb_findings(repo_root, tmp_path, monkeypatch, name, mutate):
                                       "wo006-sb-" + name)
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+    return _before_wo006_closure({(f["type"], f["file"])
+                                  for f in drift_check.check_work_order_contract()})
 
 
 def test_wo006_session_b_state_is_clean(repo_root, tmp_path,
@@ -15468,3 +15806,309 @@ def test_wo006_session_b_configuration_sentence_reflowed_stays_clean(
                            "Session B may" + _NL + "fill from the live",
                            "Session B" + _NL + "may fill from the live"))
     assert found == set(), repr(sorted(found))
+
+
+# --- WO-006 closure: the live superseded state ----------------------------
+#
+# Closing WO-006 adds the closure basis to each canonical block, moves the
+# base, moves the mandate to superseded/ under closed markers, adds one closed
+# closure section beside the kept Session A and Session B records, replaces
+# the next gate with a terminal one, turns the pointer's Session B record into
+# history, records the closure, and adds the owner's release-train amendment.
+# Each probe is a delta against the live superseded state, with nothing set
+# aside.
+
+_WO006_SUP_KINDS = {
+    "WORKORDER.md": {"WO-006 issuance field (WORKORDER.md)",
+                     "WO-006 issuance declaration (WORKORDER.md)"},
+    _WO006_SUP_REL: {"WO-006 issuance field (issued record)",
+                     "WO-006 issuance declaration (issued record)"},
+}
+
+
+def _wo006_sup_findings(repo_root, tmp_path, monkeypatch, name, mutate):
+    """(type, file) findings for the live superseded-WO-006 state after one
+    mutation."""
+    drift_check = _load_drift_check(repo_root, "wo006_sup_" + name)
+    case = _make_wo006_superseded_case(repo_root, tmp_path,
+                                       "wo006-sup-" + name)
+    mutate(case)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return {(f["type"], f["file"])
+            for f in drift_check.check_work_order_contract()}
+
+
+def test_wo006_superseded_state_is_clean(repo_root, tmp_path,
+                                         monkeypatch) -> None:
+    """The control: the live superseded-WO-006 state has no finding at all."""
+    found = _wo006_sup_findings(repo_root, tmp_path, monkeypatch, "control",
+                                lambda case: None)
+    assert found == set(), (
+        "the superseded WO-006 state is not clean: " + repr(sorted(found))
+    )
+
+
+_WO006_SUP_EVIDENCE = (
+    # (id, file, declaration prefix, pinned value)
+    ("pointer-base", "WORKORDER.md", "- Base commit:", _WO006_SUP_COMMIT),
+    ("pointer-issuance-commit", "WORKORDER.md", "- Issuance commit:",
+     _WO006_ISS_COMMIT),
+    ("pointer-sa-commit", "WORKORDER.md", "- Session A authorization commit:",
+     _WO006_SA_COMMIT),
+    ("pointer-sb-commit", "WORKORDER.md", "- Session B authorization commit:",
+     _WO006_SB_COMMIT),
+    ("pointer-closure-commit", "WORKORDER.md", "- Closure basis commit:",
+     _WO006_SUP_COMMIT),
+    ("pointer-closure-workflow", "WORKORDER.md",
+     "- Closure basis CI workflow:", _WO006_SUP_WORKFLOW),
+    ("pointer-closure-job", "WORKORDER.md", "- Closure basis CI job:",
+     _WO006_SUP_JOB),
+    ("mandate-issuance-commit", _WO006_SUP_REL, "ISSUANCE_COMMIT:",
+     _WO006_ISS_COMMIT),
+    ("mandate-sb-commit", _WO006_SUP_REL, "SESSION_B_AUTHORIZATION_COMMIT:",
+     _WO006_SB_COMMIT),
+    ("mandate-closure-commit", _WO006_SUP_REL, "CLOSURE_BASIS_COMMIT:",
+     _WO006_SUP_COMMIT),
+    ("mandate-closure-workflow", _WO006_SUP_REL, "CLOSURE_BASIS_CI_WORKFLOW:",
+     _WO006_SUP_WORKFLOW),
+    ("mandate-closure-job", _WO006_SUP_REL, "CLOSURE_BASIS_CI_JOB:",
+     _WO006_SUP_JOB),
+)
+
+
+@pytest.mark.parametrize("damage",
+                         ("changed", "removed", "duplicated", "decoy"))
+@pytest.mark.parametrize(("name", "rel", "prefix", "value"),
+                         _WO006_SUP_EVIDENCE,
+                         ids=[row[0] for row in _WO006_SUP_EVIDENCE])
+def test_wo006_superseded_evidence_is_pinned(
+    repo_root, tmp_path, monkeypatch, name, rel, prefix, value, damage
+) -> None:
+    """The moved base, the closure basis, and the issuance and session
+    evidence it follows are each enforced on the surface that declares
+    them."""
+    def mutate(case):
+        target = case / rel
+        text = target.read_text(encoding="utf-8")
+        line = next(candidate for candidate in text.splitlines()
+                    if candidate.startswith(prefix))
+        wrong = line.replace(value, _WO004_ZERO_SHA[:len(value)])
+        assert wrong != line, "probe anchor drifted: " + prefix
+        new = {"changed": wrong, "removed": "",
+               "duplicated": line + _NL + line, "decoy": wrong}[damage]
+        text = _replace_once(text, line, new,
+                             "WO-006 closure evidence " + damage)
+        if damage == "decoy":
+            text = text.rstrip() + _NL + _NL + line + _NL
+        target.write_text(text, encoding="utf-8")
+
+    found = _wo006_sup_findings(repo_root, tmp_path, monkeypatch,
+                                "evidence-" + name + "-" + damage, mutate)
+    kinds = {kind for kind, file in found if file == rel}
+    assert kinds & _WO006_SUP_KINDS[rel], (
+        "a " + damage + " " + prefix + " declaration was accepted in the "
+        "superseded WO-006 state: " + repr(sorted(found))
+    )
+
+
+def test_wo006_superseded_base_cannot_stay_at_the_session_b_commit(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """The base moves to the closure basis commit."""
+    found = _wo006_sup_findings(
+        repo_root, tmp_path, monkeypatch, "base-rollback",
+        lambda case: _edit(case, "WORKORDER.md",
+                           "- Base commit: `" + _WO006_SUP_COMMIT + "`",
+                           "- Base commit: `" + _WO006_SB_COMMIT + "`"))
+    assert ("completion base commit", "WORKORDER.md") in found, (
+        repr(sorted(found)))
+
+
+@pytest.mark.parametrize(("step", "revert"), _WO006_SUP_REVERSAL,
+                         ids=[row[0] for row in _WO006_SUP_REVERSAL])
+def test_wo006_closure_partial_transition_is_caught(
+    repo_root, tmp_path, monkeypatch, step, revert
+) -> None:
+    """Any one step of the closure, reverted alone, leaves a state the
+    checker rejects: the transition is all or nothing. Each mandate step
+    edits the issued path, so it is reverted together with the move it
+    depends on, and the move is also reverted alone."""
+    def mutate(case):
+        if step.startswith("mandate-") and step != "mandate-move":
+            _wo006_sup_revert_move(case)
+        revert(case)
+
+    found = _wo006_sup_findings(repo_root, tmp_path, monkeypatch,
+                                "partial-" + step, mutate)
+    assert found, step + " alone was accepted: the transition is partial"
+
+
+def test_wo006_closure_coherent_reversal_is_the_session_b_state(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Reverting every step lands on the Session B state, which is clean
+    except for the one-way closure lock: the rollback is visible, and only
+    an edit to the checker could reopen WO-006."""
+    def mutate(case):
+        for _step, revert in _WO006_SUP_REVERSAL:
+            revert(case)
+
+    found = _wo006_sup_findings(repo_root, tmp_path, monkeypatch,
+                                "coherent", mutate)
+    assert found == {(_TERMINAL_WO006_FINDING, "docs/work-orders")}, (
+        repr(sorted(found)))
+    assert _before_wo006_closure(found) == set()
+
+
+def _wo006_sup_append(rel, claim):
+    def mutate(case):
+        target = case / rel
+        target.write_text(target.read_text(encoding="utf-8").rstrip() + _NL
+                          + _NL + claim + _NL, encoding="utf-8")
+    return mutate
+
+
+def _wo006_sup_stray_copy(destination):
+    def mutate(case):
+        source = case / _WO006_SUP_REL
+        target = (case / "docs" / "work-orders" / destination
+                  / source.name)
+        target.write_text(source.read_text(encoding="utf-8"),
+                          encoding="utf-8")
+    return mutate
+
+
+_WO006_SUP_DAMAGE = (
+    # (id, change, expected kind, file it is reported against)
+    ("status-reverted",
+     lambda case: _edit(case, _WO006_SUP_REL, "STATUS: SUPERSEDED",
+                        "STATUS: ISSUED"),
+     _TERMINAL_WO006_FINDING, "docs/work-orders"),
+    ("marker-reverted",
+     lambda case: _edit(case, _WO006_SUP_REL, _WO006_SUP_MARKER,
+                        _WO006_SB_MARKER),
+     _TERMINAL_WO006_FINDING, "docs/work-orders"),
+    ("marker-reopened",
+     lambda case: _edit(case, _WO006_SUP_REL, _WO006_SUP_MARKER,
+                        "AUTHORIZATION: SUPERSEDED " + _EM
+                        + " SESSION B AUTHORIZED"),
+     _TERMINAL_WO006_FINDING, "docs/work-orders"),
+    ("kept-bases-note-removed",
+     lambda case: _edit(case, _WO006_SUP_REL,
+                        "neither grants anything.", "both still apply."),
+     "WO-006 closure record", _WO006_SUP_REL),
+    ("closure-record-softened",
+     lambda case: _edit(case, _WO006_SUP_REL,
+                        "consistent with, but not established as,",
+                        "caused by"),
+     "WO-006 closure record", _WO006_SUP_REL),
+    ("closure-record-claims-result",
+     lambda case: _edit(case, _WO006_SUP_REL,
+                        "No timing figure from the rejected run is published.",
+                        "The live-1 medians are the accepted result."),
+     "WO-006 closure record", _WO006_SUP_REL),
+    ("closure-heading-renamed",
+     lambda case: _edit(case, _WO006_SUP_REL, _WO006_CLOSURE_HEADING + _NL,
+                        "## Closure notes" + _NL),
+     "WO-006 superseded record heading", _WO006_SUP_REL),
+    ("session-b-basis-rewritten",
+     lambda case: _edit(case, _WO006_SUP_REL,
+                        "and no estimated constant is",
+                        "and an estimated constant is"),
+     "WO-006 Session B authorization statement", _WO006_SUP_REL),
+    ("next-gate-reopens",
+     lambda case: _edit(case, _WO006_SUP_REL,
+                        "NEXT GATE: none for WO-006.",
+                        "NEXT GATE: Session B for WO-006."),
+     "WO-006 next gate", _WO006_SUP_REL),
+    ("second-next-gate",
+     _wo006_sup_append(_WO006_SUP_REL, "NEXT GATE: WO-006 completion."),
+     "WO-006 next gate", _WO006_SUP_REL),
+    ("session-reopened",
+     _wo006_sup_append(_WO006_SUP_REL,
+                       "Session B is authorized and may begin."),
+     "session authorization reopening", _WO006_SUP_REL),
+    ("session-c-opened",
+     _wo006_sup_append(_WO006_SUP_REL,
+                       "Session C is authorized for completion."),
+     "session authorization reopening", _WO006_SUP_REL),
+    ("release-claim",
+     _wo006_sup_append(_WO006_SUP_REL,
+                       "A GitHub Release for WO-006 is authorized."),
+     "release authorization", _WO006_SUP_REL),
+    ("metadata-claim",
+     _wo006_sup_append(_WO006_SUP_REL,
+                       "Repository metadata changes are authorized."),
+     "external-action boundary", _WO006_SUP_REL),
+    ("successor-in-mandate",
+     _wo006_sup_append(_WO006_SUP_REL, "WO-007 is issued and authorized."),
+     "next work order authorization", _WO006_SUP_REL),
+    ("successor-in-pointer",
+     _wo006_sup_append("WORKORDER.md", "WO-007 is issued and authorized."),
+     "next work order authorization", "WORKORDER.md"),
+    ("pointer-session",
+     lambda case: _edit(case, "WORKORDER.md", "- Authorized session: NONE",
+                        "- Authorized session: B"),
+     "authorization without issued work order", "WORKORDER.md"),
+    ("pointer-gate",
+     lambda case: _edit(case, "WORKORDER.md",
+                        "- Current gate: " + _WO006_SUP_GATE,
+                        "- Current gate: " + _WO006_SB_GATE),
+     "completed work order gate", "WORKORDER.md"),
+    ("pointer-session-b-reopened",
+     _wo006_sup_append("WORKORDER.md",
+                       "Session B is authorized under this pointer for"
+                       " owner-operated live measurement only."),
+     "session authorization reopening", "WORKORDER.md"),
+    ("pointer-history-widened",
+     lambda case: _edit(case, "WORKORDER.md",
+                        _WO006_SB_POINTER_HISTORY_OPENING.split(
+                            "owner-operated")[0] + "owner-operated live",
+                        _WO006_SB_POINTER_HISTORY_OPENING.split(
+                            "owner-operated")[0] + "owner-operated repeat"),
+     "WO-006 superseded pointer statement", "WORKORDER.md"),
+    ("pointer-link-stale",
+     lambda case: _edit(case, "WORKORDER.md",
+                        _WO006_SUP_POINTER_HISTORY[1][0],
+                        _WO006_SUP_POINTER_HISTORY[1][1]),
+     "WO-006 pointer path", "WORKORDER.md"),
+    ("pointer-closure-widened",
+     lambda case: _edit(case, "WORKORDER.md",
+                        "WO-006 cannot be resumed or completed, and no"
+                        " session is authorized.",
+                        "WO-006 may be resumed later."),
+     "WO-006 superseded pointer statement", "WORKORDER.md"),
+    ("release-amendment-removed",
+     lambda case: _edit(case, "WORKORDER.md",
+                        *_WO006_SUP_POINTER_HISTORY[3]),
+     "WO-006 release-train amendment", "WORKORDER.md"),
+    ("release-amendment-completes-wo006",
+     lambda case: _edit(case, "WORKORDER.md",
+                        "It is resolved for this train, not completed, and",
+                        "It is completed for this train, and"),
+     "WO-006 release-train amendment", "WORKORDER.md"),
+    ("stray-copy-in-issued",
+     _wo006_sup_stray_copy("issued"),
+     "duplicate work order state", "docs/work-orders"),
+    ("stray-copy-in-proposed",
+     _wo006_sup_stray_copy("proposed"),
+     "duplicate work order state", "docs/work-orders"),
+    ("stray-copy-in-completed",
+     _wo006_sup_stray_copy("completed"),
+     "duplicate work order state", "docs/work-orders"),
+)
+
+
+@pytest.mark.parametrize(("name", "mutate", "kind", "rel"),
+                         _WO006_SUP_DAMAGE,
+                         ids=[row[0] for row in _WO006_SUP_DAMAGE])
+def test_wo006_superseded_records_and_boundaries_are_enforced(
+    repo_root, tmp_path, monkeypatch, name, mutate, kind, rel
+) -> None:
+    """The superseded mandate's markers, kept records, closure record, and
+    terminal next gate, the pointer's closed state, history, and release-train
+    amendment, and the session, release, external-action, and successor
+    boundaries are enforced and attributed to the file at fault."""
+    found = _wo006_sup_findings(repo_root, tmp_path, monkeypatch,
+                                "damage-" + name, mutate)
+    assert (kind, rel) in found, repr(sorted(found))

@@ -1,8 +1,8 @@
 # WO-006 — Official MCP Versus Toolbelt Benchmark
 
-STATUS: ISSUED
+STATUS: SUPERSEDED
 
-AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR OWNER-OPERATED LIVE MEASUREMENT ONLY
+AUTHORIZATION: SUPERSEDED — CLOSED WITHOUT AN ACCEPTED MEASUREMENT; NO SESSION AUTHORIZED
 
 OWNER: Ocean Bennett
 
@@ -27,6 +27,12 @@ SESSION_B_AUTHORIZATION_COMMIT: `8667b0e0ef78d504586d710984ef1a1fef7263b2`
 SESSION_B_AUTHORIZATION_CI_WORKFLOW: `36801338578`
 
 SESSION_B_AUTHORIZATION_CI_JOB: `110176132684` — Lint, types, tests
+
+CLOSURE_BASIS_COMMIT: `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`
+
+CLOSURE_BASIS_CI_WORKFLOW: `36817435116`
+
+CLOSURE_BASIS_CI_JOB: `110225453445` — Lint, types, tests
 
 ## Issuance basis
 
@@ -147,6 +153,112 @@ decision. The evidence-recording transition, WO-006 completion, and WO-007
 remain closed. The planning baseline, the issuance evidence, and the Session A
 authorization evidence above are preserved unchanged, and none of them is the
 Session B basis.
+
+## Closure amendment (owner decision)
+
+The Session A and Session B authorization bases above are kept verbatim as the
+records of their gates; neither grants anything.
+
+On 2026-10-01 the owner decided: "I decline further benchmark attempts under
+WO-006. Any future benchmark requires a new proposal." On 2026-10-02 the owner
+adopted the independently accepted closure proposal and authorized this
+transition. WO-006 is superseded: it closed without an accepted measurement,
+and it has no successor.
+
+The closure basis is commit `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`; [CI
+workflow `36817435116`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36817435116)
+completed successfully, including required job
+[`110225453445` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36817435116/job/110225453445).
+That CI tested the repository's checker and tests at that commit. It
+establishes no live result.
+
+Session A's offline preparation was accepted as recorded above, as offline
+preparation only and not as proof of live compatibility.
+
+**What live-1 established (independently verified; not a WO-006 result).** One
+live run, live-1, took place under the Session B gate and was independently
+rejected. All 299 command calls returned SUCCESS, and the 3 official lifecycle
+messages were ok/ok/closed. Both pairs ended MEASURED by the mandate's
+precedence. Each of the 72 transform sets was followed by a same-surface
+restore and a verifying re-read, and both final re-reads verified. Independent
+recomputation and recount (0 problems) reproduced every count. `client.py` and
+the accepted harness were unchanged. The private run folder is identified by
+the `SHA256SUMS` digest
+`0e7ec0450c01395263eb5d94d58c9bd6f91420dae93ab1136d701baa9ed7253f`.
+
+**Why live-1 was rejected.**
+
+- Foreground condition: NOT MET (not shown to hold). The editor's own log
+  shows it ticking at 3 frames per second throughout the timed calls. That is
+  consistent with, but not established as, background throttling (a minimized
+  window or another throttle is not excluded; the 3 Hz cap is unverified on
+  this build). The background-CPU setting was not recorded.
+- No-save requirement not met: the fixture's actor package was saved three
+  times on 2026-10-01 (05:56Z and 06:07Z before any endpoint contact; 06:43Z
+  after the harness ended), against "Nothing is saved at any point". The
+  transform restores themselves all verified. None of the three saves fell
+  inside the timed window.
+- Physics: the Details-panel physics check was not completed; live-1 went
+  ahead under the owner's one-run physics exception.
+- Fixture class: `FortStaticMeshActor`, a native subclass of
+  `StaticMeshActor`, was used under the owner's conditional class acceptance,
+  a separate matter from the physics exception.
+- Fixture mobility: its mobility during the run is unresolved.
+
+**No accepted comparative measurement exists**, and the question in "Problem"
+remains unanswered. Closure makes no performance ranking and no compatibility
+or incompatibility finding (the NOT RUN rule in "Outcomes — decision lock" is
+applied by analogy), and it gives no support for removing, replacing, or
+deprecating the custom bridge.
+No timing figure from the rejected run is published.
+
+Before the owner's decision, a repeat had been planned under a private
+recovery plan, accepted on independent delta review, and its launcher was
+rehearsed twice: both rehearsals executed correctly, and neither produced a
+clean observation. The evidence stays private and is identified by
+`SHA256SUMS` digests: the rejection bundle
+`ea7c75459cec902c0d8fb2628ac58a1b83dc710c366a45ee7a085798b14a3cef`, the
+recovery plan
+`9716baa9c4b7ba757dbb52c9e757be19639b6c689ff71b9eed2db60f945b4eb6`, and the
+two rehearsals
+`12b287fdcdb8badf7678e914e8ecf13876c8973188899ef97dc95379d253b5b9` and
+`29b4618c4f04e1983ca0dcaa8f493a5b2d3ba0d0bb37df5a324e5feadf5a18a6`. The
+evidence-recording transition was not performed. Owner-local project
+questions about the disposable `TOOL_TEST` project remain open and are
+recorded privately; closure does not resolve them and authorizes no recovery.
+
+**Acceptance criteria, with their accurate status.** No criterion is
+redefined.
+
+| Criterion | Status |
+|---|---|
+| Each pair ends in exactly one outcome, with its evidence | NOT MET as an accepted WO-006 result; mechanically satisfied in rejected live-1 (both pairs MEASURED, independently recomputed) |
+| Every call recorded; every scheduled slot has a disposition; nothing retried, replaced, or padded | MET within rejected live-1 |
+| Every mutation restored and verified | MET (72 of 72, and both final re-reads) |
+| The report: every raw call, the per-cell counts, and the latency summary, with no general conclusion | NOT MET; a private report exists for a rejected run, and it is not accepted, recorded, or published |
+| No bridge, client, transport, test, or Epic-policy code changes | MET; governance-state transitions update the checker and tests, as `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c` did |
+
+Separately NOT MET: the foreground-and-focused condition (not shown to hold),
+the background-CPU record, "Nothing is saved at any point", the level being
+otherwise unchanged, and closing with the save prompt declined. The physics
+Details check was not met, under the owner's one-run exception. NOT APPLICABLE
+is used for none of these.
+
+**What this amends.** "Acceptance criteria" gains the statuses above, and no
+criterion is redefined. "Recording and publication" is closed: the
+evidence-recording transition is not performed, and no sanitized record or
+evidence is added under `docs/audits/`. "Stop boundaries" is closed for
+WO-006: Session B execution, the evidence-recording transition, any commit or
+push of WO-006 work after this closure transition, and WO-006 completion are
+closed permanently. This record grants no commit or push authority. The NEXT
+GATE line below is replaced. Every other section is kept verbatim,
+and the earlier text remains in the repository history.
+
+**This closure is terminal.** It permanently closes Session B, including its
+single live-run authority, the evidence-recording transition, WO-006
+completion, any further live run, adoption of the private recovery plan's
+rules, and any project recovery. WO-006 cannot be resumed or completed; any
+future benchmark needs a new proposal.
 
 ## Revision provenance
 
@@ -725,7 +837,6 @@ owner decision, and neither stands in for one. Tagging, GitHub Release
 creation, repository metadata changes, branch-protection changes, and social
 publication are outside WO-006 and remain unauthorized.
 
-NEXT GATE: owner-operated execution of the accepted Session B scope, after the
-owner's separate instruction to begin the live run, ending with its private
-artifacts held for independent review. The evidence-recording transition,
-commit, push, WO-006 completion, and WO-007 remain closed.
+NEXT GATE: none for WO-006. It is superseded and cannot be resumed or completed;
+any future benchmark needs a new proposal. WO-007 remains proposed and
+unauthorized.

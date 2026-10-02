@@ -4,10 +4,10 @@ This file is the repository's sole authority pointer for current Work Order
 state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
-- Current issued Work Order: WO-006
-- Authorized session: B
-- Base commit: `8667b0e0ef78d504586d710984ef1a1fef7263b2`
-- Current gate: WO-006 SESSION B AUTHORIZED — OWNER-OPERATED LIVE MEASUREMENT ONLY
+- Current issued Work Order: NONE
+- Authorized session: NONE
+- Base commit: `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`
+- Current gate: WO-006 SUPERSEDED — WO-007 PROPOSED AND NOT AUTHORIZED
 - Issuance commit: `0c0bf26191ee953c7a27237109b4a91a4db97275`
 - Issuance CI workflow: `36743995194`
 - Issuance CI job: `109985389182` — Lint, types, tests
@@ -17,6 +17,9 @@ never authorizes implementation.
 - Session B authorization commit: `8667b0e0ef78d504586d710984ef1a1fef7263b2`
 - Session B authorization CI workflow: `36801338578`
 - Session B authorization CI job: `110176132684` — Lint, types, tests
+- Closure basis commit: `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`
+- Closure basis CI workflow: `36817435116`
+- Closure basis CI job: `110225453445` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -210,8 +213,8 @@ integration run stayed deferred. Any later session, tagging, Release creation,
 branch-protection changes, other repository metadata changes, and social
 publication all remain unauthorized.
 
-[`WO-006`](docs/work-orders/issued/WO-006-official-vs-toolbelt-benchmark.md) is
-issued. Its planning baseline is `f9354feaf4ab072c9941ab4d6ec8337395ce18a0`;
+[`WO-006`](docs/work-orders/superseded/WO-006-official-vs-toolbelt-benchmark.md) is
+superseded. Its planning baseline is `f9354feaf4ab072c9941ab4d6ec8337395ce18a0`;
 the independently accepted proposal was committed as
 `0c0bf26191ee953c7a27237109b4a91a4db97275` after [CI workflow
 `36743995194`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36743995194)
@@ -244,20 +247,27 @@ harness and its stub tests ran offline on the owner's Windows machine only;
 they have never run in GitHub CI, and no repository commit or CI run attests
 to them. Session A is accepted and closed.
 
-Session B is authorized under this pointer for owner-operated live measurement
-only, on the basis of commit `8667b0e0ef78d504586d710984ef1a1fef7263b2`,
-successful CI workflow `36801338578`, and successful required job
-`110176132684` (`Lint, types, tests`). That CI tested the repository's checker
-and tests, not the private harness, and establishes no live result. It covers
-the Session B scope recorded in the issued mandate, unchanged: the owner
-operates UEFN and performs the owner checks, and the accepted harness runs
-only after the owner's separate, explicit instruction to begin the live run.
-Session B changes no repository file and ends with its private artifacts held
-for independent review. It opens no code change, fallback, emulation, policy
-change, live repair, commit, or push, and the evidence-recording transition
-and WO-006 completion stay closed. Tagging, Release creation, branch-protection
-changes, other repository metadata changes, and social publication all remain
-unauthorized, as does WO-007, which stays proposed.
+At the Session B authorization gate, this pointer opened owner-operated live
+measurement only, on the basis of commit
+`8667b0e0ef78d504586d710984ef1a1fef7263b2`, successful CI workflow
+`36801338578`, and successful required job `110176132684` (`Lint, types,
+tests`). That CI tested the repository's checker and tests, not the private
+harness, and established no live result. That gate covered the Session B scope
+recorded in the issued mandate, unchanged: the owner operated UEFN and
+performed the owner checks, and the accepted harness ran only after the
+owner's separate, explicit instruction to begin the live run. It changed no
+repository file and ended with its private artifacts held for independent
+review. It opened no code change, fallback, emulation, policy change, live
+repair, commit, or push, and the evidence-recording transition and WO-006
+completion stayed closed at that gate. Tagging, Release creation,
+branch-protection changes, other repository metadata changes, and social
+publication all remain unauthorized, as does WO-007, which stays proposed.
+
+[`WO-006`](docs/work-orders/superseded/WO-006-official-vs-toolbelt-benchmark.md)
+is superseded. It closed without an accepted measurement under the owner's
+closure decision recorded in its mandate, which keeps its unmet requirements.
+WO-006 cannot be resumed or completed, and no session is authorized. WO-007
+remains proposed and unauthorized.
 
 WO-001 through WO-007 form the frozen next release train. The release version
 remains undecided and the repository stays at version 2.4.1. No tag or GitHub
@@ -265,3 +275,13 @@ Release is authorized until the frozen train is complete, a final
 integration/repository-truth audit passes, and the owner separately authorizes
 a release session. New proposals default to the following release train unless
 the owner explicitly classifies one as a blocker.
+
+Release-train amendment (owner decision): the frozen train remains WO-001
+through WO-007. WO-006 is closed as superseded without an accepted
+measurement. It is resolved for this train, not completed, and its unmet
+requirements stay recorded in its mandate. For the release gate above, the
+frozen train is complete when WO-001 through WO-005 and WO-007 are completed
+and WO-006 remains superseded. This amendment opens no session and grants
+nothing: WO-007 remains proposed and unauthorized, and the final
+integration/repository-truth audit and a separate owner decision on any
+release remain required.
