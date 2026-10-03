@@ -254,15 +254,15 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     ).exists()
     assert current == "NONE"
     assert session == "NONE"
-    # The base is the completion commit - the commit that carries the
-    # accepted Session A output - declared in its own bullet beside the
-    # issuance and Session A evidence. The gate keeps the final audit closed.
+    # The base is the audited commit, declared in its own bullet after the
+    # completion basis it follows. The gate records the audit with its
+    # required fixes outstanding and keeps release preparation closed.
     assert base_lines == [
-        "- Base commit: `e34e9fcdfb27ef7e443ae4e47799512d5c28489b`"
+        "- Base commit: `066cf6d751740c0daaff165fc076be19e1b8e22d`"
     ]
     assert gate_lines == [
-        "- Current gate: WO-007 COMPLETED — FINAL INTEGRATION/REPOSITORY-TRUTH"
-        " AUDIT NOT AUTHORIZED"
+        "- Current gate: FINAL AUDIT RECORDED — REQUIRED FIXES OUTSTANDING;"
+        " RELEASE PREPARATION NOT AUTHORIZED"
     ]
     for line in (
         "- Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`",
@@ -276,6 +276,9 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         " `e34e9fcdfb27ef7e443ae4e47799512d5c28489b`",
         "- Completion basis CI workflow: `37137035181`",
         "- Completion basis CI job: `111243552871` — Lint, types, tests",
+        "- Final audit commit: `066cf6d751740c0daaff165fc076be19e1b8e22d`",
+        "- Final audit CI workflow: `37142847095`",
+        "- Final audit CI job: `111260679508` — Lint, types, tests",
     ):
         assert pointer.splitlines().count(line) == 1, line
     # WO-006's issuance, session, and closure-basis bullets left the canonical
@@ -357,9 +360,12 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "WO-006 is closed as superseded without an accepted measurement; no "
         "session is authorized. The frozen release train remains WO-001 "
         "through WO-007, with WO-006 resolved as superseded rather than "
-        "completed; the final integration/repository-truth audit is not "
-        "authorized." in normalized_roadmap
+        "completed. The final integration/repository-truth audit is recorded "
+        "as ACCEPT WITH REQUIRED FIX; its required fixes are outstanding, and "
+        "release preparation is not authorized." in normalized_roadmap
     )
+    assert "the final integration/repository-truth audit is not authorized" \
+        not in normalized_roadmap
     assert "Session B is authorized" not in normalized_roadmap
     assert "WO-006 is issued" not in normalized_roadmap
     assert "WO-006 is issued with no session authorized." not in (
@@ -841,10 +847,44 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "draft. WO-007 is complete; no session is authorized.",
         "The final integration/repository-truth audit, version selection, "
         "tagging, Release creation, branch-protection changes, other "
-        "repository metadata changes, and social publication all remain "
-        "unauthorized.",
+        "repository metadata changes, and social publication all remained "
+        "unauthorized at that gate.",
     ):
         assert normalized_pointer_live.count(statement) == 1, statement
+    # The final audit is recorded once: the audited commit and its CI, the
+    # owner authorization it ran under, the exact verdict, both outstanding
+    # required fixes, the queued documentation defect, the open owner
+    # decisions, and the private report and logs by digest only.
+    assert normalized_pointer_live.count(
+        "Final integration/repository-truth audit record:") == 1
+    for statement in (
+        "under a separate owner authorization for a read-only audit only, "
+        "which opened no implementation session and no release authority, an "
+        "independent auditor audited commit "
+        "`066cf6d751740c0daaff165fc076be19e1b8e22d`; [CI workflow "
+        "`37142847095`]",
+        "Its verdict is ACCEPT WITH REQUIRED FIX.",
+        "The private audit report is identified by its SHA-256 "
+        "`aed10f85280517a6916398cff384562e2af6fb75d5a0896be7985b01204288f3` "
+        "and its private logs by their manifest digest "
+        "`88dc0e5bb7c3d246f3fdb03ef05c0ba549805f3012d926feef356f63e3c933b9`.",
+        "Two required fixes are outstanding. P1-1: public and agent pages "
+        "claim MCP-host compatibility that no accepted record supports. P1-2: "
+        "public and agent pages present the smoke test's registration checks "
+        "as tool execution or schema validation. The final audit has not "
+        "passed the release gate.",
+        "The `.mcp.json` fresh-clone documentation defect remains queued for "
+        "correction with them.",
+        "The version choice, the checker's handling of historical version "
+        "lines, the pinned-port configuration, the agent settings, the "
+        "privacy finding, and the disclosure of the security fix remain open "
+        "owner decisions; this record neither accepts nor waives any of them.",
+        "Release preparation, any version bump, tagging, Release creation, "
+        "branch-protection changes, other repository metadata changes, and "
+        "social publication all remain unauthorized.",
+    ):
+        assert normalized_pointer_live.count(statement) == 1, statement
+    assert "111260679508" in normalized_pointer_live
     assert "as do WO-007 completion" not in normalized_pointer_live
     # The private drafts' identities live only in the completed mandate.
     assert "UEFN-Toolbelt-Evidence" not in pointer
@@ -3808,14 +3848,148 @@ _WO007_CMP_REVERSAL = (
 )
 
 
-def _make_wo007_completed_case(repo_root, tmp_path, name):
-    """Copy the current completed-WO-007 state."""
+# --- Final audit record: the current state -------------------------------
+#
+# Recording the final integration/repository-truth audit moved the current
+# state forward, so the completed-WO-007 state - and every historical fixture
+# below it - is reconstructed backwards from the recorded state. The
+# recording is pointer-only.
+
+_FINAL_AUDIT_COMMIT = "066cf6d751740c0daaff165fc076be19e1b8e22d"
+_FINAL_AUDIT_WORKFLOW = "37142847095"
+_FINAL_AUDIT_JOB = "111260679508"
+_FINAL_AUDIT_GATE = (
+    "FINAL AUDIT RECORDED " + _EM + " REQUIRED FIXES OUTSTANDING; RELEASE"
+    " PREPARATION NOT AUTHORIZED"
+)
+_FINAL_AUDIT_REPORT_SHA256 = (
+    "aed10f85280517a6916398cff384562e2af6fb75d5a0896be7985b01204288f3"
+)
+_FINAL_AUDIT_LOGS_SHA256 = (
+    "88dc0e5bb7c3d246f3fdb03ef05c0ba549805f3012d926feef356f63e3c933b9"
+)
+_FINAL_AUDIT_POINTER_BULLETS = (
+    ("- Final audit commit:",
+     "- Final audit commit: `" + _FINAL_AUDIT_COMMIT + "`"),
+    ("- Final audit CI workflow:",
+     "- Final audit CI workflow: `" + _FINAL_AUDIT_WORKFLOW + "`"),
+    ("- Final audit CI job:",
+     "- Final audit CI job: `" + _FINAL_AUDIT_JOB + "` " + _EM
+     + " Lint, types, tests"),
+)
+_FINAL_AUDIT_RECORD_OPENING = "Final integration/repository-truth audit record:"
+# Each pair is (as the recorded state records it, as the completed state
+# recorded it), so the reconstruction puts every original back byte for byte.
+_FINAL_AUDIT_POINTER_HISTORY = (
+    (_NL.join((
+        '- Base commit: `066cf6d751740c0daaff165fc076be19e1b8e22d`',
+        '- Current gate: FINAL AUDIT RECORDED — REQUIRED FIXES OUTSTANDING; RELEASE PREPARATION NOT AUTHORIZED',
+    )),
+     _NL.join((
+        '- Base commit: `e34e9fcdfb27ef7e443ae4e47799512d5c28489b`',
+        '- Current gate: WO-007 COMPLETED — FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT NOT AUTHORIZED',
+    ))),
+    (_NL.join((
+        'release-train amendment below. The final integration/repository-truth audit,',
+        'version selection, tagging, Release creation, branch-protection changes, other',
+        'repository metadata changes, and social publication all remained unauthorized',
+        'at that gate.',
+    )),
+     _NL.join((
+        'release-train amendment below. The final integration/repository-truth audit,',
+        'version selection, tagging, Release creation, branch-protection changes, other',
+        'repository metadata changes, and social publication all remain unauthorized.',
+    ))),
+    (_NL.join((
+        '',
+        'Final integration/repository-truth audit record: under a separate owner',
+        'authorization for a read-only audit only, which opened no implementation',
+        'session and no release authority, an independent auditor audited commit',
+        '`066cf6d751740c0daaff165fc076be19e1b8e22d`; [CI workflow',
+        '`37142847095`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37142847095)',
+        'completed successfully on that commit, including required job',
+        '[`111260679508` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37142847095/job/111260679508).',
+        'The audit changed no repository file and ran no UEFN, deploy, endpoint',
+        'contact, or benchmark. Its verdict is ACCEPT WITH REQUIRED FIX. The private',
+        'audit report is identified by its SHA-256',
+        '`aed10f85280517a6916398cff384562e2af6fb75d5a0896be7985b01204288f3` and its private logs',
+        'by their manifest digest',
+        '`88dc0e5bb7c3d246f3fdb03ef05c0ba549805f3012d926feef356f63e3c933b9`.',
+        '',
+        'Two required fixes are outstanding. P1-1: public and agent pages claim MCP-host',
+        'compatibility that no accepted record supports. P1-2: public and agent pages',
+        "present the smoke test's registration checks as tool execution or schema",
+        'validation. The final audit has not passed the release gate. The `.mcp.json`',
+        'fresh-clone documentation defect remains queued for correction with them.',
+        "The version choice, the checker's handling of historical version lines, the",
+        'pinned-port configuration, the agent settings, the privacy finding, and the',
+        'disclosure of the security fix remain open owner decisions; this record',
+        'neither accepts nor waives any of them. Release preparation, any version bump,',
+        'tagging, Release creation, branch-protection changes, other repository',
+        'metadata changes, and social publication all remain unauthorized.',
+        '',
+    )),
+     ""),
+)
+
+
+def _final_audit_revert_bullets(case):
+    _edit(case, "WORKORDER.md", *_FINAL_AUDIT_POINTER_HISTORY[0])
+    for _prefix, bullet in _FINAL_AUDIT_POINTER_BULLETS:
+        _edit(case, "WORKORDER.md", bullet + _NL, "")
+
+
+def _final_audit_revert_completion_tense(case):
+    _edit(case, "WORKORDER.md", *_FINAL_AUDIT_POINTER_HISTORY[1])
+
+
+def _final_audit_revert_record(case):
+    _edit(case, "WORKORDER.md", *_FINAL_AUDIT_POINTER_HISTORY[2])
+
+
+# The audit-recording transition, as reversible steps. Every step is enforced
+# by the checker on its own.
+_FINAL_AUDIT_REVERSAL = (
+    ("pointer-bullets", _final_audit_revert_bullets),
+    ("pointer-completion-tense", _final_audit_revert_completion_tense),
+    ("pointer-record", _final_audit_revert_record),
+)
+
+
+def _make_final_audit_case(repo_root, tmp_path, name):
+    """Copy the current final-audit-recorded state."""
     case = tmp_path / name
     case.mkdir(parents=True)
     shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
     shutil.copytree(
         repo_root / "docs" / "work-orders",
         case / "docs" / "work-orders",
+    )
+    return case
+
+
+def _make_wo007_completed_case(repo_root, tmp_path, name):
+    """Reconstruct the preserved completed-WO-007 state.
+
+    Recording the final audit moved the current state forward, so the
+    completed state every earlier fixture builds on is now itself a
+    reconstruction. Every step of the recording is reversed in the pointer:
+    the base, gate, and audit bullets, the completion statement's closing
+    denials, and the audit record. The pointer returns to the completed state
+    byte for byte; nothing else changed.
+    """
+    case = _make_final_audit_case(repo_root, tmp_path, name)
+    pointer = case / "WORKORDER.md"
+    if _FINAL_AUDIT_RECORD_OPENING not in pointer.read_text(encoding="utf-8"):
+        # Already a pre-recording tree: nothing to reverse.
+        return case
+    for _step, revert in _FINAL_AUDIT_REVERSAL:
+        revert(case)
+    _assert_reconstructed(
+        "final audit pointer", pointer.read_text(encoding="utf-8"),
+        (_FINAL_AUDIT_POINTER_HISTORY[0][1], _FINAL_AUDIT_POINTER_HISTORY[1][1]),
+        (_FINAL_AUDIT_GATE, _FINAL_AUDIT_RECORD_OPENING, _FINAL_AUDIT_WORKFLOW,
+         _FINAL_AUDIT_JOB, "- Final audit commit:"),
     )
     return case
 
@@ -6587,6 +6761,7 @@ _TERMINAL_WO004_FINDING = "completed WO-004 state"
 _TERMINAL_WO005_FINDING = "completed WO-005 state"
 _TERMINAL_WO006_FINDING = "superseded WO-006 state"
 _TERMINAL_WO007_FINDING = "completed WO-007 state"
+_FINAL_AUDIT_RECORD_FINDING = "final audit record"
 
 
 def _without_terminal_lock(finding_types):
@@ -6645,6 +6820,17 @@ def _before_wo006_closure(findings):
     """
     return {(kind, rel) for kind, rel in findings
             if kind not in (_TERMINAL_WO006_FINDING, _TERMINAL_WO007_FINDING)}
+
+
+def _before_final_audit_record(findings):
+    """(type, file) findings less the one-way final-audit record lock only.
+
+    The reconstructed completed-WO-007 state is a state from before the final
+    audit was recorded, so it necessarily trips that lock. Only that one
+    finding is set aside; every other finding is still returned.
+    """
+    return {(kind, rel) for kind, rel in findings
+            if kind != _FINAL_AUDIT_RECORD_FINDING}
 
 
 def _before_wo007_completion(findings):
@@ -17951,8 +18137,9 @@ def _wo007_cmp_findings(repo_root, tmp_path, monkeypatch, name, mutate):
                                       "wo007-cmp-" + name)
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+    return _before_final_audit_record(
+        {(f["type"], f["file"])
+         for f in drift_check.check_work_order_contract()})
 
 
 def test_wo007_completed_state_is_clean(repo_root, tmp_path,
@@ -18286,3 +18473,217 @@ def test_wo007_completion_needs_no_issued_or_proposed_directory(
     expected = {rel: data for rel, data in _wo007_tree(reference).items()
                 if rel not in removed}
     assert _wo007_tree(rebuilt) == expected
+
+
+# --- Final audit record: the live state ----------------------------------
+#
+# The recording adds the audited commit and its CI to the canonical block,
+# moves the base and gate, recasts the completion statement's closing denials
+# as history, and records the audit once. Each probe is a delta against the
+# live recorded state, with nothing set aside.
+
+_FINAL_AUDIT_KINDS = {"final audit field (WORKORDER.md)",
+                      "final audit declaration (WORKORDER.md)"}
+
+
+def _final_audit_findings(repo_root, tmp_path, monkeypatch, name, mutate):
+    """(type, file) findings for the live final-audit-recorded state after
+    one mutation."""
+    drift_check = _load_drift_check(repo_root, "final_audit_" + name)
+    case = _make_final_audit_case(repo_root, tmp_path, "final-audit-" + name)
+    mutate(case)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return {(f["type"], f["file"])
+            for f in drift_check.check_work_order_contract()}
+
+
+def test_final_audit_record_state_is_clean(repo_root, tmp_path,
+                                           monkeypatch) -> None:
+    """The control: the live recorded state has no finding at all."""
+    found = _final_audit_findings(repo_root, tmp_path, monkeypatch, "control",
+                                  lambda case: None)
+    assert found == set(), (
+        "the final-audit-recorded state is not clean: " + repr(sorted(found))
+    )
+
+
+def test_final_audit_reconstruction_reaches_the_completed_state(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Reversing the recording lands on the completed-WO-007 state: clean
+    apart from the one-way record lock it necessarily trips, which fires."""
+    drift_check = _load_drift_check(repo_root, "final_audit_reverse")
+    case = _make_wo007_completed_case(repo_root, tmp_path,
+                                      "final-audit-reverse")
+    text = (case / "WORKORDER.md").read_text(encoding="utf-8")
+    assert "- Current gate: " + _WO007_CMP_GATE in text
+    assert _FINAL_AUDIT_RECORD_OPENING not in text
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    found = {(f["type"], f["file"])
+             for f in drift_check.check_work_order_contract()}
+    assert found == {(_FINAL_AUDIT_RECORD_FINDING, "WORKORDER.md")}, (
+        repr(sorted(found)))
+
+
+_FINAL_AUDIT_EVIDENCE = (
+    # (id, declaration prefix, pinned value)
+    ("base", "- Base commit:", _FINAL_AUDIT_COMMIT),
+    ("audit-commit", "- Final audit commit:", _FINAL_AUDIT_COMMIT),
+    ("audit-workflow", "- Final audit CI workflow:", _FINAL_AUDIT_WORKFLOW),
+    ("audit-job", "- Final audit CI job:", _FINAL_AUDIT_JOB),
+    ("completion-job", "- Completion basis CI job:", _WO007_CMP_JOB),
+)
+
+
+@pytest.mark.parametrize("damage",
+                         ("changed", "removed", "duplicated", "decoy"))
+@pytest.mark.parametrize(("name", "prefix", "value"), _FINAL_AUDIT_EVIDENCE,
+                         ids=[row[0] for row in _FINAL_AUDIT_EVIDENCE])
+def test_final_audit_evidence_is_pinned(
+    repo_root, tmp_path, monkeypatch, name, prefix, value, damage
+) -> None:
+    """The recorded base, the audited commit and its CI, and the completion
+    basis beside them are each enforced in the pointer's canonical block."""
+    def mutate(case):
+        target = case / "WORKORDER.md"
+        text = target.read_text(encoding="utf-8")
+        line = next(candidate for candidate in text.splitlines()
+                    if candidate.startswith(prefix))
+        wrong = line.replace(value, _WO004_ZERO_SHA[:len(value)])
+        assert wrong != line, "probe anchor drifted: " + prefix
+        new = {"changed": wrong, "removed": "",
+               "duplicated": line + _NL + line, "decoy": wrong}[damage]
+        text = _replace_once(text, line, new, "final audit " + damage)
+        if damage == "decoy":
+            # The genuine declaration is corrupted; a byte-correct copy is
+            # parked outside the canonical block, where it must not count.
+            text = text.rstrip() + _NL + _NL + line + _NL
+        target.write_text(text, encoding="utf-8")
+
+    found = _final_audit_findings(repo_root, tmp_path, monkeypatch,
+                                  "evidence-" + name + "-" + damage, mutate)
+    kinds = {kind for kind, file in found if file == "WORKORDER.md"}
+    assert kinds & _FINAL_AUDIT_KINDS, (
+        "a " + damage + " " + prefix + " declaration was accepted in the "
+        "final-audit-recorded state: " + repr(sorted(found))
+    )
+
+
+@pytest.mark.parametrize(("step", "revert"), _FINAL_AUDIT_REVERSAL,
+                         ids=[row[0] for row in _FINAL_AUDIT_REVERSAL])
+def test_final_audit_partial_recording_is_caught(
+    repo_root, tmp_path, monkeypatch, step, revert
+) -> None:
+    """Each step of the recording, reverted alone, leaves a state the checker
+    rejects."""
+    found = _final_audit_findings(repo_root, tmp_path, monkeypatch,
+                                  "partial-" + step, revert)
+    assert found, step + " alone was accepted: the recording is partial"
+
+
+def test_final_audit_coherent_reversal_trips_only_the_lock(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Reverting every step lands on the completed-WO-007 state, which the
+    one-way record lock rejects - and nothing else does."""
+    def mutate(case):
+        for _step, revert in _FINAL_AUDIT_REVERSAL:
+            revert(case)
+
+    found = _final_audit_findings(repo_root, tmp_path, monkeypatch,
+                                  "coherent", mutate)
+    assert found == {(_FINAL_AUDIT_RECORD_FINDING, "WORKORDER.md")}, (
+        repr(sorted(found)))
+
+
+def _final_audit_edit(old, new):
+    return lambda case: _edit(case, "WORKORDER.md", old, new)
+
+
+_FINAL_AUDIT_DAMAGE = (
+    # (id, change, expected kind)
+    ("gate-claims-passed",
+     _final_audit_edit("- Current gate: " + _FINAL_AUDIT_GATE,
+                       "- Current gate: FINAL AUDIT PASSED " + _EM
+                       + " RELEASE PREPARATION AUTHORIZED"),
+     "completed work order gate"),
+    ("verdict-softened",
+     _final_audit_edit("Its verdict is ACCEPT WITH REQUIRED FIX.",
+                       "Its verdict is ACCEPT."),
+     "final audit pointer statement"),
+    ("fixes-marked-resolved",
+     _final_audit_edit("Two required fixes are outstanding.",
+                       "Two required fixes are resolved."),
+     "final audit pointer statement"),
+    ("release-gate-claimed-passed",
+     _final_audit_edit("The final audit has not passed the release gate.",
+                       "The final audit has passed the release gate."),
+     "final audit pointer statement"),
+    ("report-digest-changed",
+     _final_audit_edit("`" + _FINAL_AUDIT_REPORT_SHA256 + "`",
+                       "`0" + _FINAL_AUDIT_REPORT_SHA256[1:] + "`"),
+     "final audit pointer statement"),
+    ("logs-digest-changed",
+     _final_audit_edit("`" + _FINAL_AUDIT_LOGS_SHA256 + "`",
+                       "`0" + _FINAL_AUDIT_LOGS_SHA256[1:] + "`"),
+     "final audit pointer statement"),
+    ("owner-decision-dropped",
+     _final_audit_edit("the agent settings, the privacy finding, and the",
+                       "the agent settings, and the"),
+     "final audit pointer statement"),
+    ("decisions-silently-accepted",
+     _final_audit_edit("neither accepts nor waives any of them.",
+                       "accepts every one of them."),
+     "final audit pointer statement"),
+    ("second-partial-record",
+     _wo007_iss_append("WORKORDER.md",
+                       _FINAL_AUDIT_RECORD_OPENING + " superseded."),
+     "final audit pointer statement"),
+    ("completion-denials-left-present",
+     lambda case: _edit(case, "WORKORDER.md",
+                        *_FINAL_AUDIT_POINTER_HISTORY[1]),
+     "WO-007 completion pointer statement"),
+    ("base-left-at-completion",
+     _final_audit_edit("- Base commit: `" + _FINAL_AUDIT_COMMIT + "`",
+                       "- Base commit: `" + _WO007_CMP_COMMIT + "`"),
+     "completion base commit"),
+    ("session-reopened",
+     _final_audit_edit("- Authorized session: NONE",
+                       "- Authorized session: A"),
+     "authorization without issued work order"),
+    ("release-claim",
+     _wo007_iss_append("WORKORDER.md",
+                       "A GitHub Release for this train is authorized."),
+     "release authorization"),
+)
+
+
+@pytest.mark.parametrize(("name", "mutate", "kind"), _FINAL_AUDIT_DAMAGE,
+                         ids=[row[0] for row in _FINAL_AUDIT_DAMAGE])
+def test_final_audit_record_boundaries_are_enforced(
+    repo_root, tmp_path, monkeypatch, name, mutate, kind
+) -> None:
+    """Claiming the audit passed or its fixes resolved, changing the verdict,
+    the private digests, or the open owner decisions, leaving a second record
+    or the pre-audit wording behind, and reopening a session or a release are
+    each caught against WORKORDER.md."""
+    found = _final_audit_findings(repo_root, tmp_path, monkeypatch,
+                                  "damage-" + name, mutate)
+    assert (kind, "WORKORDER.md") in found, repr(sorted(found))
+
+
+_FINAL_AUDIT_CONTROLS = (
+    "Release preparation stays closed until the required fixes land.",
+    "No tagging or publication follows from this record.",
+)
+
+
+@pytest.mark.parametrize("sentence", _FINAL_AUDIT_CONTROLS)
+def test_final_audit_record_accepts_closed_language(
+    repo_root, tmp_path, monkeypatch, sentence
+) -> None:
+    """Closed-gate wording grants nothing and stays clean."""
+    found = _final_audit_findings(repo_root, tmp_path, monkeypatch,
+                                  "control-" + str(abs(hash(sentence))),
+                                  _wo007_iss_append("WORKORDER.md", sentence))
+    assert found == set(), repr(sorted(found))

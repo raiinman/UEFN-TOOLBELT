@@ -6,8 +6,8 @@ never authorizes implementation.
 
 - Current issued Work Order: NONE
 - Authorized session: NONE
-- Base commit: `e34e9fcdfb27ef7e443ae4e47799512d5c28489b`
-- Current gate: WO-007 COMPLETED — FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT NOT AUTHORIZED
+- Base commit: `066cf6d751740c0daaff165fc076be19e1b8e22d`
+- Current gate: FINAL AUDIT RECORDED — REQUIRED FIXES OUTSTANDING; RELEASE PREPARATION NOT AUTHORIZED
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
@@ -17,6 +17,9 @@ never authorizes implementation.
 - Completion basis commit: `e34e9fcdfb27ef7e443ae4e47799512d5c28489b`
 - Completion basis CI workflow: `37137035181`
 - Completion basis CI job: `111243552871` — Lint, types, tests
+- Final audit commit: `066cf6d751740c0daaff165fc076be19e1b8e22d`
+- Final audit CI workflow: `37142847095`
+- Final audit CI job: `111260679508` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -316,7 +319,8 @@ complete; no session is authorized. With WO-007 completed and WO-006
 superseded, the frozen train meets the completion condition of the
 release-train amendment below. The final integration/repository-truth audit,
 version selection, tagging, Release creation, branch-protection changes, other
-repository metadata changes, and social publication all remain unauthorized.
+repository metadata changes, and social publication all remained unauthorized
+at that gate.
 
 WO-001 through WO-007 form the frozen next release train. The release version
 remains undecided and the repository stays at version 2.4.1. No tag or GitHub
@@ -334,3 +338,29 @@ and WO-006 remains superseded. This amendment opens no session and grants
 nothing: WO-007 is completed with no session authorized, and the final
 integration/repository-truth audit and a separate owner decision on any
 release remain required.
+
+Final integration/repository-truth audit record: under a separate owner
+authorization for a read-only audit only, which opened no implementation
+session and no release authority, an independent auditor audited commit
+`066cf6d751740c0daaff165fc076be19e1b8e22d`; [CI workflow
+`37142847095`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37142847095)
+completed successfully on that commit, including required job
+[`111260679508` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37142847095/job/111260679508).
+The audit changed no repository file and ran no UEFN, deploy, endpoint
+contact, or benchmark. Its verdict is ACCEPT WITH REQUIRED FIX. The private
+audit report is identified by its SHA-256
+`aed10f85280517a6916398cff384562e2af6fb75d5a0896be7985b01204288f3` and its private logs
+by their manifest digest
+`88dc0e5bb7c3d246f3fdb03ef05c0ba549805f3012d926feef356f63e3c933b9`.
+
+Two required fixes are outstanding. P1-1: public and agent pages claim MCP-host
+compatibility that no accepted record supports. P1-2: public and agent pages
+present the smoke test's registration checks as tool execution or schema
+validation. The final audit has not passed the release gate. The `.mcp.json`
+fresh-clone documentation defect remains queued for correction with them.
+The version choice, the checker's handling of historical version lines, the
+pinned-port configuration, the agent settings, the privacy finding, and the
+disclosure of the security fix remain open owner decisions; this record
+neither accepts nor waives any of them. Release preparation, any version bump,
+tagging, Release creation, branch-protection changes, other repository
+metadata changes, and social publication all remain unauthorized.

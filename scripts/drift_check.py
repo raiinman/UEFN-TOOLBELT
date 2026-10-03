@@ -3823,6 +3823,84 @@ _WO007_COMPLETED_KEPT_RECORDS = (
     _WO007_COMPLETION_RECORD,
 )
 
+# Recording the final integration/repository-truth audit is a pointer-only
+# transition: the pointer keeps WO-007's completion record, moves its base to
+# the audited commit, adds the audited commit and its CI to the canonical
+# block, recasts the completion statement's closing denials as history, and
+# records the verdict, the outstanding required fixes, and the open owner
+# decisions once. The private report and logs are named by digest only. Once
+# recorded, the record is one-way: a pointer that drops it is a finding.
+_FINAL_AUDIT_COMMIT = "066cf6d751740c0daaff165fc076be19e1b8e22d"
+_FINAL_AUDIT_WORKFLOW = "37142847095"
+_FINAL_AUDIT_JOB = "111260679508"
+_FINAL_AUDIT_REPORT_SHA256 = (
+    "aed10f85280517a6916398cff384562e2af6fb75d5a0896be7985b01204288f3"
+)
+_FINAL_AUDIT_LOGS_SHA256 = (
+    "88dc0e5bb7c3d246f3fdb03ef05c0ba549805f3012d926feef356f63e3c933b9"
+)
+_FINAL_AUDIT_GATE = (
+    "FINAL AUDIT RECORDED — REQUIRED FIXES OUTSTANDING; RELEASE PREPARATION "
+    "NOT AUTHORIZED"
+)
+_FINAL_AUDIT_POINTER_SEQUENCE = (
+    _WO007_COMPLETED_POINTER_SEQUENCE[:2]
+    + ("- Base commit: `" + _FINAL_AUDIT_COMMIT + "`",)
+    + _WO007_COMPLETED_POINTER_SEQUENCE[3:13]
+    + ("- Final audit commit: `" + _FINAL_AUDIT_COMMIT + "`",
+       "- Final audit CI workflow: `" + _FINAL_AUDIT_WORKFLOW + "`",
+       "- Final audit CI job: `" + _FINAL_AUDIT_JOB + "` "
+       + "— Lint, types, tests")
+    + _WO007_COMPLETED_POINTER_SEQUENCE[13:]
+)
+_FINAL_AUDIT_POINTER_KEYS = (
+    (("- Base commit:", _FINAL_AUDIT_POINTER_SEQUENCE[2]),)
+    + _WO007_COMPLETED_POINTER_KEYS[1:]
+    + (("- Final audit commit:", _FINAL_AUDIT_POINTER_SEQUENCE[13]),
+       ("- Final audit CI workflow:", _FINAL_AUDIT_POINTER_SEQUENCE[14]),
+       ("- Final audit CI job:", _FINAL_AUDIT_POINTER_SEQUENCE[15]))
+)
+_FINAL_AUDIT_MARKERS = (
+    "- Final audit commit:",
+    "- Final audit CI workflow:",
+    "- Final audit CI job:",
+    "Final integration/repository-truth audit record:",
+)
+_FINAL_AUDIT_RUN_URL = (
+    "https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _FINAL_AUDIT_WORKFLOW
+)
+_WO007_COMPLETED_POINTER_HISTORY_RECORD = _replaced_once(
+    _WO007_COMPLETED_POINTER_RECORD, ((
+        "and social publication all remain unauthorized.",
+        "and social publication all remained unauthorized at that gate."),))
+_FINAL_AUDIT_RECORD = (
+    "Final integration/repository-truth audit record: under a separate owner "
+    "authorization for a read-only audit only, which opened no implementation "
+    "session and no release authority, an independent auditor audited commit "
+    "`" + _FINAL_AUDIT_COMMIT + "`; [CI workflow `" + _FINAL_AUDIT_WORKFLOW
+    + "`](" + _FINAL_AUDIT_RUN_URL + ") completed successfully on that "
+    "commit, including required job [`" + _FINAL_AUDIT_JOB + "` — Lint, "
+    "types, tests](" + _FINAL_AUDIT_RUN_URL + "/job/" + _FINAL_AUDIT_JOB
+    + "). The audit changed no repository file and ran no UEFN, deploy, "
+    "endpoint contact, or benchmark. Its verdict is ACCEPT WITH REQUIRED FIX. "
+    "The private audit report is identified by its SHA-256 `"
+    + _FINAL_AUDIT_REPORT_SHA256 + "` and its private logs by their manifest "
+    "digest `" + _FINAL_AUDIT_LOGS_SHA256 + "`. Two required fixes are "
+    "outstanding. P1-1: public and agent pages claim MCP-host compatibility "
+    "that no accepted record supports. P1-2: public and agent pages present "
+    "the smoke test's registration checks as tool execution or schema "
+    "validation. The final audit has not passed the release gate. The "
+    "`.mcp.json` fresh-clone documentation defect remains queued for "
+    "correction with them. The version choice, the checker's handling of "
+    "historical version lines, the pinned-port configuration, the agent "
+    "settings, the privacy finding, and the disclosure of the security fix "
+    "remain open owner decisions; this record neither accepts nor waives any "
+    "of them. Release preparation, any version bump, tagging, Release "
+    "creation, branch-protection changes, other repository metadata changes, "
+    "and social publication all remain unauthorized."
+)
+
 
 def _wo007_issuance_findings(pointer, issued_text, rel, session):
     """WO-007's issuance record while it is issued.
@@ -3980,7 +4058,8 @@ def _wo007_session_a_record_findings(pointer, issued_text, rel):
     return out
 
 
-def _wo007_completed_findings(pointer, text, rel, surface):
+def _wo007_completed_findings(pointer, text, rel, surface,
+                              audit_recorded=False):
     """WO-007's completed record, on one surface at a time.
 
     The WO-005 completion pattern. On the pointer: the canonical slice with
@@ -3995,15 +4074,23 @@ def _wo007_completed_findings(pointer, text, rel, surface):
     completion record, each a closed section equal to its accepted text; the
     exemption proposal and the decision lock, each exactly once; and the
     completed next gate, once, as the only NEXT GATE. The document half runs
-    whoever owns the pointer.
+    whoever owns the pointer. Once the final audit is recorded, the pointer
+    half takes the recorded shape: the audited commit as base, the audit
+    bullets after the completion basis, the completion statement's closing
+    denials as history, and the audit record, each exactly once.
     """
     out = []
     sequence: tuple[str, ...]
     keys: tuple[tuple[str, str], ...]
+    label = "WO-007 completion"
     if surface == "pointer":
         target, src, where = "WORKORDER.md", pointer, "WORKORDER.md"
         sequence = _WO007_COMPLETED_POINTER_SEQUENCE
         keys = _WO007_COMPLETED_POINTER_KEYS
+        if audit_recorded:
+            sequence = _FINAL_AUDIT_POINTER_SEQUENCE
+            keys = _FINAL_AUDIT_POINTER_KEYS
+            label = "final audit"
 
         def stop(line):
             return _WO001_COMPLETED_LINK in line
@@ -4017,25 +4104,41 @@ def _wo007_completed_findings(pointer, text, rel, surface):
     for kind, found, want in _canonical_field_findings(
         src, sequence, stop, where,
         exact={item for item in sequence if "`" in item},
-        terminal=True, label="WO-007 completion field",
+        terminal=True, label=label + " field",
     ):
         out.append((target, kind, found, want))
     for kind, found, want in _canonical_key_findings(
-        src, stop, keys, "WO-007 completion declaration (" + where + ")",
+        src, stop, keys, label + " declaration (" + where + ")",
     ):
         out.append((target, kind, found, want))
     if surface == "pointer":
         normalized_pointer = " ".join(pointer.split())
+        completion_record = (_WO007_COMPLETED_POINTER_HISTORY_RECORD
+                             if audit_recorded
+                             else _WO007_COMPLETED_POINTER_RECORD)
         for required in (_WO007_COMPLETED_POINTER_OPENING,
                          _WO007_ISSUANCE_POINTER_HISTORY,
                          _WO007_SESSION_A_POINTER_HISTORY,
                          _WO007_SESSION_A_POINTER_HISTORY_ANCHORED,
-                         _WO007_COMPLETED_POINTER_RECORD,
+                         completion_record,
                          _WO006_CLOSURE_POINTER_EVIDENCE):
             if normalized_pointer.count(required) != 1:
                 out.append(("WORKORDER.md", "WO-007 completion pointer "
                             "statement", str(normalized_pointer.count(required)),
                             "exactly one " + required))
+        if audit_recorded:
+            # The full record once, and its opening once, so a second,
+            # partial record cannot sit beside it.
+            for required in (_FINAL_AUDIT_RECORD, _FINAL_AUDIT_MARKERS[3]):
+                count = normalized_pointer.count(required)
+                if count != 1:
+                    out.append(("WORKORDER.md",
+                                "final audit pointer statement", str(count),
+                                "exactly one " + required))
+            if _WO007_COMPLETED_POINTER_RECORD in normalized_pointer:
+                out.append(("WORKORDER.md", "final audit pointer statement",
+                            "the pre-audit completion statement remains",
+                            "the completion statement recorded as history"))
         for stale in (_WO007_ISSUANCE_POINTER_NOTE,
                       _WO007_SESSION_A_POINTER_RECORD,
                       "docs/work-orders/issued/" + _WO007_NAME,
@@ -5191,11 +5294,29 @@ def check_work_order_contract() -> list[dict]:
     # superseded/, so the basis directory is selected with it.
     basis_dir = completed_dir
     next_order: str | None
+    final_audit_recorded = False
     if wo007_completed_text:
         next_order, basis_name = None, _WO007_NAME
         basis_text = wo007_completed_text
-        expected_base = _WO007_COMPLETION_COMMIT
-        expected_closed_gate = _WO007_COMPLETED_GATE
+        # Any trace of the recorded final audit selects the recorded shape, so
+        # a partial rollback is checked against it rather than accepted as
+        # the earlier completed state.
+        final_audit_recorded = (
+            current_gate == _FINAL_AUDIT_GATE
+            or any(marker in pointer for marker in _FINAL_AUDIT_MARKERS)
+        )
+        if final_audit_recorded:
+            expected_base = _FINAL_AUDIT_COMMIT
+            expected_closed_gate = _FINAL_AUDIT_GATE
+        else:
+            expected_base = _WO007_COMPLETION_COMMIT
+            expected_closed_gate = _WO007_COMPLETED_GATE
+            # Recording the final audit is one-way: this checker carries the
+            # record, so a pointer without it - however coherent - is a
+            # finding. Undoing the record would have to edit this file too.
+            add("WORKORDER.md", "final audit record",
+                "the recorded final audit is missing from the pointer",
+                "the final audit recorded as ACCEPT WITH REQUIRED FIX")
     elif wo006_superseded_text:
         next_order, basis_name = "WO-007", _WO006_NAME
         basis_dir = superseded_dir
@@ -5267,7 +5388,7 @@ def check_work_order_contract() -> list[dict]:
             for _f, _k, _found, _want in _wo007_completed_findings(
                 pointer, wo007_completed_text,
                 (completed_dir / _WO007_NAME).relative_to(root).as_posix(),
-                "pointer",
+                "pointer", audit_recorded=final_audit_recorded,
             ):
                 add(_f, _k, _found, _want)
         elif wo006_superseded_text:
