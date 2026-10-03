@@ -4,22 +4,13 @@ This file is the repository's sole authority pointer for current Work Order
 state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
-- Current issued Work Order: NONE
+- Current issued Work Order: WO-007
 - Authorized session: NONE
-- Base commit: `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`
-- Current gate: WO-006 SUPERSEDED — WO-007 PROPOSED AND NOT AUTHORIZED
-- Issuance commit: `0c0bf26191ee953c7a27237109b4a91a4db97275`
-- Issuance CI workflow: `36743995194`
-- Issuance CI job: `109985389182` — Lint, types, tests
-- Session A authorization commit: `d46a30ed9de54ec01536d132e1032fcf762fa3c7`
-- Session A authorization CI workflow: `36756889729`
-- Session A authorization CI job: `110029304446` — Lint, types, tests
-- Session B authorization commit: `8667b0e0ef78d504586d710984ef1a1fef7263b2`
-- Session B authorization CI workflow: `36801338578`
-- Session B authorization CI job: `110176132684` — Lint, types, tests
-- Closure basis commit: `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`
-- Closure basis CI workflow: `36817435116`
-- Closure basis CI job: `110225453445` — Lint, types, tests
+- Base commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
+- Current gate: WO-007 ISSUED — SESSION A IMPLEMENTATION NOT AUTHORIZED
+- Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
+- Issuance CI workflow: `37050236355`
+- Issuance CI job: `110981533635` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -261,13 +252,36 @@ review. It opened no code change, fallback, emulation, policy change, live
 repair, commit, or push, and the evidence-recording transition and WO-006
 completion stayed closed at that gate. Tagging, Release creation,
 branch-protection changes, other repository metadata changes, and social
-publication all remain unauthorized, as does WO-007, which stays proposed.
+publication all remain unauthorized, and WO-007 stayed proposed at that gate.
 
 [`WO-006`](docs/work-orders/superseded/WO-006-official-vs-toolbelt-benchmark.md)
 is superseded. It closed without an accepted measurement under the owner's
 closure decision recorded in its mandate, which keeps its unmet requirements.
 WO-006 cannot be resumed or completed, and no session is authorized. WO-007
-remains proposed and unauthorized.
+stayed proposed at that gate.
+
+WO-006 was superseded as `5d88a4ee56309df43537d289514a150615dfeba6`; [CI
+workflow `37037329967`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37037329967)
+completed successfully, including required job
+[`110938646551` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37037329967/job/110938646551).
+Its closure basis was commit `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`,
+successful CI workflow `36817435116`, and successful required job
+`110225453445` (`Lint, types, tests`).
+
+[`WO-007`](docs/work-orders/issued/WO-007-public-mcp-explainer.md) is issued.
+Its planning baseline is `5d88a4ee56309df43537d289514a150615dfeba6`; the
+independently accepted proposal was committed as
+`c04e4a794f1e7d0c607c7ad712cbd28e86a55914` after [CI workflow
+`37050236355`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37050236355)
+completed successfully, including required job
+[`110981533635` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37050236355/job/110981533635).
+
+Issuance grants no implementation authority and opens no session. Session A,
+the repository explainer and draft variants, needs its own separate owner gate
+recorded in this pointer, and its proposed live-verification exemption remains
+pending the owner's decision. Tagging, Release creation, branch-protection
+changes, other repository metadata changes, and social publication all remain
+unauthorized.
 
 WO-001 through WO-007 form the frozen next release train. The release version
 remains undecided and the repository stays at version 2.4.1. No tag or GitHub
@@ -282,6 +296,6 @@ measurement. It is resolved for this train, not completed, and its unmet
 requirements stay recorded in its mandate. For the release gate above, the
 frozen train is complete when WO-001 through WO-005 and WO-007 are completed
 and WO-006 remains superseded. This amendment opens no session and grants
-nothing: WO-007 remains proposed and unauthorized, and the final
+nothing: WO-007 is issued with every session still unauthorized, and the final
 integration/repository-truth audit and a separate owner decision on any
 release remain required.

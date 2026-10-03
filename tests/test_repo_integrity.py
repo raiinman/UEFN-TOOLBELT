@@ -146,7 +146,7 @@ def test_drift_check_covers_agent_context_surfaces(repo_root):
         "docs/work-orders/completed/WO-004-modal-observability.md",
         "docs/work-orders/completed/WO-005-coverage-source-of-truth.md",
         "docs/work-orders/superseded/WO-006-official-vs-toolbelt-benchmark.md",
-        "docs/work-orders/proposed/WO-007-public-mcp-explainer.md",
+        "docs/work-orders/issued/WO-007-public-mcp-explainer.md",
         ".agents/workflows/add_new_tool.md",
         ".agents/workflows/run_tests.md",
         ".github/pull_request_template.md",
@@ -188,9 +188,8 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert "at most one detailed Work Order is issued" in guide
 
     proposals = sorted((work_orders / "proposed").glob("WO-*.md"))
-    expected_proposals = {
-        "WO-007-public-mcp-explainer.md",
-    }
+    # Every frozen-train order has left proposed/: WO-007, the last, is issued.
+    expected_proposals: set[str] = set()
     assert {path.name for path in proposals} == expected_proposals
     for proposal in proposals:
         lines = proposal.read_text(encoding="utf-8").splitlines()
@@ -216,9 +215,12 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
                  if path.name.lower() != "readme.md"]
     superseded = [path for path in (work_orders / "superseded").glob("*.md")
                   if path.name.lower() != "readme.md"]
-    # WO-006 closed as superseded without an accepted measurement, so nothing
-    # is issued and it is the one superseded order.
-    assert issued == []
+    # WO-006 closed as superseded without an accepted measurement and is the
+    # one superseded order; WO-007 is the one issued order.
+    assert [path.name for path in issued] == ["WO-007-public-mcp-explainer.md"]
+    assert not (
+        work_orders / "proposed" / "WO-007-public-mcp-explainer.md"
+    ).exists()
     assert [path.name for path in superseded] == [
         "WO-006-official-vs-toolbelt-benchmark.md"
     ]
@@ -243,16 +245,26 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert not (
         work_orders / "issued" / "WO-006-official-vs-toolbelt-benchmark.md"
     ).exists()
-    assert current == "NONE"
+    assert current == "WO-007"
     assert session == "NONE"
-    # The base is the closure basis commit, an existing commit with recorded
-    # CI, declared in its own bullet after the Session B evidence it follows.
+    # The base is the accepted WO-007 proposal commit, which is also the
+    # issuance commit declared in its own bullet.
     assert base_lines == [
-        "- Base commit: `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`"
+        "- Base commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`"
     ]
     assert gate_lines == [
-        "- Current gate: WO-006 SUPERSEDED — WO-007 PROPOSED AND NOT AUTHORIZED"
+        "- Current gate: WO-007 ISSUED — SESSION A IMPLEMENTATION NOT AUTHORIZED"
     ]
+    for line in (
+        "- Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`",
+        "- Issuance CI workflow: `37050236355`",
+        "- Issuance CI job: `110981533635` — Lint, types, tests",
+    ):
+        assert line in pointer, line
+    # WO-006's issuance, session, and closure-basis bullets left the canonical
+    # block at WO-007's issuance. Their evidence is preserved in WO-006's
+    # superseded mandate and in the narrative paragraphs below, and is still
+    # enforced from there.
     for line in (
         "- Issuance commit: `0c0bf26191ee953c7a27237109b4a91a4db97275`",
         "- Issuance CI workflow: `36743995194`",
@@ -269,7 +281,16 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "- Closure basis CI workflow: `36817435116`",
         "- Closure basis CI job: `110225453445` — Lint, types, tests",
     ):
-        assert line in pointer, line
+        assert line not in pointer, line
+    for evidence in (
+        "0c0bf26191ee953c7a27237109b4a91a4db97275", "36743995194",
+        "109985389182", "d46a30ed9de54ec01536d132e1032fcf762fa3c7",
+        "36756889729", "110029304446",
+        "8667b0e0ef78d504586d710984ef1a1fef7263b2", "36801338578",
+        "110176132684", "13e0bbb67f98ac3f33aff917737fcf9b77a3d64c",
+        "36817435116", "110225453445",
+    ):
+        assert evidence in pointer, evidence
     # WO-005's issuance, Session A, and completion bullets left the canonical
     # block at WO-006's issuance; they are preserved in WO-005's completed
     # document and in the narrative paragraphs below, and are still enforced
@@ -318,7 +339,7 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "WO-006 is closed as superseded without an accepted measurement; no "
         "session is authorized. The frozen release train remains WO-001 "
         "through WO-007, with WO-006 resolved as superseded rather than "
-        "completed; WO-007 remains proposed and unauthorized."
+        "completed; WO-007 is issued with no session authorized."
         in normalized_roadmap
     )
     assert "Session B is authorized" not in normalized_roadmap
@@ -326,7 +347,7 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert "WO-006 is issued with no session authorized." not in (
         normalized_roadmap)
     assert "its Session A is authorized" not in normalized_roadmap
-    assert "WO-007 remains proposed and unauthorized." in normalized_roadmap
+    assert "WO-007 remains proposed and unauthorized." not in normalized_roadmap
     assert "WO-006 and WO-007 remain proposed" not in normalized_roadmap
     # The superseded WO-006 mandate: the closed markers, the preserved
     # planning baseline, issuance, Session A and Session B evidence, the
@@ -569,7 +590,21 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "is superseded. It closed without an accepted measurement under the "
         "owner's closure decision recorded in its mandate, which keeps its "
         "unmet requirements. WO-006 cannot be resumed or completed, and no "
-        "session is authorized. WO-007 remains proposed and unauthorized."
+        "session is authorized. WO-007 stayed proposed at that gate."
+    ) == 1
+    assert "WO-007 remains proposed and unauthorized" not in (
+        normalized_pointer_live)
+    # WO-006's closure evidence, which left the bullet block at WO-007's
+    # issuance, is kept once as history.
+    assert normalized_pointer_live.count(
+        "WO-006 was superseded as `5d88a4ee56309df43537d289514a150615dfeba6`; "
+        "[CI workflow `37037329967`]"
+    ) == 1
+    assert normalized_pointer_live.count(
+        "Its closure basis was commit "
+        "`13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`, successful CI workflow "
+        "`36817435116`, and successful required job `110225453445` (`Lint, "
+        "types, tests`)."
     ) == 1
     assert normalized_pointer_live.count(
         "It is resolved for this train, not completed, and its unmet "
@@ -577,8 +612,70 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "above, the frozen train is complete when WO-001 through WO-005 and "
         "WO-007 are completed and WO-006 remains superseded."
     ) == 1
+    # The release-train amendment keeps every substantive term; only its
+    # WO-007 status clause reads issued, with every session still unauthorized.
+    assert normalized_pointer_live.count(
+        "This amendment opens no session and grants nothing: WO-007 is issued "
+        "with every session still unauthorized, and the final "
+        "integration/repository-truth audit and a separate owner decision on "
+        "any release remain required."
+    ) == 1
+    assert "as does WO-007, which stays proposed." not in (
+        normalized_pointer_live)
     assert (
-        "as does WO-007, which stays proposed." in normalized_pointer_live
+        "and WO-007 stayed proposed at that gate." in normalized_pointer_live
+    )
+    # WO-007's issuance is recorded once, with its accepted proposal evidence,
+    # and opens no session; its exemption stays pending.
+    assert normalized_pointer_live.count(
+        "[`WO-007`](docs/work-orders/issued/WO-007-public-mcp-explainer.md) "
+        "is issued. Its planning baseline is "
+        "`5d88a4ee56309df43537d289514a150615dfeba6`; the independently "
+        "accepted proposal was committed as "
+        "`c04e4a794f1e7d0c607c7ad712cbd28e86a55914` after [CI workflow "
+        "`37050236355`]"
+    ) == 1
+    assert "110981533635" in normalized_pointer_live
+    assert "docs/work-orders/proposed/WO-007" not in pointer
+    wo007_live = (
+        work_orders / "issued" / "WO-007-public-mcp-explainer.md"
+    ).read_text(encoding="utf-8")
+    wo007_lines = wo007_live.splitlines()
+    assert [
+        line for line in wo007_lines
+        if line.startswith(("STATUS:", "AUTHORIZATION:"))
+    ] == ["STATUS: ISSUED", "AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED"]
+    for line in (
+        "BASELINE: `5d88a4ee56309df43537d289514a150615dfeba6`",
+        "ISSUANCE_COMMIT: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`",
+        "ISSUANCE_CI_WORKFLOW: `37050236355`",
+        "ISSUANCE_CI_JOB: `110981533635` — Lint, types, tests",
+    ):
+        assert wo007_lines.count(line) == 1, line
+    normalized_wo007 = " ".join(wo007_live.split())
+    assert wo007_lines.count("## Issuance basis") == 1
+    assert (
+        "Those identify the accepted proposal, not the later commit that "
+        "records this issuance, and they establish nothing about any Session "
+        "A output." in normalized_wo007
+    )
+    assert normalized_wo007.count("NEXT GATE:") == 1
+    assert normalized_wo007.count(
+        "NEXT GATE: separate owner decision on Session A authorization, "
+        "recorded in root `WORKORDER.md`, together with the owner's decision "
+        "on its proposed live-verification exemption. Issuance authorizes no "
+        "session, and this mandate grants no review, commit, push, or session "
+        "authority."
+    ) == 1
+    # The proposal's technical body and decision lock are carried verbatim,
+    # and the Session A exemption remains proposed, not accepted.
+    assert normalized_wo007.count(
+        "Decision lock: drafting grants no authority to publish, change the "
+        "repository description, create a Release, or post socially."
+    ) == 1
+    assert (
+        "offered for the owner's decision and not accepted by this proposal"
+        in normalized_wo007
     )
     # Issuing WO-005 drops the clause that called it proposed, as issuing
     # WO-004 dropped WO-003's; the completed document keeps it as history.
@@ -735,10 +832,11 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "proposed." in normalized_pointer
     )
     assert "UEFN launch, bridge startup," in pointer
-    # Every issuance note is history now that WO-006 is superseded.
+    # Every earlier issuance note is history; the present-tense issuance
+    # statement now belongs to WO-007 alone.
     assert normalized_pointer.count(
         "Issuance grants no implementation authority and opens no session."
-    ) == 0
+    ) == 1
     assert "docs/work-orders/proposed/WO-004-modal-observability.md" not in pointer
     assert "- Release train: WO-001 through WO-007" in pointer
     assert (
@@ -2942,14 +3040,296 @@ _WO006_SUP_REVERSAL = (
 )
 
 
-def _make_wo006_superseded_case(repo_root, tmp_path, name):
-    """Copy the current superseded-WO-006 state."""
+# --- WO-007 issuance: the current state, and the head of the chain -------
+#
+# Issuing WO-007 moved the current state forward again, so the superseded-
+# WO-006 state - and every historical fixture below it - is reconstructed
+# backwards from the issued-WO-007 state.
+
+_WO007_ISS_PROPOSED_REL = "docs/work-orders/proposed/WO-007-public-mcp-explainer.md"
+_WO007_ISS_REL = "docs/work-orders/issued/WO-007-public-mcp-explainer.md"
+_WO007_ISS_PROPOSED_README_REL = "docs/work-orders/proposed/README.md"
+_WO007_ISS_BASELINE = "5d88a4ee56309df43537d289514a150615dfeba6"
+_WO007_ISS_COMMIT = "c04e4a794f1e7d0c607c7ad712cbd28e86a55914"
+_WO007_ISS_WORKFLOW = "37050236355"
+_WO007_ISS_JOB = "110981533635"
+_WO007_ISS_RUN = (
+    "https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _WO007_ISS_WORKFLOW
+)
+_WO007_ISS_GATE = (
+    "WO-007 ISSUED " + _EM + " SESSION A IMPLEMENTATION NOT AUTHORIZED"
+)
+_WO007_ISS_MARKER = "AUTHORIZATION: ISSUED " + _EM + " SESSION NOT AUTHORIZED"
+_WO007_ISS_METADATA = (
+    ("ISSUANCE_COMMIT:", "ISSUANCE_COMMIT: `" + _WO007_ISS_COMMIT + "`"),
+    ("ISSUANCE_CI_WORKFLOW:",
+     "ISSUANCE_CI_WORKFLOW: `" + _WO007_ISS_WORKFLOW + "`"),
+    ("ISSUANCE_CI_JOB:",
+     "ISSUANCE_CI_JOB: `" + _WO007_ISS_JOB + "` " + _EM + " Lint, types, tests"),
+)
+_WO007_ISS_BASIS_HEADING = "## Issuance basis"
+_WO007_ISS_POINTER_OPENING = "[`WO-007`](docs/work-orders/issued/"
+_WO007_CLOSE_RUN = (
+    "https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37037329967"
+)
+# Each pair is (as the issued-WO-007 state records it, as the superseded-
+# WO-006 state recorded it), so the reconstruction puts every original back
+# byte for byte.
+_WO007_ISS_MANDATE_HISTORY = (
+    ("STATUS: ISSUED", "STATUS: PROPOSED"),
+    (_WO007_ISS_MARKER, "AUTHORIZATION: NOT AUTHORIZED"),
+    (_NL.join((
+        "NEXT GATE: separate owner decision on Session A authorization,"
+        " recorded in root",
+        "`WORKORDER.md`, together with the owner's decision on its proposed",
+        "live-verification exemption. Issuance authorizes no session, and this"
+        " mandate",
+        "grants no review, commit, push, or session authority.",
+    )), _NL.join((
+        "NEXT GATE: independent pre-issuance review of this revision by an"
+        " independent",
+        "architect-reviewer, dispatched by the owner. Issuing WO-007 remains a"
+        " separate",
+        "owner decision after that, and this proposal grants no review,"
+        " commit, push,",
+        "issuance, or session authority.",
+    ))),
+)
+_WO007_ISS_POINTER_HISTORY = (
+    (_NL.join((
+        "- Current issued Work Order: WO-007",
+        "- Authorized session: NONE",
+        "- Base commit: `" + _WO007_ISS_COMMIT + "`",
+        "- Current gate: " + _WO007_ISS_GATE,
+        "- Issuance commit: `" + _WO007_ISS_COMMIT + "`",
+        "- Issuance CI workflow: `" + _WO007_ISS_WORKFLOW + "`",
+        "- Issuance CI job: `" + _WO007_ISS_JOB + "` " + _EM
+        + " Lint, types, tests",
+    )), _NL.join((
+        "- Current issued Work Order: NONE",
+        "- Authorized session: NONE",
+        "- Base commit: `" + _WO006_SUP_COMMIT + "`",
+        "- Current gate: " + _WO006_SUP_GATE,
+        "- Issuance commit: `" + _WO006_ISS_COMMIT + "`",
+        "- Issuance CI workflow: `" + _WO006_ISS_WORKFLOW + "`",
+        "- Issuance CI job: `" + _WO006_ISS_JOB + "` " + _EM
+        + " Lint, types, tests",
+    ) + tuple(bullet for _prefix, bullet in _WO006_SA_POINTER_BULLETS)
+      + tuple(bullet for _prefix, bullet in _WO006_SB_POINTER_BULLETS)
+      + tuple(bullet for _prefix, bullet in _WO006_SUP_POINTER_BULLETS))),
+    (_NL.join((
+        "WO-006 cannot be resumed or completed, and no session is authorized."
+        " WO-007",
+        "stayed proposed at that gate.",
+        "",
+        "WO-006 was superseded as `" + _WO007_ISS_BASELINE + "`; [CI",
+        "workflow `37037329967`](" + _WO007_CLOSE_RUN + ")",
+        "completed successfully, including required job",
+        "[`110938646551` " + _EM + " Lint, types, tests](" + _WO007_CLOSE_RUN
+        + "/job/110938646551).",
+        "Its closure basis was commit `" + _WO006_SUP_COMMIT + "`,",
+        "successful CI workflow `" + _WO006_SUP_WORKFLOW + "`, and successful"
+        " required job",
+        "`" + _WO006_SUP_JOB + "` (`Lint, types, tests`).",
+        "",
+        "[`WO-007`](docs/work-orders/issued/WO-007-public-mcp-explainer.md) is"
+        " issued.",
+        "Its planning baseline is `" + _WO007_ISS_BASELINE + "`; the",
+        "independently accepted proposal was committed as",
+        "`" + _WO007_ISS_COMMIT + "` after [CI workflow",
+        "`" + _WO007_ISS_WORKFLOW + "`](" + _WO007_ISS_RUN + ")",
+        "completed successfully, including required job",
+        "[`" + _WO007_ISS_JOB + "` " + _EM + " Lint, types, tests]("
+        + _WO007_ISS_RUN + "/job/" + _WO007_ISS_JOB + ").",
+        "",
+        "Issuance grants no implementation authority and opens no session."
+        " Session A,",
+        "the repository explainer and draft variants, needs its own separate"
+        " owner gate",
+        "recorded in this pointer, and its proposed live-verification"
+        " exemption remains",
+        "pending the owner's decision. Tagging, Release creation,"
+        " branch-protection",
+        "changes, other repository metadata changes, and social publication"
+        " all remain",
+        "unauthorized.",
+    )), _NL.join((
+        "WO-006 cannot be resumed or completed, and no session is authorized."
+        " WO-007",
+        "remains proposed and unauthorized.",
+    ))),
+    ("publication all remain unauthorized, and WO-007 stayed proposed at that"
+     " gate.",
+     "publication all remain unauthorized, as does WO-007, which stays"
+     " proposed."),
+    ("nothing: WO-007 is issued with every session still unauthorized, and the"
+     " final",
+     "nothing: WO-007 remains proposed and unauthorized, and the final"),
+)
+
+
+def _wo007_iss_revert_marker(case):
+    _edit(case, _WO007_ISS_REL, *_WO007_ISS_MANDATE_HISTORY[0])
+    _edit(case, _WO007_ISS_REL, *_WO007_ISS_MANDATE_HISTORY[1])
+
+
+def _wo007_iss_revert_evidence(case):
+    for _prefix, declaration in _WO007_ISS_METADATA:
+        _edit(case, _WO007_ISS_REL, _NL + declaration + _NL, "")
+
+
+def _wo007_iss_revert_basis(case):
+    target = case / _WO007_ISS_REL
+    text = target.read_text(encoding="utf-8")
+    _require_unique(
+        text, (_WO007_ISS_BASIS_HEADING, "## Revision basis"),
+        "WO-007 issuance basis excision",
+    )
+    text = _sub_once(
+        re.escape(_WO007_ISS_BASIS_HEADING)
+        + ".*?(?=" + re.escape("## Revision basis" + _NL) + ")",
+        "", text, "WO-007 issuance basis excision", flags=re.DOTALL,
+    )
+    target.write_text(text, encoding="utf-8")
+
+
+def _wo007_iss_revert_next_gate(case):
+    _edit(case, _WO007_ISS_REL, *_WO007_ISS_MANDATE_HISTORY[2])
+
+
+def _wo007_iss_revert_move(case):
+    # Git keeps no empty directory, so a checkout without the proposed/
+    # README has no proposed/ to move the mandate back into.
+    target = case / _WO007_ISS_PROPOSED_REL
+    target.parent.mkdir(parents=True, exist_ok=True)
+    (case / _WO007_ISS_REL).rename(target)
+
+
+def _wo007_iss_revert_pointer_bullets(case):
+    _edit(case, "WORKORDER.md", *_WO007_ISS_POINTER_HISTORY[0])
+
+
+def _wo007_iss_revert_pointer_paragraphs(case):
+    _edit(case, "WORKORDER.md", *_WO007_ISS_POINTER_HISTORY[1])
+
+
+def _wo007_iss_revert_pointer_tail(case):
+    _edit(case, "WORKORDER.md", *_WO007_ISS_POINTER_HISTORY[2])
+
+
+def _wo007_iss_revert_pointer_amendment(case):
+    _edit(case, "WORKORDER.md", *_WO007_ISS_POINTER_HISTORY[3])
+
+
+# The WO-007 issuance transition, as reversible steps. The mandate steps edit
+# the issued path, so the move comes last. Every step except the past-tense
+# tail is enforced by the checker on its own; that one sentence is prose the
+# live-state test pins instead.
+_WO007_ISS_REVERSAL = (
+    ("mandate-marker", _wo007_iss_revert_marker),
+    ("mandate-evidence", _wo007_iss_revert_evidence),
+    ("mandate-basis", _wo007_iss_revert_basis),
+    ("mandate-next-gate", _wo007_iss_revert_next_gate),
+    ("mandate-move", _wo007_iss_revert_move),
+    ("pointer-bullets", _wo007_iss_revert_pointer_bullets),
+    ("pointer-paragraphs", _wo007_iss_revert_pointer_paragraphs),
+    ("pointer-tail", _wo007_iss_revert_pointer_tail),
+    ("pointer-amendment", _wo007_iss_revert_pointer_amendment),
+)
+_WO007_ISS_PROSE_STEPS = ("pointer-tail",)
+
+
+def _make_wo007_issued_case(repo_root, tmp_path, name):
+    """Copy the current issued-WO-007 state."""
     case = tmp_path / name
     case.mkdir(parents=True)
     shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
     shutil.copytree(
         repo_root / "docs" / "work-orders",
         case / "docs" / "work-orders",
+    )
+    return case
+
+
+def _make_live_wo007_issued_case(repo_root, tmp_path, name, body, ptr,
+                                 session):
+    """WO-007 is issued for real, so its probes run against that state.
+
+    The Session A variant applies the same marker, gate, and session edits the
+    synthetic builder uses, on top of the real issuance record.
+    """
+    case = _make_wo007_issued_case(repo_root, tmp_path, name)
+    issued = case / _WO007_ISS_REL
+    pointer = case / "WORKORDER.md"
+    if session != "NONE":
+        issued.write_text(
+            _replace_once(
+                issued.read_text(encoding="utf-8"), _WO007_ISS_MARKER,
+                "AUTHORIZATION: ISSUED " + _EM
+                + " SESSION A AUTHORIZED FOR IMPLEMENTATION",
+                "live WO-007 fixture authorization"),
+            encoding="utf-8")
+        text = pointer.read_text(encoding="utf-8")
+        for old, new in (
+            ("- Authorized session: NONE", "- Authorized session: " + session),
+            ("- Current gate: " + _WO007_ISS_GATE,
+             "- Current gate: WO-007 SESSION A AUTHORIZED " + _EM
+             + " IMPLEMENT SESSION A ONLY"),
+        ):
+            text = _replace_once(text, old, new, "live WO-007 fixture gate")
+        pointer.write_text(text, encoding="utf-8")
+    for path, extra in ((issued, body), (pointer, ptr)):
+        if extra:
+            path.write_text(
+                path.read_text(encoding="utf-8") + _NL + extra + _NL,
+                encoding="utf-8")
+    return case
+
+
+def _make_wo006_superseded_case(repo_root, tmp_path, name):
+    """Reconstruct the preserved superseded-WO-006 state.
+
+    Issuing WO-007 moved the current state forward, so the superseded-WO-006
+    state every earlier fixture builds on is now itself a reconstruction.
+    Every issuance edit is reversed: in the mandate, the status and marker,
+    the issuance declarations, the issuance basis section, the next gate, and
+    the move to issued/; in the pointer, the bullet block, the WO-006 closure
+    evidence and WO-007 issuance paragraphs, the past-tense tail, and the
+    release-train amendment's WO-007 clause. The proposed/ README the
+    issuance added is removed. Both files return to the superseded-WO-006
+    state byte for byte.
+    """
+    case = _make_wo007_issued_case(repo_root, tmp_path, name)
+    if not (case / _WO007_ISS_REL).exists():
+        # Already a pre-issuance tree: nothing to reverse.
+        assert (case / _WO007_ISS_PROPOSED_REL).exists(), (
+            "WO-007 issuance reconstruction: WO-007 is in neither issued/ nor"
+            " proposed/ - this reconstruction is no longer anchored to the"
+            " recorded historical state"
+        )
+        return case
+    for _step, revert in _WO007_ISS_REVERSAL:
+        revert(case)
+    # The README arrived with the issuance, so the superseded-WO-006 tree has
+    # none. A tree built without it has nothing to remove.
+    (case / _WO007_ISS_PROPOSED_README_REL).unlink(missing_ok=True)
+    _assert_reconstructed(
+        "WO-007 issuance pointer",
+        (case / "WORKORDER.md").read_text(encoding="utf-8"),
+        ("- Current issued Work Order: NONE", "- Current gate: " + _WO006_SUP_GATE,
+         _WO007_ISS_POINTER_HISTORY[1][1], _WO007_ISS_POINTER_HISTORY[3][1]),
+        (_WO007_ISS_GATE, _WO007_ISS_WORKFLOW, _WO007_ISS_JOB,
+         _WO007_ISS_POINTER_OPENING, "WO-006 was superseded as",
+         _WO007_ISS_POINTER_HISTORY[3][0]),
+    )
+    _assert_reconstructed(
+        "WO-007 issuance reconstruction",
+        (case / _WO007_ISS_PROPOSED_REL).read_text(encoding="utf-8"),
+        ("STATUS: PROPOSED", "AUTHORIZATION: NOT AUTHORIZED",
+         _WO007_ISS_MANDATE_HISTORY[2][1]),
+        (_WO007_ISS_MARKER, _WO007_ISS_BASIS_HEADING, "ISSUANCE_COMMIT:",
+         _WO007_ISS_MANDATE_HISTORY[2][0]),
     )
     return case
 
@@ -11443,6 +11823,9 @@ def _make_issued_case(repo_root, tmp_path, name, order, body="", ptr="",
     if order == "WO-006" and filename is None and pointer_id is None:
         return _make_live_wo006_issued_case(repo_root, tmp_path, name, body,
                                             ptr, session)
+    if order == "WO-007" and filename is None and pointer_id is None:
+        return _make_live_wo007_issued_case(repo_root, tmp_path, name, body,
+                                            ptr, session)
     # Every other order is issued from the reconstructed nothing-issued
     # state, which is where its own issuance would have started.
     case = _make_wo003_completed_case(repo_root, tmp_path, name)
@@ -16112,3 +16495,434 @@ def test_wo006_superseded_records_and_boundaries_are_enforced(
     found = _wo006_sup_findings(repo_root, tmp_path, monkeypatch,
                                 "damage-" + name, mutate)
     assert (kind, rel) in found, repr(sorted(found))
+
+
+# --- WO-007 issuance: the live state -------------------------------------
+#
+# The issuance record sits on the same two canonical surfaces as WO-006's:
+# the root pointer's bullet block and the mandate's metadata block. The
+# mandate adds a closed issuance-basis section and an issued next gate; the
+# pointer records the issuance once, keeps WO-006's closure evidence as
+# history, and carries the release-train amendment in its issued form. Each
+# probe is a delta against the live issued state, with nothing set aside.
+
+_WO007_ISS_KINDS = {
+    "WORKORDER.md": {"WO-007 issuance field (WORKORDER.md)",
+                     "WO-007 issuance declaration (WORKORDER.md)"},
+    _WO007_ISS_REL: {"WO-007 issuance field (issued record)",
+                     "WO-007 issuance declaration (issued record)"},
+}
+
+
+def _wo007_iss_findings(repo_root, tmp_path, monkeypatch, name, mutate):
+    """(type, file) findings for the live issued-WO-007 state after one
+    mutation."""
+    drift_check = _load_drift_check(repo_root, "wo007_iss_" + name)
+    case = _make_wo007_issued_case(repo_root, tmp_path, "wo007-iss-" + name)
+    mutate(case)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return {(f["type"], f["file"])
+            for f in drift_check.check_work_order_contract()}
+
+
+def test_wo007_issued_state_is_clean(repo_root, tmp_path, monkeypatch) -> None:
+    """The control: the live issued-WO-007 state has no finding at all."""
+    found = _wo007_iss_findings(repo_root, tmp_path, monkeypatch, "control",
+                                lambda case: None)
+    assert found == set(), (
+        "the issued WO-007 state is not clean: " + repr(sorted(found))
+    )
+
+
+def test_wo007_reconstruction_reaches_the_superseded_wo006_state(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Reversing the issuance lands on a clean superseded-WO-006 state, with
+    WO-007 back in proposed/ under its proposal markers."""
+    drift_check = _load_drift_check(repo_root, "wo007_iss_reverse")
+    case = _make_wo006_superseded_case(repo_root, tmp_path, "wo007-reverse")
+    assert not (case / _WO007_ISS_REL).exists()
+    proposal = (case / _WO007_ISS_PROPOSED_REL).read_text(encoding="utf-8")
+    assert [line for line in proposal.splitlines()
+            if line.startswith(("STATUS:", "AUTHORIZATION:"))] == [
+        "STATUS: PROPOSED", "AUTHORIZATION: NOT AUTHORIZED"]
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    found = {(f["type"], f["file"])
+             for f in drift_check.check_work_order_contract()}
+    assert found == set(), repr(sorted(found))
+
+
+_WO007_ISS_EVIDENCE = (
+    # (id, file, declaration prefix, pinned value)
+    ("pointer-base", "WORKORDER.md", "- Base commit:", _WO007_ISS_COMMIT),
+    ("pointer-issuance-commit", "WORKORDER.md", "- Issuance commit:",
+     _WO007_ISS_COMMIT),
+    ("pointer-issuance-workflow", "WORKORDER.md", "- Issuance CI workflow:",
+     _WO007_ISS_WORKFLOW),
+    ("pointer-issuance-job", "WORKORDER.md", "- Issuance CI job:",
+     _WO007_ISS_JOB),
+    ("mandate-baseline", _WO007_ISS_REL, "BASELINE:", _WO007_ISS_BASELINE),
+    ("mandate-issuance-commit", _WO007_ISS_REL, "ISSUANCE_COMMIT:",
+     _WO007_ISS_COMMIT),
+    ("mandate-issuance-workflow", _WO007_ISS_REL, "ISSUANCE_CI_WORKFLOW:",
+     _WO007_ISS_WORKFLOW),
+    ("mandate-issuance-job", _WO007_ISS_REL, "ISSUANCE_CI_JOB:",
+     _WO007_ISS_JOB),
+)
+
+
+@pytest.mark.parametrize("damage",
+                         ("changed", "removed", "duplicated", "decoy"))
+@pytest.mark.parametrize(("name", "rel", "prefix", "value"),
+                         _WO007_ISS_EVIDENCE,
+                         ids=[row[0] for row in _WO007_ISS_EVIDENCE])
+def test_wo007_issuance_evidence_is_pinned(
+    repo_root, tmp_path, monkeypatch, name, rel, prefix, value, damage
+) -> None:
+    """The root base, the planning baseline, and the issuance evidence are
+    each enforced on the surface that declares them, and the finding names
+    that file."""
+    def mutate(case):
+        target = case / rel
+        text = target.read_text(encoding="utf-8")
+        line = next(candidate for candidate in text.splitlines()
+                    if candidate.startswith(prefix))
+        wrong = line.replace(value, _WO004_ZERO_SHA[:len(value)])
+        assert wrong != line, "probe anchor drifted: " + prefix
+        new = {"changed": wrong, "removed": "",
+               "duplicated": line + _NL + line, "decoy": wrong}[damage]
+        text = _replace_once(text, line, new, "WO-007 evidence " + damage)
+        if damage == "decoy":
+            # The genuine declaration is corrupted; a byte-correct copy is
+            # parked outside the canonical block, where it must not count.
+            text = text.rstrip() + _NL + _NL + line + _NL
+        target.write_text(text, encoding="utf-8")
+
+    found = _wo007_iss_findings(repo_root, tmp_path, monkeypatch,
+                                "evidence-" + name + "-" + damage, mutate)
+    kinds = {kind for kind, file in found if file == rel}
+    assert kinds & _WO007_ISS_KINDS[rel], (
+        "a " + damage + " " + prefix + " declaration was accepted in the "
+        "issued WO-007 state: " + repr(sorted(found))
+    )
+
+
+def test_wo007_base_cannot_stay_at_the_wo006_closure_basis(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """The base names the accepted proposal commit, not the base WO-006's
+    closure left behind."""
+    found = _wo007_iss_findings(
+        repo_root, tmp_path, monkeypatch, "base-rollback",
+        lambda case: _edit(case, "WORKORDER.md",
+                           "- Base commit: `" + _WO007_ISS_COMMIT + "`",
+                           "- Base commit: `" + _WO006_SUP_COMMIT + "`"))
+    assert ("WO-007 issuance declaration (WORKORDER.md)",
+            "WORKORDER.md") in found, repr(sorted(found))
+
+
+@pytest.mark.parametrize(
+    ("step", "revert"),
+    [row for row in _WO007_ISS_REVERSAL
+     if row[0] not in _WO007_ISS_PROSE_STEPS],
+    ids=[row[0] for row in _WO007_ISS_REVERSAL
+         if row[0] not in _WO007_ISS_PROSE_STEPS])
+def test_wo007_issuance_partial_transition_is_caught(
+    repo_root, tmp_path, monkeypatch, step, revert
+) -> None:
+    """Each enforced step of the issuance, reverted alone, leaves a state the
+    checker rejects. The mandate steps edit the issued path and the move is
+    its own step, so no step leans on another to be caught."""
+    found = _wo007_iss_findings(repo_root, tmp_path, monkeypatch,
+                                "partial-" + step, revert)
+    assert found, step + " alone was accepted: the transition is partial"
+
+
+def test_wo007_issuance_coherent_reversal_is_the_superseded_wo006_state(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Reverting every step lands on the clean superseded-WO-006 state, which
+    is the reconstruction every earlier fixture builds on."""
+    def mutate(case):
+        for _step, revert in _WO007_ISS_REVERSAL:
+            revert(case)
+
+    found = _wo007_iss_findings(repo_root, tmp_path, monkeypatch,
+                                "coherent", mutate)
+    assert found == set(), repr(sorted(found))
+
+
+def _wo007_iss_append(rel, claim):
+    def mutate(case):
+        target = case / rel
+        target.write_text(target.read_text(encoding="utf-8").rstrip() + _NL
+                          + _NL + claim + _NL, encoding="utf-8")
+    return mutate
+
+
+def _wo007_iss_leave_proposal_behind(case):
+    target = case / _WO007_ISS_PROPOSED_REL
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text((case / _WO007_ISS_REL).read_text(encoding="utf-8"),
+                      encoding="utf-8")
+
+
+_WO007_ISS_DAMAGE = (
+    # (id, change, expected kind, file it is reported against)
+    ("pointer-session",
+     lambda case: _edit(case, "WORKORDER.md", "- Authorized session: NONE",
+                        "- Authorized session: A"),
+     "authorized session gate", "WORKORDER.md"),
+    ("generic-session-marker",
+     lambda case: _edit(case, _WO007_ISS_REL, _WO007_ISS_MARKER,
+                        "AUTHORIZATION: ISSUED " + _EM
+                        + " SESSION A AUTHORIZED FOR IMPLEMENTATION"),
+     "issued session authorization", _WO007_ISS_REL),
+    ("pointer-grants-session-a",
+     _wo007_iss_append("WORKORDER.md",
+                       "Session A is authorized and may begin."),
+     "implicit session authorization", "WORKORDER.md"),
+    # The generic issued-session scanners report a mandate grant against the
+    # pointer as well; that attribution predates this issuance.
+    ("mandate-grants-session-a",
+     _wo007_iss_append(_WO007_ISS_REL,
+                       "Session A is authorized and may begin."),
+     "implicit session authorization", "WORKORDER.md"),
+    ("mandate-opens-session-b",
+     _wo007_iss_append(_WO007_ISS_REL, "Session B is authorized."),
+     "later session authorization", "WORKORDER.md"),
+    ("issuance-basis-softened",
+     lambda case: _edit(case, _WO007_ISS_REL, "they establish nothing",
+                        "they establish much"),
+     "WO-007 issuance record", _WO007_ISS_REL),
+    ("issuance-basis-heading",
+     lambda case: _edit(case, _WO007_ISS_REL,
+                        _WO007_ISS_BASIS_HEADING + _NL,
+                        "## Issuance notes" + _NL),
+     "WO-007 issuance record", _WO007_ISS_REL),
+    ("next-gate-opens-session",
+     lambda case: _edit(case, _WO007_ISS_REL,
+                        "NEXT GATE: separate owner decision on Session A"
+                        " authorization",
+                        "NEXT GATE: Session A authorization"),
+     "WO-007 next gate", _WO007_ISS_REL),
+    ("second-next-gate",
+     _wo007_iss_append(_WO007_ISS_REL, "NEXT GATE: Session A."),
+     "WO-007 next gate", _WO007_ISS_REL),
+    ("decision-lock-removed",
+     lambda case: _edit(case, _WO007_ISS_REL,
+                        "Decision lock: drafting grants no authority to"
+                        " publish, change the repository" + _NL
+                        + "description, create a Release, or post socially.",
+                        ""),
+     "WO-007 decision lock", _WO007_ISS_REL),
+    ("pointer-opening-stale",
+     lambda case: _edit(case, "WORKORDER.md",
+                        "is issued." + _NL + "Its planning baseline is `"
+                        + _WO007_ISS_BASELINE,
+                        "is proposed." + _NL + "Its planning baseline is `"
+                        + _WO007_ISS_BASELINE),
+     "WO-007 issuance pointer statement", "WORKORDER.md"),
+    ("pointer-note-widened",
+     lambda case: _edit(case, "WORKORDER.md",
+                        "needs its own separate owner gate" + _NL
+                        + "recorded in this pointer",
+                        "needs no separate owner gate" + _NL
+                        + "recorded in this pointer"),
+     "WO-007 issuance pointer statement", "WORKORDER.md"),
+    ("closure-evidence-dropped",
+     lambda case: _edit(case, "WORKORDER.md",
+                        "successful CI workflow `" + _WO006_SUP_WORKFLOW
+                        + "`, and successful required job" + _NL,
+                        "successful CI workflow, and successful required job"
+                        + _NL),
+     "WO-007 issuance pointer statement", "WORKORDER.md"),
+    ("amendment-pre-issuance-form",
+     lambda case: _edit(case, "WORKORDER.md",
+                        *_WO007_ISS_POINTER_HISTORY[3]),
+     "WO-007 release-train amendment", "WORKORDER.md"),
+    ("amendment-completes-wo006",
+     lambda case: _edit(case, "WORKORDER.md",
+                        "It is resolved for this train, not completed, and"
+                        " its unmet",
+                        "It is completed for this train, and its unmet"),
+     "WO-007 release-train amendment", "WORKORDER.md"),
+    ("release-claim",
+     _wo007_iss_append(_WO007_ISS_REL,
+                       "A GitHub Release for WO-007 is authorized."),
+     "release authorization", _WO007_ISS_REL),
+    ("metadata-claim",
+     _wo007_iss_append(_WO007_ISS_REL,
+                       "Repository metadata changes are authorized."),
+     "external-action boundary", _WO007_ISS_REL),
+    ("proposal-left-behind", _wo007_iss_leave_proposal_behind,
+     "duplicate work order state", "docs/work-orders"),
+    # WO-006's closure stays enforced under its later pointer owner.
+    ("wo006-session-reopened",
+     _wo007_iss_append(_WO006_SUP_REL,
+                       "Session B is authorized and may begin."),
+     "session authorization reopening", _WO006_SUP_REL),
+    ("wo006-moved-back",
+     lambda case: (case / _WO006_SUP_REL).rename(case / _WO006_ISS_REL),
+     _TERMINAL_WO006_FINDING, "docs/work-orders"),
+    ("wo006-closure-record",
+     lambda case: _edit(case, _WO006_SUP_REL,
+                        "consistent with, but not established as,",
+                        "caused by"),
+     "WO-006 closure record", _WO006_SUP_REL),
+    ("wo006-pointer-clause",
+     lambda case: _edit(case, "WORKORDER.md",
+                        "WO-006 cannot be resumed or completed, and no session"
+                        " is authorized.",
+                        "WO-006 may be resumed later."),
+     "WO-006 superseded pointer statement", "WORKORDER.md"),
+)
+
+
+@pytest.mark.parametrize(("name", "mutate", "kind", "rel"),
+                         _WO007_ISS_DAMAGE,
+                         ids=[row[0] for row in _WO007_ISS_DAMAGE])
+def test_wo007_issued_state_boundaries_are_enforced(
+    repo_root, tmp_path, monkeypatch, name, mutate, kind, rel
+) -> None:
+    """Opening a session without its gate, widening the issuance records,
+    changing the amendment, keeping a second copy of the mandate, claiming
+    release or external-action authority, and reopening WO-006 are each
+    caught and attributed."""
+    found = _wo007_iss_findings(repo_root, tmp_path, monkeypatch,
+                                "damage-" + name, mutate)
+    assert (kind, rel) in found, repr(sorted(found))
+
+
+_WO007_ISS_CONTROLS = (
+    ("pointer-denial", "WORKORDER.md", "Session A is not authorized."),
+    ("mandate-denial", _WO007_ISS_REL,
+     "Session A remains unauthorized until a separate owner gate."),
+    ("mandate-closed-release", _WO007_ISS_REL,
+     "Tags and GitHub Releases remain unauthorized."),
+)
+
+
+@pytest.mark.parametrize(("name", "rel", "sentence"), _WO007_ISS_CONTROLS,
+                         ids=[row[0] for row in _WO007_ISS_CONTROLS])
+def test_wo007_issued_state_accepts_closed_language(
+    repo_root, tmp_path, monkeypatch, name, rel, sentence
+) -> None:
+    """Denials and closed-gate wording grant nothing and stay clean."""
+    found = _wo007_iss_findings(repo_root, tmp_path, monkeypatch,
+                                "control-" + name,
+                                _wo007_iss_append(rel, sentence))
+    assert found == set(), repr(sorted(found))
+
+
+# --- WO-007 issuance: a checkout without proposed/ ------------------------
+#
+# Git keeps no empty directory. proposed/ now holds only its README, so a tree
+# without that README has no proposed/ at all. The reconstruction and the
+# left-behind probe must work there, and the README must never count as a
+# Work Order.
+
+def _wo007_bare_root(repo_root, tmp_path):
+    """The pointer and work orders with proposed/ genuinely absent."""
+    bare = tmp_path / "bare-root"
+    bare.mkdir()
+    shutil.copy2(repo_root / "WORKORDER.md", bare / "WORKORDER.md")
+    shutil.copytree(repo_root / "docs" / "work-orders",
+                    bare / "docs" / "work-orders")
+    proposed = bare / "docs" / "work-orders" / "proposed"
+    if proposed.exists():
+        shutil.rmtree(proposed)
+    assert not proposed.exists()
+    return bare
+
+
+def _wo007_tree(case):
+    files = [case / "WORKORDER.md"] + sorted(
+        path for path in (case / "docs" / "work-orders").rglob("*")
+        if path.is_file())
+    return {path.relative_to(case).as_posix(): path.read_bytes()
+            for path in files}
+
+
+def test_wo007_reconstruction_needs_no_proposed_directory(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Without proposed/, reversing the issuance recreates it and reaches the
+    same clean superseded-WO-006 tree as the full checkout does."""
+    bare = _wo007_bare_root(repo_root, tmp_path)
+    rebuilt = _make_wo006_superseded_case(bare, tmp_path, "rebuilt-bare")
+    reference = _make_wo006_superseded_case(repo_root, tmp_path,
+                                            "rebuilt-full")
+    assert sorted(path.name for path in (
+        rebuilt / "docs" / "work-orders" / "proposed").iterdir()) == [
+        "WO-007-public-mcp-explainer.md"]
+    assert _wo007_tree(rebuilt) == _wo007_tree(reference)
+    drift_check = _load_drift_check(repo_root, "wo007_bare_rebuilt")
+    monkeypatch.setattr(drift_check, "ROOT", str(rebuilt))
+    found = {(f["type"], f["file"])
+             for f in drift_check.check_work_order_contract()}
+    assert found == set(), repr(sorted(found))
+
+
+def test_wo007_left_behind_proposal_is_caught_without_proposed_directory(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """The issued state is clean with no proposed/ at all, and a mandate copy
+    left behind in a recreated proposed/ is still a duplicate."""
+    bare = _wo007_bare_root(repo_root, tmp_path)
+    drift_check = _load_drift_check(repo_root, "wo007_bare_left_behind")
+    for name, mutate in (("control", lambda case: None),
+                         ("left-behind", _wo007_iss_leave_proposal_behind)):
+        case = _make_wo007_issued_case(bare, tmp_path, "bare-" + name)
+        assert not (case / "docs" / "work-orders" / "proposed").exists()
+        mutate(case)
+        monkeypatch.setattr(drift_check, "ROOT", str(case))
+        found = {(f["type"], f["file"])
+                 for f in drift_check.check_work_order_contract()}
+        if name == "control":
+            assert found == set(), repr(sorted(found))
+        else:
+            assert ("duplicate work order state",
+                    "docs/work-orders") in found, repr(sorted(found))
+
+
+def test_wo007_proposed_readme_is_guidance_not_a_work_order(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """proposed/ keeps a README so the directory survives a checkout with no
+    proposal. It is directory guidance: it carries no Work Order markers or
+    gate lines, is not counted as a proposal, and cannot stand in for a
+    missing order."""
+    readme = repo_root / _WO007_ISS_PROPOSED_README_REL
+    text = readme.read_text(encoding="utf-8")
+    normalized = " ".join(text.split())
+    for phrase in (
+        "A proposal is planning only and never authorizes implementation.",
+        "Consult the repository-root `WORKORDER.md`, the sole authority "
+        "pointer, for the current gate.",
+        "This directory may contain no proposal; this README is directory "
+        "guidance, not a Work Order, and never stands in for one.",
+    ):
+        assert normalized.count(phrase) == 1, phrase
+    assert not any(
+        line.startswith(("STATUS:", "AUTHORIZATION:", "- Current issued "
+                         "Work Order:", "- Authorized session:",
+                         "- Current gate:"))
+        for line in text.splitlines())
+    assert not list(readme.parent.glob("WO-*.md"))
+
+    # With WO-007 gone, the README alone does not satisfy the train.
+    found = _wo007_iss_findings(
+        repo_root, tmp_path, monkeypatch, "readme-no-substitute",
+        lambda case: (case / _WO007_ISS_REL).unlink())
+    kinds = {kind for kind, _file in found}
+    assert {"release train inventory", "proposed work orders"} <= kinds, (
+        repr(sorted(found)))
+
+    # A gate line written into the README is reported against it.
+    found = _wo007_iss_findings(
+        repo_root, tmp_path, monkeypatch, "readme-gate-line",
+        _wo007_iss_append(_WO007_ISS_PROPOSED_README_REL,
+                          "- Authorized session: A"))
+    assert ("canonical gate duplication",
+            _WO007_ISS_PROPOSED_README_REL) in found, repr(sorted(found))

@@ -89,7 +89,7 @@ SCAN_FILES = [
     "docs/work-orders/completed/WO-004-modal-observability.md",
     "docs/work-orders/completed/WO-005-coverage-source-of-truth.md",
     "docs/work-orders/superseded/WO-006-official-vs-toolbelt-benchmark.md",
-    "docs/work-orders/proposed/WO-007-public-mcp-explainer.md",
+    "docs/work-orders/issued/WO-007-public-mcp-explainer.md",
     "Content/Python/UEFN_Toolbelt/dashboard_pyside6.py",
     # Both carried stale counts that no check could see, because neither was
     # a declared target. WO-003 corrected the counts and declared the paths.
@@ -3336,6 +3336,189 @@ def _wo006_superseded_record_findings(text, rel):
     return out
 
 
+# WO-007's issuance record, on the same two canonical surfaces as WO-006's:
+# the root pointer's bullet block and the mandate's metadata block, each an
+# exact, contiguous, terminal slice whose keys are also counted. The evidence
+# identifies the accepted proposal commit and its CI, not the later issuance
+# transition commit or any Session A output, and the planning baseline stays
+# at the commit the proposal was reviewed against. A later transition that
+# changes the base must update these pins.
+_WO007_PLANNING_BASELINE = "5d88a4ee56309df43537d289514a150615dfeba6"
+_WO007_ISSUANCE_COMMIT = "c04e4a794f1e7d0c607c7ad712cbd28e86a55914"
+_WO007_ISSUANCE_WORKFLOW = "37050236355"
+_WO007_ISSUANCE_JOB = "110981533635"
+_WO007_ISSUED_SEQUENCE = (
+    "BASELINE: `" + _WO007_PLANNING_BASELINE + "`",
+    "ISSUANCE_COMMIT: `" + _WO007_ISSUANCE_COMMIT + "`",
+    "ISSUANCE_CI_WORKFLOW: `" + _WO007_ISSUANCE_WORKFLOW + "`",
+    "ISSUANCE_CI_JOB: `" + _WO007_ISSUANCE_JOB + "` — Lint, types, tests",
+)
+_WO007_POINTER_SEQUENCE = (
+    "- Current issued Work Order:",
+    "- Authorized session:",
+    "- Base commit: `" + _WO007_ISSUANCE_COMMIT + "`",
+    "- Current gate:",
+    "- Issuance commit: `" + _WO007_ISSUANCE_COMMIT + "`",
+    "- Issuance CI workflow: `" + _WO007_ISSUANCE_WORKFLOW + "`",
+    "- Issuance CI job: `" + _WO007_ISSUANCE_JOB + "` — Lint, types, tests",
+    "- Release train:",
+    "- Release gate:",
+)
+_WO007_POINTER_KEYS = (
+    ("- Base commit:", _WO007_POINTER_SEQUENCE[2]),
+    ("- Issuance commit:", _WO007_POINTER_SEQUENCE[4]),
+    ("- Issuance CI workflow:", _WO007_POINTER_SEQUENCE[5]),
+    ("- Issuance CI job:", _WO007_POINTER_SEQUENCE[6]),
+)
+_WO007_ISSUED_KEYS = (
+    ("BASELINE:", _WO007_ISSUED_SEQUENCE[0]),
+    ("ISSUANCE_COMMIT:", _WO007_ISSUED_SEQUENCE[1]),
+    ("ISSUANCE_CI_WORKFLOW:", _WO007_ISSUED_SEQUENCE[2]),
+    ("ISSUANCE_CI_JOB:", _WO007_ISSUED_SEQUENCE[3]),
+)
+# The mandate's issuance basis is one closed section equal to its accepted
+# text, and the issued next gate occurs once, with no second next gate.
+_WO007_RUN_URL = (
+    "https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _WO007_ISSUANCE_WORKFLOW
+)
+_WO007_ISSUANCE_HEADING = "## Issuance basis"
+_WO007_ISSUANCE_RECORD = (
+    _WO007_ISSUANCE_HEADING + " The independently accepted revision of this "
+    "mandate was committed as `" + _WO007_ISSUANCE_COMMIT + "`; [CI workflow `"
+    + _WO007_ISSUANCE_WORKFLOW + "`](" + _WO007_RUN_URL + ") completed "
+    "successfully, including required job [`" + _WO007_ISSUANCE_JOB
+    + "` — Lint, types, tests](" + _WO007_RUN_URL + "/job/"
+    + _WO007_ISSUANCE_JOB + "). Those identify the accepted proposal, not the "
+    "later commit that records this issuance, and they establish nothing "
+    "about any Session A output. The planning baseline above and the "
+    "revision basis below are preserved unchanged; the train state the "
+    "revision basis describes is the state before this issuance. Issuance "
+    "alone grants no implementation authority. Session A, the repository "
+    "explainer and draft variants, needs its own separate owner gate recorded "
+    "in root `WORKORDER.md`, and its proposed live-verification exemption "
+    "remains pending the owner's decision."
+)
+_WO007_ISSUED_NEXT_GATE = (
+    "NEXT GATE: separate owner decision on Session A authorization, recorded "
+    "in root `WORKORDER.md`, together with the owner's decision on its "
+    "proposed live-verification exemption. Issuance authorizes no session, "
+    "and this mandate grants no review, commit, push, or session authority."
+)
+# The pointer records the issuance once, with its accepted proposal evidence
+# and a note that opens no session. WO-006's closure evidence, which left the
+# bullet block at this issuance, is kept once as history beside it.
+_WO007_POINTER_OPENING = (
+    "[`WO-007`](docs/work-orders/issued/" + _WO007_NAME + ") is issued. Its "
+    "planning baseline is `" + _WO007_PLANNING_BASELINE + "`; the "
+    "independently accepted proposal was committed as `"
+    + _WO007_ISSUANCE_COMMIT + "` after [CI workflow `"
+    + _WO007_ISSUANCE_WORKFLOW + "`](" + _WO007_RUN_URL + ") completed "
+    "successfully, including required job [`" + _WO007_ISSUANCE_JOB
+    + "` — Lint, types, tests](" + _WO007_RUN_URL + "/job/"
+    + _WO007_ISSUANCE_JOB + ")."
+)
+_WO007_ISSUANCE_POINTER_NOTE = (
+    "Issuance grants no implementation authority and opens no session. "
+    "Session A, the repository explainer and draft variants, needs its own "
+    "separate owner gate recorded in this pointer, and its proposed "
+    "live-verification exemption remains pending the owner's decision."
+)
+_WO006_CLOSURE_POINTER_EVIDENCE = (
+    "WO-006 was superseded as `5d88a4ee56309df43537d289514a150615dfeba6`; [CI "
+    "workflow `37037329967`](https://github.com/undergroundrap/UEFN-TOOLBELT/"
+    "actions/runs/37037329967) completed successfully, including required job "
+    "[`110938646551` — Lint, types, tests](https://github.com/undergroundrap/"
+    "UEFN-TOOLBELT/actions/runs/37037329967/job/110938646551). Its closure "
+    "basis was commit `" + _WO006_CLOSURE_COMMIT + "`, successful CI workflow `"
+    + _WO006_CLOSURE_WORKFLOW + "`, and successful required job `"
+    + _WO006_CLOSURE_JOB + "` (`Lint, types, tests`)."
+)
+# While WO-007 is issued with no session, the owner's release-train amendment
+# keeps every substantive term; only its WO-007 status clause reads issued,
+# with every session still unauthorized. The pre-issuance form must be gone.
+_WO007_ISSUED_RELEASE_TRAIN_AMENDMENT = (
+    "Release-train amendment (owner decision): the frozen train remains "
+    "WO-001 through WO-007. WO-006 is closed as superseded without an "
+    "accepted measurement. It is resolved for this train, not completed, and "
+    "its unmet requirements stay recorded in its mandate. For the release "
+    "gate above, the frozen train is complete when WO-001 through WO-005 and "
+    "WO-007 are completed and WO-006 remains superseded. This amendment opens "
+    "no session and grants nothing: WO-007 is issued with every session still "
+    "unauthorized, and the final integration/repository-truth audit and a "
+    "separate owner decision on any release remain required."
+)
+
+
+def _wo007_issuance_findings(pointer, issued_text, rel, session):
+    """WO-007's issuance record while it is issued.
+
+    The WO-006 issuance pattern: the canonical slices on both surfaces, plus
+    the mandate's closed issuance-basis section and its single next gate, and
+    the pointer's issuance paragraph, issuance note, and WO-006 closure
+    evidence, each exactly once. With no session open, the release-train
+    amendment must read in its issued form exactly once, and its
+    pre-issuance form must be gone. The gate, the marker, and the session
+    value are checked by the branches that call this.
+    """
+    out = []
+    for target, text, stop, sequence, keys, where in (
+        ("WORKORDER.md", pointer,
+         lambda line: _WO001_COMPLETED_LINK in line,
+         _WO007_POINTER_SEQUENCE, _WO007_POINTER_KEYS, "WORKORDER.md"),
+        (rel, issued_text, lambda line: line.startswith("## "),
+         _WO007_ISSUED_SEQUENCE, _WO007_ISSUED_KEYS, "issued record"),
+    ):
+        for kind, found, want in _canonical_field_findings(
+            text, sequence, stop, where,
+            exact={item for item in sequence if "`" in item},
+            terminal=True, label="WO-007 issuance field",
+        ):
+            out.append((target, kind, found, want))
+        for kind, found, want in _canonical_key_findings(
+            text, stop, keys, "WO-007 issuance declaration (" + where + ")",
+        ):
+            out.append((target, kind, found, want))
+    lines = [line.strip() for line in issued_text.splitlines()]
+    headings = [line for line in lines if line.startswith("## ")]
+    if headings.count(_WO007_ISSUANCE_HEADING) != 1:
+        out.append((rel, "WO-007 issuance record",
+                    str(headings.count(_WO007_ISSUANCE_HEADING)),
+                    "exactly one " + _WO007_ISSUANCE_HEADING))
+    elif (_wo005_closed_section(lines, _WO007_ISSUANCE_HEADING)
+          != _WO007_ISSUANCE_RECORD):
+        out.append((rel, "WO-007 issuance record",
+                    "a section that differs from the accepted record",
+                    "exactly " + _WO007_ISSUANCE_RECORD))
+    normalized = " ".join(issued_text.split())
+    if normalized.count(_WO007_ISSUED_NEXT_GATE) != 1:
+        out.append((rel, "WO-007 next gate",
+                    str(normalized.count(_WO007_ISSUED_NEXT_GATE)),
+                    "exactly one " + _WO007_ISSUED_NEXT_GATE))
+    gates = [line for line in lines if line.startswith("NEXT GATE:")]
+    if len(gates) != 1:
+        out.append((rel, "WO-007 next gate", str(len(gates)),
+                    "exactly one NEXT GATE"))
+    normalized_pointer = " ".join(pointer.split())
+    for required in (_WO007_POINTER_OPENING, _WO007_ISSUANCE_POINTER_NOTE,
+                     _WO006_CLOSURE_POINTER_EVIDENCE):
+        if normalized_pointer.count(required) != 1:
+            out.append(("WORKORDER.md", "WO-007 issuance pointer statement",
+                        str(normalized_pointer.count(required)),
+                        "exactly one " + required))
+    if session == "NONE":
+        if normalized_pointer.count(_WO007_ISSUED_RELEASE_TRAIN_AMENDMENT) != 1:
+            out.append(("WORKORDER.md", "WO-007 release-train amendment",
+                        str(normalized_pointer.count(
+                            _WO007_ISSUED_RELEASE_TRAIN_AMENDMENT)),
+                        "exactly one " + _WO007_ISSUED_RELEASE_TRAIN_AMENDMENT))
+        if normalized_pointer.count(_WO006_RELEASE_TRAIN_AMENDMENT):
+            out.append(("WORKORDER.md", "WO-007 release-train amendment",
+                        "the pre-issuance amendment remains",
+                        "only the issued form of the amendment"))
+    return out
+
+
 def _wo006_session_record_findings(pointer, issued_text, rel, session="A"):
     """The current session's records while WO-006 Session A or B is open.
 
@@ -4103,7 +4286,16 @@ def check_work_order_contract() -> list[dict]:
                 f"missing {required!r}", "canonical non-authorizing guidance")
 
     proposals = sorted(proposed_dir.glob("WO-*.md")) if proposed_dir.exists() else []
-    if not proposals:
+    # A proposal is required only while a declared frozen-train order has not
+    # left proposed/. Once every order is issued, completed, or superseded -
+    # as after WO-007's issuance - an empty proposed/ is the correct state.
+    unplaced_train = [
+        name for _id, name in _RELEASE_TRAIN
+        if not any((directory / name).exists()
+                   for directory in (issued_dir, completed_dir,
+                                     superseded_dir))
+    ]
+    if not proposals and unplaced_train:
         add("docs/work-orders/proposed", "proposed work orders", "none", "at least one proposal")
     for path in proposals:
         text = path.read_text(encoding="utf-8")
@@ -4549,6 +4741,13 @@ def check_work_order_contract() -> list[dict]:
             if (issued[0].name == _WO006_NAME
                     and issued_id == _WO006_ID):
                 for _f, _k, _found, _want in _wo006_issuance_findings(
+                    pointer, issued_text,
+                    issued[0].relative_to(root).as_posix(), session,
+                ):
+                    add(_f, _k, _found, _want)
+            if (issued[0].name == _WO007_NAME
+                    and issued_id == _WO007_ID):
+                for _f, _k, _found, _want in _wo007_issuance_findings(
                     pointer, issued_text,
                     issued[0].relative_to(root).as_posix(), session,
                 ):

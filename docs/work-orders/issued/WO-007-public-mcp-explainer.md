@@ -1,14 +1,37 @@
 # WO-007 — Public MCP Composition Explainer
 
-STATUS: PROPOSED
+STATUS: ISSUED
 
-AUTHORIZATION: NOT AUTHORIZED
+AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED
 
 OWNER: Ocean Bennett
 
 PRIORITY: P2
 
 BASELINE: `5d88a4ee56309df43537d289514a150615dfeba6`
+
+ISSUANCE_COMMIT: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
+
+ISSUANCE_CI_WORKFLOW: `37050236355`
+
+ISSUANCE_CI_JOB: `110981533635` — Lint, types, tests
+
+## Issuance basis
+
+The independently accepted revision of this mandate was committed as
+`c04e4a794f1e7d0c607c7ad712cbd28e86a55914`; [CI workflow
+`37050236355`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37050236355)
+completed successfully, including required job
+[`110981533635` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37050236355/job/110981533635).
+Those identify the accepted proposal, not the later commit that records this
+issuance, and they establish nothing about any Session A output. The planning
+baseline above and the revision basis below are preserved unchanged; the train
+state the revision basis describes is the state before this issuance.
+
+Issuance alone grants no implementation authority. Session A, the repository
+explainer and draft variants, needs its own separate owner gate recorded in
+root `WORKORDER.md`, and its proposed live-verification exemption remains
+pending the owner's decision.
 
 ## Revision basis
 
@@ -225,7 +248,7 @@ Decision lock: drafting grants no authority to publish, change the repository
 description, create a Release, or post socially. Every external action requires
 its own owner gate.
 
-NEXT GATE: independent pre-issuance review of this revision by an independent
-architect-reviewer, dispatched by the owner. Issuing WO-007 remains a separate
-owner decision after that, and this proposal grants no review, commit, push,
-issuance, or session authority.
+NEXT GATE: separate owner decision on Session A authorization, recorded in root
+`WORKORDER.md`, together with the owner's decision on its proposed
+live-verification exemption. Issuance authorizes no session, and this mandate
+grants no review, commit, push, or session authority.
