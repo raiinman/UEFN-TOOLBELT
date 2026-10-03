@@ -4,16 +4,19 @@ This file is the repository's sole authority pointer for current Work Order
 state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
-- Current issued Work Order: WO-007
-- Authorized session: A
-- Base commit: `c49905067e6c0d7038c467b3ae6f1116640a904a`
-- Current gate: WO-007 SESSION A AUTHORIZED — EXPLAINER AND PRIVATE DRAFTS ONLY
+- Current issued Work Order: NONE
+- Authorized session: NONE
+- Base commit: `e34e9fcdfb27ef7e443ae4e47799512d5c28489b`
+- Current gate: WO-007 COMPLETED — FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT NOT AUTHORIZED
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
 - Session A authorization commit: `c49905067e6c0d7038c467b3ae6f1116640a904a`
 - Session A authorization CI workflow: `37091060115`
 - Session A authorization CI job: `111111315920` — Lint, types, tests
+- Completion basis commit: `e34e9fcdfb27ef7e443ae4e47799512d5c28489b`
+- Completion basis CI workflow: `37137035181`
+- Completion basis CI job: `111243552871` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -271,7 +274,7 @@ Its closure basis was commit `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`,
 successful CI workflow `36817435116`, and successful required job
 `110225453445` (`Lint, types, tests`).
 
-[`WO-007`](docs/work-orders/issued/WO-007-public-mcp-explainer.md) is issued.
+[`WO-007`](docs/work-orders/completed/WO-007-public-mcp-explainer.md) is completed.
 Its planning baseline is `5d88a4ee56309df43537d289514a150615dfeba6`; the
 independently accepted proposal was committed as
 `c04e4a794f1e7d0c607c7ad712cbd28e86a55914` after [CI workflow
@@ -285,22 +288,35 @@ own separate owner gate recorded in this pointer, and its proposed
 live-verification exemption remained pending the owner's decision at that
 gate.
 
-Session A is authorized under this pointer for the repository explainer and
-the two private drafts only, on the basis of commit
+At the Session A authorization gate, this pointer opened the repository
+explainer and the two private drafts only, on the basis of commit
 `c49905067e6c0d7038c467b3ae6f1116640a904a`, successful CI workflow
 `37091060115`, and successful required job `111111315920` (`Lint, types,
-tests`). That evidence is CI on the issuance commit; it establishes the issued
-mandate, not any Session A output. It covers the Session A scope recorded in
-the issued mandate, unchanged, and ends with its three repository paths
+tests`). That evidence was CI on the issuance commit; it established the issued
+mandate, not any Session A output. That gate covered the Session A scope
+recorded in the mandate, unchanged, and ended with its three repository paths
 uncommitted and its two private drafts held for independent review. The owner
 accepted the proposed live-verification exemption for exactly that scope, with
-offline verification only, on the terms recorded in the mandate; it accepts no
-publication, runtime change, or live activity. Session A opens no publication,
-deploy, UEFN launch, bridge startup, MCP call, benchmark, commit, or push.
-Tagging, Release creation, branch-protection changes, other repository
-metadata changes, and social publication all remain unauthorized, as do WO-007
-completion, version selection, and the final integration/repository-truth
-audit.
+offline verification only, on the terms recorded in the mandate; it accepted
+no publication, runtime change, or live activity. That gate opened no
+publication, deploy, UEFN launch, bridge startup, MCP call, benchmark, commit,
+or push.
+
+WO-007 is completed as `e34e9fcdfb27ef7e443ae4e47799512d5c28489b`; [CI workflow
+`37137035181`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37137035181)
+completed successfully, including required job
+[`111243552871` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37137035181/job/111243552871).
+That commit carries the independently accepted Session A repository output:
+the explainer `docs/OFFICIAL_MCP_AND_TOOLBELT.md`, its drift scan-target
+entry, and the matching test entry. The two accepted drafts stay private;
+their counts and SHA-256 identities are recorded in the completed mandate.
+Completion accepts no benchmark result, performance comparison, version
+choice, or publication, and approves publishing neither draft. WO-007 is
+complete; no session is authorized. With WO-007 completed and WO-006
+superseded, the frozen train meets the completion condition of the
+release-train amendment below. The final integration/repository-truth audit,
+version selection, tagging, Release creation, branch-protection changes, other
+repository metadata changes, and social publication all remain unauthorized.
 
 WO-001 through WO-007 form the frozen next release train. The release version
 remains undecided and the repository stays at version 2.4.1. No tag or GitHub
@@ -315,7 +331,6 @@ measurement. It is resolved for this train, not completed, and its unmet
 requirements stay recorded in its mandate. For the release gate above, the
 frozen train is complete when WO-001 through WO-005 and WO-007 are completed
 and WO-006 remains superseded. This amendment opens no session and grants
-nothing: WO-007 is issued with only Session A authorized, for the repository
-explainer and the two private drafts, and the final
+nothing: WO-007 is completed with no session authorized, and the final
 integration/repository-truth audit and a separate owner decision on any
 release remain required.

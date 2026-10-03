@@ -1,8 +1,8 @@
 # WO-007 — Public MCP Composition Explainer
 
-STATUS: ISSUED
+STATUS: COMPLETED
 
-AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR EXPLAINER AND PRIVATE DRAFTS ONLY
+AUTHORIZATION: COMPLETED — NO SESSION AUTHORIZED
 
 OWNER: Ocean Bennett
 
@@ -21,6 +21,12 @@ SESSION_A_AUTHORIZATION_COMMIT: `c49905067e6c0d7038c467b3ae6f1116640a904a`
 SESSION_A_AUTHORIZATION_CI_WORKFLOW: `37091060115`
 
 SESSION_A_AUTHORIZATION_CI_JOB: `111111315920` — Lint, types, tests
+
+COMPLETION_BASIS_COMMIT: `e34e9fcdfb27ef7e443ae4e47799512d5c28489b`
+
+COMPLETION_BASIS_CI_WORKFLOW: `37137035181`
+
+COMPLETION_BASIS_CI_JOB: `111243552871` — Lint, types, tests
 
 ## Issuance basis
 
@@ -41,27 +47,27 @@ exemption remained pending the owner's decision.
 
 ## Session A authorization basis
 
-Session A is authorized for the repository explainer and the two private
-drafts only under the current root `WORKORDER.md` gate alone. The recorded
-basis is commit `c49905067e6c0d7038c467b3ae6f1116640a904a`; [CI workflow
+At the Session A authorization gate, Session A was authorized for the
+repository explainer and the two private drafts only under the root
+`WORKORDER.md` gate. The recorded basis is commit `c49905067e6c0d7038c467b3ae6f1116640a904a`; [CI workflow
 `37091060115`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37091060115)
 completed successfully, including required job
 [`111111315920` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37091060115/job/111111315920).
 That commit recorded this mandate's issuance, and its CI tested the
 repository's checker and tests at that commit. Both are issuance evidence:
-they establish nothing about any Session A output, which does not exist yet
-and needs its own independent review and CI evidence.
+they establish nothing about any Session A output, which did not exist at
+that gate and needed its own independent review and CI evidence.
 
-This gate covers exactly the scope in "Proposed Session A — repository
+That gate covered exactly the scope in "Proposed Session A — repository
 explainer and draft variants" below, unchanged: the explainer at
 `docs/OFFICIAL_MCP_AND_TOOLBELT.md`, one `SCAN_FILES` entry for it in
 `scripts/drift_check.py`, the matching scan-target entry in
 `tests/test_repo_integrity.py`, and the two private drafts outside the
 repository, under the evidence sources, the benchmark disclosure, the
 acceptance criteria, the exclusions, the cleanup duties, and the proportional
-checks recorded there. Session A ends with its three repository paths
+checks recorded there. Session A ended with its three repository paths
 uncommitted and its two drafts held privately, for independent review. It
-opens no publication, deploy, editor launch, bridge startup, MCP call,
+opened no publication, deploy, editor launch, bridge startup, MCP call,
 benchmark, commit, or push. The planning baseline and the issuance evidence
 above are preserved unchanged, and neither is the Session A basis.
 
@@ -80,6 +86,35 @@ for exactly that scope and on these terms only:
 - Any runtime, editor, or live need found during Session A stops it for a
   new owner decision; it does not silently widen this exemption.
 - It grants no commit or push.
+
+## Completion record
+
+WO-007 is completed as `e34e9fcdfb27ef7e443ae4e47799512d5c28489b`; [CI workflow
+`37137035181`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37137035181)
+completed successfully, including required job
+[`111243552871` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37137035181/job/111243552871).
+That commit carries the independently accepted Session A repository output,
+the three-path scope in "Proposed Session A — repository explainer and draft
+variants" below: the explainer at `docs/OFFICIAL_MCP_AND_TOOLBELT.md`, its one
+`SCAN_FILES` entry, and the matching required scan-target entry.
+
+The owner accepted the independently reviewed Session A outputs as completed
+explainer-and-draft preparation. The two drafts stay private, outside the
+repository; only their accepted public-copy counts and SHA-256 identities are
+recorded here:
+
+- Release-note draft: 299 words by `len(text.split())`; SHA-256
+  `f136d95f817bec11d6b0eb2e1638d0e1343d7ba9ccf23ef53053d992eaf16580`.
+- X draft: 273 characters under the counting rule in "Acceptance criteria"
+  below; SHA-256
+  `354414fd3f037aede92ee7b3702ce81854866b7a43b1cddb830d148e3910e2a0`.
+
+This acceptance does not approve publishing either private draft or authorize
+a release. Completion accepts no benchmark result, performance comparison,
+version choice, or publication.
+
+WO-007 is complete; no session is authorized. The final
+integration/repository-truth audit is not authorized.
 
 ## Revision basis
 
@@ -296,9 +331,8 @@ Decision lock: drafting grants no authority to publish, change the repository
 description, create a Release, or post socially. Every external action requires
 its own owner gate.
 
-NEXT GATE: execution of the accepted Session A scope, limited to the repository
-explainer, its one scan-target entry and matching test entry, and the two
-private drafts, ending with the three repository paths uncommitted and the
-drafts held privately for independent review. Publication, deploy, live
-activity, commit, push, WO-007 completion, version selection, and the final
-integration/repository-truth audit remain closed.
+NEXT GATE: separate owner authorization for the final
+integration/repository-truth audit of the frozen WO-001 through WO-007 train,
+after this completion transition is accepted, committed, pushed, and green.
+Completion of WO-007 authorizes no audit, version selection, tag, GitHub
+Release, repository-metadata change, or publication.

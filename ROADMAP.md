@@ -3,11 +3,11 @@
 > This is a living document. Items move between phases as priorities shift.
 > Current version: **v2.4.1** · Last completed phase: **21**
 >
-> Work Order track: WO-001 through WO-005 are completed. WO-006 is closed as
-> superseded without an accepted measurement; no session is authorized. The
-> frozen release train remains WO-001 through WO-007, with WO-006 resolved as
-> superseded rather than completed; WO-007 is issued, and its Session A is
-> authorized for the repository explainer and private drafts only.
+> Work Order track: WO-001 through WO-005 and WO-007 are completed. WO-006 is
+> closed as superseded without an accepted measurement; no session is
+> authorized. The frozen release train remains WO-001 through WO-007, with
+> WO-006 resolved as superseded rather than completed; the final
+> integration/repository-truth audit is not authorized.
 > This roadmap grants no implementation authority — root
 > [`WORKORDER.md`](WORKORDER.md) is the sole current gate.
 
