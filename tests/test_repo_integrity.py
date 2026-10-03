@@ -136,6 +136,7 @@ def test_drift_check_covers_agent_context_surfaces(repo_root):
         "CONTRIBUTING.md",
         "llms.txt",
         "docs/PIPELINE.md",
+        "docs/OFFICIAL_MCP_AND_TOOLBELT.md",
         "docs/audits/2026-08-24-uefn-42-official-mcp-audit.md",
         "docs/audits/2026-09-10-wo004-session-a-modal-feasibility.md",
         "docs/audits/evidence/2026-08-24-official-mcp-signatures.json",

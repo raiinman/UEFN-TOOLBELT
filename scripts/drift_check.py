@@ -79,6 +79,7 @@ SCAN_FILES = [
     "docs/uefn_python_capabilities.md",
     "docs/SCHEMA_EXPLORER.md",
     "docs/PIPELINE.md",
+    "docs/OFFICIAL_MCP_AND_TOOLBELT.md",
     "docs/audits/2026-08-24-uefn-42-official-mcp-audit.md",
     "docs/audits/2026-09-10-wo004-session-a-modal-feasibility.md",
     "docs/audits/evidence/2026-08-24-official-mcp-signatures.json",
