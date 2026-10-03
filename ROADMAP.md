@@ -6,7 +6,8 @@
 > Work Order track: WO-001 through WO-005 are completed. WO-006 is closed as
 > superseded without an accepted measurement; no session is authorized. The
 > frozen release train remains WO-001 through WO-007, with WO-006 resolved as
-> superseded rather than completed; WO-007 is issued with no session authorized.
+> superseded rather than completed; WO-007 is issued, and its Session A is
+> authorized for the repository explainer and private drafts only.
 > This roadmap grants no implementation authority — root
 > [`WORKORDER.md`](WORKORDER.md) is the sole current gate.
 

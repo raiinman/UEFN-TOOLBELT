@@ -5,12 +5,15 @@ state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
 - Current issued Work Order: WO-007
-- Authorized session: NONE
-- Base commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
-- Current gate: WO-007 ISSUED — SESSION A IMPLEMENTATION NOT AUTHORIZED
+- Authorized session: A
+- Base commit: `c49905067e6c0d7038c467b3ae6f1116640a904a`
+- Current gate: WO-007 SESSION A AUTHORIZED — EXPLAINER AND PRIVATE DRAFTS ONLY
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
+- Session A authorization commit: `c49905067e6c0d7038c467b3ae6f1116640a904a`
+- Session A authorization CI workflow: `37091060115`
+- Session A authorization CI job: `111111315920` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -276,12 +279,28 @@ independently accepted proposal was committed as
 completed successfully, including required job
 [`110981533635` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37050236355/job/110981533635).
 
-Issuance grants no implementation authority and opens no session. Session A,
-the repository explainer and draft variants, needs its own separate owner gate
-recorded in this pointer, and its proposed live-verification exemption remains
-pending the owner's decision. Tagging, Release creation, branch-protection
-changes, other repository metadata changes, and social publication all remain
-unauthorized.
+At its issuance gate, WO-007 gave no implementation authority and opened no
+session. Session A, the repository explainer and draft variants, needed its
+own separate owner gate recorded in this pointer, and its proposed
+live-verification exemption remained pending the owner's decision at that
+gate.
+
+Session A is authorized under this pointer for the repository explainer and
+the two private drafts only, on the basis of commit
+`c49905067e6c0d7038c467b3ae6f1116640a904a`, successful CI workflow
+`37091060115`, and successful required job `111111315920` (`Lint, types,
+tests`). That evidence is CI on the issuance commit; it establishes the issued
+mandate, not any Session A output. It covers the Session A scope recorded in
+the issued mandate, unchanged, and ends with its three repository paths
+uncommitted and its two private drafts held for independent review. The owner
+accepted the proposed live-verification exemption for exactly that scope, with
+offline verification only, on the terms recorded in the mandate; it accepts no
+publication, runtime change, or live activity. Session A opens no publication,
+deploy, UEFN launch, bridge startup, MCP call, benchmark, commit, or push.
+Tagging, Release creation, branch-protection changes, other repository
+metadata changes, and social publication all remain unauthorized, as do WO-007
+completion, version selection, and the final integration/repository-truth
+audit.
 
 WO-001 through WO-007 form the frozen next release train. The release version
 remains undecided and the repository stays at version 2.4.1. No tag or GitHub
@@ -296,6 +315,7 @@ measurement. It is resolved for this train, not completed, and its unmet
 requirements stay recorded in its mandate. For the release gate above, the
 frozen train is complete when WO-001 through WO-005 and WO-007 are completed
 and WO-006 remains superseded. This amendment opens no session and grants
-nothing: WO-007 is issued with every session still unauthorized, and the final
+nothing: WO-007 is issued with only Session A authorized, for the repository
+explainer and the two private drafts, and the final
 integration/repository-truth audit and a separate owner decision on any
 release remain required.

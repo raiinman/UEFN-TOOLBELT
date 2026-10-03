@@ -2,7 +2,7 @@
 
 STATUS: ISSUED
 
-AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED
+AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR EXPLAINER AND PRIVATE DRAFTS ONLY
 
 OWNER: Ocean Bennett
 
@@ -16,6 +16,12 @@ ISSUANCE_CI_WORKFLOW: `37050236355`
 
 ISSUANCE_CI_JOB: `110981533635` — Lint, types, tests
 
+SESSION_A_AUTHORIZATION_COMMIT: `c49905067e6c0d7038c467b3ae6f1116640a904a`
+
+SESSION_A_AUTHORIZATION_CI_WORKFLOW: `37091060115`
+
+SESSION_A_AUTHORIZATION_CI_JOB: `111111315920` — Lint, types, tests
+
 ## Issuance basis
 
 The independently accepted revision of this mandate was committed as
@@ -28,10 +34,52 @@ issuance, and they establish nothing about any Session A output. The planning
 baseline above and the revision basis below are preserved unchanged; the train
 state the revision basis describes is the state before this issuance.
 
-Issuance alone grants no implementation authority. Session A, the repository
-explainer and draft variants, needs its own separate owner gate recorded in
-root `WORKORDER.md`, and its proposed live-verification exemption remains
-pending the owner's decision.
+Issuance alone granted no implementation authority. At that gate, Session A,
+the repository explainer and draft variants, needed its own separate owner
+gate recorded in root `WORKORDER.md`, and its proposed live-verification
+exemption remained pending the owner's decision.
+
+## Session A authorization basis
+
+Session A is authorized for the repository explainer and the two private
+drafts only under the current root `WORKORDER.md` gate alone. The recorded
+basis is commit `c49905067e6c0d7038c467b3ae6f1116640a904a`; [CI workflow
+`37091060115`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37091060115)
+completed successfully, including required job
+[`111111315920` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37091060115/job/111111315920).
+That commit recorded this mandate's issuance, and its CI tested the
+repository's checker and tests at that commit. Both are issuance evidence:
+they establish nothing about any Session A output, which does not exist yet
+and needs its own independent review and CI evidence.
+
+This gate covers exactly the scope in "Proposed Session A — repository
+explainer and draft variants" below, unchanged: the explainer at
+`docs/OFFICIAL_MCP_AND_TOOLBELT.md`, one `SCAN_FILES` entry for it in
+`scripts/drift_check.py`, the matching scan-target entry in
+`tests/test_repo_integrity.py`, and the two private drafts outside the
+repository, under the evidence sources, the benchmark disclosure, the
+acceptance criteria, the exclusions, the cleanup duties, and the proportional
+checks recorded there. Session A ends with its three repository paths
+uncommitted and its two drafts held privately, for independent review. It
+opens no publication, deploy, editor launch, bridge startup, MCP call,
+benchmark, commit, or push. The planning baseline and the issuance evidence
+above are preserved unchanged, and neither is the Session A basis.
+
+## Session A live-verification exemption
+
+The owner accepted the live-verification exemption proposed for Session A
+under "Proposed Session A — repository explainer and draft variants" below,
+for exactly that scope and on these terms only:
+
+- It covers only the repository explainer, one `SCAN_FILES` entry for it in
+  `scripts/drift_check.py`, the matching scan-target entry in
+  `tests/test_repo_integrity.py`, and the two private drafts outside the
+  repository.
+- Verification is offline only.
+- It accepts no publication, runtime change, or live activity.
+- Any runtime, editor, or live need found during Session A stops it for a
+  new owner decision; it does not silently widen this exemption.
+- It grants no commit or push.
 
 ## Revision basis
 
@@ -248,7 +296,9 @@ Decision lock: drafting grants no authority to publish, change the repository
 description, create a Release, or post socially. Every external action requires
 its own owner gate.
 
-NEXT GATE: separate owner decision on Session A authorization, recorded in root
-`WORKORDER.md`, together with the owner's decision on its proposed
-live-verification exemption. Issuance authorizes no session, and this mandate
-grants no review, commit, push, or session authority.
+NEXT GATE: execution of the accepted Session A scope, limited to the repository
+explainer, its one scan-target entry and matching test entry, and the two
+private drafts, ending with the three repository paths uncommitted and the
+drafts held privately for independent review. Publication, deploy, live
+activity, commit, push, WO-007 completion, version selection, and the final
+integration/repository-truth audit remain closed.

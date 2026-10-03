@@ -3449,25 +3449,232 @@ _WO007_ISSUED_RELEASE_TRAIN_AMENDMENT = (
     "separate owner decision on any release remain required."
 )
 
+# Authorizing Session A adds three declarations to each canonical block and
+# moves the base to the Session A authorization commit, as WO-005's and
+# WO-006's did. That commit recorded WO-007's issuance, and its CI tested the
+# repository's checker and tests there: it is issuance evidence, never evidence
+# for a Session A output.
+_WO007_SESSION_A_COMMIT = "c49905067e6c0d7038c467b3ae6f1116640a904a"
+_WO007_SESSION_A_WORKFLOW = "37091060115"
+_WO007_SESSION_A_JOB = "111111315920"
+_WO007_SESSION_A_GATE = (
+    "WO-007 SESSION A AUTHORIZED — EXPLAINER AND PRIVATE DRAFTS ONLY"
+)
+_WO007_SESSION_A_AUTH = (
+    "AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR EXPLAINER AND PRIVATE "
+    "DRAFTS ONLY"
+)
+_WO007_SESSION_A_ISSUED_SEQUENCE = _WO007_ISSUED_SEQUENCE + (
+    "SESSION_A_AUTHORIZATION_COMMIT: `" + _WO007_SESSION_A_COMMIT + "`",
+    "SESSION_A_AUTHORIZATION_CI_WORKFLOW: `"
+    + _WO007_SESSION_A_WORKFLOW + "`",
+    "SESSION_A_AUTHORIZATION_CI_JOB: `" + _WO007_SESSION_A_JOB + "` "
+    + "— Lint, types, tests",
+)
+_WO007_SESSION_A_POINTER_SEQUENCE = (
+    _WO007_POINTER_SEQUENCE[:2]
+    + ("- Base commit: `" + _WO007_SESSION_A_COMMIT + "`",)
+    + _WO007_POINTER_SEQUENCE[3:7]
+    + ("- Session A authorization commit: `"
+       + _WO007_SESSION_A_COMMIT + "`",
+       "- Session A authorization CI workflow: `"
+       + _WO007_SESSION_A_WORKFLOW + "`",
+       "- Session A authorization CI job: `" + _WO007_SESSION_A_JOB + "` "
+       + "— Lint, types, tests")
+    + _WO007_POINTER_SEQUENCE[7:]
+)
+_WO007_SESSION_A_POINTER_KEYS = (
+    (("- Base commit:", _WO007_SESSION_A_POINTER_SEQUENCE[2]),)
+    + _WO007_POINTER_KEYS[1:]
+    + (("- Session A authorization commit:",
+        _WO007_SESSION_A_POINTER_SEQUENCE[7]),
+       ("- Session A authorization CI workflow:",
+        _WO007_SESSION_A_POINTER_SEQUENCE[8]),
+       ("- Session A authorization CI job:",
+        _WO007_SESSION_A_POINTER_SEQUENCE[9]))
+)
+_WO007_SESSION_A_ISSUED_KEYS = _WO007_ISSUED_KEYS + (
+    ("SESSION_A_AUTHORIZATION_COMMIT:", _WO007_SESSION_A_ISSUED_SEQUENCE[4]),
+    ("SESSION_A_AUTHORIZATION_CI_WORKFLOW:",
+     _WO007_SESSION_A_ISSUED_SEQUENCE[5]),
+    ("SESSION_A_AUTHORIZATION_CI_JOB:", _WO007_SESSION_A_ISSUED_SEQUENCE[6]),
+)
+# Once Session A opens, the issuance basis keeps its evidence and reads its
+# closing note as history: the exemption it called pending is decided.
+_WO007_ISSUANCE_HISTORY_RECORD = (
+    _WO007_ISSUANCE_RECORD.split(" Issuance alone grants")[0]
+    + " Issuance alone granted no implementation authority. At that gate, "
+    "Session A, the repository explainer and draft variants, needed its own "
+    "separate owner gate recorded in root `WORKORDER.md`, and its proposed "
+    "live-verification exemption remained pending the owner's decision."
+)
+# The Session A record in the mandate, WO-005's pattern: the authorization
+# basis and the accepted exemption are closed records, each equal to its
+# accepted text, under four unique, consecutive headings. The exemption
+# record pins the owner's decision and its exact offline scope, and the
+# proposal paragraph it answers stays verbatim, exactly once.
+_WO007_SESSION_A_BASIS_HEADING = "## Session A authorization basis"
+_WO007_EXEMPTION_HEADING = "## Session A live-verification exemption"
+_WO007_SESSION_A_HEADINGS = (
+    _WO007_ISSUANCE_HEADING,
+    _WO007_SESSION_A_BASIS_HEADING,
+    _WO007_EXEMPTION_HEADING,
+    "## Revision basis",
+)
+_WO007_SESSION_A_RUN_URL = (
+    "https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _WO007_SESSION_A_WORKFLOW
+)
+_WO007_SESSION_A_SCOPE_TITLE = (
+    "\"Proposed Session A — repository explainer and draft variants\" below"
+)
+_WO007_SESSION_A_BASIS_RECORD = (
+    _WO007_SESSION_A_BASIS_HEADING + " Session A is authorized for the "
+    "repository explainer and the two private drafts only under the current "
+    "root `WORKORDER.md` gate alone. The recorded basis is commit `"
+    + _WO007_SESSION_A_COMMIT + "`; [CI workflow `"
+    + _WO007_SESSION_A_WORKFLOW + "`](" + _WO007_SESSION_A_RUN_URL
+    + ") completed successfully, including required job [`"
+    + _WO007_SESSION_A_JOB + "` — Lint, types, tests]("
+    + _WO007_SESSION_A_RUN_URL + "/job/" + _WO007_SESSION_A_JOB + "). That "
+    "commit recorded this mandate's issuance, and its CI tested the "
+    "repository's checker and tests at that commit. Both are issuance "
+    "evidence: they establish nothing about any Session A output, which does "
+    "not exist yet and needs its own independent review and CI evidence. This "
+    "gate covers exactly the scope in " + _WO007_SESSION_A_SCOPE_TITLE
+    + ", unchanged: the explainer at `docs/OFFICIAL_MCP_AND_TOOLBELT.md`, one "
+    "`SCAN_FILES` entry for it in `scripts/drift_check.py`, the matching "
+    "scan-target entry in `tests/test_repo_integrity.py`, and the two private "
+    "drafts outside the repository, under the evidence sources, the benchmark "
+    "disclosure, the acceptance criteria, the exclusions, the cleanup duties, "
+    "and the proportional checks recorded there. Session A ends with its three "
+    "repository paths uncommitted and its two drafts held privately, for "
+    "independent review. It opens no publication, deploy, editor launch, "
+    "bridge startup, MCP call, benchmark, commit, or push. The planning "
+    "baseline and the issuance evidence above are preserved unchanged, and "
+    "neither is the Session A basis."
+)
+_WO007_EXEMPTION_RECORD = (
+    _WO007_EXEMPTION_HEADING + " The owner accepted the live-verification "
+    "exemption proposed for Session A under " + _WO007_SESSION_A_SCOPE_TITLE
+    + ", for exactly that scope and on these terms only: - It covers only the "
+    "repository explainer, one `SCAN_FILES` entry for it in "
+    "`scripts/drift_check.py`, the matching scan-target entry in "
+    "`tests/test_repo_integrity.py`, and the two private drafts outside the "
+    "repository. - Verification is offline only. - It accepts no "
+    "publication, runtime change, or live activity. - Any runtime, editor, or "
+    "live need found during Session A stops it for a new owner decision; it "
+    "does not silently widen this exemption. - It grants no commit or push."
+)
+_WO007_EXEMPTION_PROPOSAL = (
+    "Proposed live-verification exemption, offered for the owner's decision "
+    "and not accepted by this proposal: Session A's whole scope is the "
+    "explainer, one `SCAN_FILES` entry in `scripts/drift_check.py`, the "
+    "matching scan-target entry in `tests/test_repo_integrity.py`, and the "
+    "two private drafts outside the repository. It runs nothing in UEFN and "
+    "touches no runtime path, so its verification would be offline only. The "
+    "owner may accept it, narrow it, or require a live check at the Session A "
+    "gate."
+)
+_WO007_SESSION_A_NEXT_GATE = (
+    "NEXT GATE: execution of the accepted Session A scope, limited to the "
+    "repository explainer, its one scan-target entry and matching test entry, "
+    "and the two private drafts, ending with the three repository paths "
+    "uncommitted and the drafts held privately for independent review. "
+    "Publication, deploy, live activity, commit, push, WO-007 completion, "
+    "version selection, and the final integration/repository-truth audit "
+    "remain closed."
+)
+# The pointer's own Session A record: the issuance note as history, then the
+# record with its basis evidence and the accepted exemption. The record occurs
+# once, and once more anchored to the note before it, which occurs once too.
+_WO007_ISSUANCE_POINTER_HISTORY = (
+    "At its issuance gate, WO-007 gave no implementation authority and opened "
+    "no session. Session A, the repository explainer and draft variants, "
+    "needed its own separate owner gate recorded in this pointer, and its "
+    "proposed live-verification exemption remained pending the owner's "
+    "decision at that gate."
+)
+_WO007_SESSION_A_POINTER_RECORD = (
+    "Session A is authorized under this pointer for the repository explainer "
+    "and the two private drafts only, on the basis of commit `"
+    + _WO007_SESSION_A_COMMIT + "`, successful CI workflow `"
+    + _WO007_SESSION_A_WORKFLOW + "`, and successful required job `"
+    + _WO007_SESSION_A_JOB + "` (`Lint, types, tests`). That evidence is CI "
+    "on the issuance commit; it establishes the issued mandate, not any "
+    "Session A output. It covers the Session A scope recorded in the issued "
+    "mandate, unchanged, and ends with its three repository paths uncommitted "
+    "and its two private drafts held for independent review. The owner "
+    "accepted the proposed live-verification exemption for exactly that "
+    "scope, with offline verification only, on the terms recorded in the "
+    "mandate; it accepts no publication, runtime change, or live activity. "
+    "Session A opens no publication, deploy, UEFN launch, bridge startup, MCP "
+    "call, benchmark, commit, or push."
+)
+_WO007_SESSION_A_POINTER_ANCHORED = (
+    _WO007_ISSUANCE_POINTER_HISTORY + " " + _WO007_SESSION_A_POINTER_RECORD
+)
+# While Session A is open, the release-train amendment keeps every
+# substantive term; only its WO-007 clause names the one open session. The
+# issued and pre-issuance forms must both be gone.
+_WO007_SESSION_A_RELEASE_TRAIN_AMENDMENT = (
+    _WO007_ISSUED_RELEASE_TRAIN_AMENDMENT.replace(
+        "WO-007 is issued with every session still unauthorized,",
+        "WO-007 is issued with only Session A authorized, for the repository "
+        "explainer and the two private drafts,")
+)
+# The only statements allowed to grant WO-007's Session A anything: the
+# gate and marker, checked exactly by the Session A branch, and the records
+# the WO-007 checks pin exactly.
+_WO007_SESSION_A_CANONICAL = (
+    _WO007_SESSION_A_GATE,
+    _WO007_SESSION_A_AUTH,
+    _WO007_SESSION_A_BASIS_RECORD,
+    _WO007_EXEMPTION_RECORD,
+    _WO007_EXEMPTION_PROPOSAL,
+    _WO007_SESSION_A_POINTER_RECORD,
+    _WO007_ISSUANCE_POINTER_HISTORY,
+    _WO007_SESSION_A_NEXT_GATE,
+    _WO007_SESSION_A_RELEASE_TRAIN_AMENDMENT,
+)
+
 
 def _wo007_issuance_findings(pointer, issued_text, rel, session):
     """WO-007's issuance record while it is issued.
 
     The WO-006 issuance pattern: the canonical slices on both surfaces, plus
     the mandate's closed issuance-basis section and its single next gate, and
-    the pointer's issuance paragraph, issuance note, and WO-006 closure
-    evidence, each exactly once. With no session open, the release-train
-    amendment must read in its issued form exactly once, and its
-    pre-issuance form must be gone. The gate, the marker, and the session
-    value are checked by the branches that call this.
+    the pointer's issuance paragraph and WO-006 closure evidence, each exactly
+    once. With no session open, the issuance note occurs exactly once and the
+    release-train amendment reads in its issued form exactly once, its
+    pre-issuance form gone. Once Session A is authorized, the slices carry
+    the Session A declarations and base, the issuance basis reads its note as
+    history, the next gate is Session A's, the present-tense issuance note is
+    gone, and the amendment reads in its Session A form exactly once, both
+    earlier forms gone. The gate, the marker, and the session value are
+    checked by the branches that call this.
     """
     out = []
-    for target, text, stop, sequence, keys, where in (
+    session_a = session == "A"
+    shapes: tuple[tuple[tuple[str, ...], tuple[tuple[str, str], ...]], ...]
+    if session_a:
+        shapes = ((_WO007_SESSION_A_POINTER_SEQUENCE,
+                   _WO007_SESSION_A_POINTER_KEYS),
+                  (_WO007_SESSION_A_ISSUED_SEQUENCE,
+                   _WO007_SESSION_A_ISSUED_KEYS))
+        issuance_record = _WO007_ISSUANCE_HISTORY_RECORD
+        next_gate = _WO007_SESSION_A_NEXT_GATE
+    else:
+        shapes = ((_WO007_POINTER_SEQUENCE, _WO007_POINTER_KEYS),
+                  (_WO007_ISSUED_SEQUENCE, _WO007_ISSUED_KEYS))
+        issuance_record = _WO007_ISSUANCE_RECORD
+        next_gate = _WO007_ISSUED_NEXT_GATE
+    for target, text, stop, (sequence, keys), where in (
         ("WORKORDER.md", pointer,
          lambda line: _WO001_COMPLETED_LINK in line,
-         _WO007_POINTER_SEQUENCE, _WO007_POINTER_KEYS, "WORKORDER.md"),
+         shapes[0], "WORKORDER.md"),
         (rel, issued_text, lambda line: line.startswith("## "),
-         _WO007_ISSUED_SEQUENCE, _WO007_ISSUED_KEYS, "issued record"),
+         shapes[1], "issued record"),
     ):
         for kind, found, want in _canonical_field_findings(
             text, sequence, stop, where,
@@ -3486,36 +3693,105 @@ def _wo007_issuance_findings(pointer, issued_text, rel, session):
                     str(headings.count(_WO007_ISSUANCE_HEADING)),
                     "exactly one " + _WO007_ISSUANCE_HEADING))
     elif (_wo005_closed_section(lines, _WO007_ISSUANCE_HEADING)
-          != _WO007_ISSUANCE_RECORD):
+          != issuance_record):
         out.append((rel, "WO-007 issuance record",
                     "a section that differs from the accepted record",
-                    "exactly " + _WO007_ISSUANCE_RECORD))
+                    "exactly " + issuance_record))
     normalized = " ".join(issued_text.split())
-    if normalized.count(_WO007_ISSUED_NEXT_GATE) != 1:
+    if normalized.count(next_gate) != 1:
         out.append((rel, "WO-007 next gate",
-                    str(normalized.count(_WO007_ISSUED_NEXT_GATE)),
-                    "exactly one " + _WO007_ISSUED_NEXT_GATE))
+                    str(normalized.count(next_gate)),
+                    "exactly one " + next_gate))
     gates = [line for line in lines if line.startswith("NEXT GATE:")]
     if len(gates) != 1:
         out.append((rel, "WO-007 next gate", str(len(gates)),
                     "exactly one NEXT GATE"))
     normalized_pointer = " ".join(pointer.split())
-    for required in (_WO007_POINTER_OPENING, _WO007_ISSUANCE_POINTER_NOTE,
-                     _WO006_CLOSURE_POINTER_EVIDENCE):
+    for required in (_WO007_POINTER_OPENING, _WO006_CLOSURE_POINTER_EVIDENCE):
         if normalized_pointer.count(required) != 1:
             out.append(("WORKORDER.md", "WO-007 issuance pointer statement",
                         str(normalized_pointer.count(required)),
                         "exactly one " + required))
-    if session == "NONE":
-        if normalized_pointer.count(_WO007_ISSUED_RELEASE_TRAIN_AMENDMENT) != 1:
-            out.append(("WORKORDER.md", "WO-007 release-train amendment",
-                        str(normalized_pointer.count(
-                            _WO007_ISSUED_RELEASE_TRAIN_AMENDMENT)),
-                        "exactly one " + _WO007_ISSUED_RELEASE_TRAIN_AMENDMENT))
-        if normalized_pointer.count(_WO006_RELEASE_TRAIN_AMENDMENT):
-            out.append(("WORKORDER.md", "WO-007 release-train amendment",
-                        "the pre-issuance amendment remains",
-                        "only the issued form of the amendment"))
+    note_count = normalized_pointer.count(_WO007_ISSUANCE_POINTER_NOTE)
+    if session_a and note_count:
+        out.append(("WORKORDER.md", "WO-007 issuance pointer statement",
+                    "the present-tense issuance note remains",
+                    "the issuance note recorded as history"))
+    elif not session_a and note_count != 1:
+        out.append(("WORKORDER.md", "WO-007 issuance pointer statement",
+                    str(note_count),
+                    "exactly one " + _WO007_ISSUANCE_POINTER_NOTE))
+    stale_forms: tuple[str, ...]
+    if session_a:
+        current_form = _WO007_SESSION_A_RELEASE_TRAIN_AMENDMENT
+        stale_forms = (_WO007_ISSUED_RELEASE_TRAIN_AMENDMENT,
+                       _WO006_RELEASE_TRAIN_AMENDMENT)
+    elif session == "NONE":
+        current_form = _WO007_ISSUED_RELEASE_TRAIN_AMENDMENT
+        stale_forms = (_WO006_RELEASE_TRAIN_AMENDMENT,)
+    else:
+        return out
+    if normalized_pointer.count(current_form) != 1:
+        out.append(("WORKORDER.md", "WO-007 release-train amendment",
+                    str(normalized_pointer.count(current_form)),
+                    "exactly one " + current_form))
+    if any(normalized_pointer.count(stale) for stale in stale_forms):
+        out.append(("WORKORDER.md", "WO-007 release-train amendment",
+                    "an earlier form of the amendment remains",
+                    "only the current form of the amendment"))
+    return out
+
+
+def _wo007_session_a_record_findings(pointer, issued_text, rel):
+    """Session A's record while WO-007 Session A is open.
+
+    WO-005's pattern: the four headings are unique and consecutive in the
+    canonical order; the authorization basis and the accepted exemption are
+    closed records, each equal to its accepted text; the proposal paragraph
+    the exemption answers occurs exactly once, verbatim; and the pointer's
+    historical issuance note, Session A record, and the record anchored to
+    the note each occur exactly once. The issuance-side checks, including
+    the next gate and the amendment, run in _wo007_issuance_findings.
+    """
+    out = []
+    normalized_pointer = " ".join(pointer.split())
+    for required in (_WO007_ISSUANCE_POINTER_HISTORY,
+                     _WO007_SESSION_A_POINTER_RECORD,
+                     _WO007_SESSION_A_POINTER_ANCHORED):
+        if normalized_pointer.count(required) != 1:
+            out.append(("WORKORDER.md", "WO-007 Session A pointer statement",
+                        str(normalized_pointer.count(required)),
+                        "exactly one " + required))
+    lines = [line.strip() for line in issued_text.splitlines()]
+    headings = [line for line in lines if line.startswith("## ")]
+    unique = True
+    for heading in _WO007_SESSION_A_HEADINGS:
+        if headings.count(heading) != 1:
+            unique = False
+            out.append((rel, "WO-007 Session A record heading",
+                        str(headings.count(heading)), "exactly one " + heading))
+    if unique:
+        first = headings.index(_WO007_SESSION_A_HEADINGS[0])
+        found = tuple(headings[first:first + len(_WO007_SESSION_A_HEADINGS)])
+        if found != _WO007_SESSION_A_HEADINGS:
+            out.append((rel, "WO-007 Session A record heading",
+                        " / ".join(found),
+                        "consecutive " + " / ".join(_WO007_SESSION_A_HEADINGS)))
+    for heading, record, kind in (
+        (_WO007_SESSION_A_BASIS_HEADING, _WO007_SESSION_A_BASIS_RECORD,
+         "WO-007 Session A authorization statement"),
+        (_WO007_EXEMPTION_HEADING, _WO007_EXEMPTION_RECORD,
+         "WO-007 Session A exemption record"),
+    ):
+        if headings.count(heading) == 1:
+            if _wo005_closed_section(lines, heading) != record:
+                out.append((rel, kind, "a section that differs from the "
+                            "accepted record", "exactly " + record))
+    normalized = " ".join(issued_text.split())
+    if normalized.count(_WO007_EXEMPTION_PROPOSAL) != 1:
+        out.append((rel, "WO-007 Session A exemption record",
+                    str(normalized.count(_WO007_EXEMPTION_PROPOSAL)),
+                    "exactly one " + _WO007_EXEMPTION_PROPOSAL))
     return out
 
 
@@ -5064,6 +5340,9 @@ def check_work_order_contract() -> list[dict]:
                 # WO-006's is limited to the offline design and harness.
                 wo006_session_a = (issued[0].name == _WO006_NAME
                                    and issued_id == _WO006_ID)
+                # WO-007's is limited to the explainer and private drafts.
+                wo007_session_a = (issued[0].name == _WO007_NAME
+                                   and issued_id == _WO007_ID)
                 if wo004_session_a:
                     expected_gate = _WO004_SESSION_A_GATE
                     expected_session_a_auth = _WO004_SESSION_A_AUTH
@@ -5073,6 +5352,9 @@ def check_work_order_contract() -> list[dict]:
                 elif wo006_session_a:
                     expected_gate = _WO006_SESSION_A_GATE
                     expected_session_a_auth = _WO006_SESSION_A_AUTH
+                elif wo007_session_a:
+                    expected_gate = _WO007_SESSION_A_GATE
+                    expected_session_a_auth = _WO007_SESSION_A_AUTH
                 else:
                     expected_gate = (
                         f"{issued_id} SESSION A AUTHORIZED — IMPLEMENT "
@@ -5121,6 +5403,29 @@ def check_work_order_contract() -> list[dict]:
                     ):
                         for _statement in _current_session_widening(
                             _text, "A", _WO006_SESSION_A_CANONICAL
+                        ):
+                            add(_file, "current session widening",
+                                _statement[:200],
+                                "no grant to Session A beyond its pinned "
+                                "records")
+                if wo007_session_a:
+                    # Likewise for WO-007: the canonical slices, base, next
+                    # gate, and amendment come from _wo007_issuance_findings;
+                    # this adds the closed Session A and exemption records and
+                    # the pointer statement, then WO-006's widening scan with
+                    # WO-007's pinned records.
+                    for _f, _k, _found, _want in (
+                        _wo007_session_a_record_findings(
+                            pointer, issued_text,
+                            issued[0].relative_to(root).as_posix())
+                    ):
+                        add(_f, _k, _found, _want)
+                    for _file, _text in (
+                        ("WORKORDER.md", pointer),
+                        (issued[0].relative_to(root).as_posix(), issued_text),
+                    ):
+                        for _statement in _current_session_widening(
+                            _text, "A", _WO007_SESSION_A_CANONICAL
                         ):
                             add(_file, "current session widening",
                                 _statement[:200],
