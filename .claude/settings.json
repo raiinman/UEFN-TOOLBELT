@@ -5,7 +5,6 @@
     "pr": ""
   },
   "includeGitInstructions": false,
-  "enableAllProjectMcpServers": true,
   "cleanupPeriodDays": 90,
   "autoMemoryEnabled": true,
   "plansDirectory": ".claude/plans",
@@ -18,15 +17,13 @@
       "Bash(python scripts/drift_check.py)",
       "Bash(python scripts/compact_hook.py)",
       "Bash(python scripts/post_tool_hook.py)",
-      "Bash(python -c *)",
       "Bash(git status)",
       "Bash(git diff*)",
       "Bash(git log*)",
       "Bash(git show*)",
       "Bash(git branch*)",
       "Bash(git add*)",
-      "Bash(ls*)",
-      "Bash(find*)"
+      "Bash(ls*)"
     ],
     "deny": [
       "Bash(git push --force*)",

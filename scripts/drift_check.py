@@ -3901,6 +3901,112 @@ _FINAL_AUDIT_RECORD = (
     "and social publication all remain unauthorized."
 )
 
+# Preparing the release is a pointer transition under its own owner
+# authorization: the pointer keeps the final audit record, recast as history
+# with its verdict and its unpassed release gate unchanged, moves its base to
+# the audit-recording commit, adds that commit and its CI to the canonical
+# block, records the selected version in the release-train paragraph, and
+# records the adopted owner decisions once. The private authorization is named
+# by digest only. Once recorded, the record is one-way: a pointer that drops it
+# is a finding.
+_RELEASE_PREP_COMMIT = "fb7f9540464ac0898662087d4f70caa534de60d6"
+_RELEASE_PREP_WORKFLOW = "37149178090"
+_RELEASE_PREP_JOB = "111279224830"
+_RELEASE_PREP_VERSION = "2.5.0"
+_RELEASE_PREP_AUTHORIZATION_SHA256 = (
+    "aa6f386781c9db3d11ae54012aaef2184ca985edc876cf25ae4d95b880f2f40a"
+)
+_RELEASE_PREP_GATE = (
+    "RELEASE " + _RELEASE_PREP_VERSION + " PREPARED — FINAL AUDIT RECHECK "
+    "REQUIRED; TAGGING AND RELEASE CREATION UNAUTHORIZED"
+)
+_RELEASE_PREP_POINTER_SEQUENCE = (
+    _FINAL_AUDIT_POINTER_SEQUENCE[:2]
+    + ("- Base commit: `" + _RELEASE_PREP_COMMIT + "`",)
+    + _FINAL_AUDIT_POINTER_SEQUENCE[3:16]
+    + ("- Audit recording commit: `" + _RELEASE_PREP_COMMIT + "`",
+       "- Audit recording CI workflow: `" + _RELEASE_PREP_WORKFLOW + "`",
+       "- Audit recording CI job: `" + _RELEASE_PREP_JOB + "` "
+       + "— Lint, types, tests")
+    + _FINAL_AUDIT_POINTER_SEQUENCE[16:]
+)
+_RELEASE_PREP_POINTER_KEYS = (
+    (("- Base commit:", _RELEASE_PREP_POINTER_SEQUENCE[2]),)
+    + _FINAL_AUDIT_POINTER_KEYS[1:]
+    + (("- Audit recording commit:", _RELEASE_PREP_POINTER_SEQUENCE[16]),
+       ("- Audit recording CI workflow:", _RELEASE_PREP_POINTER_SEQUENCE[17]),
+       ("- Audit recording CI job:", _RELEASE_PREP_POINTER_SEQUENCE[18]))
+)
+_RELEASE_PREP_MARKERS = (
+    "- Audit recording commit:",
+    "- Audit recording CI workflow:",
+    "- Audit recording CI job:",
+    "Release preparation record:",
+)
+_RELEASE_PREP_RUN_URL = (
+    "https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _RELEASE_PREP_WORKFLOW
+)
+# The release-train paragraph's version sentence, before and after.
+_PRE_RELEASE_PREP_VERSION_STATEMENT = (
+    "The release version remains undecided and the repository stays at "
+    "version 2.4.1."
+)
+_RELEASE_PREP_VERSION_STATEMENT = (
+    "The owner selected release version " + _RELEASE_PREP_VERSION + ", "
+    "recorded in the release preparation record below."
+)
+# The audit record as history: the verdict and the unpassed release gate are
+# unchanged; the outstanding fixes, the queued defect, the open decisions, and
+# the closing denials describe the recording gate.
+_FINAL_AUDIT_HISTORY_RECORD = _replaced_once(_FINAL_AUDIT_RECORD, (
+    ("Two required fixes are outstanding. P1-1: public and agent pages claim",
+     "At that gate, two required fixes were outstanding. P1-1: public and "
+     "agent pages claimed"),
+    ("P1-2: public and agent pages present the smoke test's",
+     "P1-2: public and agent pages presented the smoke test's"),
+    ("defect remains queued for correction with them.",
+     "defect remained queued for correction with them."),
+    ("security fix remain open owner decisions; this record neither accepts "
+     "nor waives any of them.",
+     "security fix remained open owner decisions; that record neither "
+     "accepted nor waived any of them."),
+    ("and social publication all remain unauthorized.",
+     "and social publication all remained unauthorized at that gate."),
+))
+_RELEASE_PREP_RECORD = (
+    "Release preparation record: under a separate owner authorization for one "
+    "bounded release-preparation session, which opened no review, commit, "
+    "push, tag, Release, or publication authority, the repository was "
+    "prepared on base commit `" + _RELEASE_PREP_COMMIT + "`; [CI workflow `"
+    + _RELEASE_PREP_WORKFLOW + "`](" + _RELEASE_PREP_RUN_URL + ") completed "
+    "successfully on that commit, including required job [`"
+    + _RELEASE_PREP_JOB + "` — Lint, types, tests](" + _RELEASE_PREP_RUN_URL
+    + "/job/" + _RELEASE_PREP_JOB + "). The owner adopted version "
+    + _RELEASE_PREP_VERSION + ", with an explicit read-before-upgrading "
+    "section and no backward-compatibility claim; MCP-host claims limited to "
+    "the evidence, so integration after the hardening is stated as untested; "
+    "the smoke test described as registration and module-loading checks that "
+    "execute no tool and validate no schema; fresh-clone setup through a "
+    "local, gitignored `.mcp.json` copied from `.mcp.json.template`; no "
+    "pinned port in that template; `enableAllProjectMcpServers`, "
+    "`Bash(python -c *)`, and `Bash(find*)` removed from the shared agent "
+    "settings; the profile path in `docs/UEFN_QUIRKS.md` redacted, with "
+    "completed mandates and Git history unchanged; disclosure of the released "
+    "unauthenticated `execute_python` issue and of the proxy and redirect "
+    "bearer leak on unreleased `main`, without exploit detail or a GitHub "
+    "advisory; the checker's historical-version exemption limited to exact "
+    "lines; and an offline live-verification exemption for this preparation "
+    "change, whose only `Content/Python` edit is `__version__` and which "
+    "supplies no live verification. The private authorization is identified "
+    "by its SHA-256 `" + _RELEASE_PREP_AUTHORIZATION_SHA256 + "`. The final "
+    "audit has not passed the release gate; passing it requires an "
+    "independent recheck of the required fixes and the affected changes, "
+    "which this authorization does not open. Tagging, Release creation, "
+    "branch-protection changes, other repository metadata changes, and draft "
+    "or social publication all remain unauthorized."
+)
+
 
 def _wo007_issuance_findings(pointer, issued_text, rel, session):
     """WO-007's issuance record while it is issued.
@@ -4059,7 +4165,7 @@ def _wo007_session_a_record_findings(pointer, issued_text, rel):
 
 
 def _wo007_completed_findings(pointer, text, rel, surface,
-                              audit_recorded=False):
+                              audit_recorded=False, release_prepared=False):
     """WO-007's completed record, on one surface at a time.
 
     The WO-005 completion pattern. On the pointer: the canonical slice with
@@ -4077,7 +4183,11 @@ def _wo007_completed_findings(pointer, text, rel, surface,
     whoever owns the pointer. Once the final audit is recorded, the pointer
     half takes the recorded shape: the audited commit as base, the audit
     bullets after the completion basis, the completion statement's closing
-    denials as history, and the audit record, each exactly once.
+    denials as history, and the audit record, each exactly once. Once the
+    release is prepared, it takes the prepared shape: the audit-recording
+    commit as base, its bullets after the audit bullets, the audit record as
+    history, the selected version, and the preparation record, each exactly
+    once, with no pre-preparation statement left.
     """
     out = []
     sequence: tuple[str, ...]
@@ -4091,6 +4201,10 @@ def _wo007_completed_findings(pointer, text, rel, surface,
             sequence = _FINAL_AUDIT_POINTER_SEQUENCE
             keys = _FINAL_AUDIT_POINTER_KEYS
             label = "final audit"
+        if release_prepared:
+            sequence = _RELEASE_PREP_POINTER_SEQUENCE
+            keys = _RELEASE_PREP_POINTER_KEYS
+            label = "release preparation"
 
         def stop(line):
             return _WO001_COMPLETED_LINK in line
@@ -4129,7 +4243,9 @@ def _wo007_completed_findings(pointer, text, rel, surface,
         if audit_recorded:
             # The full record once, and its opening once, so a second,
             # partial record cannot sit beside it.
-            for required in (_FINAL_AUDIT_RECORD, _FINAL_AUDIT_MARKERS[3]):
+            audit_record = (_FINAL_AUDIT_HISTORY_RECORD if release_prepared
+                            else _FINAL_AUDIT_RECORD)
+            for required in (audit_record, _FINAL_AUDIT_MARKERS[3]):
                 count = normalized_pointer.count(required)
                 if count != 1:
                     out.append(("WORKORDER.md",
@@ -4139,6 +4255,22 @@ def _wo007_completed_findings(pointer, text, rel, surface,
                 out.append(("WORKORDER.md", "final audit pointer statement",
                             "the pre-audit completion statement remains",
                             "the completion statement recorded as history"))
+        if release_prepared:
+            for required in (_RELEASE_PREP_RECORD, _RELEASE_PREP_MARKERS[3],
+                             _RELEASE_PREP_VERSION_STATEMENT):
+                count = normalized_pointer.count(required)
+                if count != 1:
+                    out.append(("WORKORDER.md",
+                                "release preparation pointer statement",
+                                str(count), "exactly one " + required))
+            for stale in (_FINAL_AUDIT_RECORD,
+                          _PRE_RELEASE_PREP_VERSION_STATEMENT):
+                if stale in normalized_pointer:
+                    out.append(("WORKORDER.md",
+                                "release preparation pointer statement",
+                                "a pre-preparation statement remains: "
+                                + stale[:80],
+                                "the prepared record only"))
         for stale in (_WO007_ISSUANCE_POINTER_NOTE,
                       _WO007_SESSION_A_POINTER_RECORD,
                       "docs/work-orders/issued/" + _WO007_NAME,
@@ -5295,19 +5427,34 @@ def check_work_order_contract() -> list[dict]:
     basis_dir = completed_dir
     next_order: str | None
     final_audit_recorded = False
+    release_prepared = False
     if wo007_completed_text:
         next_order, basis_name = None, _WO007_NAME
         basis_text = wo007_completed_text
-        # Any trace of the recorded final audit selects the recorded shape, so
-        # a partial rollback is checked against it rather than accepted as
-        # the earlier completed state.
+        # Any trace of a later record selects that record's shape, so a
+        # partial rollback is checked against it rather than accepted as an
+        # earlier state. The prepared release carries the final audit record.
+        release_prepared = (
+            current_gate == _RELEASE_PREP_GATE
+            or any(marker in pointer for marker in _RELEASE_PREP_MARKERS)
+        )
         final_audit_recorded = (
-            current_gate == _FINAL_AUDIT_GATE
+            release_prepared
+            or current_gate == _FINAL_AUDIT_GATE
             or any(marker in pointer for marker in _FINAL_AUDIT_MARKERS)
         )
-        if final_audit_recorded:
+        if release_prepared:
+            expected_base = _RELEASE_PREP_COMMIT
+            expected_closed_gate = _RELEASE_PREP_GATE
+        elif final_audit_recorded:
             expected_base = _FINAL_AUDIT_COMMIT
             expected_closed_gate = _FINAL_AUDIT_GATE
+            # Preparing the release is one-way too: this checker carries the
+            # preparation record, so an audit-recorded pointer without it is a
+            # finding. Undoing it would have to edit this file too.
+            add("WORKORDER.md", "release preparation record",
+                "the recorded release preparation is missing from the pointer",
+                "the owner-authorized release preparation recorded")
         else:
             expected_base = _WO007_COMPLETION_COMMIT
             expected_closed_gate = _WO007_COMPLETED_GATE
@@ -5389,6 +5536,7 @@ def check_work_order_contract() -> list[dict]:
                 pointer, wo007_completed_text,
                 (completed_dir / _WO007_NAME).relative_to(root).as_posix(),
                 "pointer", audit_recorded=final_audit_recorded,
+                release_prepared=release_prepared,
             ):
                 add(_f, _k, _found, _want)
         elif wo006_superseded_text:
@@ -7209,6 +7357,25 @@ _SKIP_LINE_FRAGMENTS = [
     "harness spawns real actor",
 ]
 
+# Lines that state a past release's version as history. The frozen 2026-08-24
+# audit names the tag it compared and the drift result it recorded, and the
+# test workflow names the release its integration baseline was recorded on.
+# Rewriting any of them to the current version would make it false, and the
+# audit is a frozen record. Each entry is exempt from the version patterns
+# only - tool and category counts on the line are still checked - and matches
+# by its exact stripped content, so any other version string in the same file
+# is still drift. Each must match exactly one line of its file: an edited,
+# duplicated, or vanished line is a finding, never a silent loss of coverage.
+_HISTORICAL_VERSION_LINES = (
+    ("docs/audits/2026-08-24-uefn-42-official-mcp-audit.md",
+     "Release tag under comparison: `v2.4.1` at"),
+    ("docs/audits/2026-08-24-uefn-42-official-mcp-audit.md",
+     "- drift: passed at v2.4.1, 362 tools, 55 categories;"),
+    (".agents/workflows/run_tests.md",
+     "Check the Output Log for `INTEGRATION TEST COMPLETE — Passed: N/N`. "
+     "The v2.4.1"),
+)
+
 # ── Scanner ────────────────────────────────────────────────────────────────────
 
 def _should_skip_line(line: str) -> bool:
@@ -7234,13 +7401,19 @@ def scan_file(rel_path: str, version: str, tool_count: int, category_count: int 
 
     findings = []
     exempt_file = rel_path in _EXCEPTIONS
+    historical_seen = {line: 0 for path, line in _HISTORICAL_VERSION_LINES
+                       if path == rel_path}
 
     with open(abs_path, encoding="utf-8", errors="ignore") as f:
         for lineno, line in enumerate(f, 1):
+            # Counted before any skip, so the exactly-once rule sees every line.
+            version_exempt = line.strip() in historical_seen
+            if version_exempt:
+                historical_seen[line.strip()] += 1
             if _should_skip_line(line):
                 continue
 
-            if not exempt_file:
+            if not exempt_file and not version_exempt:
                 # Version drift
                 for pat, label in _VERSION_PATTERNS:
                     for m in pat.finditer(line):
@@ -7283,6 +7456,17 @@ def scan_file(rel_path: str, version: str, tool_count: int, category_count: int 
                             "expected": str(category_count),
                             "content":  line.rstrip(),
                         })
+
+    for line, count in historical_seen.items():
+        if count != 1:
+            findings.append({
+                "file":     rel_path,
+                "line":     0,
+                "type":     "historical version exemption",
+                "found":    f"{count} matching lines",
+                "expected": "exactly one line: " + line,
+                "content":  line,
+            })
 
     return findings
 

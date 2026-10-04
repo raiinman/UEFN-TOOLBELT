@@ -8,7 +8,7 @@ Toolbelt can automate, what's read-only, and what doesn't exist yet.
 > UEFN exposes **37,276 Python-accessible types** — 4.3× more than standard UE5.
 > Python is **editor-only**. Gameplay logic lives in Verse. These two facts define everything.
 >
-> **Coverage: ~97% of the scriptable in-editor `unreal` Python API surface (362 tools, 55 categories, v2.4.1).**
+> **Coverage: ~97% of the scriptable in-editor `unreal` Python API surface (362 tools, 55 categories, v2.5.0).**
 > Every limit on this page is a limit of that in-editor Python surface, not of UEFN 42.00
 > as a whole.
 >
@@ -426,7 +426,7 @@ Things that would take hours manually, now one click:
 - **Localization** — bulk-export/import level text manifest for global map support
 - **Level snapshots** — save/restore/diff actor transforms as JSON checkpoints
 - **Asset tagging** — searchable metadata on any Content Browser asset
-- **MCP bridge** — let any MCP-compatible AI directly control UEFN: spawn, move, run any of the 362 registered tools
+- **MCP bridge** — authenticated same-user control of UEFN from `client.py`, or from an MCP client through `mcp_server.py` (MCP-host integration untested since the WO-001/WO-004 hardening): spawn, move, and run registered tools other than the local-only controls
 
 ---
 

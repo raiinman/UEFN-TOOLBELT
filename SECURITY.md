@@ -45,6 +45,34 @@ destructive exploit testing. These conclusions came from source inspection and
 non-destructive live integration evidence. See the
 [UEFN 42.00 official-MCP audit](docs/audits/2026-08-24-uefn-42-official-mcp-audit.md).
 
+## Fixed security issues
+
+Both issues below are fixed in 2.5.0. They were identified by source review
+and, for the second, reproduced with local fake endpoints only; no exploit was
+attempted against a real editor, proxy, or network.
+
+1. **Unauthenticated remote Python on the custom bridge (released).** Through
+   2.4.1, the custom bridge's loopback listener authenticated no client and
+   dispatched an arbitrary `execute_python` command, and it could run work off
+   the editor main thread when Slate callback registration was unavailable.
+   The `execute_python` command is present from the initial v1.0 commit
+   onward, including every tag in this repository (2.3.7 through 2.4.1) and the
+   2.4.1 GitHub Release. The 2026-08-24 audit identified it; WO-001 (commit
+   `ffcbe8b`, 2026-08-25) replaced it with the authenticated, fail-closed
+   control plane described above and removed arbitrary remote Python.
+   Upgrade to 2.5.0; on an older version, keep the listener stopped unless you
+   are using it, and never on a machine with untrusted local processes.
+2. **Bearer secret sent through HTTP proxies and redirects (unreleased
+   `main` only).** From commit `ffcbe8b` (2026-08-25) until commit `b4fa0a5`
+   (2026-09-28), `client.py` and `mcp_server.py` sent bridge requests, bearer
+   secret included, through any environment or system HTTP proxy, and followed
+   `301`, `302`, and `303` replies with a `GET` that carried the secret to the
+   redirect target. No tag or GitHub Release contains those commits. WO-004
+   fixed it: both clients now connect directly to the validated loopback
+   endpoint, ignore proxy settings, and follow no redirect. If you ran either
+   client from `main` in that window with a proxy configured, restart the
+   listener; every start rotates the secret.
+
 ## Current trust model
 
 - **Repository code:** open for review, but still privileged editor code.

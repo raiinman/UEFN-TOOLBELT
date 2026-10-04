@@ -4,7 +4,7 @@
 > It gives Claude full knowledge of the UEFN Toolbelt so you can use natural language
 > to control UEFN without looking up tool names or parameters.
 
-<!-- last full audit: v2.4.1 — 2026-08-23 -->
+<!-- last full audit: final integration/repository-truth audit, 2026-10-03 -->
 
 ---
 
@@ -224,8 +224,9 @@ custom bridge.
 It runs inside the editor and exposes 362 tools through:
 - A 26-tab PySide6 dark-themed dashboard (`tb.launch_qt()`) — the entry point
 - **Toolbelt's custom bridge** (`tb.run("mcp_start")`) — an authenticated,
-  same-user loopback HTTP listener, so an MCP client such as Claude Code can drive these
-  tools. This is Toolbelt's own surface. Toolbelt is **not** reachable through Epic's
+  same-user loopback HTTP listener, intended for an MCP client such as Claude Code to
+  drive these tools; MCP-host integration is untested since the WO-001/WO-004
+  hardening. This is Toolbelt's own surface. Toolbelt is **not** reachable through Epic's
   official MCP server:
   WO-002 recorded that external result as `failed`, bounded by `UE::ValkyrieToolset::ToolsetPolicy`
 - A Python client library (`client.py`) for non-MCP scripts
@@ -446,7 +447,10 @@ tb.run("snapshot_save", name="v1")   # Phase 6: checkpoint
 pip install mcp   # once, outside UEFN
 ```
 
-`.mcp.json` is already in this repo — Claude Code picks it up automatically.
+`.mcp.json` is not tracked. Copy `.mcp.json.template` to `.mcp.json`
+(gitignored), set the absolute path to `mcp_server.py`, and never commit it.
+`mcp_server.py` takes the listener's port from the session handoff; set
+`UEFN_MCP_PORT` only to the port the listener actually bound.
 
 ### Start the listener in UEFN
 
@@ -463,7 +467,9 @@ only one loaded tool, recover once for that editor session and then start it:
 import UEFN_Toolbelt as tb; tb.register(); tb.run("mcp_start")
 ```
 
-Then restart Claude Code — it connects automatically.
+Then restart Claude Code so it loads the server from your `.mcp.json`.
+MCP-host integration is untested since the WO-001 authentication and WO-004
+transport changes; see the evidence gaps in `docs/OFFICIAL_MCP_AND_TOOLBELT.md`.
 
 The listener accepts only authenticated same-user loopback POSTs. It rotates a
 session secret on every restart, hands it to `mcp_server.py` through the local
@@ -561,7 +567,7 @@ import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in
 Two separate test systems. Know which is which before running either.
 
 ### Smoke Test — `tb.run("toolbelt_smoke_test")`
-**What it proves:** All 362 tools *registered* correctly. The registry loaded, all modules imported, and a set of "safe" tools ran end-to-end without exceptions.
+**What it proves:** Registration and module loading only. The package imports, `register_all_tools()` completes, every expected module is present, the registry holds at least `MIN_TOOL_COUNT` (179) tools, and six named tools are registered. It executes no tool and validates no tool schema.
 **What it does NOT prove:** That tools produce correct output on real actors. It cannot test anything selection-dependent or level-state-dependent.
 **Safe to run:** Anywhere, any project, any time. ~5 seconds.
 **Run after:** Every code change, before committing.
@@ -587,8 +593,8 @@ If the editor crashes mid-run, the file contains partial results up to the last 
 
 | | Smoke Test | Integration Test |
 |---|---|---|
-| Tests registration? | ✅ All 362 tools | ✅ |
-| Tests live execution? | Partial (safe tools only) | ✅ 190 checks on real actors (163 verified, 27 execution-only) |
+| Tests registration? | ✅ Minimum count (179) and six named tools | ✅ |
+| Tests live execution? | ❌ No — executes no tool | ✅ 190 checks on real actors (163 verified, 27 execution-only) |
 | Safe in production? | ✅ Yes | ❌ Blank level only |
 | Runtime | ~5s | ~70s |
 | Run when? | After every change | Before every PR |

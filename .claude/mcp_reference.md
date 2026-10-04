@@ -7,7 +7,7 @@ same-user loopback HTTP listener. This is not Epic's official UEFN MCP server, a
 Toolbelt is not reachable through that server — WO-002 recorded the external
 result as `failed`, bounded by `UE::ValkyrieToolset::ToolsetPolicy`.
 
-When the listener is running, Claude Code can call these directly:
+When the listener is running, an authenticated client can call these directly:
 
 | Command | Params | What it does |
 |---|---|---|
@@ -87,6 +87,10 @@ a per-request opener that ignores environment and system HTTP proxy settings
 and follows no redirect. No global opener is installed and no environment
 variable is changed. A setup that reached the bridge only through a proxy stops
 working.
+
+`mcp_server.py` uses an explicit `UEFN_MCP_PORT` instead of the handoff's port.
+Set it only to the port the listener actually bound; `.mcp.json.template` sets
+none.
 
 Each call makes exactly one connection attempt, and none when the handoff is
 missing or invalid. Nothing is retried, and `connect()` sends one `ping`.
@@ -207,13 +211,13 @@ tb.run("scatter_props", ...)   # N actors
 | `Content/Python/UEFN_Toolbelt/core/config.py` | Persistent config system. `get_config().get/set/reset()`. Reads/writes `Saved/UEFN_Toolbelt/config.json` — survives `install.py` updates. |
 | `Content/Python/UEFN_Toolbelt/tools/` | All tool modules |
 | `Content/Python/UEFN_Toolbelt/tools/mcp_bridge.py` | HTTP listener (runs inside UEFN) |
-| `mcp_server.py` | External FastMCP bridge (Claude Code connects to this) |
+| `mcp_server.py` | External FastMCP stdio server for MCP clients such as Claude Code; host integration is untested since the WO-001/WO-004 hardening |
 | `client.py` | Stdlib-only HTTP client for non-MCP external scripts |
 | `install.py` | One-command community installer — copies Toolbelt into any UEFN project, handles `init_unreal.py` safely |
 | `deploy.bat` | Dev workflow tool — deploy + PySide6 check + prints hot-reload command. Use this for active development. |
 | `prepare_launch.bat` | Host-side pre-validation helper — stashes every project `.py`, writes a recoverable manifest, and verifies zero remain before Launch Session, Push Changes, or publishing. Run Python audits first. |
 | `restore_after_launch.bat` | Restores the exact manifest after remote validation; collision-checks instead of overwriting files created while the stash was active. |
-| `.mcp.json` | Claude Code MCP server config — already configured |
+| `.mcp.json` | Your local MCP client config — not tracked (gitignored). Copy `.mcp.json.template` and set the absolute path to `mcp_server.py`; never commit it. |
 | `docs/uefn_python_capabilities.md` | Full UEFN Python API surface reference |
 | Epic UE5.7 Python API (https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/?application_version=5.7) | **Primary API reference** — check here first for correct class/method names. UEFN omits some standard UE5 APIs: `KismetMaterialLibrary` is absent, `/FortniteGame/` asset paths are blocked, some editor factories may not be exposed. |
 | Epic UE4.27 Python API (https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/?application_version=4.27) | **Last resort only — UEFN is NOT UE4.27.** Some classes were more thoroughly documented in 4.27 before Epic restructured their docs. If a class or method is absent from the 5.7 reference, try 4.27 for an older doc entry. Always cross-check against `tb.run("api_inspect", name="ClassName")` — that queries the live UEFN runtime, which is authoritative. |

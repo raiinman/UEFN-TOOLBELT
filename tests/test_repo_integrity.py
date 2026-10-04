@@ -254,15 +254,16 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     ).exists()
     assert current == "NONE"
     assert session == "NONE"
-    # The base is the audited commit, declared in its own bullet after the
-    # completion basis it follows. The gate records the audit with its
-    # required fixes outstanding and keeps release preparation closed.
+    # The base is the audit-recording commit the release was prepared on,
+    # declared in its own bullet after the audit bullets. The gate records the
+    # prepared release, requires the final audit's recheck, and keeps tagging
+    # and Release creation closed.
     assert base_lines == [
-        "- Base commit: `066cf6d751740c0daaff165fc076be19e1b8e22d`"
+        "- Base commit: `fb7f9540464ac0898662087d4f70caa534de60d6`"
     ]
     assert gate_lines == [
-        "- Current gate: FINAL AUDIT RECORDED — REQUIRED FIXES OUTSTANDING;"
-        " RELEASE PREPARATION NOT AUTHORIZED"
+        "- Current gate: RELEASE 2.5.0 PREPARED — FINAL AUDIT RECHECK REQUIRED;"
+        " TAGGING AND RELEASE CREATION UNAUTHORIZED"
     ]
     for line in (
         "- Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`",
@@ -279,6 +280,9 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "- Final audit commit: `066cf6d751740c0daaff165fc076be19e1b8e22d`",
         "- Final audit CI workflow: `37142847095`",
         "- Final audit CI job: `111260679508` — Lint, types, tests",
+        "- Audit recording commit: `fb7f9540464ac0898662087d4f70caa534de60d6`",
+        "- Audit recording CI workflow: `37149178090`",
+        "- Audit recording CI job: `111279224830` — Lint, types, tests",
     ):
         assert pointer.splitlines().count(line) == 1, line
     # WO-006's issuance, session, and closure-basis bullets left the canonical
@@ -361,9 +365,13 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "session is authorized. The frozen release train remains WO-001 "
         "through WO-007, with WO-006 resolved as superseded rather than "
         "completed. The final integration/repository-truth audit is recorded "
-        "as ACCEPT WITH REQUIRED FIX; its required fixes are outstanding, and "
-        "release preparation is not authorized." in normalized_roadmap
+        "as ACCEPT WITH REQUIRED FIX. Release 2.5.0 is prepared under a "
+        "separate owner authorization; the final audit has not passed the "
+        "release gate, its recheck is not authorized, and no tag or Release is "
+        "authorized." in normalized_roadmap
     )
+    assert "release preparation is not authorized" not in normalized_roadmap
+    assert "Current version: **v2.5.0**" in roadmap
     assert "the final integration/repository-truth audit is not authorized" \
         not in normalized_roadmap
     assert "Session B is authorized" not in normalized_roadmap
@@ -868,23 +876,50 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "`aed10f85280517a6916398cff384562e2af6fb75d5a0896be7985b01204288f3` "
         "and its private logs by their manifest digest "
         "`88dc0e5bb7c3d246f3fdb03ef05c0ba549805f3012d926feef356f63e3c933b9`.",
-        "Two required fixes are outstanding. P1-1: public and agent pages "
-        "claim MCP-host compatibility that no accepted record supports. P1-2: "
-        "public and agent pages present the smoke test's registration checks "
-        "as tool execution or schema validation. The final audit has not "
-        "passed the release gate.",
-        "The `.mcp.json` fresh-clone documentation defect remains queued for "
+        "At that gate, two required fixes were outstanding. P1-1: public and "
+        "agent pages claimed MCP-host compatibility that no accepted record "
+        "supports. P1-2: public and agent pages presented the smoke test's "
+        "registration checks as tool execution or schema validation. The "
+        "final audit has not passed the release gate.",
+        "The `.mcp.json` fresh-clone documentation defect remained queued for "
         "correction with them.",
         "The version choice, the checker's handling of historical version "
         "lines, the pinned-port configuration, the agent settings, the "
-        "privacy finding, and the disclosure of the security fix remain open "
-        "owner decisions; this record neither accepts nor waives any of them.",
+        "privacy finding, and the disclosure of the security fix remained "
+        "open owner decisions; that record neither accepted nor waived any of "
+        "them.",
         "Release preparation, any version bump, tagging, Release creation, "
         "branch-protection changes, other repository metadata changes, and "
-        "social publication all remain unauthorized.",
+        "social publication all remained unauthorized at that gate.",
     ):
         assert normalized_pointer_live.count(statement) == 1, statement
     assert "111260679508" in normalized_pointer_live
+    # The release preparation is recorded once: the owner authorization it
+    # ran under, by digest only, its base commit and that commit's CI, the
+    # adopted decisions, the unpassed release gate, and the closed gates.
+    assert normalized_pointer_live.count("Release preparation record:") == 1
+    for statement in (
+        "under a separate owner authorization for one bounded "
+        "release-preparation session, which opened no review, commit, push, "
+        "tag, Release, or publication authority, the repository was prepared "
+        "on base commit `fb7f9540464ac0898662087d4f70caa534de60d6`; [CI "
+        "workflow `37149178090`]",
+        "The owner adopted version 2.5.0, with an explicit "
+        "read-before-upgrading section and no backward-compatibility claim;",
+        "The private authorization is identified by its SHA-256 "
+        "`aa6f386781c9db3d11ae54012aaef2184ca985edc876cf25ae4d95b880f2f40a`.",
+        "The final audit has not passed the release gate; passing it requires "
+        "an independent recheck of the required fixes and the affected "
+        "changes, which this authorization does not open.",
+        "Tagging, Release creation, branch-protection changes, other "
+        "repository metadata changes, and draft or social publication all "
+        "remain unauthorized.",
+        "The owner selected release version 2.5.0, recorded in the release "
+        "preparation record below.",
+    ):
+        assert normalized_pointer_live.count(statement) == 1, statement
+    assert "111279224830" in normalized_pointer_live
+    assert "stays at version 2.4.1" not in normalized_pointer_live
     assert "as do WO-007 completion" not in normalized_pointer_live
     # The private drafts' identities live only in the completed mandate.
     assert "UEFN-Toolbelt-Evidence" not in pointer
@@ -1013,7 +1048,7 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "- Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE "
         "FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST"
     ) in pointer
-    assert "version 2.4.1" in pointer
+    assert "release version 2.5.0" in pointer
     assert "docs/work-orders/completed/WO-001-custom-mcp-security.md" in pointer
     assert "docs/work-orders/issued/WO-001-custom-mcp-security.md" not in pointer
     assert "docs/work-orders/proposed/WO-001-custom-mcp-security.md" not in pointer
@@ -3848,6 +3883,159 @@ _WO007_CMP_REVERSAL = (
 )
 
 
+# --- Release preparation record: the current state -----------------------
+#
+# Preparing the release moved the current state forward, so the
+# final-audit-recorded state - and every historical fixture below it - is
+# reconstructed backwards from the prepared state. In the contract's inputs
+# (the pointer and the Work Order documents), the preparation is
+# pointer-only.
+
+_RELEASE_PREP_COMMIT = "fb7f9540464ac0898662087d4f70caa534de60d6"
+_RELEASE_PREP_WORKFLOW = "37149178090"
+_RELEASE_PREP_JOB = "111279224830"
+_RELEASE_PREP_GATE = (
+    "RELEASE 2.5.0 PREPARED " + _EM + " FINAL AUDIT RECHECK REQUIRED;"
+    " TAGGING AND RELEASE CREATION UNAUTHORIZED"
+)
+_RELEASE_PREP_AUTHORIZATION_SHA256 = (
+    "aa6f386781c9db3d11ae54012aaef2184ca985edc876cf25ae4d95b880f2f40a"
+)
+_RELEASE_PREP_POINTER_BULLETS = (
+    ("- Audit recording commit:",
+     "- Audit recording commit: `" + _RELEASE_PREP_COMMIT + "`"),
+    ("- Audit recording CI workflow:",
+     "- Audit recording CI workflow: `" + _RELEASE_PREP_WORKFLOW + "`"),
+    ("- Audit recording CI job:",
+     "- Audit recording CI job: `" + _RELEASE_PREP_JOB + "` " + _EM
+     + " Lint, types, tests"),
+)
+_RELEASE_PREP_RECORD_OPENING = "Release preparation record:"
+# Each pair is (as the prepared state records it, as the final-audit-recorded
+# state recorded it), so the reconstruction puts every original back byte for
+# byte.
+_RELEASE_PREP_POINTER_HISTORY = (
+    (_NL.join((
+        '- Base commit: `fb7f9540464ac0898662087d4f70caa534de60d6`',
+        '- Current gate: RELEASE 2.5.0 PREPARED — FINAL AUDIT RECHECK REQUIRED; TAGGING AND RELEASE CREATION UNAUTHORIZED',
+    )),
+     _NL.join((
+        '- Base commit: `066cf6d751740c0daaff165fc076be19e1b8e22d`',
+        '- Current gate: FINAL AUDIT RECORDED — REQUIRED FIXES OUTSTANDING; RELEASE PREPARATION NOT AUTHORIZED',
+    ))),
+    (_NL.join((
+        'WO-001 through WO-007 form the frozen next release train. The owner selected',
+        'release version 2.5.0, recorded in the release preparation record below. No tag',
+        'or GitHub Release is authorized until the frozen train is complete, a final',
+    )),
+     _NL.join((
+        'WO-001 through WO-007 form the frozen next release train. The release version',
+        'remains undecided and the repository stays at version 2.4.1. No tag or GitHub',
+        'Release is authorized until the frozen train is complete, a final',
+    ))),
+    (_NL.join((
+        'At that gate, two required fixes were outstanding. P1-1: public and agent pages',
+        'claimed MCP-host compatibility that no accepted record supports. P1-2: public',
+        "and agent pages presented the smoke test's registration checks as tool",
+        'execution or schema validation. The final audit has not passed the release',
+        'gate. The `.mcp.json` fresh-clone documentation defect remained queued for',
+        "correction with them. The version choice, the checker's handling of historical",
+        'version lines, the pinned-port configuration, the agent settings, the privacy',
+        'finding, and the disclosure of the security fix remained open owner decisions;',
+        'that record neither accepted nor waived any of them. Release preparation, any',
+        'version bump, tagging, Release creation, branch-protection changes, other',
+        'repository metadata changes, and social publication all remained unauthorized',
+        'at that gate.',
+    )),
+     _NL.join((
+        'Two required fixes are outstanding. P1-1: public and agent pages claim MCP-host',
+        'compatibility that no accepted record supports. P1-2: public and agent pages',
+        "present the smoke test's registration checks as tool execution or schema",
+        'validation. The final audit has not passed the release gate. The `.mcp.json`',
+        'fresh-clone documentation defect remains queued for correction with them.',
+        "The version choice, the checker's handling of historical version lines, the",
+        'pinned-port configuration, the agent settings, the privacy finding, and the',
+        'disclosure of the security fix remain open owner decisions; this record',
+        'neither accepts nor waives any of them. Release preparation, any version bump,',
+        'tagging, Release creation, branch-protection changes, other repository',
+        'metadata changes, and social publication all remain unauthorized.',
+    ))),
+    (_NL.join((
+        '',
+        '',
+        'Release preparation record: under a separate owner authorization for one',
+        'bounded release-preparation session, which opened no review, commit, push, tag,',
+        'Release, or publication authority, the repository was prepared on base commit',
+        '`fb7f9540464ac0898662087d4f70caa534de60d6`; [CI workflow',
+        '`37149178090`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37149178090)',
+        'completed successfully on that commit, including required job',
+        '[`111279224830` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37149178090/job/111279224830).',
+        'The owner adopted version 2.5.0, with an explicit read-before-upgrading section',
+        'and no backward-compatibility claim; MCP-host claims limited to the evidence,',
+        'so integration after the hardening is stated as untested; the smoke test',
+        'described as registration and module-loading checks that execute no tool and',
+        'validate no schema; fresh-clone setup through a local, gitignored `.mcp.json`',
+        'copied from `.mcp.json.template`; no pinned port in that template;',
+        '`enableAllProjectMcpServers`, `Bash(python -c *)`, and `Bash(find*)` removed',
+        'from the shared agent settings; the profile path in `docs/UEFN_QUIRKS.md`',
+        'redacted, with completed mandates and Git history unchanged; disclosure of the',
+        'released unauthenticated `execute_python` issue and of the proxy and redirect',
+        'bearer leak on unreleased `main`, without exploit detail or a GitHub advisory;',
+        "the checker's historical-version exemption limited to exact lines; and an",
+        'offline live-verification exemption for this preparation change, whose only',
+        '`Content/Python` edit is `__version__` and which supplies no live verification.',
+        'The private authorization is identified by its SHA-256',
+        '`aa6f386781c9db3d11ae54012aaef2184ca985edc876cf25ae4d95b880f2f40a`. The final',
+        'audit has not passed the release gate; passing it requires an independent',
+        'recheck of the required fixes and the affected changes, which this',
+        'authorization does not open. Tagging, Release creation, branch-protection',
+        'changes, other repository metadata changes, and draft or social publication all',
+        'remain unauthorized.',
+    )),
+     ""),
+)
+
+
+def _release_prep_revert_bullets(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_PREP_POINTER_HISTORY[0])
+    for _prefix, bullet in _RELEASE_PREP_POINTER_BULLETS:
+        _edit(case, "WORKORDER.md", bullet + _NL, "")
+
+
+def _release_prep_revert_version(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_PREP_POINTER_HISTORY[1])
+
+
+def _release_prep_revert_audit_tense(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_PREP_POINTER_HISTORY[2])
+
+
+def _release_prep_revert_record(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_PREP_POINTER_HISTORY[3])
+
+
+# The release-preparation transition, as reversible steps. Every step is
+# enforced by the checker on its own.
+_RELEASE_PREP_REVERSAL = (
+    ("pointer-bullets", _release_prep_revert_bullets),
+    ("pointer-version", _release_prep_revert_version),
+    ("pointer-audit-tense", _release_prep_revert_audit_tense),
+    ("pointer-record", _release_prep_revert_record),
+)
+
+
+def _make_release_prep_case(repo_root, tmp_path, name):
+    """Copy the current release-prepared state."""
+    case = tmp_path / name
+    case.mkdir(parents=True)
+    shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
+    shutil.copytree(
+        repo_root / "docs" / "work-orders",
+        case / "docs" / "work-orders",
+    )
+    return case
+
+
 # --- Final audit record: the current state -------------------------------
 #
 # Recording the final integration/repository-truth audit moved the current
@@ -3957,13 +4145,29 @@ _FINAL_AUDIT_REVERSAL = (
 
 
 def _make_final_audit_case(repo_root, tmp_path, name):
-    """Copy the current final-audit-recorded state."""
-    case = tmp_path / name
-    case.mkdir(parents=True)
-    shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
-    shutil.copytree(
-        repo_root / "docs" / "work-orders",
-        case / "docs" / "work-orders",
+    """Reconstruct the preserved final-audit-recorded state.
+
+    Preparing the release moved the current state forward, so the recorded
+    state is now itself a reconstruction. Every step of the preparation is
+    reversed in the pointer: the base, gate, and audit-recording bullets, the
+    selected version, the audit record's tense, and the preparation record.
+    The pointer returns to the recorded state byte for byte; nothing else in
+    the contract's inputs changed.
+    """
+    case = _make_release_prep_case(repo_root, tmp_path, name)
+    pointer = case / "WORKORDER.md"
+    if _RELEASE_PREP_RECORD_OPENING not in pointer.read_text(encoding="utf-8"):
+        # Already a pre-preparation tree: nothing to reverse.
+        return case
+    for _step, revert in _RELEASE_PREP_REVERSAL:
+        revert(case)
+    _assert_reconstructed(
+        "release preparation pointer", pointer.read_text(encoding="utf-8"),
+        (_RELEASE_PREP_POINTER_HISTORY[0][1],
+         _RELEASE_PREP_POINTER_HISTORY[1][1],
+         _RELEASE_PREP_POINTER_HISTORY[2][1]),
+        (_RELEASE_PREP_GATE, _RELEASE_PREP_RECORD_OPENING,
+         _RELEASE_PREP_WORKFLOW, _RELEASE_PREP_JOB, "- Audit recording commit:"),
     )
     return case
 
@@ -6762,6 +6966,7 @@ _TERMINAL_WO005_FINDING = "completed WO-005 state"
 _TERMINAL_WO006_FINDING = "superseded WO-006 state"
 _TERMINAL_WO007_FINDING = "completed WO-007 state"
 _FINAL_AUDIT_RECORD_FINDING = "final audit record"
+_RELEASE_PREP_RECORD_FINDING = "release preparation record"
 
 
 def _without_terminal_lock(finding_types):
@@ -6831,6 +7036,17 @@ def _before_final_audit_record(findings):
     """
     return {(kind, rel) for kind, rel in findings
             if kind != _FINAL_AUDIT_RECORD_FINDING}
+
+
+def _before_release_preparation_record(findings):
+    """(type, file) findings less the one-way release-preparation lock only.
+
+    The reconstructed final-audit-recorded state is a state from before the
+    release was prepared, so it necessarily trips that lock. Only that one
+    finding is set aside; every other finding is still returned.
+    """
+    return {(kind, rel) for kind, rel in findings
+            if kind != _RELEASE_PREP_RECORD_FINDING}
 
 
 def _before_wo007_completion(findings):
@@ -18493,8 +18709,9 @@ def _final_audit_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     case = _make_final_audit_case(repo_root, tmp_path, "final-audit-" + name)
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+    return _before_release_preparation_record(
+        {(f["type"], f["file"])
+         for f in drift_check.check_work_order_contract()})
 
 
 def test_final_audit_record_state_is_clean(repo_root, tmp_path,
@@ -18687,3 +18904,521 @@ def test_final_audit_record_accepts_closed_language(
                                   "control-" + str(abs(hash(sentence))),
                                   _wo007_iss_append("WORKORDER.md", sentence))
     assert found == set(), repr(sorted(found))
+
+
+# --- Release preparation record: the live state --------------------------
+#
+# The preparation adds the audit-recording commit and its CI to the canonical
+# block, moves the base and gate, records the selected version, recasts the
+# audit record as history, and records the preparation once. Each probe is a
+# delta against the live prepared state, with nothing set aside.
+
+_RELEASE_PREP_KINDS = {"release preparation field (WORKORDER.md)",
+                       "release preparation declaration (WORKORDER.md)"}
+
+
+def _release_prep_findings(repo_root, tmp_path, monkeypatch, name, mutate):
+    """(type, file) findings for the live release-prepared state after one
+    mutation."""
+    drift_check = _load_drift_check(repo_root, "release_prep_" + name)
+    case = _make_release_prep_case(repo_root, tmp_path, "release-prep-" + name)
+    mutate(case)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return {(f["type"], f["file"])
+            for f in drift_check.check_work_order_contract()}
+
+
+def test_release_prep_record_state_is_clean(repo_root, tmp_path,
+                                            monkeypatch) -> None:
+    """The control: the live prepared state has no finding at all."""
+    found = _release_prep_findings(repo_root, tmp_path, monkeypatch, "control",
+                                   lambda case: None)
+    assert found == set(), (
+        "the release-prepared state is not clean: " + repr(sorted(found))
+    )
+
+
+def test_release_prep_reconstruction_reaches_the_final_audit_state(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Reversing the preparation lands on the final-audit-recorded state:
+    clean apart from the one-way preparation lock it necessarily trips."""
+    drift_check = _load_drift_check(repo_root, "release_prep_reverse")
+    case = _make_final_audit_case(repo_root, tmp_path, "release-prep-reverse")
+    text = (case / "WORKORDER.md").read_text(encoding="utf-8")
+    assert "- Current gate: " + _FINAL_AUDIT_GATE in text
+    assert _RELEASE_PREP_RECORD_OPENING not in text
+    assert "stays at version 2.4.1" in text
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    found = {(f["type"], f["file"])
+             for f in drift_check.check_work_order_contract()}
+    assert found == {(_RELEASE_PREP_RECORD_FINDING, "WORKORDER.md")}, (
+        repr(sorted(found)))
+
+
+_RELEASE_PREP_EVIDENCE = (
+    # (id, declaration prefix, pinned value)
+    ("base", "- Base commit:", _RELEASE_PREP_COMMIT),
+    ("recording-commit", "- Audit recording commit:", _RELEASE_PREP_COMMIT),
+    ("recording-workflow", "- Audit recording CI workflow:",
+     _RELEASE_PREP_WORKFLOW),
+    ("recording-job", "- Audit recording CI job:", _RELEASE_PREP_JOB),
+    ("audit-job", "- Final audit CI job:", _FINAL_AUDIT_JOB),
+)
+
+
+@pytest.mark.parametrize("damage",
+                         ("changed", "removed", "duplicated", "decoy"))
+@pytest.mark.parametrize(("name", "prefix", "value"), _RELEASE_PREP_EVIDENCE,
+                         ids=[row[0] for row in _RELEASE_PREP_EVIDENCE])
+def test_release_prep_evidence_is_pinned(
+    repo_root, tmp_path, monkeypatch, name, prefix, value, damage
+) -> None:
+    """The prepared base, the audit-recording commit and its CI, and the
+    audit bullets beside them are each enforced in the canonical block."""
+    def mutate(case):
+        target = case / "WORKORDER.md"
+        text = target.read_text(encoding="utf-8")
+        line = next(candidate for candidate in text.splitlines()
+                    if candidate.startswith(prefix))
+        wrong = line.replace(value, _WO004_ZERO_SHA[:len(value)])
+        assert wrong != line, "probe anchor drifted: " + prefix
+        new = {"changed": wrong, "removed": "",
+               "duplicated": line + _NL + line, "decoy": wrong}[damage]
+        text = _replace_once(text, line, new, "release prep " + damage)
+        if damage == "decoy":
+            # The genuine declaration is corrupted; a byte-correct copy is
+            # parked outside the canonical block, where it must not count.
+            text = text.rstrip() + _NL + _NL + line + _NL
+        target.write_text(text, encoding="utf-8")
+
+    found = _release_prep_findings(repo_root, tmp_path, monkeypatch,
+                                   "evidence-" + name + "-" + damage, mutate)
+    kinds = {kind for kind, file in found if file == "WORKORDER.md"}
+    assert kinds & _RELEASE_PREP_KINDS, (
+        "a " + damage + " " + prefix + " declaration was accepted in the "
+        "release-prepared state: " + repr(sorted(found))
+    )
+
+
+@pytest.mark.parametrize(("step", "revert"), _RELEASE_PREP_REVERSAL,
+                         ids=[row[0] for row in _RELEASE_PREP_REVERSAL])
+def test_release_prep_partial_recording_is_caught(
+    repo_root, tmp_path, monkeypatch, step, revert
+) -> None:
+    """Each step of the preparation, reverted alone, leaves a state the
+    checker rejects."""
+    found = _release_prep_findings(repo_root, tmp_path, monkeypatch,
+                                   "partial-" + step, revert)
+    assert found, step + " alone was accepted: the preparation is partial"
+
+
+def test_release_prep_coherent_reversal_trips_only_the_lock(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Reverting every step lands on the final-audit-recorded state, which
+    the one-way preparation lock rejects - and nothing else does."""
+    def mutate(case):
+        for _step, revert in _RELEASE_PREP_REVERSAL:
+            revert(case)
+
+    found = _release_prep_findings(repo_root, tmp_path, monkeypatch,
+                                   "coherent", mutate)
+    assert found == {(_RELEASE_PREP_RECORD_FINDING, "WORKORDER.md")}, (
+        repr(sorted(found)))
+
+
+def _release_prep_edit(old, new):
+    return lambda case: _edit(case, "WORKORDER.md", old, new)
+
+
+_RELEASE_PREP_DAMAGE = (
+    # (id, change, expected kind)
+    ("gate-claims-tag-authorized",
+     _release_prep_edit("- Current gate: " + _RELEASE_PREP_GATE,
+                        "- Current gate: RELEASE 2.5.0 PREPARED " + _EM
+                        + " FINAL AUDIT PASSED; TAGGING AUTHORIZED"),
+     "completed work order gate"),
+    ("audit-claimed-passed",
+     _release_prep_edit("audit has not passed the release gate; passing it",
+                        "audit has passed the release gate; passing it"),
+     "release preparation pointer statement"),
+    ("history-verdict-softened",
+     _release_prep_edit("Its verdict is ACCEPT WITH REQUIRED FIX.",
+                        "Its verdict is ACCEPT."),
+     "final audit pointer statement"),
+    ("history-gate-claimed-passed",
+     _release_prep_edit("schema validation. The final audit has not passed the release",
+                        "schema validation. The final audit has passed the release"),
+     "final audit pointer statement"),
+    ("authorization-digest-changed",
+     _release_prep_edit("`" + _RELEASE_PREP_AUTHORIZATION_SHA256 + "`",
+                        "`0" + _RELEASE_PREP_AUTHORIZATION_SHA256[1:] + "`"),
+     "release preparation pointer statement"),
+    ("version-changed",
+     _release_prep_edit("release version 2.5.0,", "release version 2.6.0,"),
+     "release preparation pointer statement"),
+    ("pre-preparation-version-left",
+     _wo007_iss_append("WORKORDER.md",
+                       "The release version remains undecided and the "
+                       "repository stays at version 2.4.1."),
+     "release preparation pointer statement"),
+    ("present-tense-audit-record-left",
+     lambda case: _edit(case, "WORKORDER.md",
+                        *_RELEASE_PREP_POINTER_HISTORY[2]),
+     "release preparation pointer statement"),
+    ("second-partial-record",
+     _wo007_iss_append("WORKORDER.md",
+                       _RELEASE_PREP_RECORD_OPENING + " superseded."),
+     "release preparation pointer statement"),
+    ("base-left-at-audit",
+     _release_prep_edit("- Base commit: `" + _RELEASE_PREP_COMMIT + "`",
+                        "- Base commit: `" + _FINAL_AUDIT_COMMIT + "`"),
+     "completion base commit"),
+    ("session-reopened",
+     _release_prep_edit("- Authorized session: NONE",
+                        "- Authorized session: A"),
+     "authorization without issued work order"),
+    ("release-claim",
+     _wo007_iss_append("WORKORDER.md",
+                       "A GitHub Release for this train is authorized."),
+     "release authorization"),
+    ("tag-claim",
+     _wo007_iss_append("WORKORDER.md", "The v2.5.0 tag is authorized."),
+     "release authorization"),
+)
+
+
+@pytest.mark.parametrize(("name", "mutate", "kind"), _RELEASE_PREP_DAMAGE,
+                         ids=[row[0] for row in _RELEASE_PREP_DAMAGE])
+def test_release_prep_record_boundaries_are_enforced(
+    repo_root, tmp_path, monkeypatch, name, mutate, kind
+) -> None:
+    """Claiming the audit passed or a tag authorized, softening the recorded
+    verdict, changing the private digest or the selected version, leaving a
+    second record or pre-preparation wording behind, and reopening a session
+    or a release are each caught against WORKORDER.md."""
+    found = _release_prep_findings(repo_root, tmp_path, monkeypatch,
+                                   "damage-" + name, mutate)
+    assert (kind, "WORKORDER.md") in found, repr(sorted(found))
+
+
+_RELEASE_PREP_CONTROLS = (
+    "Tagging stays closed until the final audit recheck passes.",
+    "No tagging or publication follows from this preparation record.",
+)
+
+
+@pytest.mark.parametrize("sentence", _RELEASE_PREP_CONTROLS)
+def test_release_prep_record_accepts_closed_language(
+    repo_root, tmp_path, monkeypatch, sentence
+) -> None:
+    """Closed-gate wording grants nothing and stays clean."""
+    found = _release_prep_findings(repo_root, tmp_path, monkeypatch,
+                                   "control-" + str(abs(hash(sentence))),
+                                   _wo007_iss_append("WORKORDER.md", sentence))
+    assert found == set(), repr(sorted(found))
+
+
+# --- Historical-version exemption ----------------------------------------
+#
+# Three exact lines state a past release's version as history. They are
+# exempt from the version patterns only, by exact content and path, and each
+# must match exactly one line of its file. Counts on them are still checked,
+# and every other stale version - in the same files or elsewhere - is still
+# drift.
+
+_HISTORICAL_AUDIT = "docs/audits/2026-08-24-uefn-42-official-mcp-audit.md"
+_HISTORICAL_WORKFLOW = ".agents/workflows/run_tests.md"
+_HISTORICAL_VERSION_LINES = (
+    (_HISTORICAL_AUDIT, "Release tag under comparison: `v2.4.1` at"),
+    (_HISTORICAL_AUDIT, "- drift: passed at v2.4.1, 362 tools, 55 categories;"),
+    (_HISTORICAL_WORKFLOW,
+     "Check the Output Log for `INTEGRATION TEST COMPLETE " + _EM
+     + " Passed: N/N`. The v2.4.1"),
+)
+_HISTORICAL_EXEMPTION = "historical version exemption"
+_INLINE_VERSION = "version (inline version)"
+
+
+def _historical_scan(repo_root, tmp_path, monkeypatch, name, rel,
+                     mutate=None, tool_count=None, category_count=None):
+    """scan_file findings for one file copied into a fresh tree."""
+    drift_check = _load_drift_check(repo_root, "historical_" + name)
+    case = tmp_path / ("historical-" + name)
+    target = case / rel
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(repo_root / rel, target)
+    if mutate is not None:
+        text = target.read_text(encoding="utf-8")
+        target.write_text(mutate(text), encoding="utf-8")
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return drift_check.scan_file(
+        rel, drift_check.VERSION,
+        drift_check.TOOL_COUNT if tool_count is None else tool_count,
+        drift_check.CATEGORY_COUNT if category_count is None
+        else category_count,
+    )
+
+
+def test_historical_version_lines_are_exact_declared_and_historical(
+    repo_root,
+) -> None:
+    """The exemption is exactly these three lines: each in a declared scan
+    target, each matching one line of its file, each naming a version other
+    than the current one. Widening it means editing this test too."""
+    drift_check = _load_drift_check(repo_root, "historical_declared")
+    assert tuple(drift_check._HISTORICAL_VERSION_LINES) == (
+        _HISTORICAL_VERSION_LINES)
+    for rel, line in _HISTORICAL_VERSION_LINES:
+        assert rel in drift_check.SCAN_FILES, rel
+        lines = (repo_root / rel).read_text(encoding="utf-8").splitlines()
+        assert [item.strip() for item in lines].count(line) == 1, line
+        assert "v2.4.1" in line
+        assert drift_check.VERSION != "2.4.1"
+
+
+@pytest.mark.parametrize("rel", (_HISTORICAL_AUDIT, _HISTORICAL_WORKFLOW))
+def test_historical_version_files_scan_clean(repo_root, tmp_path, monkeypatch,
+                                             rel) -> None:
+    """With the exemption, both files scan clean at the current version."""
+    found = _historical_scan(repo_root, tmp_path, monkeypatch,
+                             "clean-" + rel.split("/")[-1], rel)
+    assert found == [], repr(found)
+
+
+@pytest.mark.parametrize("damage", ("edited", "duplicated", "removed"))
+@pytest.mark.parametrize(("rel", "line"), _HISTORICAL_VERSION_LINES,
+                         ids=["audit-tag", "audit-drift", "workflow-baseline"])
+def test_historical_version_exemption_damage_is_caught(
+    repo_root, tmp_path, monkeypatch, rel, line, damage
+) -> None:
+    """Editing, duplicating, or removing an exempt line is a finding; an
+    edited line is also checked as an ordinary version line again."""
+    def mutate(text):
+        assert text.count(line) == 1, "probe anchor drifted: " + line
+        new = {"edited": line.replace("v2.4.1", "v2.4.0"),
+               "duplicated": line + _NL + line,
+               "removed": ""}[damage]
+        return text.replace(line, new, 1)
+
+    found = _historical_scan(repo_root, tmp_path, monkeypatch,
+                             damage + "-" + str(abs(hash(line))), rel, mutate)
+    kinds = {finding["type"] for finding in found}
+    assert _HISTORICAL_EXEMPTION in kinds, repr(found)
+    if damage == "edited":
+        assert any(finding["type"] == _INLINE_VERSION
+                   and finding["found"] == "2.4.0" for finding in found), (
+            repr(found))
+
+
+@pytest.mark.parametrize("rel", (_HISTORICAL_AUDIT, _HISTORICAL_WORKFLOW))
+def test_historical_version_exemption_leaves_other_lines_checked(
+    repo_root, tmp_path, monkeypatch, rel
+) -> None:
+    """A new stale version line in an exempt file is still drift."""
+    found = _historical_scan(
+        repo_root, tmp_path, monkeypatch, "stale-" + rel.split("/")[-1], rel,
+        lambda text: text + _NL + "Current release: v2.4.1" + _NL)
+    assert any(finding["type"] == _INLINE_VERSION
+               and finding["found"] == "2.4.1"
+               and finding["content"] == "Current release: v2.4.1"
+               for finding in found), repr(found)
+
+
+@pytest.mark.parametrize(("rel", "line"), _HISTORICAL_VERSION_LINES,
+                         ids=["audit-tag", "audit-drift", "workflow-baseline"])
+def test_historical_version_exemption_is_bound_to_its_file(
+    repo_root, tmp_path, monkeypatch, rel, line
+) -> None:
+    """The exact exempt text copied into another scanned file is still a
+    stale version there."""
+    found = _historical_scan(
+        repo_root, tmp_path, monkeypatch, "elsewhere-" + str(abs(hash(line))),
+        "README.md", lambda text: text + _NL + line + _NL)
+    assert any(finding["type"] == _INLINE_VERSION
+               and finding["found"] == "2.4.1" for finding in found), (
+        repr(found))
+
+
+def test_historical_version_exemption_keeps_count_checks(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """The exemption covers versions only: the exempt drift line's tool and
+    category counts are still compared with the ground truth."""
+    found = _historical_scan(repo_root, tmp_path, monkeypatch, "counts",
+                             _HISTORICAL_AUDIT, tool_count=361,
+                             category_count=54)
+    line = "- drift: passed at v2.4.1, 362 tools, 55 categories;"
+    on_line = {finding["type"] for finding in found
+               if finding["content"].strip() == line}
+    assert {"tool count", "category count"} <= on_line, repr(found)
+    assert _INLINE_VERSION not in on_line, repr(found)
+
+
+# --- Release preparation: corrected public claims ------------------------
+#
+# The final audit's required fixes and the adopted owner decisions are
+# wording and configuration. Nothing else would notice them coming back, so
+# each retired claim is pinned absent on the page that carried it, and the
+# adopted configuration is pinned as adopted.
+
+_RETIRED_RELEASE_CLAIMS = (
+    # (page, retired wording) - P1-1 host compatibility
+    ("README.md", "Confirmed compatible"),
+    ("README.md", "if your AI supports MCP, it connects"),
+    ("README.md", "## MCP " + _EM + " Connect Any AI to UEFN"),
+    ("CLAUDE.md", "Then restart Claude Code " + _EM + " it connects automatically."),
+    ("llms.txt", "An MCP-compatible AI can drive those tools"),
+    ("docs/uefn_python_capabilities.md", "let any MCP-compatible AI directly control UEFN"),
+    # P1-2 smoke test as execution or schema validation
+    ("README.md", "tool schemas are valid"),
+    ("README.md", "Healthy Schema Check"),
+    ("CLAUDE.md", "tools ran end-to-end"),
+    ("CLAUDE.md", "Partial (safe tools only)"),
+    ("TOOL_STATUS.md", "with valid metadata"),
+    ("TOOL_STATUS.md", "Verse infrastructure all functional"),
+    (".agents/workflows/run_tests.md", "module health, and \"safe\" tools"),
+    # the .mcp.json fresh-clone defect
+    ("README.md", "`.mcp.json` is already in the repo root"),
+    ("CLAUDE.md", "`.mcp.json` is already in this repo"),
+    ("AGENTS.md", "(pre-configured)"),
+    ("llms.txt", ".mcp.json is pre-configured in this repo"),
+    (".claude/mcp_reference.md", "Claude Code MCP server config " + _EM + " already configured"),
+    # hygiene
+    ("AGENTS.md", "experimental pending WO-001"),
+    # review r1: the smoke test covered no individual tool
+    ("README.md", "The smoke test verifies that all tools *register* correctly."),
+    ("README.md", "| Tests all 362 tools? | Registry only |"),
+    ("TOOL_STATUS.md", "categorizes which tools are verified by the automated smoke test"),
+    ("README.md", "PySide6 importable, QApplication, ToolbeltDashboard |"),
+    ("TOOL_STATUS.md", "the PySide6 and dashboard imports"),
+    # review r1: the runtime wording is unchanged, so removal is not complete
+    ("docs/CHANGELOG.md", '"any MCP-compatible AI connects" are gone'),
+    ("README.md", "- **Claims match the evidence:**"),
+    # review r1: the affected range is historical, and not every client case
+    # is a ToolbeltError
+    ("README.md", "Every tag in this repository and the 2.4.1 GitHub Release are affected"),
+    ("README.md", "`except ToolbeltError` still catches every `client.py` case"),
+    ("docs/CHANGELOG.md", "`except ToolbeltError` still catches every `client.py` case"),
+    ("docs/CHANGELOG.md", "in every tag in this repository (2.3.7 through 2.4.1)"),
+    ("docs/CHANGELOG.md", "Any other `URLError` that is not a refusal, a lost connection,"),
+)
+
+
+@pytest.mark.parametrize(("rel", "claim"), _RETIRED_RELEASE_CLAIMS,
+                         ids=[rel + ":" + str(index) for index, (rel, _claim)
+                              in enumerate(_RETIRED_RELEASE_CLAIMS)])
+def test_retired_release_claims_stay_retired(repo_root, rel, claim) -> None:
+    """A claim the final audit required removing does not come back."""
+    text = (repo_root / rel).read_text(encoding="utf-8")
+    assert claim not in " ".join(text.split()), rel + " carries " + repr(claim)
+
+
+def test_corrected_release_claims_are_present(repo_root) -> None:
+    """The replacements say what the evidence supports."""
+    def norm(rel):
+        return " ".join((repo_root / rel).read_text(encoding="utf-8").split())
+
+    readme = norm("README.md")
+    assert "**MCP-host integration is untested since the security hardening.**"         in readme
+    assert "**Host compatibility is unconfirmed for this release.**" in readme
+    assert "It executes no tool and validates no tool schema." in readme
+    assert "[docs/OFFICIAL_MCP_AND_TOOLBELT.md](docs/OFFICIAL_MCP_AND_TOOLBELT.md)"         in readme
+    assert "It executes no tool and validates no tool schema." in norm("CLAUDE.md")
+    assert "no registered tool is executed, and the exact total, tool metadata, "         "and tool schemas are not validated" in norm("TOOL_STATUS.md")
+    for rel in ("README.md", "CLAUDE.md", "AGENTS.md", "llms.txt",
+                ".claude/mcp_reference.md"):
+        assert ".mcp.json.template" in norm(rel), rel
+    assert "## Fixed security issues" in norm("SECURITY.md")
+    # The smoke test's real scope, on each page that describes it.
+    assert ("The smoke test checks registration only: a minimum registry count "
+            "(179) and six named tools; it executes no tool and validates no "
+            "schema.") in readme
+    assert ("The automated smoke test verifies no individual tool: it checks "
+            "registration only, a minimum registry count (179) and six named "
+            "tools, and executes none.") in norm("TOOL_STATUS.md")
+    assert ("Layer 5's \"ToolbeltDashboard importable\" entry records a pass "
+            "without importing the dashboard") in norm("TOOL_STATUS.md")
+    changelog = norm("docs/CHANGELOG.md")
+    # The removal is limited to the documentation, and the unchanged runtime
+    # wording is a known issue in both sets of release notes.
+    assert "MCP-host claims in the documentation are limited to the evidence." \
+        in changelog
+    for notes in (changelog, readme):
+        assert ("still say that any MCP-compatible AI or agent can control "
+                "UEFN") in notes
+    # The constructor change is a breaking change outside ToolbeltError.
+    for notes in (changelog, readme):
+        assert "raises `ValueError`" in notes
+        assert "which is not a `ToolbeltError`" in notes or (
+            "and that is not a `ToolbeltError`" in notes)
+    # The two URLError cases keep their WO-004 history apart.
+    assert ("Any other `URLError` that is not a refusal raises `OutcomeUnknown` "
+            "in `client.py` (was `NotConnected`); `mcp_server.py` still raises "
+            "`ConnectionError`.") in changelog
+    assert ("raises `OutcomeUnknown` in `client.py` (was `ToolbeltError`).") \
+        in changelog
+    # The released issue is bounded to the historical tags.
+    assert "Every earlier tag, 2.3.7 through 2.4.1, and the 2.4.1 GitHub " \
+        "Release are affected." in readme
+    assert "in every earlier tag (2.3.7 through 2.4.1)" in changelog
+
+
+def test_adopted_release_configuration(repo_root) -> None:
+    """The template pins no port, the shared settings carry none of the three
+    removed permissions, a local .mcp.json stays ignored, and the profile path
+    is redacted from the quirks page. Whether .mcp.json is tracked is checked
+    against Git itself, in test_local_mcp_config_is_never_tracked."""
+    template = json.loads(
+        (repo_root / ".mcp.json.template").read_text(encoding="utf-8"))
+    server = template["mcpServers"]["uefn-toolbelt"]
+    assert "env" not in server
+    assert "UEFN_MCP_PORT" not in json.dumps(template)
+    settings = json.loads(
+        (repo_root / ".claude" / "settings.json").read_text(encoding="utf-8"))
+    assert "enableAllProjectMcpServers" not in settings
+    allowed = settings["permissions"]["allow"]
+    assert "Bash(python -c *)" not in allowed
+    assert "Bash(find*)" not in allowed
+    assert ".mcp.json" in (
+        repo_root / ".gitignore").read_text(encoding="utf-8").splitlines()
+    quirks = (repo_root / "docs" / "UEFN_QUIRKS.md").read_text(encoding="utf-8")
+    assert re.search(r"Users[\\/]+ocean", quirks) is None
+
+
+def _git_worktree_root(path):
+    """The root of the Git worktree containing `path`, or None when there is
+    no usable Git metadata."""
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(path), "rev-parse", "--show-toplevel"],
+            capture_output=True, text=True, check=False)
+    except OSError:
+        return None
+    if result.returncode != 0 or not result.stdout.strip():
+        return None
+    return type(path)(result.stdout.strip()).resolve()
+
+
+def test_local_mcp_config_is_never_tracked(repo_root) -> None:
+    """A local .mcp.json may exist, ignored, but it is never tracked - a
+    force-added copy fails here. A tree without its own Git metadata (an
+    export) cannot show what is tracked, so the test skips there instead of
+    treating missing metadata as proof."""
+    root = repo_root.resolve()
+    if _git_worktree_root(root) != root:
+        pytest.skip("no Git metadata for this tree; whether .mcp.json is "
+                    "tracked cannot be determined")
+    tracked = subprocess.run(
+        ["git", "-C", str(root), "ls-files", "--", ".mcp.json"],
+        capture_output=True, text=True, check=True).stdout.split()
+    assert tracked == [], ".mcp.json is tracked: " + repr(tracked)
+
+
+def test_roadmap_version_matches_the_package(repo_root) -> None:
+    """ROADMAP is not a drift scan target, so its current-version line is
+    tied to the package constant here."""
+    drift_check = _load_drift_check(repo_root, "roadmap_version")
+    roadmap = (repo_root / "ROADMAP.md").read_text(encoding="utf-8")
+    assert "Current version: **v" + drift_check.VERSION + "**" in roadmap

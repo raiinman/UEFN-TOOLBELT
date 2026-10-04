@@ -1,11 +1,12 @@
 # UEFN Toolbelt
 
 > Python automation framework for Unreal Editor for Fortnite (UEFN).
-> v2.4.1 exposes 362 tools across 55 categories through a PySide6 dashboard
+> v2.5.0 exposes 362 tools across 55 categories through a PySide6 dashboard
 > (`tb.launch_qt()`) and Toolbelt's own custom bridge. The `Toolbelt ▾` top-bar
 > menu registers but never renders on UEFN 42.00, so the dashboard is the entry point.
-> An MCP-compatible AI can drive those tools through Toolbelt's custom bridge: a
-> local HTTP listener that authenticates same-user clients. That is Toolbelt's own
+> An MCP client is intended to drive those tools through Toolbelt's custom
+> bridge, a local HTTP listener that authenticates same-user clients; MCP-host
+> integration is untested since the WO-001/WO-004 hardening. That is Toolbelt's own
 > surface, not Epic's official UEFN MCP server.
 
 ## What this is
@@ -43,7 +44,9 @@ The custom bridge uses authenticated same-user loopback. `mcp_server.py` and
 # 1. Start listener in UEFN
 tb.run("mcp_start")   # → http://127.0.0.1:8765
 
-# 2. .mcp.json is pre-configured in this repo for the external MCP process
+# 2. Copy .mcp.json.template to the gitignored .mcp.json and set the
+#    absolute path to mcp_server.py. MCP-host integration is untested
+#    since the WO-001/WO-004 hardening.
 ```
 
 Unauthenticated, browser-originated, and remote-host requests are rejected.

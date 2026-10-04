@@ -40,7 +40,7 @@ never auto-starts. See README "Known Issue" and UEFN_QUIRKS.md #36. Detected by
 *   **Main Thread Lock**: UEFN Python runs on the main render thread. Operations like `time.sleep` in wait loops will **deadlock** the engine, preventing async tasks (like screenshot saves) from completing. Verification logic should avoid blocking waits.
 *   **Hot-Reloading**: Use "Nuclear Reload" to clear `sys.modules` cache. **Mandatory**: Must call `tb.register_all_tools()` after reloading to rebuild the registry.
 
-This document outlines the current testing status of the toolbelt and categorizes which tools are verified by the automated smoke test, and which require manual verification.
+This document outlines the current testing status of the toolbelt. The automated smoke test verifies no individual tool: it checks registration only, a minimum registry count (179) and six named tools, and executes none. The sections below record which tools have test coverage and which require manual verification.
 
 ## 🟡 Automated Verification Status
 
@@ -317,10 +317,9 @@ Per-tool source coverage now lives in the generated coverage block under "Automa
 ## What the Tests Actually Prove (and Don't)
 
 **What the smoke test proves:**
-- All modules import and register without errors
-- All 362 tools register into the registry with valid metadata
-- Layer 3 checks a minimum registry count and the registry membership of six named tools; no registered tool is executed
-- MCP bridge, PySide6, and Verse infrastructure all functional
+- The package imports, `register_all_tools()` completes, and every expected tool module is present
+- Layer 3 checks a minimum registry count and the registry membership of six named tools; no registered tool is executed, and the exact total, tool metadata, and tool schemas are not validated
+- Layers 4–6 check availability only: the MCP bridge module, its status and command registry, the PySide6 import and `QApplication.instance()`, and the Verse book clone. Layer 5's "ToolbeltDashboard importable" entry records a pass without importing the dashboard, so nothing about the dashboard is checked. They send no bridge request, open no window, and generate no Verse
 
 **What the API Capability Crawler proves:**
 - Read-only introspection works on live actors

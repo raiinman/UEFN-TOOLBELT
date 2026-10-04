@@ -6,8 +6,8 @@ never authorizes implementation.
 
 - Current issued Work Order: NONE
 - Authorized session: NONE
-- Base commit: `066cf6d751740c0daaff165fc076be19e1b8e22d`
-- Current gate: FINAL AUDIT RECORDED — REQUIRED FIXES OUTSTANDING; RELEASE PREPARATION NOT AUTHORIZED
+- Base commit: `fb7f9540464ac0898662087d4f70caa534de60d6`
+- Current gate: RELEASE 2.5.0 PREPARED — FINAL AUDIT RECHECK REQUIRED; TAGGING AND RELEASE CREATION UNAUTHORIZED
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
@@ -20,6 +20,9 @@ never authorizes implementation.
 - Final audit commit: `066cf6d751740c0daaff165fc076be19e1b8e22d`
 - Final audit CI workflow: `37142847095`
 - Final audit CI job: `111260679508` — Lint, types, tests
+- Audit recording commit: `fb7f9540464ac0898662087d4f70caa534de60d6`
+- Audit recording CI workflow: `37149178090`
+- Audit recording CI job: `111279224830` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -322,9 +325,9 @@ version selection, tagging, Release creation, branch-protection changes, other
 repository metadata changes, and social publication all remained unauthorized
 at that gate.
 
-WO-001 through WO-007 form the frozen next release train. The release version
-remains undecided and the repository stays at version 2.4.1. No tag or GitHub
-Release is authorized until the frozen train is complete, a final
+WO-001 through WO-007 form the frozen next release train. The owner selected
+release version 2.5.0, recorded in the release preparation record below. No tag
+or GitHub Release is authorized until the frozen train is complete, a final
 integration/repository-truth audit passes, and the owner separately authorizes
 a release session. New proposals default to the following release train unless
 the owner explicitly classifies one as a blocker.
@@ -353,14 +356,44 @@ audit report is identified by its SHA-256
 by their manifest digest
 `88dc0e5bb7c3d246f3fdb03ef05c0ba549805f3012d926feef356f63e3c933b9`.
 
-Two required fixes are outstanding. P1-1: public and agent pages claim MCP-host
-compatibility that no accepted record supports. P1-2: public and agent pages
-present the smoke test's registration checks as tool execution or schema
-validation. The final audit has not passed the release gate. The `.mcp.json`
-fresh-clone documentation defect remains queued for correction with them.
-The version choice, the checker's handling of historical version lines, the
-pinned-port configuration, the agent settings, the privacy finding, and the
-disclosure of the security fix remain open owner decisions; this record
-neither accepts nor waives any of them. Release preparation, any version bump,
-tagging, Release creation, branch-protection changes, other repository
-metadata changes, and social publication all remain unauthorized.
+At that gate, two required fixes were outstanding. P1-1: public and agent pages
+claimed MCP-host compatibility that no accepted record supports. P1-2: public
+and agent pages presented the smoke test's registration checks as tool
+execution or schema validation. The final audit has not passed the release
+gate. The `.mcp.json` fresh-clone documentation defect remained queued for
+correction with them. The version choice, the checker's handling of historical
+version lines, the pinned-port configuration, the agent settings, the privacy
+finding, and the disclosure of the security fix remained open owner decisions;
+that record neither accepted nor waived any of them. Release preparation, any
+version bump, tagging, Release creation, branch-protection changes, other
+repository metadata changes, and social publication all remained unauthorized
+at that gate.
+
+Release preparation record: under a separate owner authorization for one
+bounded release-preparation session, which opened no review, commit, push, tag,
+Release, or publication authority, the repository was prepared on base commit
+`fb7f9540464ac0898662087d4f70caa534de60d6`; [CI workflow
+`37149178090`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37149178090)
+completed successfully on that commit, including required job
+[`111279224830` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37149178090/job/111279224830).
+The owner adopted version 2.5.0, with an explicit read-before-upgrading section
+and no backward-compatibility claim; MCP-host claims limited to the evidence,
+so integration after the hardening is stated as untested; the smoke test
+described as registration and module-loading checks that execute no tool and
+validate no schema; fresh-clone setup through a local, gitignored `.mcp.json`
+copied from `.mcp.json.template`; no pinned port in that template;
+`enableAllProjectMcpServers`, `Bash(python -c *)`, and `Bash(find*)` removed
+from the shared agent settings; the profile path in `docs/UEFN_QUIRKS.md`
+redacted, with completed mandates and Git history unchanged; disclosure of the
+released unauthenticated `execute_python` issue and of the proxy and redirect
+bearer leak on unreleased `main`, without exploit detail or a GitHub advisory;
+the checker's historical-version exemption limited to exact lines; and an
+offline live-verification exemption for this preparation change, whose only
+`Content/Python` edit is `__version__` and which supplies no live verification.
+The private authorization is identified by its SHA-256
+`aa6f386781c9db3d11ae54012aaef2184ca985edc876cf25ae4d95b880f2f40a`. The final
+audit has not passed the release gate; passing it requires an independent
+recheck of the required fixes and the affected changes, which this
+authorization does not open. Tagging, Release creation, branch-protection
+changes, other repository metadata changes, and draft or social publication all
+remain unauthorized.

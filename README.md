@@ -5,7 +5,7 @@
 
 [![CI](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/workflows/ci.yml/badge.svg)](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/workflows/ci.yml)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.4.1-green.svg)](docs/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.5.0-green.svg)](docs/CHANGELOG.md)
 [![Discussions](https://img.shields.io/badge/community-discussions-blueviolet)](https://github.com/undergroundrap/UEFN-TOOLBELT/discussions)
 
 ![UEFN Toolbelt Dashboard](docs/dashboard_hero.png)
@@ -162,7 +162,7 @@ Toolbelt is built to be driven by a coding agent — Claude Code, Codex, or Curs
 - [Custom Plugins & Security](#custom-plugins--security)
 - [API Capability Crawler](#api-capability-crawler)
 - [Fortnite Device API Mapping](#fortnite-device-api-mapping)
-- [MCP — Connect Any AI to UEFN](#mcp--connect-any-ai-to-uefn)
+- [MCP — Connect an AI Client to UEFN](#mcp--connect-an-ai-client-to-uefn)
 - [Spec-Accurate Verse Code Generation](#spec-accurate-verse-code-generation)
 - [Agent Context Files — CLAUDE.md and AGENTS.md](#agent-context-files--claudemd-and-agentsmd)
 - [Why This Is the Best UEFN Python Tool](#why-this-is-the-best-uefn-python-tool)
@@ -251,7 +251,7 @@ with open("path/to/script.py") as f:
 
 ## ⚠️ Automated Integration Testing
 
-The smoke test verifies that all tools *register* correctly. The integration test verifies that they *work* — in a live UEFN editor, against real actors.
+The smoke test checks registration only: a minimum registry count (179) and six named tools; it executes no tool and validates no schema. The integration test verifies that they *work* — in a live UEFN editor, against real actors.
 
 ### What the integration test actually does
 
@@ -299,7 +299,7 @@ If the editor crashes mid-run (rare), the file will contain partial results up t
 | | Smoke Test | Integration Test |
 |---|---|---|
 | Runs outside UEFN? | No (needs editor) | No (needs editor) |
-| Tests all 362 tools? | Registry only | Live execution |
+| Executes tools? | No — a minimum registry count (179) and six named tools | Yes — fixture checks against real actors |
 | Requires level actors? | No | Yes (spawns its own) |
 | Safe in production? | Yes | **No — use blank level** |
 | Runtime | ~5 seconds | ~70 seconds |
@@ -1460,9 +1460,9 @@ Expected output in the log:
 |---|---|---|
 | **Layer 1** — Python Environment | stdlib, threading, sockets, HTTP server, file I/O | 13 |
 | **Layer 2** — UEFN API Surface | `unreal` module, subsystems, AutomationLibrary, Materials | 13 |
-| **Layer 3** — Toolbelt Core | Every core module loaded, 362 tools registered | 40 |
+| **Layer 3** — Toolbelt Core | Package import, `register_all_tools()`, every expected module present, a minimum registry count (179), and six named tools registered; no tool is executed | 40 |
 | **Layer 4** — MCP Bridge | 31 command handlers, HTTP listener state | 4 |
-| **Layer 5** — Dashboard (PySide6) | PySide6 importable, QApplication, ToolbeltDashboard | 3 |
+| **Layer 5** — Dashboard (PySide6) | PySide6 importable and `QApplication.instance()` callable; its "ToolbeltDashboard importable" entry records a pass without importing the dashboard | 3 |
 | **Layer 6** — Verse Book | clone present, git reachable, 22 chapters parsed | 12 |
 | **Layer 7** — Integration | Fixture-based verification of context-aware tools — see Integration Testing section above | — |
 
@@ -1518,11 +1518,12 @@ This lets Claude Code directly control UEFN — spawn actors, run any tool, gene
 pip install mcp
 ```
 
-**2. Create your `.mcp.json`:**
+**2. Create your own `.mcp.json`:** a fresh clone has none. The file is
+gitignored, so your local paths and configuration are never committed.
 ```bat
 copy .mcp.json.template .mcp.json
 ```
-Open `.mcp.json` and update the path to point to your repo:
+Open `.mcp.json` and set the absolute path to `mcp_server.py` in your clone:
 ```json
 {
   "mcpServers": {
@@ -1533,6 +1534,11 @@ Open `.mcp.json` and update the path to point to your repo:
   }
 }
 ```
+
+`mcp_server.py` takes the listener's port from the session handoff, so the
+template sets no port. Add `UEFN_MCP_PORT` to an `env` block only to override
+that, and only with the port the listener actually bound: the session secret is
+sent to whatever is listening on the port you name.
 
 **3. Restart Claude Code** so it picks up the new server config.
 
@@ -1545,11 +1551,15 @@ You should see in the Output Log:
 [MCP] ✓ Listener running on http://127.0.0.1:8765
 ```
 
-**5. Test it in Claude Code:**
+**5. Try it from Claude Code:**
 ```
 run the toolbelt smoke test
 ```
-Claude will call `run_toolbelt_tool("toolbelt_smoke_test")` through the bridge and show you the results.
+If the client connects, it calls `run_toolbelt_tool("toolbelt_smoke_test")` through the bridge.
+
+> **Untested path:** No accepted record has run `mcp_server.py` through any MCP host, stdio, or FastMCP since the WO-001 authentication and WO-004 transport changes. `client.py`
+> direct calls are the path with recorded live evidence, on one UEFN 42.20 boot.
+> See the [evidence gaps](docs/OFFICIAL_MCP_AND_TOOLBELT.md#evidence-gaps).
 
 > **Note:** The listener must be started in UEFN each session. You can also click **Dashboard → MCP → Start Listener** instead of pasting the command.
 
@@ -2280,15 +2290,18 @@ All of these also appear in `deploy.bat` output — after deploying, just copy f
 
 ---
 
-## MCP — Connect Any AI to UEFN
+## MCP — Connect an AI Client to UEFN
 
-UEFN Toolbelt ships a full two-process MCP (Model Context Protocol) architecture so **any MCP-compatible AI** can directly control the editor — no copy-pasting, no manual Python runs.
+UEFN Toolbelt ships a two-process MCP (Model Context Protocol) architecture:
+`mcp_server.py` is an MCP stdio server intended for clients such as Claude Code,
+Codex, or Cursor, and it forwards registered commands to the editor through
+Toolbelt's authenticated custom bridge.
 
-**This works with any MCP-compatible AI — Claude Code, Codex, Cursor,
-or any custom agent that speaks the MCP protocol.**
-All three read a context file this repo ships, so they start with full knowledge of the
-codebase rather than guessing — Claude Code loads `CLAUDE.md`, Codex and Cursor load
-`AGENTS.md`. The bridge itself is model-agnostic: if your AI supports MCP, it connects.
+**MCP-host integration is untested since the security hardening.**
+No accepted record has run `mcp_server.py` through any MCP host, stdio, or FastMCP since the WO-001 authentication and WO-004 transport changes; earlier compatibility statements predate them. See the
+[evidence gaps](docs/OFFICIAL_MCP_AND_TOOLBELT.md#evidence-gaps). Claude Code
+loads `CLAUDE.md`, and Codex and Cursor load `AGENTS.md`, so an agent that does
+connect starts with this codebase's context.
 
 **How it works:**
 
@@ -2316,12 +2329,13 @@ listener (known Quirk #36):
 import UEFN_Toolbelt as tb; tb.register(); tb.run("mcp_start")
 ```
 
-`.mcp.json` is already in the repo root — any MCP client picks it up automatically.
+`.mcp.json` is not tracked: copy `.mcp.json.template` to the gitignored
+`.mcp.json` and set the absolute path to `mcp_server.py` (Getting Started, Step 8).
 The listener creates a rotating same-user session handoff under
 `Saved/UEFN_Toolbelt/`; `mcp_server.py` reads it automatically. Restart rotates
 the secret and stop removes it. The secret is never printed or returned.
 
-**What any connected AI can do:**
+**What a connected client can do:**
 - Run registered Toolbelt tools by name (`run_toolbelt_tool`), except local-only
   listener lifecycle controls
 - Spawn, move, delete actors; read selected actors live
@@ -2361,7 +2375,10 @@ implement the same protected handoff and bearer-header contract. Treat the
 handoff as privileged editor-control material; loopback is not a sandbox and a
 compromised process running as the same Windows user may be able to read it.
 
-**Confirmed compatible: Claude Code, Codex, and Cursor**, plus any custom agent built against the HTTP API directly. Claude Code additionally auto-loads `CLAUDE.md` on open, which is why the autonomous-build walkthrough above uses it — Codex and Cursor get the same context from `AGENTS.md`.
+**Host compatibility is unconfirmed for this release.** No MCP host — Claude
+Code, Codex, Cursor, or another — has been exercised against the hardened
+`mcp_server.py`; `client.py` direct calls are the path with recorded live
+evidence, on one UEFN 42.20 boot. Claude Code additionally auto-loads `CLAUDE.md` on open, which is why the autonomous-build walkthrough above uses it — Codex and Cursor get the same context from `AGENTS.md`.
 
 MCP bridge architecture inspired by [Kirch's uefn-mcp-server](https://github.com/KirChuvakov/uefn-mcp-server) ([@KirchCreator](https://x.com/KirchCreator)) — full credit for the queue + Slate tick pattern.
 
@@ -2476,8 +2493,10 @@ UEFN Toolbelt is not just a collection of scripts; it is a **secure platform** f
 
 The UEFN Toolbelt includes a professional-grade testing suite to ensure stability across UEFN updates.
 
-### 1. Smoke Test (Healthy Schema Check)
-Verifies every core module is loaded, all 362 tool schemas are valid (descriptions, tags, `**kwargs` compliance), and UEFN API access is healthy.
+### 1. Smoke Test (Registration Check)
+Checks that the package and every expected tool module load, that the registry
+holds at least a minimum count (179) and six named tools, and that key UEFN APIs
+are present. It executes no tool and validates no tool schema.
 ```python
 import UEFN_Toolbelt as tb
 tb.run("toolbelt_smoke_test")
@@ -2528,6 +2547,7 @@ Built for the 2026 UEFN Python wave. First. Most complete. Spec-accurate.
 | [docs/ui_style_guide.md](docs/ui_style_guide.md) | **UI Style Guide** — color palette, `ToolbeltWindow` API, widget recipes, canvas theming, AI agent rules. Read before writing any PySide6 UI. |
 | [docs/plugin_dev_guide.md](docs/plugin_dev_guide.md) | Custom plugin development — skeleton, return contract, security model, UI style requirements |
 | [docs/uefn_python_capabilities.md](docs/uefn_python_capabilities.md) | Full UEFN Python API surface — what's scriptable, what's read-only, what's stripped |
+| [docs/OFFICIAL_MCP_AND_TOOLBELT.md](docs/OFFICIAL_MCP_AND_TOOLBELT.md) | **Epic's official MCP and Toolbelt** — what each control plane does, the custom bridge's security boundary, recovery, and the evidence gaps |
 | [docs/CHANGELOG.md](docs/CHANGELOG.md) | Full version history — every feature, fix, and refactor by release |
 
 ---
@@ -2538,6 +2558,76 @@ Full history for every release lives in [docs/CHANGELOG.md](docs/CHANGELOG.md).
 The entries below stopped being maintained after v1.5.3 and are kept as-is;
 for anything between v1.6.0 and v2.3.9, read the changelog rather than this
 section.
+
+### v2.5.0 — October 2026 (Hardened bridge, honest coverage, official-MCP truth)
+
+**Why this matters:** Toolbelt's custom bridge used to accept unauthenticated
+loopback requests and run arbitrary Python sent to it. This release closes
+that, makes the clients say when they do not know whether a command ran, and
+replaces coverage and compatibility claims with what the records support.
+
+**⚠️ Not backward-compatible — read before upgrading if you script the
+bridge:**
+
+- **`execute_python` is gone.** The bridge command and the MCP tool are
+  removed; `ToolbeltClient.execute_python()` raises. Use a registered command,
+  or UEFN's local Python console.
+- **Every request needs the session secret.** `client.py` and `mcp_server.py`
+  read the rotating same-user handoff automatically; raw HTTP, browser
+  origins, and remote hosts are rejected. `mcp_start`, `mcp_stop`,
+  `mcp_restart`, and the integration suite are local-only.
+- **Client exceptions changed.** A bridge `504` or a wrapped timeout is
+  `CommandTimeout` / `TimeoutError`; a reply that does not prove whether the
+  command ran is `OutcomeUnknown`. Both new classes subclass `ToolbeltError`,
+  so `except ToolbeltError` around bridge calls still catches them, but
+  `except RuntimeError` no longer catches an `mcp_server.py` timeout.
+- **No proxies, no redirects, no retries** for bridge requests.
+- **`ToolbeltClient` accepts only `127.0.0.1`.** Any other host raises
+  `ValueError` when the client is constructed, which is not a `ToolbeltError`.
+  Its default port, like `connect()`'s, now comes from the session handoff
+  (it was `8765`), and `.mcp.json.template` no longer pins `UEFN_MCP_PORT`.
+- **`list_untested.py` exits with status 3.** Run
+  `py -3 scripts/coverage_report.py` from a repository checkout instead.
+- **Shared Claude Code settings are narrower:** no
+  `enableAllProjectMcpServers`, and no pre-approved `python -c` or `find`.
+
+**Security:**
+
+- **Fixed, released:** through 2.4.1 the bridge authenticated no client and
+  ran arbitrary `execute_python`. Every earlier tag, 2.3.7 through 2.4.1, and
+  the 2.4.1 GitHub Release are affected. Upgrade.
+- **Fixed, never released:** between 2026-08-25 and 2026-09-28, `main` sent
+  the bridge secret through configured HTTP proxies and redirects. No tag or
+  Release contains it. Details in [SECURITY.md](SECURITY.md#fixed-security-issues).
+
+**Added and changed:**
+
+- **Registry-derived coverage:** `scripts/coverage_report.py` classifies all
+  362 registered tools from their test code — 80 `defined-outcome`, 73
+  `defined-execution`, 209 `registration-only`. These describe test code, not
+  live verification.
+- **[Epic's official MCP and Toolbelt](docs/OFFICIAL_MCP_AND_TOOLBELT.md):**
+  what each control plane does, the bridge's security boundary, recovery, and
+  the evidence gaps. Toolbelt is not reachable through Epic's official MCP
+  server; WO-002's external probes failed on UEFN 42.00.
+- **Documentation claims match the evidence:** MCP-host integration is
+  untested since the hardening, the smoke test is a registration check that
+  executes no tool, and fresh clones create their own gitignored `.mcp.json`.
+
+**Evidence and limits:** client behaviour was accepted live on one UEFN 42.20
+boot, for the outcome rows its record lists. WO-002 and WO-003 ran on UEFN
+42.00; WO-001's live check did not record its editor build. The complete 2.5.0
+package, MCP-host integration, live proxy and
+redirect behaviour, and exactly-once execution were not tested, and the
+version change itself was not run in UEFN. Known issues: an unhandled
+`ConnectionAbortedError` in the bridge; a client timeout equal to the bridge's
+30-second deadline; and the dashboard's MCP text and the `Toolbelt ▾` menu entry still say that any MCP-compatible AI or agent can control UEFN; that runtime wording was not changed in this release, and MCP-host integration remains untested. Full list in
+[docs/CHANGELOG.md](docs/CHANGELOG.md).
+
+**Benchmark disclosure:** A controlled comparison was planned. The only live attempt was rejected:
+logged cadence did not establish the required foreground condition, and the
+project was saved during the session. No accepted comparison, performance
+ranking, compatibility finding or bridge-replacement conclusion exists.
 
 ### v2.4.1 — August 2026 (Launch Session validation fixes)
 

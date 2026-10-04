@@ -635,7 +635,7 @@ def _find_project_content_dir() -> str:
         curr = parent
 
 content_dir = _find_project_content_dir()
-# → C:/Users/ocean/AppData/Local/FortniteGame/Saved/Projects/BRCosmetics/Content
+# → C:/Users/<you>/AppData/Local/FortniteGame/Saved/Projects/BRCosmetics/Content
 ```
 
 This works because every tool file lives at `[Project]/Content/Python/UEFN_Toolbelt/tools/toolname.py`. Walking four levels up always reaches `Content/`.

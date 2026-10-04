@@ -5,6 +5,166 @@ Format: `## [version] — date` · Types: `feat` · `fix` · `refactor` · `docs
 
 ---
 
+## [2.5.0] — 2026-10-03
+
+The WO-001 through WO-007 release train. The custom bridge is authenticated
+and fails closed, client errors now say what is and is not known, coverage
+claims come from the registry, and Toolbelt's relationship to Epic's official
+UEFN MCP is documented from the evidence. **This release is not
+backward-compatible** for scripts that call `execute_python`, catch specific
+client exceptions, reach the bridge through a proxy, or run `list_untested.py`.
+
+### ⚠️ Read before upgrading
+
+- **`execute_python` is gone from the bridge.** The bridge command and the
+  `mcp_server.py` tool are removed, and `ToolbeltClient.execute_python()` now
+  raises `ToolbeltError`. Use a registered command remotely, or UEFN's local
+  Python console for deliberate scripting. (WO-001)
+- **The bridge requires its session secret.** Every listener start writes a
+  rotating bearer secret to the same-user handoff
+  `Saved/UEFN_Toolbelt/mcp_session.json`; `client.py` and `mcp_server.py` read
+  it automatically. Raw unauthenticated HTTP, browser origins, CORS preflight,
+  and remote hosts are rejected, and a non-Python client must implement the
+  same handoff and bearer-header contract. `mcp_start`, `mcp_stop`,
+  `mcp_restart`, and the integration suite are local-only. (WO-001)
+- **Client exceptions changed.** (WO-004)
+  - A bridge `504` raises `CommandTimeout` in `client.py` (was `ToolbeltError`)
+    and `TimeoutError` in `mcp_server.py` (was `RuntimeError`); code catching
+    `RuntimeError` from `mcp_server.py` no longer catches it.
+  - A timeout wrapped in `URLError` raises `CommandTimeout` (was
+    `NotConnected`) and `TimeoutError` (was `ConnectionError`).
+  - Any other `URLError` that is not a refusal raises `OutcomeUnknown` in
+    `client.py` (was `NotConnected`); `mcp_server.py` still raises
+    `ConnectionError`. A refusal is recognized by its `ConnectionRefusedError`
+    reason only, never by message text.
+  - A lost connection during the response, an unreadable body, or an error
+    status without the bridge's exact body raises `OutcomeUnknown` in
+    `client.py` (was `ToolbeltError`). An unmatched `401` raises
+    `OutcomeUnknown` in `client.py` and `RuntimeError` in `mcp_server.py` (was
+    `AuthenticationError` and `PermissionError`).
+  - A `200` body that is not a JSON object, a truthy non-boolean `success`,
+    and every 2xx other than `200` are unknown outcomes, not results.
+  - `OutcomeUnknown` subclasses `ToolbeltError` and `CommandTimeout`
+    subclasses `OutcomeUnknown`, so `except ToolbeltError` around bridge calls
+    still catches the new outcome classes. Message text changed for timeouts,
+    lost connections, rejections, and reported failures.
+- **No proxies, no redirects, no retries.** Bridge requests ignore
+  environment and system HTTP proxy settings and follow no redirect; a setup
+  that reached the bridge only through a proxy stops working. Each call makes
+  one connection attempt and retries nothing. (WO-004)
+- **`ToolbeltClient` accepts only the loopback host and takes its port from
+  the session handoff.** Constructing it with any host other than `127.0.0.1`
+  raises `ValueError` (any host was accepted before), and that is not a
+  `ToolbeltError`. Its default `port` is now `None`, meaning the session
+  handoff's port (the default was `8765`), and `connect()` follows the same
+  default. (WO-001)
+- **`list_untested.py` exits with status 3** and reports no coverage. Run
+  `py -3 scripts/coverage_report.py` from a repository checkout instead;
+  callers that read exit status 0 or 1 must change. (WO-005)
+- **`.mcp.json.template` no longer pins `UEFN_MCP_PORT`.** `mcp_server.py`
+  uses the session handoff's port; set the variable only to the port the
+  listener actually bound.
+- **The shared Claude Code settings are narrower.** `.claude/settings.json` no
+  longer sets `enableAllProjectMcpServers` or pre-approves `python -c` and
+  `find` commands. Offline checks show only that the file parses, not Claude
+  Code's effective permission behaviour.
+
+### Security
+
+- **Fixed: unauthenticated remote Python on the custom bridge (released).**
+  Through 2.4.1, the bridge's loopback listener authenticated no client and
+  dispatched arbitrary `execute_python`, and it could run work off the editor
+  main thread when Slate callback registration was unavailable. The command is
+  present from the initial v1.0 commit onward, in every earlier tag (2.3.7
+  through 2.4.1) and the 2.4.1 GitHub Release. WO-001 replaced it with
+  an authenticated, fail-closed control plane: a rotating bearer secret,
+  constant-time comparison, recursive secret redaction, method, path, `Host`,
+  `Origin`, content-type, and body-size checks before parsing, no CORS, a
+  listener that starts only after Slate callback registration, and every
+  command queued to the editor main thread. Identified by source review in the
+  2026-08-24 audit; no exploit was attempted.
+- **Fixed: bearer secret sent through HTTP proxies and redirects (unreleased
+  `main` only).** From commit `ffcbe8b` (2026-08-25) until commit `b4fa0a5`
+  (2026-09-28), `client.py` and `mcp_server.py` sent bridge requests, secret
+  included, through any configured HTTP proxy and followed `301`, `302`, and
+  `303` replies with a `GET` that carried the secret to the redirect target.
+  No tag or GitHub Release contains those commits. Reproduced with local fake
+  endpoints only. If you ran either client from `main` in that window with a
+  proxy configured, restart the listener; every start rotates the secret.
+- Details: [`SECURITY.md`](../SECURITY.md#fixed-security-issues).
+
+### Added
+
+- **Registry-derived coverage report.** `scripts/coverage_report.py`
+  classifies every registered tool from its test code — of 362, 80
+  `defined-outcome`, 73 `defined-execution`, and 209 `registration-only` — and
+  `TOOL_STATUS.md` carries its generated block, which `--check` keeps current.
+  The categories describe what test code checks; they are not live
+  verification. (WO-005)
+- **Official MCP explainer.** `docs/OFFICIAL_MCP_AND_TOOLBELT.md` sets Epic's
+  official UEFN MCP beside Toolbelt's custom bridge, with the bridge's security
+  boundary, recovery steps, known official-MCP quirks, and the evidence gaps.
+  (WO-007)
+- **Separate toolset truth states.** `epic_mcp_status` reports in-process
+  registration, the internal list, describe, and run contracts, and the
+  external official-MCP states independently, so no one state implies
+  another. (WO-002)
+
+### Changed
+
+- **Toolbelt is not reachable through Epic's official MCP server.** WO-002
+  probed external listing, description, and calls on UEFN 42.00; all three
+  failed, bounded by `UE::ValkyrieToolset::ToolsetPolicy`. Toolbelt's tools are
+  available through its own custom bridge. (WO-002)
+- **Documentation converged on the official-MCP evidence.** Agent files, the
+  README, and the docs keep Epic's official MCP, Toolbelt's custom bridge, and
+  the legacy Python API limits apart, and point to the dashboard as the entry
+  point. (WO-003)
+- **MCP-host claims in the documentation are limited to the evidence.** The
+  documentation no longer says "Confirmed compatible" or that any
+  MCP-compatible AI connects: no accepted record has run `mcp_server.py`
+  through an MCP host, stdio, or FastMCP since the WO-001 authentication and
+  WO-004 transport changes. The dashboard and menu wording is unchanged; see
+  the known issues below.
+- **The smoke test is described as what it is:** registration and
+  module-loading checks that execute no tool and validate no schema.
+- **Fresh-clone MCP setup** copies `.mcp.json.template` to a gitignored
+  `.mcp.json`; no `.mcp.json` is tracked.
+- **Version checks keep history true.** `drift_check.py` exempts three exact
+  historical lines from version checking only, and fails if any of them is
+  edited, duplicated, or removed; every other stale version is still drift.
+- **A profile path was redacted** from `docs/UEFN_QUIRKS.md`. A historical
+  copy remains in a completed Work Order and in Git history.
+
+### Evidence and limits
+
+- **Live evidence, each on its own build.** WO-001's hardening was verified
+  live on `TOOL_TEST` (its editor build was not recorded). WO-002 and WO-003
+  ran on UEFN 42.00. WO-004's client acceptance ran on one boot of
+  `Release-42.20-CL-58011042`, for only the outcome rows its Session C record
+  lists. Apart from `__version__`, the only `Content/Python` change since that
+  run is the `list_untested.py` shim.
+- **This release's version change was not run in UEFN.** The owner accepted
+  an offline exemption for it.
+- **Not tested:** a live UEFN run of the complete 2.5.0 package; MCP-host,
+  stdio, or FastMCP integration; the `.mcp.json` launch path; live proxy and
+  redirect behaviour, which rests on static tests; outcome rows 2, 5, 6, 8,
+  and 10; exactly-once execution; modal detection, which is deferred; clients
+  on Python 3.8 to 3.10 or 3.12; and macOS.
+- **Known issues, not fixed:** the bridge's unhandled `ConnectionAbortedError`;
+  the client and bridge share a 30-second deadline, so either may fire first;
+  `client.py` and `mcp_server.py` are outside the mypy-checked set; and the
+  dashboard's MCP text and the `Toolbelt ▾` menu entry (`dashboard_pyside6.py`,
+  `menu.py`) still say that any MCP-compatible AI or agent can control UEFN.
+  That runtime wording was not changed in this release, and MCP-host
+  integration remains untested.
+- **Benchmark disclosure** (WO-006, superseded):
+
+  A controlled comparison was planned. The only live attempt was rejected:
+  logged cadence did not establish the required foreground condition, and the
+  project was saved during the session. No accepted comparison, performance
+  ranking, compatibility finding or bridge-replacement conclusion exists.
+
 ## [2.4.1] — 2026-08-23
 
 ### Fixed

@@ -27,7 +27,9 @@ window with persistent callbacks, do a full UEFN restart instead. Nuclear reload
 is unsafe for those cases; see Quirks #26 and #38.
 
 ## 4. Execute the Smoke Test (Layer 1-6)
-Checks the registry, module health, and "safe" tools.
+Checks module loading and tool registration: the package and every expected
+module load, the registry holds at least a minimum count, and six named tools
+are registered. It executes no tool and validates no schema.
 ```python
 import UEFN_Toolbelt as tb; tb.run("toolbelt_smoke_test")
 ```
