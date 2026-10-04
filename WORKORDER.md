@@ -6,8 +6,8 @@ never authorizes implementation.
 
 - Current issued Work Order: NONE
 - Authorized session: NONE
-- Base commit: `fb7f9540464ac0898662087d4f70caa534de60d6`
-- Current gate: RELEASE 2.5.0 PREPARED — FINAL AUDIT RECHECK REQUIRED; TAGGING AND RELEASE CREATION UNAUTHORIZED
+- Base commit: `82f256da98dc606de9fcca19afd68de2c69a026d`
+- Current gate: FINAL AUDIT RECHECK RECORDED — TAGGING AND RELEASE CREATION UNAUTHORIZED
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
@@ -23,6 +23,9 @@ never authorizes implementation.
 - Audit recording commit: `fb7f9540464ac0898662087d4f70caa534de60d6`
 - Audit recording CI workflow: `37149178090`
 - Audit recording CI job: `111279224830` — Lint, types, tests
+- Release preparation commit: `82f256da98dc606de9fcca19afd68de2c69a026d`
+- Release preparation CI workflow: `37172802902`
+- Release preparation CI job: `111349057775` — Lint, types, tests
 - Release train: WO-001 through WO-007
 - Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
 
@@ -391,9 +394,35 @@ the checker's historical-version exemption limited to exact lines; and an
 offline live-verification exemption for this preparation change, whose only
 `Content/Python` edit is `__version__` and which supplies no live verification.
 The private authorization is identified by its SHA-256
-`aa6f386781c9db3d11ae54012aaef2184ca985edc876cf25ae4d95b880f2f40a`. The final
-audit has not passed the release gate; passing it requires an independent
-recheck of the required fixes and the affected changes, which this
-authorization does not open. Tagging, Release creation, branch-protection
+`aa6f386781c9db3d11ae54012aaef2184ca985edc876cf25ae4d95b880f2f40a`. At that
+gate, the final audit had not passed the release gate; passing it required an
+independent recheck of the required fixes and the affected changes, which that
+authorization did not open. Tagging, Release creation, branch-protection
+changes, other repository metadata changes, and draft or social publication all
+remained unauthorized at that gate.
+
+Final audit recheck record: under separate owner authorizations, an independent
+reviewer that authored none of the release preparation reviewed it against the
+final audit's required fixes and returned ACCEPT WITH REQUIRED FIX; after a
+bounded correction, its scoped re-review of that correction returned ACCEPT,
+and the owner accepted that review. The accepted content is committed as
+`82f256da98dc606de9fcca19afd68de2c69a026d`; [CI workflow
+`37172802902`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37172802902)
+completed successfully on that commit, including required job
+[`111349057775` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37172802902/job/111349057775),
+which logged 2529 passed and 14 skipped on Linux. Within the accepted scope,
+P1-1, P1-2, and the queued `.mcp.json` fresh-clone documentation defect are
+resolved. The original audit record above keeps its verdict, ACCEPT WITH
+REQUIRED FIX, as history; this record is a separate follow-up acceptance, not a
+rewritten pass. The private review reports are identified by their SHA-256
+`4ecc6fd0284c1bfb9a1461b11355904615f49852219c87b29474f5a288e10b00` and
+`9e848b0fe84bc002689548db6cbde834fded5574eb94b7a2370a5227b860a642`, and their
+private logs by their manifest digests
+`7da7879c48f5b2f7577f10c52f461cf7d6c029055f8a35838e765bd570c22b69` and
+`1ca8d489fee0b1481c1986a21e134cf61742eadd1fb506054179d4e58cca72da`. The
+dashboard and menu runtime wording about MCP-compatible clients, and the
+limitations the release notes defer, are disclosed; this record neither fixes
+nor waives them. This acceptance supplies no live UEFN, MCP-host, or
+effective-permissions evidence. Tagging, Release creation, branch-protection
 changes, other repository metadata changes, and draft or social publication all
 remain unauthorized.

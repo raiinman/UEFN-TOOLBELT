@@ -8,9 +8,9 @@
 > authorized. The frozen release train remains WO-001 through WO-007, with
 > WO-006 resolved as superseded rather than completed. The final
 > integration/repository-truth audit is recorded as ACCEPT WITH REQUIRED FIX.
-> Release 2.5.0 is prepared under a separate owner authorization; the final
-> audit has not passed the release gate, its recheck is not authorized, and no
-> tag or Release is authorized.
+> Release 2.5.0 is prepared and committed under a separate owner authorization,
+> and the independent recheck of the audit's required fixes is recorded as
+> accepted; tagging and Release creation remain unauthorized.
 > This roadmap grants no implementation authority — root
 > [`WORKORDER.md`](WORKORDER.md) is the sole current gate.
 

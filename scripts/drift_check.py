@@ -4007,6 +4007,98 @@ _RELEASE_PREP_RECORD = (
     "or social publication all remain unauthorized."
 )
 
+# Recording the final audit's recheck is a pointer transition under its own
+# owner authorization: the pointer keeps the original audit record, verdict
+# included, as history, recasts the preparation record's closing gate as
+# history, moves its base to the committed preparation, adds that commit and
+# its CI to the canonical block, and records the follow-up acceptance once.
+# The private review reports and logs are named by digest only. Once
+# recorded, the record is one-way: a pointer that drops it is a finding.
+_AUDIT_RECHECK_COMMIT = "82f256da98dc606de9fcca19afd68de2c69a026d"
+_AUDIT_RECHECK_WORKFLOW = "37172802902"
+_AUDIT_RECHECK_JOB = "111349057775"
+_AUDIT_RECHECK_REPORT_SHA256 = (
+    "4ecc6fd0284c1bfb9a1461b11355904615f49852219c87b29474f5a288e10b00"
+)
+_AUDIT_RECHECK_LOGS_SHA256 = (
+    "7da7879c48f5b2f7577f10c52f461cf7d6c029055f8a35838e765bd570c22b69"
+)
+_AUDIT_RERECHECK_REPORT_SHA256 = (
+    "9e848b0fe84bc002689548db6cbde834fded5574eb94b7a2370a5227b860a642"
+)
+_AUDIT_RERECHECK_LOGS_SHA256 = (
+    "1ca8d489fee0b1481c1986a21e134cf61742eadd1fb506054179d4e58cca72da"
+)
+_AUDIT_RECHECK_GATE = (
+    "FINAL AUDIT RECHECK RECORDED — TAGGING AND RELEASE CREATION UNAUTHORIZED"
+)
+_AUDIT_RECHECK_POINTER_SEQUENCE = (
+    _RELEASE_PREP_POINTER_SEQUENCE[:2]
+    + ("- Base commit: `" + _AUDIT_RECHECK_COMMIT + "`",)
+    + _RELEASE_PREP_POINTER_SEQUENCE[3:19]
+    + ("- Release preparation commit: `" + _AUDIT_RECHECK_COMMIT + "`",
+       "- Release preparation CI workflow: `" + _AUDIT_RECHECK_WORKFLOW + "`",
+       "- Release preparation CI job: `" + _AUDIT_RECHECK_JOB + "` "
+       + "— Lint, types, tests")
+    + _RELEASE_PREP_POINTER_SEQUENCE[19:]
+)
+_AUDIT_RECHECK_POINTER_KEYS = (
+    (("- Base commit:", _AUDIT_RECHECK_POINTER_SEQUENCE[2]),)
+    + _RELEASE_PREP_POINTER_KEYS[1:]
+    + (("- Release preparation commit:", _AUDIT_RECHECK_POINTER_SEQUENCE[19]),
+       ("- Release preparation CI workflow:",
+        _AUDIT_RECHECK_POINTER_SEQUENCE[20]),
+       ("- Release preparation CI job:", _AUDIT_RECHECK_POINTER_SEQUENCE[21]))
+)
+_AUDIT_RECHECK_MARKERS = (
+    "- Release preparation commit:",
+    "- Release preparation CI workflow:",
+    "- Release preparation CI job:",
+    "Final audit recheck record:",
+)
+_AUDIT_RECHECK_RUN_URL = (
+    "https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _AUDIT_RECHECK_WORKFLOW
+)
+# The preparation record as history: its closing gate describes the
+# preparation gate, before the recheck ran.
+_RELEASE_PREP_HISTORY_RECORD = _replaced_once(_RELEASE_PREP_RECORD, (
+    ("The final audit has not passed the release gate; passing it requires "
+     "an independent recheck of the required fixes and the affected "
+     "changes, which this authorization does not open.",
+     "At that gate, the final audit had not passed the release gate; "
+     "passing it required an independent recheck of the required fixes and "
+     "the affected changes, which that authorization did not open."),
+    ("or social publication all remain unauthorized.",
+     "or social publication all remained unauthorized at that gate."),
+))
+_AUDIT_RECHECK_RECORD = (
+    "Final audit recheck record: under separate owner authorizations, an "
+    "independent reviewer that authored none of the release preparation "
+    "reviewed it against the final audit's required fixes and returned ACCEPT "
+    "WITH REQUIRED FIX; after a bounded correction, its scoped re-review of "
+    "that correction returned ACCEPT, and the owner accepted that review. The "
+    "accepted content is committed as `" + _AUDIT_RECHECK_COMMIT + "`; [CI "
+    "workflow `" + _AUDIT_RECHECK_WORKFLOW + "`](" + _AUDIT_RECHECK_RUN_URL
+    + ") completed successfully on that commit, including required job [`"
+    + _AUDIT_RECHECK_JOB + "` — Lint, types, tests](" + _AUDIT_RECHECK_RUN_URL
+    + "/job/" + _AUDIT_RECHECK_JOB + "), which logged 2529 passed and 14 "
+    "skipped on Linux. Within the accepted scope, P1-1, P1-2, and the queued "
+    "`.mcp.json` fresh-clone documentation defect are resolved. The original "
+    "audit record above keeps its verdict, ACCEPT WITH REQUIRED FIX, as "
+    "history; this record is a separate follow-up acceptance, not a rewritten "
+    "pass. The private review reports are identified by their SHA-256 `"
+    + _AUDIT_RECHECK_REPORT_SHA256 + "` and `" + _AUDIT_RERECHECK_REPORT_SHA256
+    + "`, and their private logs by their manifest digests `"
+    + _AUDIT_RECHECK_LOGS_SHA256 + "` and `" + _AUDIT_RERECHECK_LOGS_SHA256
+    + "`. The dashboard and menu runtime wording about MCP-compatible "
+    "clients, and the limitations the release notes defer, are disclosed; "
+    "this record neither fixes nor waives them. This acceptance supplies no "
+    "live UEFN, MCP-host, or effective-permissions evidence. Tagging, Release "
+    "creation, branch-protection changes, other repository metadata changes, "
+    "and draft or social publication all remain unauthorized."
+)
+
 
 def _wo007_issuance_findings(pointer, issued_text, rel, session):
     """WO-007's issuance record while it is issued.
@@ -4165,7 +4257,8 @@ def _wo007_session_a_record_findings(pointer, issued_text, rel):
 
 
 def _wo007_completed_findings(pointer, text, rel, surface,
-                              audit_recorded=False, release_prepared=False):
+                              audit_recorded=False, release_prepared=False,
+                              audit_rechecked=False):
     """WO-007's completed record, on one surface at a time.
 
     The WO-005 completion pattern. On the pointer: the canonical slice with
@@ -4187,7 +4280,10 @@ def _wo007_completed_findings(pointer, text, rel, surface,
     release is prepared, it takes the prepared shape: the audit-recording
     commit as base, its bullets after the audit bullets, the audit record as
     history, the selected version, and the preparation record, each exactly
-    once, with no pre-preparation statement left.
+    once, with no pre-preparation statement left. Once the audit recheck is
+    recorded, it takes the rechecked shape: the committed preparation as base,
+    its bullets after the audit-recording bullets, the preparation record as
+    history, and the recheck record, each exactly once.
     """
     out = []
     sequence: tuple[str, ...]
@@ -4205,6 +4301,10 @@ def _wo007_completed_findings(pointer, text, rel, surface,
             sequence = _RELEASE_PREP_POINTER_SEQUENCE
             keys = _RELEASE_PREP_POINTER_KEYS
             label = "release preparation"
+        if audit_rechecked:
+            sequence = _AUDIT_RECHECK_POINTER_SEQUENCE
+            keys = _AUDIT_RECHECK_POINTER_KEYS
+            label = "audit recheck"
 
         def stop(line):
             return _WO001_COMPLETED_LINK in line
@@ -4256,7 +4356,9 @@ def _wo007_completed_findings(pointer, text, rel, surface,
                             "the pre-audit completion statement remains",
                             "the completion statement recorded as history"))
         if release_prepared:
-            for required in (_RELEASE_PREP_RECORD, _RELEASE_PREP_MARKERS[3],
+            prep_record = (_RELEASE_PREP_HISTORY_RECORD if audit_rechecked
+                           else _RELEASE_PREP_RECORD)
+            for required in (prep_record, _RELEASE_PREP_MARKERS[3],
                              _RELEASE_PREP_VERSION_STATEMENT):
                 count = normalized_pointer.count(required)
                 if count != 1:
@@ -4271,6 +4373,17 @@ def _wo007_completed_findings(pointer, text, rel, surface,
                                 "a pre-preparation statement remains: "
                                 + stale[:80],
                                 "the prepared record only"))
+        if audit_rechecked:
+            for required in (_AUDIT_RECHECK_RECORD, _AUDIT_RECHECK_MARKERS[3]):
+                count = normalized_pointer.count(required)
+                if count != 1:
+                    out.append(("WORKORDER.md",
+                                "audit recheck pointer statement",
+                                str(count), "exactly one " + required))
+            if _RELEASE_PREP_RECORD in normalized_pointer:
+                out.append(("WORKORDER.md", "audit recheck pointer statement",
+                            "the pre-recheck preparation record remains",
+                            "the preparation record recorded as history"))
         for stale in (_WO007_ISSUANCE_POINTER_NOTE,
                       _WO007_SESSION_A_POINTER_RECORD,
                       "docs/work-orders/issued/" + _WO007_NAME,
@@ -5428,14 +5541,21 @@ def check_work_order_contract() -> list[dict]:
     next_order: str | None
     final_audit_recorded = False
     release_prepared = False
+    audit_rechecked = False
     if wo007_completed_text:
         next_order, basis_name = None, _WO007_NAME
         basis_text = wo007_completed_text
         # Any trace of a later record selects that record's shape, so a
         # partial rollback is checked against it rather than accepted as an
-        # earlier state. The prepared release carries the final audit record.
+        # earlier state. The prepared release carries the final audit record,
+        # and the recorded recheck carries the prepared release.
+        audit_rechecked = (
+            current_gate == _AUDIT_RECHECK_GATE
+            or any(marker in pointer for marker in _AUDIT_RECHECK_MARKERS)
+        )
         release_prepared = (
-            current_gate == _RELEASE_PREP_GATE
+            audit_rechecked
+            or current_gate == _RELEASE_PREP_GATE
             or any(marker in pointer for marker in _RELEASE_PREP_MARKERS)
         )
         final_audit_recorded = (
@@ -5443,9 +5563,18 @@ def check_work_order_contract() -> list[dict]:
             or current_gate == _FINAL_AUDIT_GATE
             or any(marker in pointer for marker in _FINAL_AUDIT_MARKERS)
         )
-        if release_prepared:
+        if audit_rechecked:
+            expected_base = _AUDIT_RECHECK_COMMIT
+            expected_closed_gate = _AUDIT_RECHECK_GATE
+        elif release_prepared:
             expected_base = _RELEASE_PREP_COMMIT
             expected_closed_gate = _RELEASE_PREP_GATE
+            # Recording the audit recheck is one-way too: this checker carries
+            # the recheck record, so a prepared pointer without it is a
+            # finding. Undoing it would have to edit this file too.
+            add("WORKORDER.md", "audit recheck record",
+                "the recorded audit recheck is missing from the pointer",
+                "the final audit recheck recorded as accepted")
         elif final_audit_recorded:
             expected_base = _FINAL_AUDIT_COMMIT
             expected_closed_gate = _FINAL_AUDIT_GATE
@@ -5537,6 +5666,7 @@ def check_work_order_contract() -> list[dict]:
                 (completed_dir / _WO007_NAME).relative_to(root).as_posix(),
                 "pointer", audit_recorded=final_audit_recorded,
                 release_prepared=release_prepared,
+                audit_rechecked=audit_rechecked,
             ):
                 add(_f, _k, _found, _want)
         elif wo006_superseded_text:
