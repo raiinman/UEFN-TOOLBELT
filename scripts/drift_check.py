@@ -1611,6 +1611,11 @@ _REMAINING_RELEASE_PROPOSALS = {
     "WO-006-official-vs-toolbelt-benchmark.md",
     "WO-007-public-mcp-explainer.md",
 }
+# Exact proposal-only admission; this does not extend the frozen train or
+# register an issued identity. Presence is optional to the historical checker.
+_PLANNING_ONLY_PROPOSALS = frozenset({
+    "WO-008-user-reliability-and-mcp-client-acceptance.md",
+})
 # The frozen train as a DECLARED ordered inventory: canonical order identity
 # to canonical filename. Successor identity is read from here, never from
 # whatever files happen to be on disk, so an extra, malformed, or misplaced
@@ -5521,13 +5526,23 @@ def check_work_order_contract() -> list[dict]:
     for _name in tuple(expected_proposals):
         if _placed(_name):
             expected_proposals.discard(_name)
-    if proposal_names != expected_proposals:
+    frozen_proposal_names = proposal_names - _PLANNING_ONLY_PROPOSALS
+    if frozen_proposal_names != expected_proposals:
         add("docs/work-orders/proposed", "release train proposal set",
-            repr(sorted(proposal_names)),
-            repr(sorted(expected_proposals)))
+            "frozen/unregistered: " + repr(sorted(frozen_proposal_names))
+            + "; registered: "
+            + repr(sorted(proposal_names & _PLANNING_ONLY_PROPOSALS)),
+            "frozen: " + repr(sorted(expected_proposals)))
 
     work_order_docs = sorted((root / "docs" / "work-orders").rglob("*.md"))
     for path in work_order_docs:
+        if path.name in _PLANNING_ONLY_PROPOSALS:
+            canonical_proposal = proposed_dir / path.name
+            if path != canonical_proposal:
+                add(path.relative_to(root).as_posix(),
+                    "planning-only proposal placement",
+                    "registered proposal outside its canonical path",
+                    canonical_proposal.relative_to(root).as_posix())
         lines = path.read_text(encoding="utf-8").splitlines()
         duplicated = [
             line

@@ -189,10 +189,8 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert "at most one detailed Work Order is issued" in guide
 
     proposals = sorted((work_orders / "proposed").glob("WO-*.md"))
-    # Every frozen-train order has left proposed/: WO-007, the last, is
-    # completed.
-    expected_proposals: set[str] = set()
-    assert {path.name for path in proposals} == expected_proposals
+    # The frozen train is closed; only this following-train proposal is present.
+    _assert_wo008_proposal_presence(work_orders / "proposed")
     for proposal in proposals:
         lines = proposal.read_text(encoding="utf-8").splitlines()
         status_lines = [line.strip() for line in lines if line.startswith("STATUS:")]
@@ -4123,8 +4121,34 @@ _RELEASE_PUBLISHED_REVERSAL = (
 )
 
 
-def _make_release_published_case(repo_root, tmp_path, name):
-    """Copy the current release-published state."""
+_WO008_PROPOSAL_NAME = "WO-008-user-reliability-and-mcp-client-acceptance.md"
+_WO008_PROPOSAL_REL = "docs/work-orders/proposed/" + _WO008_PROPOSAL_NAME
+_WO008_GUIDANCE = _NL.join((
+    "WO-008 is a registered following-train proposal, not part of the frozen",
+    "WO-001 through WO-007 train. Its admission authorizes no issuance or session;",
+    "those require separate owner decisions through the root pointer and their",
+    "own enforcement transition.",
+))
+_WO008_BASE_GUIDANCE = _NL.join((
+    "# Proposed Work Orders",
+    "",
+    "Planning proposals live in this directory. A proposal is planning only and",
+    "never authorizes implementation. Consult the repository-root `WORKORDER.md`,",
+    "the sole authority pointer, for the current gate. This directory may contain",
+    "no proposal; this README is directory guidance, not a Work Order, and never",
+    "stands in for one.",
+    "",
+))
+
+
+def _assert_wo008_proposal_presence(proposed_dir):
+    """The live tree, unlike historical checker inputs, requires this proposal."""
+    assert {path.name for path in proposed_dir.glob("WO-*.md")} == {
+        _WO008_PROPOSAL_NAME}
+
+
+def _make_proposal_admitted_case(repo_root, tmp_path, name):
+    """Copy the current pointer and Work Order tree without reversing admission."""
     case = tmp_path / name
     case.mkdir(parents=True)
     shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
@@ -4132,6 +4156,24 @@ def _make_release_published_case(repo_root, tmp_path, name):
         repo_root / "docs" / "work-orders",
         case / "docs" / "work-orders",
     )
+    return case
+
+
+def _make_release_published_case(repo_root, tmp_path, name):
+    """Reconstruct the preserved publication-recorded, pre-admission state."""
+    case = _make_proposal_admitted_case(repo_root, tmp_path, name)
+    proposal = case / _WO008_PROPOSAL_REL
+    if proposal.exists():
+        proposal.unlink()
+    guide = case / _WO007_ISS_PROPOSED_README_REL
+    if guide.exists():
+        text = guide.read_text(encoding="utf-8")
+        if text != _WO008_BASE_GUIDANCE:
+            text = _replace_once(text, _NL + _WO008_GUIDANCE + _NL, "",
+                                 "WO-008 proposal guidance reversal")
+            assert text == _WO008_BASE_GUIDANCE, (
+                "WO-008 proposal guidance reversal did not restore the baseline")
+            guide.write_text(text, encoding="utf-8")
     return case
 
 
@@ -18587,7 +18629,8 @@ def test_wo007_proposed_readme_is_guidance_not_a_work_order(
                          "Work Order:", "- Authorized session:",
                          "- Current gate:"))
         for line in text.splitlines())
-    assert not list(readme.parent.glob("WO-*.md"))
+    _assert_wo008_proposal_presence(readme.parent)
+    assert normalized.count(" ".join(_WO008_GUIDANCE.split())) == 1
 
     # With WO-007 gone, the README alone does not satisfy the train.
     found = _wo007_iss_findings(
@@ -20778,6 +20821,260 @@ def test_later_release_gate_texts_are_rejected_in_an_early_pointer(
              for f in drift_check.check_work_order_contract()}
     assert ("release authorization", "WORKORDER.md") in found, (
         repr(sorted(found)))
+
+
+# --- WO-008 proposal-only admission --------------------------------------
+
+def _wo008_proposal_findings(repo_root, case, monkeypatch, label):
+    drift_check = _load_drift_check(repo_root, "wo008_proposal_" + label)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return {(finding["type"], finding["file"])
+            for finding in drift_check.check_work_order_contract()}
+
+
+def _wo008_contract_tree(case):
+    """Normalized contract inputs; platform newline differences are not edits."""
+    paths = [case / "WORKORDER.md"] + sorted(
+        path for path in (case / "docs" / "work-orders").rglob("*.md"))
+    return {path.relative_to(case).as_posix():
+            path.read_text(encoding="utf-8") for path in paths}
+
+
+@pytest.mark.parametrize("newline", ("\n", "\r\n"), ids=("lf", "crlf"))
+def test_wo008_proposal_admission_is_clean(repo_root, tmp_path, monkeypatch,
+                                          newline):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "admitted")
+    proposal = case / _WO008_PROPOSAL_REL
+    text = proposal.read_text(encoding="utf-8")
+    proposal.write_bytes(text.replace("\n", newline).encode("utf-8"))
+    _assert_wo008_proposal_presence(proposal.parent)
+    found = _wo008_proposal_findings(repo_root, case, monkeypatch, "control")
+    assert found == set(), repr(sorted(found))
+
+
+def test_wo008_proposal_admission_absence_is_a_live_pin_not_a_terminal_lock(
+    repo_root, tmp_path, monkeypatch
+):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "absent")
+    proposal = case / _WO008_PROPOSAL_REL
+    proposal.unlink()
+    with pytest.raises(AssertionError):
+        _assert_wo008_proposal_presence(proposal.parent)
+    found = _wo008_proposal_findings(repo_root, case, monkeypatch, "absent")
+    assert found == set(), repr(sorted(found))
+
+
+def test_wo008_proposal_admission_without_registration_fails_frozen_set(
+    repo_root, tmp_path, monkeypatch
+):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "unregistered")
+    drift_check = _load_drift_check(repo_root, "wo008_unregistered")
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    monkeypatch.setattr(drift_check, "_PLANNING_ONLY_PROPOSALS", frozenset())
+    found = {(f["type"], f["file"])
+             for f in drift_check.check_work_order_contract()}
+    assert ("release train proposal set", "docs/work-orders/proposed") in found
+
+
+@pytest.mark.parametrize("name", (
+    "WO-009-unknown.md", "WO-008-renamed.md", "WO-0080-not-registered.md"))
+def test_wo008_proposal_admission_rejects_unknown_names(
+    repo_root, tmp_path, monkeypatch, name
+):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "unknown")
+    source = case / _WO008_PROPOSAL_REL
+    target = source.with_name(name)
+    shutil.copy2(source, target)
+    if name == "WO-008-renamed.md":
+        source.unlink()
+    found = _wo008_proposal_findings(repo_root, case, monkeypatch, "unknown")
+    assert ("release train proposal set", "docs/work-orders/proposed") in found
+    assert not any(kind in {"proposed status", "proposed authorization"}
+                   for kind, _rel in found), repr(sorted(found))
+
+
+@pytest.mark.parametrize(("marker", "replacement", "kind"), (
+    ("STATUS: PROPOSED", "", "proposed status"),
+    ("STATUS: PROPOSED", "STATUS: ISSUED", "proposed status"),
+    ("STATUS: PROPOSED", "STATUS: PROPOSED\nSTATUS: PROPOSED", "proposed status"),
+    ("AUTHORIZATION: NOT AUTHORIZED", "", "proposed authorization"),
+    ("AUTHORIZATION: NOT AUTHORIZED", "AUTHORIZATION: ISSUED — SESSION A AUTHORIZED",
+     "proposed authorization"),
+    ("AUTHORIZATION: NOT AUTHORIZED",
+     "AUTHORIZATION: NOT AUTHORIZED\nAUTHORIZATION: NOT AUTHORIZED",
+     "proposed authorization"),
+))
+def test_wo008_proposal_admission_enforces_declarations(
+    repo_root, tmp_path, monkeypatch, marker, replacement, kind
+):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "metadata")
+    _edit(case, _WO008_PROPOSAL_REL, marker, replacement)
+    found = _wo008_proposal_findings(repo_root, case, monkeypatch, "metadata")
+    assert (kind, _WO008_PROPOSAL_REL) in found, repr(sorted(found))
+
+
+@pytest.mark.parametrize("field", (
+    "- Current issued Work Order: WO-008", "- Authorized session: A",
+    "- Current gate: WO-008 SESSION A AUTHORIZED"))
+def test_wo008_proposal_admission_cannot_duplicate_the_pointer(
+    repo_root, tmp_path, monkeypatch, field
+):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "pointer-copy")
+    proposal = case / _WO008_PROPOSAL_REL
+    proposal.write_text(proposal.read_text(encoding="utf-8") + _NL + field + _NL,
+                        encoding="utf-8")
+    found = _wo008_proposal_findings(repo_root, case, monkeypatch, "pointer-copy")
+    assert ("canonical gate duplication", _WO008_PROPOSAL_REL) in found
+
+
+@pytest.mark.parametrize("session", ("A", "B", "C"))
+def test_wo008_proposal_admission_does_not_open_a_session(
+    repo_root, tmp_path, monkeypatch, session
+):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "no-session")
+    _edit(case, "WORKORDER.md", "- Authorized session: NONE",
+          "- Authorized session: " + session)
+    found = _wo008_proposal_findings(repo_root, case, monkeypatch, "no-session")
+    assert ("authorization without issued work order", "WORKORDER.md") in found
+
+
+@pytest.mark.parametrize("state", (
+    "issued", "completed", "superseded", "proposed/nested", ""))
+@pytest.mark.parametrize("copy", (False, True), ids=("move", "copy"))
+def test_wo008_proposal_admission_enforces_exact_placement(
+    repo_root, tmp_path, monkeypatch, state, copy
+):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "placement")
+    source = case / _WO008_PROPOSAL_REL
+    target = case / "docs" / "work-orders" / state / _WO008_PROPOSAL_NAME
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if copy:
+        shutil.copy2(source, target)
+    else:
+        source.rename(target)
+    found = _wo008_proposal_findings(repo_root, case, monkeypatch, "placement")
+    assert ("planning-only proposal placement",
+            target.relative_to(case).as_posix()) in found, repr(sorted(found))
+    if copy and state in {"issued", "completed", "superseded"}:
+        assert ("duplicate work order state", "docs/work-orders") in found
+
+
+@pytest.mark.parametrize("session", ("NONE", "A", "B", "C"))
+def test_wo008_proposal_admission_does_not_register_an_issued_identity(
+    repo_root, tmp_path, monkeypatch, session
+):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "no-issuance")
+    source = case / _WO008_PROPOSAL_REL
+    target = case / "docs" / "work-orders" / "issued" / source.name
+    target.parent.mkdir(parents=True, exist_ok=True)
+    source.rename(target)
+    marker = ("AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED" if session == "NONE"
+              else "AUTHORIZATION: ISSUED — SESSION " + session + " AUTHORIZED")
+    _edit(case, target.relative_to(case).as_posix(), "STATUS: PROPOSED", "STATUS: ISSUED")
+    _edit(case, target.relative_to(case).as_posix(), "AUTHORIZATION: NOT AUTHORIZED", marker)
+    _edit(case, "WORKORDER.md", "- Current issued Work Order: NONE",
+          "- Current issued Work Order: WO-008")
+    _edit(case, "WORKORDER.md", "- Authorized session: NONE",
+          "- Authorized session: " + session)
+    found = _wo008_proposal_findings(repo_root, case, monkeypatch, "no-issuance")
+    assert ("issued work order identity", "docs/work-orders/issued") in found
+    assert ("planning-only proposal placement",
+            target.relative_to(case).as_posix()) in found
+
+
+def test_wo008_proposal_admission_cannot_replace_a_missing_frozen_proposal(
+    repo_root, tmp_path, monkeypatch
+):
+    case = _make_wo006_superseded_case(repo_root, tmp_path, "missing-frozen")
+    proposed = case / _WO008_PROPOSAL_REL
+    shutil.copy2(repo_root / _WO008_PROPOSAL_REL, proposed)
+    control = _wo008_proposal_findings(repo_root, case, monkeypatch, "frozen-control")
+    assert _before_wo007_completion(control) == set(), repr(sorted(control))
+    (case / _WO007_ISS_PROPOSED_REL).unlink()
+    found = _wo008_proposal_findings(repo_root, case, monkeypatch, "missing-frozen")
+    assert ("release train proposal set", "docs/work-orders/proposed") in found
+    assert ("release train inventory", "docs/work-orders") in found
+
+
+@pytest.mark.parametrize(("damage", "kind", "rel"), (
+    ("publication", "release publication pointer statement", "WORKORDER.md"),
+    ("mandate", "release train inventory", "docs/work-orders"),
+    ("train", "release train", "WORKORDER.md"),
+    ("base", "completion base commit", "WORKORDER.md"),
+    ("gate", "release authorization", "WORKORDER.md"),
+))
+def test_wo008_proposal_admission_preserves_historical_checks(
+    repo_root, tmp_path, monkeypatch, damage, kind, rel
+):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "history-damage")
+    if damage == "publication":
+        _release_published_revert_record(case)
+    elif damage == "mandate":
+        (case / _WO006_SUP_REL).unlink()
+    elif damage == "train":
+        _edit(case, "WORKORDER.md", "- Release train: WO-001 through WO-007",
+              "- Release train: WO-001 through WO-008")
+    elif damage == "base":
+        _edit(case, "WORKORDER.md", "- Base commit: `" + _RELEASE_PUBLISHED_COMMIT + "`",
+              "- Base commit: `" + "9" * 40 + "`")
+    else:
+        _edit(case, "WORKORDER.md", "- Release gate: " + _PUBLISHED_RELEASE_GATE,
+              "- Release gate: " + _PUBLISHED_RELEASE_GATE + _NL
+              + "- Release gate: " + _SATISFIED_RELEASE_GATE)
+    assert (case / _WO008_PROPOSAL_REL).exists()
+    found = _wo008_proposal_findings(repo_root, case, monkeypatch, "history-damage")
+    assert (kind, rel) in found, repr(sorted(found))
+
+
+@pytest.mark.parametrize("bare", (False, True), ids=("complete", "absent-directory"))
+def test_wo008_proposal_admission_reconstructs_exact_base(repo_root, tmp_path,
+                                                        bare):
+    source = _make_proposal_admitted_case(repo_root, tmp_path, "adapter-input")
+    if bare:
+        shutil.rmtree(source / "docs" / "work-orders" / "proposed")
+    expected = _wo008_contract_tree(source)
+    expected.pop(_WO008_PROPOSAL_REL, None)
+    if _WO007_ISS_PROPOSED_README_REL in expected:
+        expected[_WO007_ISS_PROPOSED_README_REL] = _WO008_BASE_GUIDANCE
+    rebuilt = _make_release_published_case(source, tmp_path, "adapter-output")
+    assert _wo008_contract_tree(rebuilt) == expected
+    assert not (rebuilt / _WO008_PROPOSAL_REL).exists()
+    if bare:
+        assert not (rebuilt / "docs" / "work-orders" / "proposed").exists()
+    again = _make_release_published_case(rebuilt, tmp_path, "already-historical")
+    assert _wo008_contract_tree(again) == expected
+
+
+@pytest.mark.parametrize("damage", ("duplicated", "corrupted"))
+def test_wo008_proposal_admission_adapter_requires_exact_guidance(
+    repo_root, tmp_path, damage
+):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "bad-guide")
+    if damage == "duplicated":
+        _edit(case, _WO007_ISS_PROPOSED_README_REL, _WO008_GUIDANCE,
+              _WO008_GUIDANCE + _NL + _NL + _WO008_GUIDANCE)
+    else:
+        _edit(case, _WO007_ISS_PROPOSED_README_REL, "following-train proposal",
+              "a different proposal")
+    with pytest.raises(AssertionError, match="WO-008 proposal guidance reversal"):
+        _make_release_published_case(case, tmp_path, "bad-guide-rebuilt")
+
+
+def test_wo008_proposal_admission_adapter_preserves_unrelated_damage(
+    repo_root, tmp_path, monkeypatch
+):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "unrelated")
+    proposal = case / _WO008_PROPOSAL_REL
+    rogue = proposal.with_name("WO-008-renamed.md")
+    proposal.rename(rogue)
+    _edit(case, "WORKORDER.md", "- Release train: WO-001 through WO-007",
+          "- Release train: WO-001 through WO-008")
+    rebuilt = _make_release_published_case(case, tmp_path, "unrelated-rebuilt")
+    assert (rebuilt / rogue.relative_to(case)).read_bytes() == rogue.read_bytes()
+    assert (rebuilt / "WORKORDER.md").read_bytes() == (case / "WORKORDER.md").read_bytes()
+    found = _wo008_proposal_findings(repo_root, rebuilt, monkeypatch, "unrelated")
+    assert ("release train proposal set", "docs/work-orders/proposed") in found
+    assert ("release train", "WORKORDER.md") in found
 
 
 _RELEASE_PUBLISHED_CONTROLS = (
