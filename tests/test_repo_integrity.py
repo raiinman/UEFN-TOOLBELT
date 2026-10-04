@@ -254,15 +254,15 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     ).exists()
     assert current == "NONE"
     assert session == "NONE"
-    # The base is the committed release preparation, declared in its own
-    # bullet after the audit-recording bullets. The gate records the final
-    # audit's recheck and keeps tagging and Release creation closed.
+    # The base is the recheck-recording commit, declared in its own bullet
+    # after the release-preparation bullets. The gate records the satisfied
+    # train and audit conditions and keeps tagging and Release creation closed.
     assert base_lines == [
-        "- Base commit: `82f256da98dc606de9fcca19afd68de2c69a026d`"
+        "- Base commit: `b305a1746c59637854a6877fe6196f17ec84e245`"
     ]
     assert gate_lines == [
-        "- Current gate: FINAL AUDIT RECHECK RECORDED — TAGGING AND RELEASE"
-        " CREATION UNAUTHORIZED"
+        "- Current gate: FROZEN TRAIN AND AUDIT CONDITIONS SATISFIED — TAGGING"
+        " AND RELEASE CREATION UNAUTHORIZED"
     ]
     for line in (
         "- Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`",
@@ -286,6 +286,10 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "`82f256da98dc606de9fcca19afd68de2c69a026d`",
         "- Release preparation CI workflow: `37172802902`",
         "- Release preparation CI job: `111349057775` — Lint, types, tests",
+        "- Audit recheck recording commit: "
+        "`b305a1746c59637854a6877fe6196f17ec84e245`",
+        "- Audit recheck recording CI workflow: `37180447555`",
+        "- Audit recheck recording CI job: `111371778482` — Lint, types, tests",
     ):
         assert pointer.splitlines().count(line) == 1, line
     # WO-006's issuance, session, and closure-basis bullets left the canonical
@@ -368,10 +372,12 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "session is authorized. The frozen release train remains WO-001 "
         "through WO-007, with WO-006 resolved as superseded rather than "
         "completed. The final integration/repository-truth audit is recorded "
-        "as ACCEPT WITH REQUIRED FIX. Release 2.5.0 is prepared and committed "
-        "under a separate owner authorization, and the independent recheck of "
-        "the audit's required fixes is recorded as accepted; tagging and "
-        "Release creation remain unauthorized." in normalized_roadmap
+        "as ACCEPT WITH REQUIRED FIX. Release 2.5.0 is prepared and committed, "
+        "the independent recheck of the audit's required fixes is recorded as "
+        "accepted, and the owner has accepted that the frozen train's "
+        "completion and audit conditions are satisfied. Tagging, GitHub "
+        "Release creation, metadata changes, and publication each still "
+        "require a separate owner authorization." in normalized_roadmap
     )
     assert "its recheck is not authorized" not in normalized_roadmap
     assert "release preparation is not authorized" not in normalized_roadmap
@@ -650,15 +656,17 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "above, the frozen train is complete when WO-001 through WO-005 and "
         "WO-007 are completed and WO-006 remains superseded."
     ) == 1
-    # The release-train amendment keeps every substantive term; only its
-    # WO-007 clause changes, to completed with no session. Every earlier form
-    # is gone.
+    # The release-train amendment keeps every substantive term; its WO-007
+    # clause reads completed with no session, and its closing requirement is
+    # history now that the conditions are recorded. Every earlier form is
+    # gone.
     assert normalized_pointer_live.count(
         "This amendment opens no session and grants nothing: WO-007 is "
         "completed with no session authorized, and the final "
         "integration/repository-truth audit and a separate owner decision on "
-        "any release remain required."
+        "any release remained required at that gate."
     ) == 1
+    assert "any release remain required." not in normalized_pointer_live
     for earlier in ("WO-007 is issued with every session still unauthorized",
                     "WO-007 is issued with only Session A authorized"):
         assert earlier not in normalized_pointer_live, earlier
@@ -883,8 +891,8 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "At that gate, two required fixes were outstanding. P1-1: public and "
         "agent pages claimed MCP-host compatibility that no accepted record "
         "supports. P1-2: public and agent pages presented the smoke test's "
-        "registration checks as tool execution or schema validation. The "
-        "final audit has not passed the release gate.",
+        "registration checks as tool execution or schema validation. At that "
+        "gate, the final audit had not passed the release gate.",
         "The `.mcp.json` fresh-clone documentation defect remained queued for "
         "correction with them.",
         "The version choice, the checker's handling of historical version "
@@ -959,8 +967,38 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     # the original audit passed.
     assert normalized_pointer_live.count(
         "Its verdict is ACCEPT WITH REQUIRED FIX.") == 1
-    assert "The final audit has not passed the release gate." in (
+    assert normalized_pointer_live.count(
+        "At that gate, the final audit had not passed the release gate.") == 1
+    assert "The final audit has not passed the release gate." not in (
         normalized_pointer_live)
+    # The satisfied release conditions are recorded once, beside the original
+    # audit and its recheck: the owner's decision, the recheck-recording commit
+    # and its CI, the train's completion with WO-006 superseded, the unchanged
+    # version and content, the deferred advisories, the instruction by digest
+    # only, and the release actions that still need their own authorization.
+    assert normalized_pointer_live.count("Release conditions record:") == 1
+    for statement in (
+        "the owner accepted that the original final "
+        "integration/repository-truth audit, together with the accepted "
+        "corrective recheck and green CI, satisfies the frozen train's audit "
+        "condition; this does not rewrite the original verdict, ACCEPT WITH "
+        "REQUIRED FIX,",
+        "The recheck recording is committed as "
+        "`b305a1746c59637854a6877fe6196f17ec84e245`; [CI workflow "
+        "`37180447555`]",
+        "WO-001 through WO-005 and WO-007 are completed, and WO-006 remains "
+        "superseded with no accepted benchmark. Its audit condition is "
+        "satisfied.",
+        "Version 2.5.0 and the accepted release-preparation content committed "
+        "as `82f256da98dc606de9fcca19afd68de2c69a026d` are unchanged.",
+        "they remain open, neither fixed nor waived.",
+        "Tagging, GitHub Release creation, branch-protection changes, other "
+        "repository metadata changes, and draft or social publication each "
+        "still require a separate owner execution authorization, and none is "
+        "given here.",
+    ):
+        assert normalized_pointer_live.count(statement) == 1, statement
+    assert "111371778482" in normalized_pointer_live
     assert "stays at version 2.4.1" not in normalized_pointer_live
     assert "as do WO-007 completion" not in normalized_pointer_live
     # The private drafts' identities live only in the completed mandate.
@@ -1087,9 +1125,11 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert "docs/work-orders/proposed/WO-004-modal-observability.md" not in pointer
     assert "- Release train: WO-001 through WO-007" in pointer
     assert (
-        "- Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE "
-        "FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST"
+        "- Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — FROZEN TRAIN AND "
+        "FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT CONDITIONS SATISFIED; "
+        "SEPARATE OWNER EXECUTION AUTHORIZATIONS REQUIRED"
     ) in pointer
+    assert "AUDIT FIRST" not in pointer
     assert "release version 2.5.0" in pointer
     assert "docs/work-orders/completed/WO-001-custom-mcp-security.md" in pointer
     assert "docs/work-orders/issued/WO-001-custom-mcp-security.md" not in pointer
@@ -3925,6 +3965,151 @@ _WO007_CMP_REVERSAL = (
 )
 
 
+# --- Release conditions record: the current state ------------------------
+#
+# Recording the satisfied release conditions moved the current state forward,
+# so the audit-rechecked state - and every historical fixture below it - is
+# reconstructed backwards from it. In the contract's inputs (the pointer and
+# the Work Order documents), the recording is pointer-only.
+
+_RELEASE_CONDITIONS_COMMIT = "b305a1746c59637854a6877fe6196f17ec84e245"
+_RELEASE_CONDITIONS_WORKFLOW = "37180447555"
+_RELEASE_CONDITIONS_JOB = "111371778482"
+_RELEASE_CONDITIONS_GATE = (
+    "FROZEN TRAIN AND AUDIT CONDITIONS SATISFIED " + _EM + " TAGGING AND"
+    " RELEASE CREATION UNAUTHORIZED"
+)
+_SATISFIED_RELEASE_GATE = (
+    "NO TAG OR GITHUB RELEASE AUTHORIZED " + _EM + " FROZEN TRAIN AND FINAL"
+    " INTEGRATION/REPOSITORY-TRUTH AUDIT CONDITIONS SATISFIED; SEPARATE OWNER"
+    " EXECUTION AUTHORIZATIONS REQUIRED"
+)
+_RELEASE_CONDITIONS_INSTRUCTION_SHA256 = (
+    "e7083af5399b4c0e0196e4cf481ab85e90d42c8b93905f15d78b59ea77c8a416"
+)
+_RELEASE_CONDITIONS_POINTER_BULLETS = (
+    ("- Audit recheck recording commit:",
+     "- Audit recheck recording commit: `" + _RELEASE_CONDITIONS_COMMIT + "`"),
+    ("- Audit recheck recording CI workflow:",
+     "- Audit recheck recording CI workflow: `" + _RELEASE_CONDITIONS_WORKFLOW
+     + "`"),
+    ("- Audit recheck recording CI job:",
+     "- Audit recheck recording CI job: `" + _RELEASE_CONDITIONS_JOB + "` "
+     + _EM + " Lint, types, tests"),
+)
+_RELEASE_CONDITIONS_RECORD_OPENING = "Release conditions record:"
+# Each pair is (as the conditions-satisfied state records it, as the
+# rechecked state recorded it), so the reconstruction puts every original back
+# byte for byte.
+_RELEASE_CONDITIONS_POINTER_HISTORY = (
+    (_NL.join((
+        '- Base commit: `b305a1746c59637854a6877fe6196f17ec84e245`',
+        '- Current gate: FROZEN TRAIN AND AUDIT CONDITIONS SATISFIED — TAGGING AND RELEASE CREATION UNAUTHORIZED',
+    )),
+     _NL.join((
+        '- Base commit: `82f256da98dc606de9fcca19afd68de2c69a026d`',
+        '- Current gate: FINAL AUDIT RECHECK RECORDED — TAGGING AND RELEASE CREATION UNAUTHORIZED',
+    ))),
+    (_NL.join((
+        '- Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT CONDITIONS SATISFIED; SEPARATE OWNER EXECUTION AUTHORIZATIONS REQUIRED',
+    )),
+     _NL.join((
+        '- Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST',
+    ))),
+    (_NL.join((
+        'release remained required at that gate.',
+    )),
+     _NL.join((
+        'release remain required.',
+    ))),
+    (_NL.join((
+        'execution or schema validation. At that gate, the final audit had not passed',
+        'the release gate. The `.mcp.json` fresh-clone documentation defect remained',
+        'queued for',
+        '',
+    )),
+     _NL.join((
+        'execution or schema validation. The final audit has not passed the release',
+        'gate. The `.mcp.json` fresh-clone documentation defect remained queued for',
+        '',
+    ))),
+    (_NL.join((
+        '',
+        '',
+        'Release conditions record: the owner accepted that the original final',
+        'integration/repository-truth audit, together with the accepted corrective',
+        "recheck and green CI, satisfies the frozen train's audit condition; this does",
+        'not rewrite the original verdict, ACCEPT WITH REQUIRED FIX, which the audit',
+        'record above keeps as history with its evidence identities and digests. The',
+        'recheck recording is committed as `b305a1746c59637854a6877fe6196f17ec84e245`;',
+        '[CI workflow',
+        '`37180447555`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37180447555)',
+        'completed successfully on that commit, including required job',
+        '[`111371778482` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37180447555/job/111371778482).',
+        'The frozen train, WO-001 through WO-007, meets its completion condition: WO-001',
+        'through WO-005 and WO-007 are completed, and WO-006 remains superseded with no',
+        'accepted benchmark. Its audit condition is satisfied. Version 2.5.0 and the',
+        'accepted release-preparation content committed as',
+        '`82f256da98dc606de9fcca19afd68de2c69a026d` are unchanged. The owner deferred',
+        'the nonblocking review advisories to post-release hygiene: the `.MCP.json` case',
+        'variant in the tracked-configuration test, the incomplete dashboard quotation',
+        'in the known issues, the historical-tag wording in `SECURITY.md`, and the',
+        'residual README intent wording (review item P2-7); they remain open, neither',
+        "fixed nor waived. The owner's instruction is identified by its SHA-256",
+        '`e7083af5399b4c0e0196e4cf481ab85e90d42c8b93905f15d78b59ea77c8a416`. Tagging,',
+        'GitHub Release creation, branch-protection changes, other repository metadata',
+        'changes, and draft or social publication each still require a separate owner',
+        'execution authorization, and none is given here.',
+    )),
+     ""),
+)
+
+
+def _release_conditions_revert_bullets(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_CONDITIONS_POINTER_HISTORY[0])
+    for _prefix, bullet in _RELEASE_CONDITIONS_POINTER_BULLETS:
+        _edit(case, "WORKORDER.md", bullet + _NL, "")
+
+
+def _release_conditions_revert_release_gate(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_CONDITIONS_POINTER_HISTORY[1])
+
+
+def _release_conditions_revert_amendment(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_CONDITIONS_POINTER_HISTORY[2])
+
+
+def _release_conditions_revert_audit_tense(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_CONDITIONS_POINTER_HISTORY[3])
+
+
+def _release_conditions_revert_record(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_CONDITIONS_POINTER_HISTORY[4])
+
+
+# The conditions-recording transition, as reversible steps. Every step is
+# enforced by the checker on its own.
+_RELEASE_CONDITIONS_REVERSAL = (
+    ("pointer-bullets", _release_conditions_revert_bullets),
+    ("pointer-release-gate", _release_conditions_revert_release_gate),
+    ("pointer-amendment", _release_conditions_revert_amendment),
+    ("pointer-audit-tense", _release_conditions_revert_audit_tense),
+    ("pointer-record", _release_conditions_revert_record),
+)
+
+
+def _make_release_conditions_case(repo_root, tmp_path, name):
+    """Copy the current release-conditions-satisfied state."""
+    case = tmp_path / name
+    case.mkdir(parents=True)
+    shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
+    shutil.copytree(
+        repo_root / "docs" / "work-orders",
+        case / "docs" / "work-orders",
+    )
+    return case
+
+
 # --- Final audit recheck record: the current state -----------------------
 #
 # Recording the final audit's recheck moved the current state forward, so the
@@ -4045,13 +4230,30 @@ _AUDIT_RECHECK_REVERSAL = (
 
 
 def _make_audit_recheck_case(repo_root, tmp_path, name):
-    """Copy the current audit-rechecked state."""
-    case = tmp_path / name
-    case.mkdir(parents=True)
-    shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
-    shutil.copytree(
-        repo_root / "docs" / "work-orders",
-        case / "docs" / "work-orders",
+    """Reconstruct the preserved audit-rechecked state.
+
+    Recording the satisfied release conditions moved the current state
+    forward, so the rechecked state is now itself a reconstruction. Every
+    step of the recording is reversed in the pointer: the base, gate, and
+    recheck-recording bullets, the release-gate bullet, the amendment's
+    closing requirement, the original audit's unpassed gate, and the
+    conditions record. The pointer returns to the rechecked state byte for
+    byte; nothing else in the contract's inputs changed.
+    """
+    case = _make_release_conditions_case(repo_root, tmp_path, name)
+    pointer = case / "WORKORDER.md"
+    if _RELEASE_CONDITIONS_RECORD_OPENING not in pointer.read_text(
+            encoding="utf-8"):
+        # Already a pre-recording tree: nothing to reverse.
+        return case
+    for _step, revert in _RELEASE_CONDITIONS_REVERSAL:
+        revert(case)
+    _assert_reconstructed(
+        "release conditions pointer", pointer.read_text(encoding="utf-8"),
+        tuple(pair[1] for pair in _RELEASE_CONDITIONS_POINTER_HISTORY[:4]),
+        (_RELEASE_CONDITIONS_GATE, _SATISFIED_RELEASE_GATE,
+         _RELEASE_CONDITIONS_RECORD_OPENING, _RELEASE_CONDITIONS_WORKFLOW,
+         _RELEASE_CONDITIONS_JOB, "- Audit recheck recording commit:"),
     )
     return case
 
@@ -7157,6 +7359,7 @@ _TERMINAL_WO007_FINDING = "completed WO-007 state"
 _FINAL_AUDIT_RECORD_FINDING = "final audit record"
 _RELEASE_PREP_RECORD_FINDING = "release preparation record"
 _AUDIT_RECHECK_RECORD_FINDING = "audit recheck record"
+_RELEASE_CONDITIONS_RECORD_FINDING = "release conditions record"
 
 
 def _without_terminal_lock(finding_types):
@@ -7226,6 +7429,17 @@ def _before_final_audit_record(findings):
     """
     return {(kind, rel) for kind, rel in findings
             if kind != _FINAL_AUDIT_RECORD_FINDING}
+
+
+def _before_release_conditions_record(findings):
+    """(type, file) findings less the one-way release-conditions lock only.
+
+    The reconstructed audit-rechecked state is a state from before the
+    release conditions were recorded, so it necessarily trips that lock. Only
+    that one finding is set aside; every other finding is still returned.
+    """
+    return {(kind, rel) for kind, rel in findings
+            if kind != _RELEASE_CONDITIONS_RECORD_FINDING}
 
 
 def _before_audit_recheck_record(findings):
@@ -19638,15 +19852,16 @@ _AUDIT_RECHECK_KINDS = {"audit recheck field (WORKORDER.md)",
 
 
 def _audit_recheck_findings(repo_root, tmp_path, monkeypatch, name, mutate):
-    """(type, file) findings for the live audit-rechecked state after one
-    mutation."""
+    """(type, file) findings for the preserved audit-rechecked state after
+    one mutation, less only the one-way conditions lock that state trips."""
     drift_check = _load_drift_check(repo_root, "audit_recheck_" + name)
     case = _make_audit_recheck_case(repo_root, tmp_path,
                                     "audit-recheck-" + name)
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+    return _before_release_conditions_record(
+        {(f["type"], f["file"])
+         for f in drift_check.check_work_order_contract()})
 
 
 def test_audit_recheck_record_state_is_clean(repo_root, tmp_path,
@@ -19847,4 +20062,268 @@ def test_audit_recheck_record_accepts_closed_language(
     found = _audit_recheck_findings(repo_root, tmp_path, monkeypatch,
                                     "control-" + str(abs(hash(sentence))),
                                     _wo007_iss_append("WORKORDER.md", sentence))
+    assert found == set(), repr(sorted(found))
+
+
+# --- Release conditions record: the live state ---------------------------
+#
+# The recording adds the recheck-recording commit and its CI to the canonical
+# block, moves the base and gate, states in the release-gate bullet that the
+# train's conditions are satisfied while tags and Releases stay unauthorized,
+# recasts the amendment's closing requirement and the original audit's
+# unpassed gate as history, and records the owner's decision once. Each probe
+# is a delta against the live state, with nothing set aside.
+
+_RELEASE_CONDITIONS_KINDS = {"release conditions field (WORKORDER.md)",
+                             "release conditions declaration (WORKORDER.md)"}
+
+
+def _release_conditions_findings(repo_root, tmp_path, monkeypatch, name,
+                                 mutate):
+    """(type, file) findings for the live conditions-satisfied state after
+    one mutation."""
+    drift_check = _load_drift_check(repo_root, "release_conditions_" + name)
+    case = _make_release_conditions_case(repo_root, tmp_path,
+                                         "release-conditions-" + name)
+    mutate(case)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return {(f["type"], f["file"])
+            for f in drift_check.check_work_order_contract()}
+
+
+def test_release_conditions_record_state_is_clean(repo_root, tmp_path,
+                                                  monkeypatch) -> None:
+    """The control: the live conditions-satisfied state has no finding."""
+    found = _release_conditions_findings(repo_root, tmp_path, monkeypatch,
+                                         "control", lambda case: None)
+    assert found == set(), (
+        "the conditions-satisfied state is not clean: " + repr(sorted(found))
+    )
+
+
+def test_release_conditions_reconstruction_reaches_the_rechecked_state(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Reversing the recording lands on the audit-rechecked state: clean
+    apart from the one-way conditions lock it necessarily trips."""
+    drift_check = _load_drift_check(repo_root, "release_conditions_reverse")
+    case = _make_audit_recheck_case(repo_root, tmp_path,
+                                    "release-conditions-reverse")
+    text = (case / "WORKORDER.md").read_text(encoding="utf-8")
+    assert "- Current gate: " + _AUDIT_RECHECK_GATE in text
+    assert _RELEASE_CONDITIONS_RECORD_OPENING not in text
+    assert "AUDIT FIRST" in text
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    found = {(f["type"], f["file"])
+             for f in drift_check.check_work_order_contract()}
+    assert found == {(_RELEASE_CONDITIONS_RECORD_FINDING, "WORKORDER.md")}, (
+        repr(sorted(found)))
+
+
+_RELEASE_CONDITIONS_EVIDENCE = (
+    # (id, declaration prefix, pinned value)
+    ("base", "- Base commit:", _RELEASE_CONDITIONS_COMMIT),
+    ("recording-commit", "- Audit recheck recording commit:",
+     _RELEASE_CONDITIONS_COMMIT),
+    ("recording-workflow", "- Audit recheck recording CI workflow:",
+     _RELEASE_CONDITIONS_WORKFLOW),
+    ("recording-job", "- Audit recheck recording CI job:",
+     _RELEASE_CONDITIONS_JOB),
+    ("prep-job", "- Release preparation CI job:", _AUDIT_RECHECK_JOB),
+)
+
+
+@pytest.mark.parametrize("damage",
+                         ("changed", "removed", "duplicated", "decoy"))
+@pytest.mark.parametrize(("name", "prefix", "value"),
+                         _RELEASE_CONDITIONS_EVIDENCE,
+                         ids=[row[0] for row in _RELEASE_CONDITIONS_EVIDENCE])
+def test_release_conditions_evidence_is_pinned(
+    repo_root, tmp_path, monkeypatch, name, prefix, value, damage
+) -> None:
+    """The conditions base, the recheck-recording commit and its CI, and the
+    preparation bullets beside them are each enforced in the canonical
+    block."""
+    def mutate(case):
+        target = case / "WORKORDER.md"
+        text = target.read_text(encoding="utf-8")
+        line = next(candidate for candidate in text.splitlines()
+                    if candidate.startswith(prefix))
+        wrong = line.replace(value, _WO004_ZERO_SHA[:len(value)])
+        assert wrong != line, "probe anchor drifted: " + prefix
+        new = {"changed": wrong, "removed": "",
+               "duplicated": line + _NL + line, "decoy": wrong}[damage]
+        text = _replace_once(text, line, new, "release conditions " + damage)
+        if damage == "decoy":
+            # The genuine declaration is corrupted; a byte-correct copy is
+            # parked outside the canonical block, where it must not count.
+            text = text.rstrip() + _NL + _NL + line + _NL
+        target.write_text(text, encoding="utf-8")
+
+    found = _release_conditions_findings(
+        repo_root, tmp_path, monkeypatch,
+        "evidence-" + name + "-" + damage, mutate)
+    kinds = {kind for kind, file in found if file == "WORKORDER.md"}
+    assert kinds & _RELEASE_CONDITIONS_KINDS, (
+        "a " + damage + " " + prefix + " declaration was accepted in the "
+        "conditions-satisfied state: " + repr(sorted(found))
+    )
+
+
+@pytest.mark.parametrize(("step", "revert"), _RELEASE_CONDITIONS_REVERSAL,
+                         ids=[row[0] for row in _RELEASE_CONDITIONS_REVERSAL])
+def test_release_conditions_partial_recording_is_caught(
+    repo_root, tmp_path, monkeypatch, step, revert
+) -> None:
+    """Each step of the recording, reverted alone, leaves a state the checker
+    rejects."""
+    found = _release_conditions_findings(repo_root, tmp_path, monkeypatch,
+                                         "partial-" + step, revert)
+    assert found, step + " alone was accepted: the recording is partial"
+
+
+def test_release_conditions_coherent_reversal_trips_only_the_lock(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Reverting every step lands on the audit-rechecked state, which the
+    one-way conditions lock rejects - and nothing else does."""
+    def mutate(case):
+        for _step, revert in _RELEASE_CONDITIONS_REVERSAL:
+            revert(case)
+
+    found = _release_conditions_findings(repo_root, tmp_path, monkeypatch,
+                                         "coherent", mutate)
+    assert found == {(_RELEASE_CONDITIONS_RECORD_FINDING, "WORKORDER.md")}, (
+        repr(sorted(found)))
+
+
+def _release_conditions_edit(old, new):
+    return lambda case: _edit(case, "WORKORDER.md", old, new)
+
+
+_RELEASE_CONDITIONS_DAMAGE = (
+    # (id, change, expected kind)
+    ("gate-claims-tag-authorized",
+     _release_conditions_edit("- Current gate: " + _RELEASE_CONDITIONS_GATE,
+                              "- Current gate: FROZEN TRAIN AND AUDIT"
+                              " CONDITIONS SATISFIED " + _EM
+                              + " TAGGING AUTHORIZED"),
+     "completed work order gate"),
+    ("release-gate-opened",
+     _release_conditions_edit("- Release gate: " + _SATISFIED_RELEASE_GATE,
+                              "- Release gate: TAG AND GITHUB RELEASE"
+                              " AUTHORIZED"),
+     "release authorization"),
+    ("release-gate-duplicated",
+     _wo007_iss_append("WORKORDER.md",
+                       "- Release gate: " + _SATISFIED_RELEASE_GATE),
+     "release authorization"),
+    ("original-verdict-rewritten",
+     _release_conditions_edit("Its verdict is ACCEPT WITH REQUIRED FIX.",
+                              "Its verdict is ACCEPT."),
+     "final audit pointer statement"),
+    ("original-gate-claimed-passed",
+     _release_conditions_edit("At that gate, the final audit had not passed",
+                              "At that gate, the final audit had passed"),
+     "final audit pointer statement"),
+    ("verdict-claimed-rewritten",
+     _release_conditions_edit("condition; this does" + _NL + "not rewrite",
+                              "condition; this does" + _NL + "rewrite"),
+     "release conditions pointer statement"),
+    ("wo006-claimed-benchmarked",
+     _release_conditions_edit("superseded with no" + _NL + "accepted benchmark.",
+                              "superseded with an" + _NL + "accepted benchmark."),
+     "release conditions pointer statement"),
+    ("advisories-waived",
+     _release_conditions_edit("they remain open, neither",
+                              "they are now waived, not"),
+     "release conditions pointer statement"),
+    ("instruction-digest-changed",
+     _release_conditions_edit("`" + _RELEASE_CONDITIONS_INSTRUCTION_SHA256 + "`",
+                              "`0" + _RELEASE_CONDITIONS_INSTRUCTION_SHA256[1:]
+                              + "`"),
+     "release conditions pointer statement"),
+    ("execution-authority-claimed",
+     _release_conditions_edit("execution authorization, and none is given here.",
+                              "execution authorization, and all are given here."),
+     "release conditions pointer statement"),
+    ("present-amendment-left",
+     lambda case: _edit(case, "WORKORDER.md",
+                        *_RELEASE_CONDITIONS_POINTER_HISTORY[2]),
+     "release conditions pointer statement"),
+    ("second-partial-record",
+     _wo007_iss_append("WORKORDER.md",
+                       _RELEASE_CONDITIONS_RECORD_OPENING + " superseded."),
+     "release conditions pointer statement"),
+    ("base-left-at-preparation",
+     _release_conditions_edit("- Base commit: `" + _RELEASE_CONDITIONS_COMMIT
+                              + "`",
+                              "- Base commit: `" + _AUDIT_RECHECK_COMMIT + "`"),
+     "completion base commit"),
+    ("session-reopened",
+     _release_conditions_edit("- Authorized session: NONE",
+                              "- Authorized session: A"),
+     "authorization without issued work order"),
+    ("release-claim",
+     _wo007_iss_append("WORKORDER.md",
+                       "A GitHub Release for this train is authorized."),
+     "release authorization"),
+    ("tag-claim",
+     _wo007_iss_append("WORKORDER.md", "The v2.5.0 tag is authorized."),
+     "release authorization"),
+)
+
+
+@pytest.mark.parametrize(("name", "mutate", "kind"),
+                         _RELEASE_CONDITIONS_DAMAGE,
+                         ids=[row[0] for row in _RELEASE_CONDITIONS_DAMAGE])
+def test_release_conditions_record_boundaries_are_enforced(
+    repo_root, tmp_path, monkeypatch, name, mutate, kind
+) -> None:
+    """Claiming a tag, opening or duplicating the release gate, rewriting the
+    original verdict or its unpassed gate, claiming the verdict rewritten or
+    WO-006 benchmarked, waiving the deferred advisories, changing the private
+    digest, claiming execution authority, leaving the present amendment or a
+    second record behind, and reopening a session or a release are each
+    caught against WORKORDER.md."""
+    found = _release_conditions_findings(repo_root, tmp_path, monkeypatch,
+                                         "damage-" + name, mutate)
+    assert (kind, "WORKORDER.md") in found, repr(sorted(found))
+
+
+def test_satisfied_release_gate_is_bound_to_the_recorded_conditions(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """The satisfied release-gate text is valid only with the recorded
+    conditions: put into an earlier pointer, it is a release-gate finding."""
+    drift_check = _load_drift_check(repo_root, "satisfied_gate_early")
+    case = _make_completed_work_order_case(repo_root, tmp_path,
+                                           "satisfied-gate-early")
+    _edit(case, "WORKORDER.md",
+          "- Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED " + _EM
+          + " COMPLETE THE FROZEN TRAIN AND FINAL "
+          "INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST",
+          "- Release gate: " + _SATISFIED_RELEASE_GATE)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    found = {(f["type"], f["file"])
+             for f in drift_check.check_work_order_contract()}
+    assert ("release authorization", "WORKORDER.md") in found, (
+        repr(sorted(found)))
+
+
+_RELEASE_CONDITIONS_CONTROLS = (
+    "Tagging stays closed until the owner authorizes it separately.",
+    "No tagging or publication follows from this conditions record.",
+)
+
+
+@pytest.mark.parametrize("sentence", _RELEASE_CONDITIONS_CONTROLS)
+def test_release_conditions_record_accepts_closed_language(
+    repo_root, tmp_path, monkeypatch, sentence
+) -> None:
+    """Closed-gate wording grants nothing and stays clean."""
+    found = _release_conditions_findings(
+        repo_root, tmp_path, monkeypatch,
+        "control-" + str(sum(map(ord, sentence))),
+        _wo007_iss_append("WORKORDER.md", sentence))
     assert found == set(), repr(sorted(found))

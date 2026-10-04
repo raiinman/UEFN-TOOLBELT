@@ -6,8 +6,8 @@ never authorizes implementation.
 
 - Current issued Work Order: NONE
 - Authorized session: NONE
-- Base commit: `82f256da98dc606de9fcca19afd68de2c69a026d`
-- Current gate: FINAL AUDIT RECHECK RECORDED — TAGGING AND RELEASE CREATION UNAUTHORIZED
+- Base commit: `b305a1746c59637854a6877fe6196f17ec84e245`
+- Current gate: FROZEN TRAIN AND AUDIT CONDITIONS SATISFIED — TAGGING AND RELEASE CREATION UNAUTHORIZED
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
@@ -26,8 +26,11 @@ never authorizes implementation.
 - Release preparation commit: `82f256da98dc606de9fcca19afd68de2c69a026d`
 - Release preparation CI workflow: `37172802902`
 - Release preparation CI job: `111349057775` — Lint, types, tests
+- Audit recheck recording commit: `b305a1746c59637854a6877fe6196f17ec84e245`
+- Audit recheck recording CI workflow: `37180447555`
+- Audit recheck recording CI job: `111371778482` — Lint, types, tests
 - Release train: WO-001 through WO-007
-- Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — COMPLETE THE FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST
+- Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT CONDITIONS SATISFIED; SEPARATE OWNER EXECUTION AUTHORIZATIONS REQUIRED
 
 [`WO-001-custom-mcp-security.md`](docs/work-orders/completed/WO-001-custom-mcp-security.md)
 is completed as `ffcbe8b1bfa03cb37453b9beefda0bbdbe45543c` after
@@ -343,7 +346,7 @@ frozen train is complete when WO-001 through WO-005 and WO-007 are completed
 and WO-006 remains superseded. This amendment opens no session and grants
 nothing: WO-007 is completed with no session authorized, and the final
 integration/repository-truth audit and a separate owner decision on any
-release remain required.
+release remained required at that gate.
 
 Final integration/repository-truth audit record: under a separate owner
 authorization for a read-only audit only, which opened no implementation
@@ -362,8 +365,9 @@ by their manifest digest
 At that gate, two required fixes were outstanding. P1-1: public and agent pages
 claimed MCP-host compatibility that no accepted record supports. P1-2: public
 and agent pages presented the smoke test's registration checks as tool
-execution or schema validation. The final audit has not passed the release
-gate. The `.mcp.json` fresh-clone documentation defect remained queued for
+execution or schema validation. At that gate, the final audit had not passed
+the release gate. The `.mcp.json` fresh-clone documentation defect remained
+queued for
 correction with them. The version choice, the checker's handling of historical
 version lines, the pinned-port configuration, the agent settings, the privacy
 finding, and the disclosure of the security fix remained open owner decisions;
@@ -426,3 +430,28 @@ nor waives them. This acceptance supplies no live UEFN, MCP-host, or
 effective-permissions evidence. Tagging, Release creation, branch-protection
 changes, other repository metadata changes, and draft or social publication all
 remain unauthorized.
+
+Release conditions record: the owner accepted that the original final
+integration/repository-truth audit, together with the accepted corrective
+recheck and green CI, satisfies the frozen train's audit condition; this does
+not rewrite the original verdict, ACCEPT WITH REQUIRED FIX, which the audit
+record above keeps as history with its evidence identities and digests. The
+recheck recording is committed as `b305a1746c59637854a6877fe6196f17ec84e245`;
+[CI workflow
+`37180447555`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37180447555)
+completed successfully on that commit, including required job
+[`111371778482` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37180447555/job/111371778482).
+The frozen train, WO-001 through WO-007, meets its completion condition: WO-001
+through WO-005 and WO-007 are completed, and WO-006 remains superseded with no
+accepted benchmark. Its audit condition is satisfied. Version 2.5.0 and the
+accepted release-preparation content committed as
+`82f256da98dc606de9fcca19afd68de2c69a026d` are unchanged. The owner deferred
+the nonblocking review advisories to post-release hygiene: the `.MCP.json` case
+variant in the tracked-configuration test, the incomplete dashboard quotation
+in the known issues, the historical-tag wording in `SECURITY.md`, and the
+residual README intent wording (review item P2-7); they remain open, neither
+fixed nor waived. The owner's instruction is identified by its SHA-256
+`e7083af5399b4c0e0196e4cf481ab85e90d42c8b93905f15d78b59ea77c8a416`. Tagging,
+GitHub Release creation, branch-protection changes, other repository metadata
+changes, and draft or social publication each still require a separate owner
+execution authorization, and none is given here.

@@ -8,9 +8,11 @@
 > authorized. The frozen release train remains WO-001 through WO-007, with
 > WO-006 resolved as superseded rather than completed. The final
 > integration/repository-truth audit is recorded as ACCEPT WITH REQUIRED FIX.
-> Release 2.5.0 is prepared and committed under a separate owner authorization,
-> and the independent recheck of the audit's required fixes is recorded as
-> accepted; tagging and Release creation remain unauthorized.
+> Release 2.5.0 is prepared and committed, the independent recheck of the
+> audit's required fixes is recorded as accepted, and the owner has accepted
+> that the frozen train's completion and audit conditions are satisfied.
+> Tagging, GitHub Release creation, metadata changes, and publication each
+> still require a separate owner authorization.
 > This roadmap grants no implementation authority — root
 > [`WORKORDER.md`](WORKORDER.md) is the sole current gate.
 

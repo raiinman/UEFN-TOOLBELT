@@ -4099,6 +4099,105 @@ _AUDIT_RECHECK_RECORD = (
     "and draft or social publication all remain unauthorized."
 )
 
+# Recording that the frozen train's release conditions are met is a pointer
+# transition under its own owner decision: the owner accepted that the
+# original audit, with the accepted recheck and green CI, satisfies the train's
+# audit condition. The pointer recasts the original audit record's unpassed
+# gate and the amendment's closing requirement as history, keeps every verdict,
+# identity, and digest, moves its base to the recheck-recording commit, adds
+# that commit and its CI to the canonical block, states in the release-gate
+# bullet that the conditions are satisfied while tags and Releases stay
+# unauthorized, and records the decision once. The private instruction is
+# named by digest only. Once recorded, the record is one-way.
+_RELEASE_CONDITIONS_COMMIT = "b305a1746c59637854a6877fe6196f17ec84e245"
+_RELEASE_CONDITIONS_WORKFLOW = "37180447555"
+_RELEASE_CONDITIONS_JOB = "111371778482"
+_RELEASE_CONDITIONS_INSTRUCTION_SHA256 = (
+    "e7083af5399b4c0e0196e4cf481ab85e90d42c8b93905f15d78b59ea77c8a416"
+)
+_RELEASE_CONDITIONS_GATE = (
+    "FROZEN TRAIN AND AUDIT CONDITIONS SATISFIED — TAGGING AND RELEASE "
+    "CREATION UNAUTHORIZED"
+)
+_SATISFIED_RELEASE_GATE = (
+    "NO TAG OR GITHUB RELEASE AUTHORIZED — FROZEN TRAIN AND FINAL "
+    "INTEGRATION/REPOSITORY-TRUTH AUDIT CONDITIONS SATISFIED; SEPARATE OWNER "
+    "EXECUTION AUTHORIZATIONS REQUIRED"
+)
+_RELEASE_CONDITIONS_POINTER_SEQUENCE = (
+    _AUDIT_RECHECK_POINTER_SEQUENCE[:2]
+    + ("- Base commit: `" + _RELEASE_CONDITIONS_COMMIT + "`",)
+    + _AUDIT_RECHECK_POINTER_SEQUENCE[3:22]
+    + ("- Audit recheck recording commit: `" + _RELEASE_CONDITIONS_COMMIT
+       + "`",
+       "- Audit recheck recording CI workflow: `"
+       + _RELEASE_CONDITIONS_WORKFLOW + "`",
+       "- Audit recheck recording CI job: `" + _RELEASE_CONDITIONS_JOB + "` "
+       + "— Lint, types, tests")
+    + _AUDIT_RECHECK_POINTER_SEQUENCE[22:]
+)
+_RELEASE_CONDITIONS_POINTER_KEYS = (
+    (("- Base commit:", _RELEASE_CONDITIONS_POINTER_SEQUENCE[2]),)
+    + _AUDIT_RECHECK_POINTER_KEYS[1:]
+    + (("- Audit recheck recording commit:",
+        _RELEASE_CONDITIONS_POINTER_SEQUENCE[22]),
+       ("- Audit recheck recording CI workflow:",
+        _RELEASE_CONDITIONS_POINTER_SEQUENCE[23]),
+       ("- Audit recheck recording CI job:",
+        _RELEASE_CONDITIONS_POINTER_SEQUENCE[24]))
+)
+_RELEASE_CONDITIONS_MARKERS = (
+    "- Audit recheck recording commit:",
+    "- Audit recheck recording CI workflow:",
+    "- Audit recheck recording CI job:",
+    "Release conditions record:",
+)
+_RELEASE_CONDITIONS_RUN_URL = (
+    "https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _RELEASE_CONDITIONS_WORKFLOW
+)
+# The original audit record with its unpassed release gate recast as history
+# at that gate; its verdict, identities, and digests are unchanged.
+_FINAL_AUDIT_SETTLED_HISTORY_RECORD = _replaced_once(
+    _FINAL_AUDIT_HISTORY_RECORD, ((
+        "The final audit has not passed the release gate.",
+        "At that gate, the final audit had not passed the release gate."),))
+# The amendment with its closing requirement recast as history; every
+# substantive term is unchanged.
+_RELEASE_CONDITIONS_RELEASE_TRAIN_AMENDMENT = _replaced_once(
+    _WO007_COMPLETED_RELEASE_TRAIN_AMENDMENT, ((
+        "a separate owner decision on any release remain required.",
+        "a separate owner decision on any release remained required at that "
+        "gate."),))
+_RELEASE_CONDITIONS_RECORD = (
+    "Release conditions record: the owner accepted that the original final "
+    "integration/repository-truth audit, together with the accepted "
+    "corrective recheck and green CI, satisfies the frozen train's audit "
+    "condition; this does not rewrite the original verdict, ACCEPT WITH "
+    "REQUIRED FIX, which the audit record above keeps as history with its "
+    "evidence identities and digests. The recheck recording is committed as `"
+    + _RELEASE_CONDITIONS_COMMIT + "`; [CI workflow `"
+    + _RELEASE_CONDITIONS_WORKFLOW + "`](" + _RELEASE_CONDITIONS_RUN_URL
+    + ") completed successfully on that commit, including required job [`"
+    + _RELEASE_CONDITIONS_JOB + "` — Lint, types, tests]("
+    + _RELEASE_CONDITIONS_RUN_URL + "/job/" + _RELEASE_CONDITIONS_JOB + "). "
+    "The frozen train, WO-001 through WO-007, meets its completion condition: "
+    "WO-001 through WO-005 and WO-007 are completed, and WO-006 remains "
+    "superseded with no accepted benchmark. Its audit condition is satisfied. "
+    "Version 2.5.0 and the accepted release-preparation content committed as `"
+    + _AUDIT_RECHECK_COMMIT + "` are unchanged. The owner deferred the "
+    "nonblocking review advisories to post-release hygiene: the `.MCP.json` "
+    "case variant in the tracked-configuration test, the incomplete dashboard "
+    "quotation in the known issues, the historical-tag wording in "
+    "`SECURITY.md`, and the residual README intent wording (review item "
+    "P2-7); they remain open, neither fixed nor waived. The owner's "
+    "instruction is identified by its SHA-256 `"
+    + _RELEASE_CONDITIONS_INSTRUCTION_SHA256 + "`. Tagging, GitHub Release "
+    "creation, branch-protection changes, other repository metadata changes, "
+    "and draft or social publication each still require a separate owner "
+    "execution authorization, and none is given here."
+)
+
 
 def _wo007_issuance_findings(pointer, issued_text, rel, session):
     """WO-007's issuance record while it is issued.
@@ -4258,7 +4357,8 @@ def _wo007_session_a_record_findings(pointer, issued_text, rel):
 
 def _wo007_completed_findings(pointer, text, rel, surface,
                               audit_recorded=False, release_prepared=False,
-                              audit_rechecked=False):
+                              audit_rechecked=False,
+                              conditions_satisfied=False):
     """WO-007's completed record, on one surface at a time.
 
     The WO-005 completion pattern. On the pointer: the canonical slice with
@@ -4283,7 +4383,11 @@ def _wo007_completed_findings(pointer, text, rel, surface,
     once, with no pre-preparation statement left. Once the audit recheck is
     recorded, it takes the rechecked shape: the committed preparation as base,
     its bullets after the audit-recording bullets, the preparation record as
-    history, and the recheck record, each exactly once.
+    history, and the recheck record, each exactly once. Once the release
+    conditions are recorded as satisfied, it takes that shape: the
+    recheck-recording commit as base, its bullets after the preparation
+    bullets, the original audit's unpassed gate and the amendment's closing
+    requirement as history, and the conditions record, each exactly once.
     """
     out = []
     sequence: tuple[str, ...]
@@ -4305,6 +4409,10 @@ def _wo007_completed_findings(pointer, text, rel, surface,
             sequence = _AUDIT_RECHECK_POINTER_SEQUENCE
             keys = _AUDIT_RECHECK_POINTER_KEYS
             label = "audit recheck"
+        if conditions_satisfied:
+            sequence = _RELEASE_CONDITIONS_POINTER_SEQUENCE
+            keys = _RELEASE_CONDITIONS_POINTER_KEYS
+            label = "release conditions"
 
         def stop(line):
             return _WO001_COMPLETED_LINK in line
@@ -4343,8 +4451,10 @@ def _wo007_completed_findings(pointer, text, rel, surface,
         if audit_recorded:
             # The full record once, and its opening once, so a second,
             # partial record cannot sit beside it.
-            audit_record = (_FINAL_AUDIT_HISTORY_RECORD if release_prepared
-                            else _FINAL_AUDIT_RECORD)
+            audit_record = (
+                _FINAL_AUDIT_SETTLED_HISTORY_RECORD if conditions_satisfied
+                else _FINAL_AUDIT_HISTORY_RECORD if release_prepared
+                else _FINAL_AUDIT_RECORD)
             for required in (audit_record, _FINAL_AUDIT_MARKERS[3]):
                 count = normalized_pointer.count(required)
                 if count != 1:
@@ -4384,6 +4494,22 @@ def _wo007_completed_findings(pointer, text, rel, surface,
                 out.append(("WORKORDER.md", "audit recheck pointer statement",
                             "the pre-recheck preparation record remains",
                             "the preparation record recorded as history"))
+        if conditions_satisfied:
+            for required in (_RELEASE_CONDITIONS_RECORD,
+                             _RELEASE_CONDITIONS_MARKERS[3]):
+                count = normalized_pointer.count(required)
+                if count != 1:
+                    out.append(("WORKORDER.md",
+                                "release conditions pointer statement",
+                                str(count), "exactly one " + required))
+            for stale in (_FINAL_AUDIT_HISTORY_RECORD,
+                          _WO007_COMPLETED_RELEASE_TRAIN_AMENDMENT):
+                if stale in normalized_pointer:
+                    out.append(("WORKORDER.md",
+                                "release conditions pointer statement",
+                                "a pre-conditions statement remains: "
+                                + stale[:80],
+                                "the satisfied conditions recorded as history"))
         for stale in (_WO007_ISSUANCE_POINTER_NOTE,
                       _WO007_SESSION_A_POINTER_RECORD,
                       "docs/work-orders/issued/" + _WO007_NAME,
@@ -4392,12 +4518,13 @@ def _wo007_completed_findings(pointer, text, rel, surface,
                 out.append(("WORKORDER.md", "WO-007 completion pointer "
                             "statement", "a stale WO-007 record remains: "
                             + stale[:80], "the completed record only"))
-        count = normalized_pointer.count(
-            _WO007_COMPLETED_RELEASE_TRAIN_AMENDMENT)
+        amendment = (_RELEASE_CONDITIONS_RELEASE_TRAIN_AMENDMENT
+                     if conditions_satisfied
+                     else _WO007_COMPLETED_RELEASE_TRAIN_AMENDMENT)
+        count = normalized_pointer.count(amendment)
         if count != 1:
             out.append(("WORKORDER.md", "WO-007 release-train amendment",
-                        str(count), "exactly one "
-                        + _WO007_COMPLETED_RELEASE_TRAIN_AMENDMENT))
+                        str(count), "exactly one " + amendment))
         if any(normalized_pointer.count(earlier)
                for earlier in _WO007_EARLIER_RELEASE_TRAIN_AMENDMENTS):
             out.append(("WORKORDER.md", "WO-007 release-train amendment",
@@ -4861,8 +4988,15 @@ def _has_release_authorization(pointer: str, other_text: str = "") -> bool:
     """
     text = " ".join(pointer.split())
     extra = " ".join(other_text.split())
+    # The release-gate bullet is one of two pinned texts: closed, or closed
+    # with the train's conditions recorded as satisfied. Exactly one may
+    # appear; which one the state allows is bound by the contract check.
+    gate_lines = [f"- Release gate: {gate}"
+                  for gate in (_CLOSED_RELEASE_GATE, _SATISFIED_RELEASE_GATE)]
+    if sum(text.count(line) for line in gate_lines) != 1:
+        return True
     allowed = (
-        f"- Release gate: {_CLOSED_RELEASE_GATE}",
+        next(line for line in gate_lines if line in text),
         "No tag or GitHub Release is authorized until the frozen train is complete, "
         "a final integration/repository-truth audit passes, and the owner separately "
         "authorizes a release session.",
@@ -5190,7 +5324,7 @@ def check_work_order_contract() -> list[dict]:
     if release_train != _FROZEN_RELEASE_TRAIN:
         add("WORKORDER.md", "release train", str(release_train),
             _FROZEN_RELEASE_TRAIN)
-    if release_gate != _CLOSED_RELEASE_GATE:
+    if release_gate not in (_CLOSED_RELEASE_GATE, _SATISFIED_RELEASE_GATE):
         add("WORKORDER.md", "release authorization", str(release_gate),
             _CLOSED_RELEASE_GATE)
     elif _has_release_authorization(pointer):
@@ -5542,15 +5676,23 @@ def check_work_order_contract() -> list[dict]:
     final_audit_recorded = False
     release_prepared = False
     audit_rechecked = False
+    conditions_satisfied = False
     if wo007_completed_text:
         next_order, basis_name = None, _WO007_NAME
         basis_text = wo007_completed_text
         # Any trace of a later record selects that record's shape, so a
         # partial rollback is checked against it rather than accepted as an
         # earlier state. The prepared release carries the final audit record,
-        # and the recorded recheck carries the prepared release.
+        # and the recorded recheck carries the prepared release. The
+        # satisfied release conditions carry the recorded recheck.
+        conditions_satisfied = (
+            current_gate == _RELEASE_CONDITIONS_GATE
+            or release_gate == _SATISFIED_RELEASE_GATE
+            or any(marker in pointer for marker in _RELEASE_CONDITIONS_MARKERS)
+        )
         audit_rechecked = (
-            current_gate == _AUDIT_RECHECK_GATE
+            conditions_satisfied
+            or current_gate == _AUDIT_RECHECK_GATE
             or any(marker in pointer for marker in _AUDIT_RECHECK_MARKERS)
         )
         release_prepared = (
@@ -5563,9 +5705,18 @@ def check_work_order_contract() -> list[dict]:
             or current_gate == _FINAL_AUDIT_GATE
             or any(marker in pointer for marker in _FINAL_AUDIT_MARKERS)
         )
-        if audit_rechecked:
+        if conditions_satisfied:
+            expected_base = _RELEASE_CONDITIONS_COMMIT
+            expected_closed_gate = _RELEASE_CONDITIONS_GATE
+        elif audit_rechecked:
             expected_base = _AUDIT_RECHECK_COMMIT
             expected_closed_gate = _AUDIT_RECHECK_GATE
+            # Recording the satisfied release conditions is one-way too: this
+            # checker carries the record, so a rechecked pointer without it is
+            # a finding. Undoing it would have to edit this file too.
+            add("WORKORDER.md", "release conditions record",
+                "the recorded release conditions are missing from the pointer",
+                "the owner-accepted release conditions recorded")
         elif release_prepared:
             expected_base = _RELEASE_PREP_COMMIT
             expected_closed_gate = _RELEASE_PREP_GATE
@@ -5624,6 +5775,13 @@ def check_work_order_contract() -> list[dict]:
         basis_text = wo001_completed_text
         expected_base = _WO001_COMPLETION_COMMIT
         expected_closed_gate = _WO001_COMPLETED_GATE
+    # The satisfied release-gate text belongs only to the recorded release
+    # conditions, and that record requires it: either without the other is
+    # a release-gate finding.
+    if conditions_satisfied != (release_gate == _SATISFIED_RELEASE_GATE):
+        add("WORKORDER.md", "release authorization", str(release_gate),
+            _SATISFIED_RELEASE_GATE if conditions_satisfied
+            else _CLOSED_RELEASE_GATE)
     # Scanned alone, so the finding names the file that carries the claim.
     if (next_order is not None
             and _has_next_work_order_authorization("", basis_text,
@@ -5667,6 +5825,7 @@ def check_work_order_contract() -> list[dict]:
                 "pointer", audit_recorded=final_audit_recorded,
                 release_prepared=release_prepared,
                 audit_rechecked=audit_rechecked,
+                conditions_satisfied=conditions_satisfied,
             ):
                 add(_f, _k, _found, _want)
         elif wo006_superseded_text:
