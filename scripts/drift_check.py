@@ -4198,6 +4198,104 @@ _RELEASE_CONDITIONS_RECORD = (
     "execution authorization, and none is given here."
 )
 
+# Recording the published release is a post-release pointer transition under
+# its own owner instruction: the tag and the GitHub Release were each created
+# under a separate owner authorization after the conditions record. The
+# pointer recasts the conditions record's closing requirement as history,
+# moves its base to the tagged commit, adds that commit and its CI to the
+# canonical block, states in the release-gate bullet that this tag and
+# Release are complete while no further tag or Release follows, and records
+# the tag and Release identities once. The private instruction is named by
+# digest only. The record is not part of the tagged package. Once recorded,
+# it is one-way.
+_RELEASE_PUBLISHED_COMMIT = "eabce22518d07725e05173aa707909023166a799"
+_RELEASE_PUBLISHED_WORKFLOW = "37186239025"
+_RELEASE_PUBLISHED_JOB = "111388630828"
+_RELEASE_PUBLISHED_TAG_OBJECT = "39afcab4d2f3a8ae3af58fdbd01312c7ec05c93a"
+_RELEASE_PUBLISHED_RELEASE_ID = "402913965"
+_RELEASE_PUBLISHED_AT = "2026-10-04T08:10:21Z"
+_RELEASE_PUBLISHED_BODY_SHA256 = (
+    "6c1234865662798fdf13eb3f72449565264545b690c6218bc549a794a6e1eb4a"
+)
+_RELEASE_PUBLISHED_INSTRUCTION_SHA256 = (
+    "aadad5fbeccd0f656dfba476cf035e7cf4aba24324ae93ab47c0ab396168920a"
+)
+_RELEASE_PUBLISHED_GATE = (
+    "V2.5.0 TAGGED AND RELEASED — NEXT WORK ORDER AWAITS A SEPARATE OWNER "
+    "DECISION"
+)
+_PUBLISHED_RELEASE_GATE = (
+    "V2.5.0 TAG AND GITHUB RELEASE COMPLETED UNDER SEPARATE OWNER "
+    "AUTHORIZATIONS — NO FURTHER TAG OR GITHUB RELEASE AUTHORIZED"
+)
+_RELEASE_PUBLISHED_POINTER_SEQUENCE = (
+    _RELEASE_CONDITIONS_POINTER_SEQUENCE[:2]
+    + ("- Base commit: `" + _RELEASE_PUBLISHED_COMMIT + "`",)
+    + _RELEASE_CONDITIONS_POINTER_SEQUENCE[3:25]
+    + ("- Release conditions recording commit: `"
+       + _RELEASE_PUBLISHED_COMMIT + "`",
+       "- Release conditions recording CI workflow: `"
+       + _RELEASE_PUBLISHED_WORKFLOW + "`",
+       "- Release conditions recording CI job: `" + _RELEASE_PUBLISHED_JOB
+       + "` " + "— Lint, types, tests")
+    + _RELEASE_CONDITIONS_POINTER_SEQUENCE[25:]
+)
+_RELEASE_PUBLISHED_POINTER_KEYS = (
+    (("- Base commit:", _RELEASE_PUBLISHED_POINTER_SEQUENCE[2]),)
+    + _RELEASE_CONDITIONS_POINTER_KEYS[1:]
+    + (("- Release conditions recording commit:",
+        _RELEASE_PUBLISHED_POINTER_SEQUENCE[25]),
+       ("- Release conditions recording CI workflow:",
+        _RELEASE_PUBLISHED_POINTER_SEQUENCE[26]),
+       ("- Release conditions recording CI job:",
+        _RELEASE_PUBLISHED_POINTER_SEQUENCE[27]))
+)
+_RELEASE_PUBLISHED_MARKERS = (
+    "- Release conditions recording commit:",
+    "- Release conditions recording CI workflow:",
+    "- Release conditions recording CI job:",
+    "Release publication record:",
+)
+_RELEASE_PUBLISHED_RUN_URL = (
+    "https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _RELEASE_PUBLISHED_WORKFLOW
+)
+# The conditions record as history: its closing requirement describes the
+# conditions gate, before the tag and Release were authorized and created.
+_RELEASE_CONDITIONS_HISTORY_RECORD = _replaced_once(
+    _RELEASE_CONDITIONS_RECORD, ((
+        "each still require a separate owner execution authorization, and "
+        "none is given here.",
+        "each still required a separate owner execution authorization at "
+        "that gate, and that record gave none."),))
+_RELEASE_PUBLISHED_RECORD = (
+    "Release publication record: under separate owner authorizations given "
+    "after the conditions record, the annotated tag `v2.5.0`, tag object `"
+    + _RELEASE_PUBLISHED_TAG_OBJECT + "`, was created on commit `"
+    + _RELEASE_PUBLISHED_COMMIT + "` and pushed; [CI workflow `"
+    + _RELEASE_PUBLISHED_WORKFLOW + "`](" + _RELEASE_PUBLISHED_RUN_URL
+    + ") completed successfully on that commit, including required job [`"
+    + _RELEASE_PUBLISHED_JOB + "` — Lint, types, tests]("
+    + _RELEASE_PUBLISHED_RUN_URL + "/job/" + _RELEASE_PUBLISHED_JOB + "). "
+    "GitHub Release `" + _RELEASE_PUBLISHED_RELEASE_ID + "`, titled \"UEFN "
+    "Toolbelt v2.5.0\", was then published from that tag at "
+    + _RELEASE_PUBLISHED_AT + ", not as a prerelease, and marked Latest. Its "
+    "body is the 2.5.0 section of `docs/CHANGELOG.md` at the tag, with only "
+    "the `SECURITY.md` link made absolute, and is identified by its SHA-256 `"
+    + _RELEASE_PUBLISHED_BODY_SHA256 + "`. Statements in the earlier records "
+    "above that tagging or Release creation remain unauthorized describe "
+    "their own gates; only those separate owner authorizations changed that, "
+    "for v2.5.0 alone. This record is a post-release change and is not part "
+    "of the tagged package; `v2.5.0` and every earlier tag stay where they "
+    "are. The owner's instruction is identified by its SHA-256 `"
+    + _RELEASE_PUBLISHED_INSTRUCTION_SHA256 + "`. No further tagging or "
+    "GitHub Release creation follows from this record. Social publication, "
+    "private-draft publication, and scratch cleanup remain separately gated, "
+    "and the deferred review advisories remain open. The next Work Order "
+    "awaits a separate owner decision, and no implementation follows from "
+    "this record."
+)
+
 
 def _wo007_issuance_findings(pointer, issued_text, rel, session):
     """WO-007's issuance record while it is issued.
@@ -4358,7 +4456,8 @@ def _wo007_session_a_record_findings(pointer, issued_text, rel):
 def _wo007_completed_findings(pointer, text, rel, surface,
                               audit_recorded=False, release_prepared=False,
                               audit_rechecked=False,
-                              conditions_satisfied=False):
+                              conditions_satisfied=False,
+                              release_published=False):
     """WO-007's completed record, on one surface at a time.
 
     The WO-005 completion pattern. On the pointer: the canonical slice with
@@ -4388,6 +4487,10 @@ def _wo007_completed_findings(pointer, text, rel, surface,
     recheck-recording commit as base, its bullets after the preparation
     bullets, the original audit's unpassed gate and the amendment's closing
     requirement as history, and the conditions record, each exactly once.
+    Once the published release is recorded, it takes that shape: the tagged
+    commit as base, its bullets after the recheck-recording bullets, the
+    conditions record's closing requirement as history, and the publication
+    record, each exactly once.
     """
     out = []
     sequence: tuple[str, ...]
@@ -4413,6 +4516,10 @@ def _wo007_completed_findings(pointer, text, rel, surface,
             sequence = _RELEASE_CONDITIONS_POINTER_SEQUENCE
             keys = _RELEASE_CONDITIONS_POINTER_KEYS
             label = "release conditions"
+        if release_published:
+            sequence = _RELEASE_PUBLISHED_POINTER_SEQUENCE
+            keys = _RELEASE_PUBLISHED_POINTER_KEYS
+            label = "release publication"
 
         def stop(line):
             return _WO001_COMPLETED_LINK in line
@@ -4495,7 +4602,10 @@ def _wo007_completed_findings(pointer, text, rel, surface,
                             "the pre-recheck preparation record remains",
                             "the preparation record recorded as history"))
         if conditions_satisfied:
-            for required in (_RELEASE_CONDITIONS_RECORD,
+            conditions_record = (_RELEASE_CONDITIONS_HISTORY_RECORD
+                                 if release_published
+                                 else _RELEASE_CONDITIONS_RECORD)
+            for required in (conditions_record,
                              _RELEASE_CONDITIONS_MARKERS[3]):
                 count = normalized_pointer.count(required)
                 if count != 1:
@@ -4510,6 +4620,19 @@ def _wo007_completed_findings(pointer, text, rel, surface,
                                 "a pre-conditions statement remains: "
                                 + stale[:80],
                                 "the satisfied conditions recorded as history"))
+        if release_published:
+            for required in (_RELEASE_PUBLISHED_RECORD,
+                             _RELEASE_PUBLISHED_MARKERS[3]):
+                count = normalized_pointer.count(required)
+                if count != 1:
+                    out.append(("WORKORDER.md",
+                                "release publication pointer statement",
+                                str(count), "exactly one " + required))
+            if _RELEASE_CONDITIONS_RECORD in normalized_pointer:
+                out.append(("WORKORDER.md",
+                            "release publication pointer statement",
+                            "the pre-publication conditions record remains",
+                            "the conditions record recorded as history"))
         for stale in (_WO007_ISSUANCE_POINTER_NOTE,
                       _WO007_SESSION_A_POINTER_RECORD,
                       "docs/work-orders/issued/" + _WO007_NAME,
@@ -4988,11 +5111,13 @@ def _has_release_authorization(pointer: str, other_text: str = "") -> bool:
     """
     text = " ".join(pointer.split())
     extra = " ".join(other_text.split())
-    # The release-gate bullet is one of two pinned texts: closed, or closed
-    # with the train's conditions recorded as satisfied. Exactly one may
-    # appear; which one the state allows is bound by the contract check.
+    # The release-gate bullet is one of three pinned texts: closed, closed
+    # with the train's conditions recorded as satisfied, or the published
+    # tag and Release with no further one authorized. Exactly one may appear;
+    # which one the state allows is bound by the contract check.
     gate_lines = [f"- Release gate: {gate}"
-                  for gate in (_CLOSED_RELEASE_GATE, _SATISFIED_RELEASE_GATE)]
+                  for gate in (_CLOSED_RELEASE_GATE, _SATISFIED_RELEASE_GATE,
+                               _PUBLISHED_RELEASE_GATE)]
     if sum(text.count(line) for line in gate_lines) != 1:
         return True
     allowed = (
@@ -5324,7 +5449,8 @@ def check_work_order_contract() -> list[dict]:
     if release_train != _FROZEN_RELEASE_TRAIN:
         add("WORKORDER.md", "release train", str(release_train),
             _FROZEN_RELEASE_TRAIN)
-    if release_gate not in (_CLOSED_RELEASE_GATE, _SATISFIED_RELEASE_GATE):
+    if release_gate not in (_CLOSED_RELEASE_GATE, _SATISFIED_RELEASE_GATE,
+                            _PUBLISHED_RELEASE_GATE):
         add("WORKORDER.md", "release authorization", str(release_gate),
             _CLOSED_RELEASE_GATE)
     elif _has_release_authorization(pointer):
@@ -5677,6 +5803,7 @@ def check_work_order_contract() -> list[dict]:
     release_prepared = False
     audit_rechecked = False
     conditions_satisfied = False
+    release_published = False
     if wo007_completed_text:
         next_order, basis_name = None, _WO007_NAME
         basis_text = wo007_completed_text
@@ -5684,9 +5811,16 @@ def check_work_order_contract() -> list[dict]:
         # partial rollback is checked against it rather than accepted as an
         # earlier state. The prepared release carries the final audit record,
         # and the recorded recheck carries the prepared release. The
-        # satisfied release conditions carry the recorded recheck.
+        # satisfied release conditions carry the recorded recheck, and the
+        # published release carries the satisfied conditions.
+        release_published = (
+            current_gate == _RELEASE_PUBLISHED_GATE
+            or release_gate == _PUBLISHED_RELEASE_GATE
+            or any(marker in pointer for marker in _RELEASE_PUBLISHED_MARKERS)
+        )
         conditions_satisfied = (
-            current_gate == _RELEASE_CONDITIONS_GATE
+            release_published
+            or current_gate == _RELEASE_CONDITIONS_GATE
             or release_gate == _SATISFIED_RELEASE_GATE
             or any(marker in pointer for marker in _RELEASE_CONDITIONS_MARKERS)
         )
@@ -5705,9 +5839,18 @@ def check_work_order_contract() -> list[dict]:
             or current_gate == _FINAL_AUDIT_GATE
             or any(marker in pointer for marker in _FINAL_AUDIT_MARKERS)
         )
-        if conditions_satisfied:
+        if release_published:
+            expected_base = _RELEASE_PUBLISHED_COMMIT
+            expected_closed_gate = _RELEASE_PUBLISHED_GATE
+        elif conditions_satisfied:
             expected_base = _RELEASE_CONDITIONS_COMMIT
             expected_closed_gate = _RELEASE_CONDITIONS_GATE
+            # Recording the published release is one-way too: this checker
+            # carries the record, so a conditions pointer without it is a
+            # finding. Undoing it would have to edit this file too.
+            add("WORKORDER.md", "release publication record",
+                "the recorded release publication is missing from the pointer",
+                "the owner-authorized tag and Release recorded")
         elif audit_rechecked:
             expected_base = _AUDIT_RECHECK_COMMIT
             expected_closed_gate = _AUDIT_RECHECK_GATE
@@ -5775,13 +5918,17 @@ def check_work_order_contract() -> list[dict]:
         basis_text = wo001_completed_text
         expected_base = _WO001_COMPLETION_COMMIT
         expected_closed_gate = _WO001_COMPLETED_GATE
-    # The satisfied release-gate text belongs only to the recorded release
-    # conditions, and that record requires it: either without the other is
-    # a release-gate finding.
-    if conditions_satisfied != (release_gate == _SATISFIED_RELEASE_GATE):
+    # Each release-gate text belongs to exactly one state: the published
+    # text to the recorded publication, the satisfied text to the recorded
+    # conditions before publication, and the closed text to every earlier
+    # state. Any other pairing is a release-gate finding.
+    expected_release_gate = (
+        _PUBLISHED_RELEASE_GATE if release_published
+        else _SATISFIED_RELEASE_GATE if conditions_satisfied
+        else _CLOSED_RELEASE_GATE)
+    if release_gate != expected_release_gate:
         add("WORKORDER.md", "release authorization", str(release_gate),
-            _SATISFIED_RELEASE_GATE if conditions_satisfied
-            else _CLOSED_RELEASE_GATE)
+            expected_release_gate)
     # Scanned alone, so the finding names the file that carries the claim.
     if (next_order is not None
             and _has_next_work_order_authorization("", basis_text,
@@ -5826,6 +5973,7 @@ def check_work_order_contract() -> list[dict]:
                 release_prepared=release_prepared,
                 audit_rechecked=audit_rechecked,
                 conditions_satisfied=conditions_satisfied,
+                release_published=release_published,
             ):
                 add(_f, _k, _found, _want)
         elif wo006_superseded_text:

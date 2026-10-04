@@ -6,8 +6,8 @@ never authorizes implementation.
 
 - Current issued Work Order: NONE
 - Authorized session: NONE
-- Base commit: `b305a1746c59637854a6877fe6196f17ec84e245`
-- Current gate: FROZEN TRAIN AND AUDIT CONDITIONS SATISFIED — TAGGING AND RELEASE CREATION UNAUTHORIZED
+- Base commit: `eabce22518d07725e05173aa707909023166a799`
+- Current gate: V2.5.0 TAGGED AND RELEASED — NEXT WORK ORDER AWAITS A SEPARATE OWNER DECISION
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
@@ -29,8 +29,11 @@ never authorizes implementation.
 - Audit recheck recording commit: `b305a1746c59637854a6877fe6196f17ec84e245`
 - Audit recheck recording CI workflow: `37180447555`
 - Audit recheck recording CI job: `111371778482` — Lint, types, tests
+- Release conditions recording commit: `eabce22518d07725e05173aa707909023166a799`
+- Release conditions recording CI workflow: `37186239025`
+- Release conditions recording CI job: `111388630828` — Lint, types, tests
 - Release train: WO-001 through WO-007
-- Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT CONDITIONS SATISFIED; SEPARATE OWNER EXECUTION AUTHORIZATIONS REQUIRED
+- Release gate: V2.5.0 TAG AND GITHUB RELEASE COMPLETED UNDER SEPARATE OWNER AUTHORIZATIONS — NO FURTHER TAG OR GITHUB RELEASE AUTHORIZED
 
 [`WO-001-custom-mcp-security.md`](docs/work-orders/completed/WO-001-custom-mcp-security.md)
 is completed as `ffcbe8b1bfa03cb37453b9beefda0bbdbe45543c` after
@@ -453,5 +456,29 @@ residual README intent wording (review item P2-7); they remain open, neither
 fixed nor waived. The owner's instruction is identified by its SHA-256
 `e7083af5399b4c0e0196e4cf481ab85e90d42c8b93905f15d78b59ea77c8a416`. Tagging,
 GitHub Release creation, branch-protection changes, other repository metadata
-changes, and draft or social publication each still require a separate owner
-execution authorization, and none is given here.
+changes, and draft or social publication each still required a separate owner
+execution authorization at that gate, and that record gave none.
+
+Release publication record: under separate owner authorizations given after the
+conditions record, the annotated tag `v2.5.0`, tag object
+`39afcab4d2f3a8ae3af58fdbd01312c7ec05c93a`, was created on commit
+`eabce22518d07725e05173aa707909023166a799` and pushed; [CI workflow
+`37186239025`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37186239025)
+completed successfully on that commit, including required job
+[`111388630828` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37186239025/job/111388630828).
+GitHub Release `402913965`, titled "UEFN Toolbelt v2.5.0", was then published
+from that tag at 2026-10-04T08:10:21Z, not as a prerelease, and marked Latest.
+Its body is the 2.5.0 section of `docs/CHANGELOG.md` at the tag, with only the
+`SECURITY.md` link made absolute, and is identified by its SHA-256
+`6c1234865662798fdf13eb3f72449565264545b690c6218bc549a794a6e1eb4a`. Statements
+in the earlier records above that tagging or Release creation remain
+unauthorized describe their own gates; only those separate owner authorizations
+changed that, for v2.5.0 alone. This record is a post-release change and is not
+part of the tagged package; `v2.5.0` and every earlier tag stay where they are.
+The owner's instruction is identified by its SHA-256
+`aadad5fbeccd0f656dfba476cf035e7cf4aba24324ae93ab47c0ab396168920a`. No further
+tagging or GitHub Release creation follows from this record. Social
+publication, private-draft publication, and scratch cleanup remain separately
+gated, and the deferred review advisories remain open. The next Work Order
+awaits a separate owner decision, and no implementation follows from this
+record.

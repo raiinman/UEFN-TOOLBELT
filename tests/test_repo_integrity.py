@@ -254,15 +254,15 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     ).exists()
     assert current == "NONE"
     assert session == "NONE"
-    # The base is the recheck-recording commit, declared in its own bullet
-    # after the release-preparation bullets. The gate records the satisfied
-    # train and audit conditions and keeps tagging and Release creation closed.
+    # The base is the tagged commit, declared in its own bullet after the
+    # recheck-recording bullets. The gate records the completed tag and
+    # Release and leaves the next Work Order to a separate owner decision.
     assert base_lines == [
-        "- Base commit: `b305a1746c59637854a6877fe6196f17ec84e245`"
+        "- Base commit: `eabce22518d07725e05173aa707909023166a799`"
     ]
     assert gate_lines == [
-        "- Current gate: FROZEN TRAIN AND AUDIT CONDITIONS SATISFIED — TAGGING"
-        " AND RELEASE CREATION UNAUTHORIZED"
+        "- Current gate: V2.5.0 TAGGED AND RELEASED — NEXT WORK ORDER AWAITS A"
+        " SEPARATE OWNER DECISION"
     ]
     for line in (
         "- Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`",
@@ -290,6 +290,11 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "`b305a1746c59637854a6877fe6196f17ec84e245`",
         "- Audit recheck recording CI workflow: `37180447555`",
         "- Audit recheck recording CI job: `111371778482` — Lint, types, tests",
+        "- Release conditions recording commit: "
+        "`eabce22518d07725e05173aa707909023166a799`",
+        "- Release conditions recording CI workflow: `37186239025`",
+        "- Release conditions recording CI job: `111388630828` — Lint, types, "
+        "tests",
     ):
         assert pointer.splitlines().count(line) == 1, line
     # WO-006's issuance, session, and closure-basis bullets left the canonical
@@ -375,9 +380,11 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "as ACCEPT WITH REQUIRED FIX. Release 2.5.0 is prepared and committed, "
         "the independent recheck of the audit's required fixes is recorded as "
         "accepted, and the owner has accepted that the frozen train's "
-        "completion and audit conditions are satisfied. Tagging, GitHub "
-        "Release creation, metadata changes, and publication each still "
-        "require a separate owner authorization." in normalized_roadmap
+        "completion and audit conditions are satisfied. Under separate owner "
+        "authorizations, v2.5.0 was then tagged and published as a GitHub "
+        "Release. Social publication, private-draft publication, and scratch "
+        "cleanup remain separately gated, and the next Work Order awaits a "
+        "separate owner decision." in normalized_roadmap
     )
     assert "its recheck is not authorized" not in normalized_roadmap
     assert "release preparation is not authorized" not in normalized_roadmap
@@ -994,11 +1001,40 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "they remain open, neither fixed nor waived.",
         "Tagging, GitHub Release creation, branch-protection changes, other "
         "repository metadata changes, and draft or social publication each "
-        "still require a separate owner execution authorization, and none is "
-        "given here.",
+        "still required a separate owner execution authorization at that "
+        "gate, and that record gave none.",
     ):
         assert normalized_pointer_live.count(statement) == 1, statement
     assert "111371778482" in normalized_pointer_live
+    assert "and none is given here." not in normalized_pointer_live
+    # The published tag and Release are recorded once, as completed actions
+    # under their own owner authorizations: the tag object and target, the
+    # target's CI, the Release identity, status, and body digest, the
+    # reconciliation of earlier denials, the post-release status of this
+    # record, the instruction by digest only, and the gates that stay closed.
+    assert normalized_pointer_live.count("Release publication record:") == 1
+    for statement in (
+        "under separate owner authorizations given after the conditions "
+        "record, the annotated tag `v2.5.0`, tag object "
+        "`39afcab4d2f3a8ae3af58fdbd01312c7ec05c93a`, was created on commit "
+        "`eabce22518d07725e05173aa707909023166a799` and pushed; [CI workflow "
+        "`37186239025`]",
+        "GitHub Release `402913965`, titled \"UEFN Toolbelt v2.5.0\", was "
+        "then published from that tag at 2026-10-04T08:10:21Z, not as a "
+        "prerelease, and marked Latest.",
+        "`6c1234865662798fdf13eb3f72449565264545b690c6218bc549a794a6e1eb4a`.",
+        "Statements in the earlier records above that tagging or Release "
+        "creation remain unauthorized describe their own gates; only those "
+        "separate owner authorizations changed that, for v2.5.0 alone.",
+        "This record is a post-release change and is not part of the tagged "
+        "package;",
+        "No further tagging or GitHub Release creation follows from this "
+        "record.",
+        "The next Work Order awaits a separate owner decision, and no "
+        "implementation follows from this record.",
+    ):
+        assert normalized_pointer_live.count(statement) == 1, statement
+    assert "111388630828" in normalized_pointer_live
     assert "stays at version 2.4.1" not in normalized_pointer_live
     assert "as do WO-007 completion" not in normalized_pointer_live
     # The private drafts' identities live only in the completed mandate.
@@ -1125,10 +1161,10 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert "docs/work-orders/proposed/WO-004-modal-observability.md" not in pointer
     assert "- Release train: WO-001 through WO-007" in pointer
     assert (
-        "- Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — FROZEN TRAIN AND "
-        "FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT CONDITIONS SATISFIED; "
-        "SEPARATE OWNER EXECUTION AUTHORIZATIONS REQUIRED"
+        "- Release gate: V2.5.0 TAG AND GITHUB RELEASE COMPLETED UNDER SEPARATE "
+        "OWNER AUTHORIZATIONS — NO FURTHER TAG OR GITHUB RELEASE AUTHORIZED"
     ) in pointer
+    assert "CONDITIONS SATISFIED; SEPARATE OWNER" not in pointer
     assert "AUDIT FIRST" not in pointer
     assert "release version 2.5.0" in pointer
     assert "docs/work-orders/completed/WO-001-custom-mcp-security.md" in pointer
@@ -3965,6 +4001,140 @@ _WO007_CMP_REVERSAL = (
 )
 
 
+# --- Release publication record: the current state -----------------------
+#
+# Recording the published tag and Release moved the current state forward,
+# so the conditions-satisfied state - and every historical fixture below it -
+# is reconstructed backwards from it. In the contract's inputs (the pointer
+# and the Work Order documents), the recording is pointer-only.
+
+_RELEASE_PUBLISHED_COMMIT = "eabce22518d07725e05173aa707909023166a799"
+_RELEASE_PUBLISHED_WORKFLOW = "37186239025"
+_RELEASE_PUBLISHED_JOB = "111388630828"
+_RELEASE_PUBLISHED_TAG_OBJECT = "39afcab4d2f3a8ae3af58fdbd01312c7ec05c93a"
+_RELEASE_PUBLISHED_RELEASE_ID = "402913965"
+_RELEASE_PUBLISHED_BODY_SHA256 = (
+    "6c1234865662798fdf13eb3f72449565264545b690c6218bc549a794a6e1eb4a"
+)
+_RELEASE_PUBLISHED_INSTRUCTION_SHA256 = (
+    "aadad5fbeccd0f656dfba476cf035e7cf4aba24324ae93ab47c0ab396168920a"
+)
+_RELEASE_PUBLISHED_GATE = (
+    "V2.5.0 TAGGED AND RELEASED " + _EM + " NEXT WORK ORDER AWAITS A SEPARATE"
+    " OWNER DECISION"
+)
+_PUBLISHED_RELEASE_GATE = (
+    "V2.5.0 TAG AND GITHUB RELEASE COMPLETED UNDER SEPARATE OWNER"
+    " AUTHORIZATIONS " + _EM + " NO FURTHER TAG OR GITHUB RELEASE AUTHORIZED"
+)
+_RELEASE_PUBLISHED_POINTER_BULLETS = (
+    ("- Release conditions recording commit:",
+     "- Release conditions recording commit: `" + _RELEASE_PUBLISHED_COMMIT
+     + "`"),
+    ("- Release conditions recording CI workflow:",
+     "- Release conditions recording CI workflow: `"
+     + _RELEASE_PUBLISHED_WORKFLOW + "`"),
+    ("- Release conditions recording CI job:",
+     "- Release conditions recording CI job: `" + _RELEASE_PUBLISHED_JOB + "` "
+     + _EM + " Lint, types, tests"),
+)
+_RELEASE_PUBLISHED_RECORD_OPENING = "Release publication record:"
+# Each pair is (as the published state records it, as the conditions state
+# recorded it), so the reconstruction puts every original back byte for byte.
+_RELEASE_PUBLISHED_POINTER_HISTORY = (
+    (_NL.join((
+        '- Base commit: `eabce22518d07725e05173aa707909023166a799`',
+        '- Current gate: V2.5.0 TAGGED AND RELEASED — NEXT WORK ORDER AWAITS A SEPARATE OWNER DECISION',
+    )),
+     _NL.join((
+        '- Base commit: `b305a1746c59637854a6877fe6196f17ec84e245`',
+        '- Current gate: FROZEN TRAIN AND AUDIT CONDITIONS SATISFIED — TAGGING AND RELEASE CREATION UNAUTHORIZED',
+    ))),
+    (_NL.join((
+        '- Release gate: V2.5.0 TAG AND GITHUB RELEASE COMPLETED UNDER SEPARATE OWNER AUTHORIZATIONS — NO FURTHER TAG OR GITHUB RELEASE AUTHORIZED',
+    )),
+     _NL.join((
+        '- Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED — FROZEN TRAIN AND FINAL INTEGRATION/REPOSITORY-TRUTH AUDIT CONDITIONS SATISFIED; SEPARATE OWNER EXECUTION AUTHORIZATIONS REQUIRED',
+    ))),
+    (_NL.join((
+        'changes, and draft or social publication each still required a separate owner',
+        'execution authorization at that gate, and that record gave none.',
+    )),
+     _NL.join((
+        'changes, and draft or social publication each still require a separate owner',
+        'execution authorization, and none is given here.',
+    ))),
+    (_NL.join((
+        '',
+        '',
+        'Release publication record: under separate owner authorizations given after the',
+        'conditions record, the annotated tag `v2.5.0`, tag object',
+        '`39afcab4d2f3a8ae3af58fdbd01312c7ec05c93a`, was created on commit',
+        '`eabce22518d07725e05173aa707909023166a799` and pushed; [CI workflow',
+        '`37186239025`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37186239025)',
+        'completed successfully on that commit, including required job',
+        '[`111388630828` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37186239025/job/111388630828).',
+        'GitHub Release `402913965`, titled "UEFN Toolbelt v2.5.0", was then published',
+        'from that tag at 2026-10-04T08:10:21Z, not as a prerelease, and marked Latest.',
+        'Its body is the 2.5.0 section of `docs/CHANGELOG.md` at the tag, with only the',
+        '`SECURITY.md` link made absolute, and is identified by its SHA-256',
+        '`6c1234865662798fdf13eb3f72449565264545b690c6218bc549a794a6e1eb4a`. Statements',
+        'in the earlier records above that tagging or Release creation remain',
+        'unauthorized describe their own gates; only those separate owner authorizations',
+        'changed that, for v2.5.0 alone. This record is a post-release change and is not',
+        'part of the tagged package; `v2.5.0` and every earlier tag stay where they are.',
+        "The owner's instruction is identified by its SHA-256",
+        '`aadad5fbeccd0f656dfba476cf035e7cf4aba24324ae93ab47c0ab396168920a`. No further',
+        'tagging or GitHub Release creation follows from this record. Social',
+        'publication, private-draft publication, and scratch cleanup remain separately',
+        'gated, and the deferred review advisories remain open. The next Work Order',
+        'awaits a separate owner decision, and no implementation follows from this',
+        'record.',
+    )),
+     ""),
+)
+
+
+def _release_published_revert_bullets(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_PUBLISHED_POINTER_HISTORY[0])
+    for _prefix, bullet in _RELEASE_PUBLISHED_POINTER_BULLETS:
+        _edit(case, "WORKORDER.md", bullet + _NL, "")
+
+
+def _release_published_revert_release_gate(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_PUBLISHED_POINTER_HISTORY[1])
+
+
+def _release_published_revert_conditions_tense(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_PUBLISHED_POINTER_HISTORY[2])
+
+
+def _release_published_revert_record(case):
+    _edit(case, "WORKORDER.md", *_RELEASE_PUBLISHED_POINTER_HISTORY[3])
+
+
+# The publication-recording transition, as reversible steps. Every step is
+# enforced by the checker on its own.
+_RELEASE_PUBLISHED_REVERSAL = (
+    ("pointer-bullets", _release_published_revert_bullets),
+    ("pointer-release-gate", _release_published_revert_release_gate),
+    ("pointer-conditions-tense", _release_published_revert_conditions_tense),
+    ("pointer-record", _release_published_revert_record),
+)
+
+
+def _make_release_published_case(repo_root, tmp_path, name):
+    """Copy the current release-published state."""
+    case = tmp_path / name
+    case.mkdir(parents=True)
+    shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
+    shutil.copytree(
+        repo_root / "docs" / "work-orders",
+        case / "docs" / "work-orders",
+    )
+    return case
+
+
 # --- Release conditions record: the current state ------------------------
 #
 # Recording the satisfied release conditions moved the current state forward,
@@ -4099,13 +4269,30 @@ _RELEASE_CONDITIONS_REVERSAL = (
 
 
 def _make_release_conditions_case(repo_root, tmp_path, name):
-    """Copy the current release-conditions-satisfied state."""
-    case = tmp_path / name
-    case.mkdir(parents=True)
-    shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
-    shutil.copytree(
-        repo_root / "docs" / "work-orders",
-        case / "docs" / "work-orders",
+    """Reconstruct the preserved release-conditions-satisfied state.
+
+    Recording the published tag and Release moved the current state forward,
+    so the conditions state is now itself a reconstruction. Every step of the
+    recording is reversed in the pointer: the base, gate, and
+    conditions-recording bullets, the release-gate bullet, the conditions
+    record's closing requirement, and the publication record. The pointer
+    returns to the conditions state byte for byte; nothing else in the
+    contract's inputs changed.
+    """
+    case = _make_release_published_case(repo_root, tmp_path, name)
+    pointer = case / "WORKORDER.md"
+    if _RELEASE_PUBLISHED_RECORD_OPENING not in pointer.read_text(
+            encoding="utf-8"):
+        # Already a pre-recording tree: nothing to reverse.
+        return case
+    for _step, revert in _RELEASE_PUBLISHED_REVERSAL:
+        revert(case)
+    _assert_reconstructed(
+        "release publication pointer", pointer.read_text(encoding="utf-8"),
+        tuple(pair[1] for pair in _RELEASE_PUBLISHED_POINTER_HISTORY[:3]),
+        (_RELEASE_PUBLISHED_GATE, _PUBLISHED_RELEASE_GATE,
+         _RELEASE_PUBLISHED_RECORD_OPENING, _RELEASE_PUBLISHED_WORKFLOW,
+         _RELEASE_PUBLISHED_JOB, "- Release conditions recording commit:"),
     )
     return case
 
@@ -7360,6 +7547,7 @@ _FINAL_AUDIT_RECORD_FINDING = "final audit record"
 _RELEASE_PREP_RECORD_FINDING = "release preparation record"
 _AUDIT_RECHECK_RECORD_FINDING = "audit recheck record"
 _RELEASE_CONDITIONS_RECORD_FINDING = "release conditions record"
+_RELEASE_PUBLISHED_RECORD_FINDING = "release publication record"
 
 
 def _without_terminal_lock(finding_types):
@@ -7429,6 +7617,17 @@ def _before_final_audit_record(findings):
     """
     return {(kind, rel) for kind, rel in findings
             if kind != _FINAL_AUDIT_RECORD_FINDING}
+
+
+def _before_release_publication_record(findings):
+    """(type, file) findings less the one-way release-publication lock only.
+
+    The reconstructed conditions-satisfied state is a state from before the
+    tag and Release were recorded, so it necessarily trips that lock. Only
+    that one finding is set aside; every other finding is still returned.
+    """
+    return {(kind, rel) for kind, rel in findings
+            if kind != _RELEASE_PUBLISHED_RECORD_FINDING}
 
 
 def _before_release_conditions_record(findings):
@@ -20080,15 +20279,17 @@ _RELEASE_CONDITIONS_KINDS = {"release conditions field (WORKORDER.md)",
 
 def _release_conditions_findings(repo_root, tmp_path, monkeypatch, name,
                                  mutate):
-    """(type, file) findings for the live conditions-satisfied state after
-    one mutation."""
+    """(type, file) findings for the preserved conditions-satisfied state
+    after one mutation, less only the one-way publication lock that state
+    trips."""
     drift_check = _load_drift_check(repo_root, "release_conditions_" + name)
     case = _make_release_conditions_case(repo_root, tmp_path,
                                          "release-conditions-" + name)
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+    return _before_release_publication_record(
+        {(f["type"], f["file"])
+         for f in drift_check.check_work_order_contract()})
 
 
 def test_release_conditions_record_state_is_clean(repo_root, tmp_path,
@@ -20323,6 +20524,274 @@ def test_release_conditions_record_accepts_closed_language(
 ) -> None:
     """Closed-gate wording grants nothing and stays clean."""
     found = _release_conditions_findings(
+        repo_root, tmp_path, monkeypatch,
+        "control-" + str(sum(map(ord, sentence))),
+        _wo007_iss_append("WORKORDER.md", sentence))
+    assert found == set(), repr(sorted(found))
+
+
+# --- Release publication record: the live state --------------------------
+#
+# The recording adds the tagged commit and its CI to the canonical block,
+# moves the base and gate, states in the release-gate bullet that this tag and
+# Release are complete with no further one authorized, recasts the conditions
+# record's closing requirement as history, and records the tag and Release
+# once. Each probe is a delta against the live state, with nothing set aside.
+
+_RELEASE_PUBLISHED_KINDS = {"release publication field (WORKORDER.md)",
+                            "release publication declaration (WORKORDER.md)"}
+
+
+def _release_published_findings(repo_root, tmp_path, monkeypatch, name,
+                                mutate):
+    """(type, file) findings for the live release-published state after one
+    mutation."""
+    drift_check = _load_drift_check(repo_root, "release_published_" + name)
+    case = _make_release_published_case(repo_root, tmp_path,
+                                        "release-published-" + name)
+    mutate(case)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return {(f["type"], f["file"])
+            for f in drift_check.check_work_order_contract()}
+
+
+def test_release_published_record_state_is_clean(repo_root, tmp_path,
+                                                 monkeypatch) -> None:
+    """The control: the live release-published state has no finding."""
+    found = _release_published_findings(repo_root, tmp_path, monkeypatch,
+                                        "control", lambda case: None)
+    assert found == set(), (
+        "the release-published state is not clean: " + repr(sorted(found))
+    )
+
+
+def test_release_published_reconstruction_reaches_the_conditions_state(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Reversing the recording lands on the conditions-satisfied state: clean
+    apart from the one-way publication lock it necessarily trips."""
+    drift_check = _load_drift_check(repo_root, "release_published_reverse")
+    case = _make_release_conditions_case(repo_root, tmp_path,
+                                         "release-published-reverse")
+    text = (case / "WORKORDER.md").read_text(encoding="utf-8")
+    assert "- Current gate: " + _RELEASE_CONDITIONS_GATE in text
+    assert "- Release gate: " + _SATISFIED_RELEASE_GATE in text
+    assert _RELEASE_PUBLISHED_RECORD_OPENING not in text
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    found = {(f["type"], f["file"])
+             for f in drift_check.check_work_order_contract()}
+    assert found == {(_RELEASE_PUBLISHED_RECORD_FINDING, "WORKORDER.md")}, (
+        repr(sorted(found)))
+
+
+_RELEASE_PUBLISHED_EVIDENCE = (
+    # (id, declaration prefix, pinned value)
+    ("base", "- Base commit:", _RELEASE_PUBLISHED_COMMIT),
+    ("recording-commit", "- Release conditions recording commit:",
+     _RELEASE_PUBLISHED_COMMIT),
+    ("recording-workflow", "- Release conditions recording CI workflow:",
+     _RELEASE_PUBLISHED_WORKFLOW),
+    ("recording-job", "- Release conditions recording CI job:",
+     _RELEASE_PUBLISHED_JOB),
+    ("recheck-job", "- Audit recheck recording CI job:",
+     _RELEASE_CONDITIONS_JOB),
+)
+
+
+@pytest.mark.parametrize("damage",
+                         ("changed", "removed", "duplicated", "decoy"))
+@pytest.mark.parametrize(("name", "prefix", "value"),
+                         _RELEASE_PUBLISHED_EVIDENCE,
+                         ids=[row[0] for row in _RELEASE_PUBLISHED_EVIDENCE])
+def test_release_published_evidence_is_pinned(
+    repo_root, tmp_path, monkeypatch, name, prefix, value, damage
+) -> None:
+    """The published base, the conditions-recording commit and its CI, and
+    the recheck bullets beside them are each enforced in the canonical
+    block."""
+    def mutate(case):
+        target = case / "WORKORDER.md"
+        text = target.read_text(encoding="utf-8")
+        line = next(candidate for candidate in text.splitlines()
+                    if candidate.startswith(prefix))
+        wrong = line.replace(value, _WO004_ZERO_SHA[:len(value)])
+        assert wrong != line, "probe anchor drifted: " + prefix
+        new = {"changed": wrong, "removed": "",
+               "duplicated": line + _NL + line, "decoy": wrong}[damage]
+        text = _replace_once(text, line, new, "release published " + damage)
+        if damage == "decoy":
+            # The genuine declaration is corrupted; a byte-correct copy is
+            # parked outside the canonical block, where it must not count.
+            text = text.rstrip() + _NL + _NL + line + _NL
+        target.write_text(text, encoding="utf-8")
+
+    found = _release_published_findings(
+        repo_root, tmp_path, monkeypatch,
+        "evidence-" + name + "-" + damage, mutate)
+    kinds = {kind for kind, file in found if file == "WORKORDER.md"}
+    assert kinds & _RELEASE_PUBLISHED_KINDS, (
+        "a " + damage + " " + prefix + " declaration was accepted in the "
+        "release-published state: " + repr(sorted(found))
+    )
+
+
+@pytest.mark.parametrize(("step", "revert"), _RELEASE_PUBLISHED_REVERSAL,
+                         ids=[row[0] for row in _RELEASE_PUBLISHED_REVERSAL])
+def test_release_published_partial_recording_is_caught(
+    repo_root, tmp_path, monkeypatch, step, revert
+) -> None:
+    """Each step of the recording, reverted alone, leaves a state the checker
+    rejects."""
+    found = _release_published_findings(repo_root, tmp_path, monkeypatch,
+                                        "partial-" + step, revert)
+    assert found, step + " alone was accepted: the recording is partial"
+
+
+def test_release_published_coherent_reversal_trips_only_the_lock(
+    repo_root, tmp_path, monkeypatch
+) -> None:
+    """Reverting every step lands on the conditions-satisfied state, which
+    the one-way publication lock rejects - and nothing else does."""
+    def mutate(case):
+        for _step, revert in _RELEASE_PUBLISHED_REVERSAL:
+            revert(case)
+
+    found = _release_published_findings(repo_root, tmp_path, monkeypatch,
+                                        "coherent", mutate)
+    assert found == {(_RELEASE_PUBLISHED_RECORD_FINDING, "WORKORDER.md")}, (
+        repr(sorted(found)))
+
+
+def _release_published_edit(old, new):
+    return lambda case: _edit(case, "WORKORDER.md", old, new)
+
+
+_RELEASE_PUBLISHED_DAMAGE = (
+    # (id, change, expected kind)
+    ("gate-claims-next-work-order-authorized",
+     _release_published_edit("- Current gate: " + _RELEASE_PUBLISHED_GATE,
+                             "- Current gate: V2.5.0 TAGGED AND RELEASED "
+                             + _EM + " WO-008 SESSION A AUTHORIZED"),
+     "completed work order gate"),
+    ("release-gate-reopened",
+     _release_published_edit("- Release gate: " + _PUBLISHED_RELEASE_GATE,
+                             "- Release gate: FURTHER TAGS AND GITHUB RELEASES"
+                             " AUTHORIZED"),
+     "release authorization"),
+    ("release-gate-duplicated",
+     _wo007_iss_append("WORKORDER.md",
+                       "- Release gate: " + _PUBLISHED_RELEASE_GATE),
+     "release authorization"),
+    ("release-gate-mixed",
+     _wo007_iss_append("WORKORDER.md",
+                       "- Release gate: " + _SATISFIED_RELEASE_GATE),
+     "release authorization"),
+    ("tag-object-changed",
+     _release_published_edit("`" + _RELEASE_PUBLISHED_TAG_OBJECT + "`",
+                             "`0" + _RELEASE_PUBLISHED_TAG_OBJECT[1:] + "`"),
+     "release publication pointer statement"),
+    ("release-id-changed",
+     _release_published_edit("GitHub Release `" + _RELEASE_PUBLISHED_RELEASE_ID
+                             + "`",
+                             "GitHub Release `402913966`"),
+     "release publication pointer statement"),
+    ("body-digest-changed",
+     _release_published_edit("`" + _RELEASE_PUBLISHED_BODY_SHA256 + "`",
+                             "`0" + _RELEASE_PUBLISHED_BODY_SHA256[1:] + "`"),
+     "release publication pointer statement"),
+    ("instruction-digest-changed",
+     _release_published_edit("`" + _RELEASE_PUBLISHED_INSTRUCTION_SHA256 + "`",
+                             "`0" + _RELEASE_PUBLISHED_INSTRUCTION_SHA256[1:]
+                             + "`"),
+     "release publication pointer statement"),
+    ("claimed-part-of-tagged-package",
+     _release_published_edit("change and is not",
+                             "change and is"),
+     "release publication pointer statement"),
+    ("prerelease-claimed",
+     _release_published_edit("not as a prerelease, and marked Latest.",
+                             "as a prerelease."),
+     "release publication pointer statement"),
+    ("present-conditions-closing-left",
+     lambda case: _edit(case, "WORKORDER.md",
+                        *_RELEASE_PUBLISHED_POINTER_HISTORY[2]),
+     "release publication pointer statement"),
+    ("second-partial-record",
+     _wo007_iss_append("WORKORDER.md",
+                       _RELEASE_PUBLISHED_RECORD_OPENING + " superseded."),
+     "release publication pointer statement"),
+    ("base-left-at-recheck-recording",
+     _release_published_edit("- Base commit: `" + _RELEASE_PUBLISHED_COMMIT
+                             + "`",
+                             "- Base commit: `" + _RELEASE_CONDITIONS_COMMIT
+                             + "`"),
+     "completion base commit"),
+    ("session-reopened",
+     _release_published_edit("- Authorized session: NONE",
+                             "- Authorized session: A"),
+     "authorization without issued work order"),
+    ("release-claim",
+     _wo007_iss_append("WORKORDER.md",
+                       "A GitHub Release for the next train is authorized."),
+     "release authorization"),
+    ("tag-claim",
+     _wo007_iss_append("WORKORDER.md", "The v2.5.1 tag is authorized."),
+     "release authorization"),
+)
+
+
+@pytest.mark.parametrize(("name", "mutate", "kind"),
+                         _RELEASE_PUBLISHED_DAMAGE,
+                         ids=[row[0] for row in _RELEASE_PUBLISHED_DAMAGE])
+def test_release_published_record_boundaries_are_enforced(
+    repo_root, tmp_path, monkeypatch, name, mutate, kind
+) -> None:
+    """Opening the next Work Order or another tag or Release, duplicating or
+    mixing the release-gate texts, changing the tag, Release, body, or
+    instruction identities, claiming the record is part of the tagged package
+    or that the Release is a prerelease, leaving the present conditions
+    closing or a second record behind, and reopening a session are each
+    caught against WORKORDER.md."""
+    found = _release_published_findings(repo_root, tmp_path, monkeypatch,
+                                        "damage-" + name, mutate)
+    assert (kind, "WORKORDER.md") in found, repr(sorted(found))
+
+
+@pytest.mark.parametrize("gate", ("published", "satisfied"))
+def test_later_release_gate_texts_are_rejected_in_an_early_pointer(
+    repo_root, tmp_path, monkeypatch, gate
+) -> None:
+    """Each later release-gate text is valid only in its own state: put into
+    an earlier pointer, it is a release-gate finding."""
+    drift_check = _load_drift_check(repo_root, "later_gate_early_" + gate)
+    case = _make_completed_work_order_case(repo_root, tmp_path,
+                                           "later-gate-early-" + gate)
+    text = {"published": _PUBLISHED_RELEASE_GATE,
+            "satisfied": _SATISFIED_RELEASE_GATE}[gate]
+    _edit(case, "WORKORDER.md",
+          "- Release gate: NO TAG OR GITHUB RELEASE AUTHORIZED " + _EM
+          + " COMPLETE THE FROZEN TRAIN AND FINAL "
+          "INTEGRATION/REPOSITORY-TRUTH AUDIT FIRST",
+          "- Release gate: " + text)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    found = {(f["type"], f["file"])
+             for f in drift_check.check_work_order_contract()}
+    assert ("release authorization", "WORKORDER.md") in found, (
+        repr(sorted(found)))
+
+
+_RELEASE_PUBLISHED_CONTROLS = (
+    "Social publication stays closed until the owner decides on it.",
+    "No further tagging follows from this publication record.",
+)
+
+
+@pytest.mark.parametrize("sentence", _RELEASE_PUBLISHED_CONTROLS)
+def test_release_published_record_accepts_closed_language(
+    repo_root, tmp_path, monkeypatch, sentence
+) -> None:
+    """Closed-gate wording grants nothing and stays clean."""
+    found = _release_published_findings(
         repo_root, tmp_path, monkeypatch,
         "control-" + str(sum(map(ord, sentence))),
         _wo007_iss_append("WORKORDER.md", sentence))

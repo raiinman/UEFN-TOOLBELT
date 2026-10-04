@@ -10,9 +10,11 @@
 > integration/repository-truth audit is recorded as ACCEPT WITH REQUIRED FIX.
 > Release 2.5.0 is prepared and committed, the independent recheck of the
 > audit's required fixes is recorded as accepted, and the owner has accepted
-> that the frozen train's completion and audit conditions are satisfied.
-> Tagging, GitHub Release creation, metadata changes, and publication each
-> still require a separate owner authorization.
+> that the frozen train's completion and audit conditions are satisfied. Under
+> separate owner authorizations, v2.5.0 was then tagged and published as a
+> GitHub Release. Social publication, private-draft publication, and scratch
+> cleanup remain separately gated, and the next Work Order awaits a separate
+> owner decision.
 > This roadmap grants no implementation authority — root
 > [`WORKORDER.md`](WORKORDER.md) is the sole current gate.
 
