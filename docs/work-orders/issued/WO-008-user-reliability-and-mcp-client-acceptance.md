@@ -1,18 +1,17 @@
 # WO-008 User reliability and MCP client acceptance
 
-STATUS: PROPOSED
-AUTHORIZATION: NOT AUTHORIZED
+STATUS: ISSUED
+AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED
 Owner: Ocean Bennett
 Priority: user-facing reliability and missing integration evidence
 Draft date: 2026-10-04
 Revision: r2
 Planning baseline: `9879d39fbdb58083a0f7229a9c9c90c7d6fb375f`
 
-This is a registered following-train proposal, not an issued Work Order.
-The owner adopted r2 as a planning basis only. The repository's
-`WORKORDER.md` continues to say NONE/NONE. Nothing here authorizes
-implementation, editor contact, configuration changes, a commit, a push,
-or publication.
+This is an issued following-train Work Order, outside the frozen
+WO-001 through WO-007 train. Issuance alone grants no session authority.
+The root pointer identifies WO-008 with session NONE. Session A offline
+preparation, live start, Session B and Session C remain unauthorized.
 
 ## Purpose and evidence
 
@@ -43,36 +42,35 @@ wording. WO-006 remains superseded, with no accepted benchmark.
 
 ## Admission and issuance prerequisites
 
-At the planning baseline, the checker admitted only the remaining frozen
-WO-001 through WO-007 proposals, then an empty set. Canonical placement
-depends on a separately reviewed and owner-authorized proposal-admission
-amendment. That amendment recognizes this exact following-train proposal
-only; it does not add WO-008 to the frozen train. Its scope is this
-proposal, the affected checker and tests, and proposed-directory guidance.
-Frozen-train missing, duplicate, and misplaced-order protections remain
-in force. Admission is not a general state-machine rewrite and permits
-no unknown issued order.
+Proposal admission was separately accepted and committed at
+`4ff86e8d1c9c89ebda597570ad4f757605ccd81e`. It recognized this exact
+following-train proposal only and retained NONE/NONE. WO-008 is not added
+to the frozen WO-001 through WO-007 train.
 
-Proposal-only admission retains NONE/NONE; it does not make issuance or any
-session valid. A separate, scoped, independently reviewed and owner-authorized
-issuance/session-enforcement transition remains outstanding. The checker now
-accepts only frozen-train issued identities, defaults to broader Session A
-implementation wording, and permits Session C only for WO-004. That later
-transition must support WO-008's exact identity and closed, offline-preparation,
-and live-start boundaries, resolving its exact markers and conditional prose
-without blanket scanner exemptions. It must preserve publication/history and
-frozen-train protections when a new issued order replaces NONE: distinguish
-historical bases/records from the new pointer shape instead of simply reusing
-the NONE-state helper unchanged. Do not append WO-008 to the old frozen train
-or waive unknown-order checks. Its precise file/test plan is a later deliverable,
-not authority given by this draft.
+The separately adopted issuance/session-enforcement plan r2 supports this
+closed issuance only. Later offline preparation, live start, product
+corrections and live acceptance still need separately reviewed enforcement
+transitions and explicit owner decisions. No later phase is installed here.
+Frozen-train missing, duplicate and misplaced-order protections, publication
+history and earlier terminal records remain in force. Unknown issued orders
+remain invalid; there is no blanket scanner exemption.
 
-Both amendment plans require targeted positive and damage probes for proposal
-admission with NONE/NONE retained, unknown/duplicate/misplaced orders, missing
-historical documents or publication history, unauthorized sessions, and each
-intended later state. Issuance and each session still require their separate
-owner gates in `WORKORDER.md`. Neither amendment is implemented or authorized
-by this proposal.
+## Issuance basis
+
+BASELINE: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`
+Admission CI workflow: `37246398757`
+Admission CI job: `111565059168` — Lint, types, tests
+Owner issuance instruction SHA-256: `5997654fb63b587ae72265d4382bf9f2f8a752e4fb09a6d79593a5b88725746a`
+
+The owner adopted the accepted plan r2 and authorized only this closed
+governance issuance transition. Admission CI succeeded on the baseline,
+not on this uncommitted transition or any session output; it demonstrates
+neither an MCP host nor a live UEFN build.
+
+The owner accepted a narrow offline-verification exemption for these seven
+governance paths only. Runtime or live need stops this transition. This
+record grants no session execution, configuration change, installation,
+UEFN contact, recovery, commit, push, cleanup or publication authority.
 
 ## Session A Real client baseline
 
@@ -243,7 +241,7 @@ the client/project/fixture/target choices, live start, any unexpected repair,
 recovery, exact commits, pushes, completion, and any later release decision.
 Review acceptance never substitutes for these decisions.
 
-NEXT GATE: independent review of the proposal-admission deliverable.
-Issuance/session enforcement requires its own file/test plan, independent
-review, and separate owner authorization. No session is authorized, and
-this proposal grants no review, implementation, commit, or push authority.
+NEXT GATE: separate owner decision on Session A offline preparation.
+No session is authorized. Live start, Session B, Session C, product corrections,
+recovery, exact commits and pushes remain separate decisions. This mandate
+grants no review, implementation, commit or push authority.

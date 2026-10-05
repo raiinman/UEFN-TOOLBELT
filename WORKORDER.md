@@ -4,10 +4,14 @@ This file is the repository's sole authority pointer for current Work Order
 state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
-- Current issued Work Order: NONE
+- Current issued Work Order: WO-008
 - Authorized session: NONE
-- Base commit: `eabce22518d07725e05173aa707909023166a799`
-- Current gate: V2.5.0 TAGGED AND RELEASED — NEXT WORK ORDER AWAITS A SEPARATE OWNER DECISION
+- Base commit: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`
+- Current gate: WO-008 ISSUED — SESSION A OFFLINE PREPARATION NOT AUTHORIZED
+- WO-008 admission basis commit: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`
+- WO-008 admission CI workflow: `37246398757`
+- WO-008 admission CI job: `111565059168` — Lint, types, tests
+- WO-008 issuance decision SHA-256: `5997654fb63b587ae72265d4382bf9f2f8a752e4fb09a6d79593a5b88725746a`
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
@@ -482,3 +486,19 @@ publication, private-draft publication, and scratch cleanup remain separately
 gated, and the deferred review advisories remain open. The next Work Order
 awaits a separate owner decision, and no implementation follows from this
 record.
+
+WO-008 closed issuance record: the owner adopted the accepted
+issuance/session-enforcement plan r2 and authorized only its seven-path
+closed-issuance implementation under an offline-verification exemption for
+this governance scope. The instruction is identified by SHA-256
+`5997654fb63b587ae72265d4382bf9f2f8a752e4fb09a6d79593a5b88725746a`.
+[`WO-008-user-reliability-and-mcp-client-acceptance.md`](docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md)
+is issued outside the frozen train with session NONE. Admission CI workflow
+`37246398757` and job `111565059168` succeeded on
+`4ff86e8d1c9c89ebda597570ad4f757605ccd81e`; they cover admission only,
+not this transition, Session A outputs, a live build or MCP-host acceptance.
+Session A offline preparation, live start, Session B and Session C remain
+unauthorized. Runtime or live need stops this transition. Configuration
+changes, installations, recovery, exact commits, pushes, cleanup, further
+tags or Releases, metadata and publication remain separately gated.
+This record grants none of those authorities.

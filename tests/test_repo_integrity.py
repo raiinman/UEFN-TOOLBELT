@@ -19,6 +19,7 @@ import re
 import shutil
 import subprocess
 import sys
+import textwrap
 from typing import NamedTuple
 
 import pytest
@@ -189,8 +190,8 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert "at most one detailed Work Order is issued" in guide
 
     proposals = sorted((work_orders / "proposed").glob("WO-*.md"))
-    # The frozen train is closed; only this following-train proposal is present.
-    _assert_wo008_proposal_presence(work_orders / "proposed")
+    # The following-train order is issued, outside the unchanged frozen train.
+    assert proposals == []
     for proposal in proposals:
         lines = proposal.read_text(encoding="utf-8").splitlines()
         status_lines = [line.strip() for line in lines if line.startswith("STATUS:")]
@@ -219,7 +220,11 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     # one superseded order; WO-007 is completed, so nothing is issued. The
     # emptied state directories keep their READMEs, so a fresh checkout keeps
     # them too.
-    assert issued == []
+    assert [path.name for path in issued] == [_WO008_PROPOSAL_NAME]
+    issued_text = issued[0].read_text(encoding="utf-8")
+    assert issued_text.splitlines().count("STATUS: ISSUED") == 1
+    assert issued_text.splitlines().count(
+        "AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED") == 1
     for state in ("proposed", "issued"):
         assert not (
             work_orders / state / "WO-007-public-mcp-explainer.md"
@@ -250,17 +255,16 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert not (
         work_orders / "issued" / "WO-006-official-vs-toolbelt-benchmark.md"
     ).exists()
-    assert current == "NONE"
+    assert current == "WO-008"
     assert session == "NONE"
     # The base is the tagged commit, declared in its own bullet after the
     # recheck-recording bullets. The gate records the completed tag and
     # Release and leaves the next Work Order to a separate owner decision.
     assert base_lines == [
-        "- Base commit: `eabce22518d07725e05173aa707909023166a799`"
+        "- Base commit: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`"
     ]
     assert gate_lines == [
-        "- Current gate: V2.5.0 TAGGED AND RELEASED — NEXT WORK ORDER AWAITS A"
-        " SEPARATE OWNER DECISION"
+        "- Current gate: WO-008 ISSUED — SESSION A OFFLINE PREPARATION NOT AUTHORIZED"
     ]
     for line in (
         "- Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`",
@@ -381,8 +385,9 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "completion and audit conditions are satisfied. Under separate owner "
         "authorizations, v2.5.0 was then tagged and published as a GitHub "
         "Release. Social publication, private-draft publication, and scratch "
-        "cleanup remain separately gated, and the next Work Order awaits a "
-        "separate owner decision." in normalized_roadmap
+        "cleanup remain separately gated. WO-008 is issued outside the frozen "
+        "train with session NONE; Session A offline preparation is not authorized."
+        in normalized_roadmap
     )
     assert "its recheck is not authorized" not in normalized_roadmap
     assert "release preparation is not authorized" not in normalized_roadmap
@@ -4147,15 +4152,100 @@ def _assert_wo008_proposal_presence(proposed_dir):
         _WO008_PROPOSAL_NAME}
 
 
-def _make_proposal_admitted_case(repo_root, tmp_path, name):
-    """Copy the current pointer and Work Order tree without reversing admission."""
+_WO008_ISSUED_REL = "docs/work-orders/issued/" + _WO008_PROPOSAL_NAME
+_WO008_ISSUANCE_FINDING = "WO-008 issued state"
+_WO008_CLOSED_HEADER = "- Current issued Work Order: WO-008\n- Authorized session: NONE\n- Base commit: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`\n- Current gate: WO-008 ISSUED — SESSION A OFFLINE PREPARATION NOT AUTHORIZED\n- WO-008 admission basis commit: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`\n- WO-008 admission CI workflow: `37246398757`\n- WO-008 admission CI job: `111565059168` — Lint, types, tests\n- WO-008 issuance decision SHA-256: `5997654fb63b587ae72265d4382bf9f2f8a752e4fb09a6d79593a5b88725746a`"
+_WO008_ADMITTED_HEADER = "- Current issued Work Order: NONE\n- Authorized session: NONE\n- Base commit: `eabce22518d07725e05173aa707909023166a799`\n- Current gate: V2.5.0 TAGGED AND RELEASED — NEXT WORK ORDER AWAITS A SEPARATE OWNER DECISION"
+_WO008_CLOSED_GUIDANCE = "WO-008 was admitted as a following-train proposal, outside the frozen\nWO-001 through WO-007 train. Admission itself gave no issuance or session\nauthority. Its later state and any authorized session are identified only\nby the root pointer and the separately reviewed enforcement transitions."
+_WO008_CLOSED_POINTER_RECORD = "WO-008 closed issuance record: the owner adopted the accepted\nissuance/session-enforcement plan r2 and authorized only its seven-path\nclosed-issuance implementation under an offline-verification exemption for\nthis governance scope. The instruction is identified by SHA-256\n`5997654fb63b587ae72265d4382bf9f2f8a752e4fb09a6d79593a5b88725746a`.\n[`WO-008-user-reliability-and-mcp-client-acceptance.md`](docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md)\nis issued outside the frozen train with session NONE. Admission CI workflow\n`37246398757` and job `111565059168` succeeded on\n`4ff86e8d1c9c89ebda597570ad4f757605ccd81e`; they cover admission only,\nnot this transition, Session A outputs, a live build or MCP-host acceptance.\nSession A offline preparation, live start, Session B and Session C remain\nunauthorized. Runtime or live need stops this transition. Configuration\nchanges, installations, recovery, exact commits, pushes, cleanup, further\ntags or Releases, metadata and publication remain separately gated.\nThis record grants none of those authorities."
+_WO008_CLOSED_OPENING = "This is an issued following-train Work Order, outside the frozen\nWO-001 through WO-007 train. Issuance alone grants no session authority.\nThe root pointer identifies WO-008 with session NONE. Session A offline\npreparation, live start, Session B and Session C remain unauthorized."
+_WO008_ADMITTED_OPENING = "This is a registered following-train proposal, not an issued Work Order.\nThe owner adopted r2 as a planning basis only. The repository's\n`WORKORDER.md` continues to say NONE/NONE. Nothing here authorizes\nimplementation, editor contact, configuration changes, a commit, a push,\nor publication."
+_WO008_CLOSED_PREREQUISITES = "Proposal admission was separately accepted and committed at\n`4ff86e8d1c9c89ebda597570ad4f757605ccd81e`. It recognized this exact\nfollowing-train proposal only and retained NONE/NONE. WO-008 is not added\nto the frozen WO-001 through WO-007 train.\n\nThe separately adopted issuance/session-enforcement plan r2 supports this\nclosed issuance only. Later offline preparation, live start, product\ncorrections and live acceptance still need separately reviewed enforcement\ntransitions and explicit owner decisions. No later phase is installed here.\nFrozen-train missing, duplicate and misplaced-order protections, publication\nhistory and earlier terminal records remain in force. Unknown issued orders\nremain invalid; there is no blanket scanner exemption.\n\n## Issuance basis\n\nBASELINE: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`\nAdmission CI workflow: `37246398757`\nAdmission CI job: `111565059168` — Lint, types, tests\nOwner issuance instruction SHA-256: `5997654fb63b587ae72265d4382bf9f2f8a752e4fb09a6d79593a5b88725746a`\n\nThe owner adopted the accepted plan r2 and authorized only this closed\ngovernance issuance transition. Admission CI succeeded on the baseline,\nnot on this uncommitted transition or any session output; it demonstrates\nneither an MCP host nor a live UEFN build.\n\nThe owner accepted a narrow offline-verification exemption for these seven\ngovernance paths only. Runtime or live need stops this transition. This\nrecord grants no session execution, configuration change, installation,\nUEFN contact, recovery, commit, push, cleanup or publication authority."
+_WO008_ADMITTED_PREREQUISITES = "At the planning baseline, the checker admitted only the remaining frozen\nWO-001 through WO-007 proposals, then an empty set. Canonical placement\ndepends on a separately reviewed and owner-authorized proposal-admission\namendment. That amendment recognizes this exact following-train proposal\nonly; it does not add WO-008 to the frozen train. Its scope is this\nproposal, the affected checker and tests, and proposed-directory guidance.\nFrozen-train missing, duplicate, and misplaced-order protections remain\nin force. Admission is not a general state-machine rewrite and permits\nno unknown issued order.\n\nProposal-only admission retains NONE/NONE; it does not make issuance or any\nsession valid. A separate, scoped, independently reviewed and owner-authorized\nissuance/session-enforcement transition remains outstanding. The checker now\naccepts only frozen-train issued identities, defaults to broader Session A\nimplementation wording, and permits Session C only for WO-004. That later\ntransition must support WO-008's exact identity and closed, offline-preparation,\nand live-start boundaries, resolving its exact markers and conditional prose\nwithout blanket scanner exemptions. It must preserve publication/history and\nfrozen-train protections when a new issued order replaces NONE: distinguish\nhistorical bases/records from the new pointer shape instead of simply reusing\nthe NONE-state helper unchanged. Do not append WO-008 to the old frozen train\nor waive unknown-order checks. Its precise file/test plan is a later deliverable,\nnot authority given by this draft.\n\nBoth amendment plans require targeted positive and damage probes for proposal\nadmission with NONE/NONE retained, unknown/duplicate/misplaced orders, missing\nhistorical documents or publication history, unauthorized sessions, and each\nintended later state. Issuance and each session still require their separate\nowner gates in `WORKORDER.md`. Neither amendment is implemented or authorized\nby this proposal."
+_WO008_CLOSED_NEXT = "NEXT GATE: separate owner decision on Session A offline preparation.\nNo session is authorized. Live start, Session B, Session C, product corrections,\nrecovery, exact commits and pushes remain separate decisions. This mandate\ngrants no review, implementation, commit or push authority."
+_WO008_ADMITTED_NEXT = "NEXT GATE: independent review of the proposal-admission deliverable.\nIssuance/session enforcement requires its own file/test plan, independent\nreview, and separate owner authorization. No session is authorized, and\nthis proposal grants no review, implementation, commit, or push authority."
+
+
+def _before_wo008_issuance(findings):
+    """Set aside only the new issuance lock after historical reconstruction."""
+    return [f for f in findings if f["type"] != _WO008_ISSUANCE_FINDING]
+
+
+def _historical_contract_findings(drift_check):
+    """Historical routes set aside only the later WO-008 issuance lock.
+
+    New closed-state tests use the raw production contract. All older routes
+    reconstruct admission first and retain every other historical finding.
+    """
+    return _before_wo008_issuance(drift_check.check_work_order_contract())
+
+
+def _make_wo008_closed_case(repo_root, tmp_path, name):
     case = tmp_path / name
     case.mkdir(parents=True)
     shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
-    shutil.copytree(
-        repo_root / "docs" / "work-orders",
-        case / "docs" / "work-orders",
-    )
+    shutil.copytree(repo_root / "docs" / "work-orders",
+                    case / "docs" / "work-orders")
+    return case
+
+
+def _wo008_reverse_document(case):
+    path = case / _WO008_ISSUED_REL
+    text = path.read_text(encoding="utf-8")
+    for old, new in (
+        ("STATUS: ISSUED", "STATUS: PROPOSED"),
+        ("AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED",
+         "AUTHORIZATION: NOT AUTHORIZED"),
+        (_WO008_CLOSED_OPENING, _WO008_ADMITTED_OPENING),
+        (_WO008_CLOSED_PREREQUISITES, _WO008_ADMITTED_PREREQUISITES),
+        (_WO008_CLOSED_NEXT, _WO008_ADMITTED_NEXT),
+    ):
+        text = _replace_once(text, old, new, "WO-008 issuance reversal")
+    path.write_text(text, encoding="utf-8")
+
+
+def _wo008_reverse_move(case):
+    issued = case / _WO008_ISSUED_REL
+    proposed = case / _WO008_PROPOSAL_REL
+    proposed.parent.mkdir(parents=True, exist_ok=True)
+    assert not proposed.exists(), "WO-008 issuance reversal: proposal already present"
+    issued.rename(proposed)
+
+
+def _wo008_reverse_pointer(case):
+    path = case / "WORKORDER.md"
+    text = path.read_text(encoding="utf-8")
+    text = _replace_once(text, _WO008_CLOSED_HEADER, _WO008_ADMITTED_HEADER,
+                         "WO-008 issuance pointer reversal")
+    text = _replace_once(text, _NL + _WO008_CLOSED_POINTER_RECORD + _NL, "",
+                         "WO-008 issuance record reversal")
+    path.write_text(text, encoding="utf-8")
+
+
+def _wo008_reverse_guidance(case):
+    path = case / _WO007_ISS_PROPOSED_README_REL
+    if path.exists():
+        text = _replace_once(path.read_text(encoding="utf-8"),
+                             _WO008_CLOSED_GUIDANCE, _WO008_GUIDANCE,
+                             "WO-008 issuance guidance reversal")
+        path.write_text(text, encoding="utf-8")
+
+
+_WO008_ISSUANCE_REVERSAL = (
+    ("document", _wo008_reverse_document),
+    ("move", _wo008_reverse_move),
+    ("pointer", _wo008_reverse_pointer),
+    ("guidance", _wo008_reverse_guidance),
+)
+
+
+def _make_proposal_admitted_case(repo_root, tmp_path, name):
+    """Exactly undo closed issuance; already-admitted historical inputs stay so."""
+    case = _make_wo008_closed_case(repo_root, tmp_path, name)
+    if (case / _WO008_ISSUED_REL).exists():
+        for _label, undo in _WO008_ISSUANCE_REVERSAL:
+            undo(case)
+        _assert_wo008_proposal_presence(case / "docs" / "work-orders" / "proposed")
     return case
 
 
@@ -7142,7 +7232,7 @@ def test_wo002_issuance_rejects_session_a_activation(
     )
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     finding_types = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     assert "implicit session authorization" in finding_types
 
@@ -7173,7 +7263,7 @@ def test_wo002_issuance_rejects_later_session_activation(
     )
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     finding_types = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     assert "later session authorization" in finding_types
 
@@ -7191,7 +7281,7 @@ def test_wo002_issuance_contract_rejects_structural_mutations(
 
     def finding_types(case):
         monkeypatch.setattr(drift_check, "ROOT", str(case))
-        return {finding["type"] for finding in drift_check.check_work_order_contract()}
+        return {finding["type"] for finding in _historical_contract_findings(drift_check)}
 
     control = _make_wo002_issuance_case(repo_root, tmp_path, "control")
     assert _without_terminal_lock(finding_types(control)) == set()
@@ -7306,7 +7396,7 @@ def test_wo002_issuance_requires_exact_basis_evidence(
     )
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     finding_types = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     assert expected in finding_types
 
@@ -7340,7 +7430,7 @@ def test_wo002_issuance_requires_exactly_one_canonical_baseline_marker(
     issued.write_text(text, encoding="utf-8")
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     finding_types = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     assert "issuance baseline marker" in finding_types
 
@@ -7358,7 +7448,7 @@ def test_wo002_session_a_authorization_contract_is_exact(
 
     def finding_types(case):
         monkeypatch.setattr(drift_check, "ROOT", str(case))
-        return {finding["type"] for finding in drift_check.check_work_order_contract()}
+        return {finding["type"] for finding in _historical_contract_findings(drift_check)}
 
     control = _make_wo002_session_a_case(repo_root, tmp_path, "session-a-control")
     assert _without_terminal_lock(finding_types(control)) == set()
@@ -7432,7 +7522,7 @@ def test_wo002_session_a_acceptance_contract_is_exact(
 
     def finding_types(case):
         monkeypatch.setattr(drift_check, "ROOT", str(case))
-        return {finding["type"] for finding in drift_check.check_work_order_contract()}
+        return {finding["type"] for finding in _historical_contract_findings(drift_check)}
 
     control = _make_wo002_session_a_accepted_case(
         repo_root, tmp_path, "session-a-accepted-control"
@@ -7570,7 +7660,7 @@ def test_wo002_session_a_acceptance_rejects_session_b_activation(
     )
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     finding_types = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     assert "session authorization reopening" in finding_types
 
@@ -7617,7 +7707,7 @@ def _pre_completion_findings(drift_check):
     fixtures trip WO-002's and WO-003's. Only that one finding is set aside;
     every other finding, including the older locks, is still returned.
     """
-    return [finding for finding in drift_check.check_work_order_contract()
+    return [finding for finding in _historical_contract_findings(drift_check)
             if finding["type"] not in (_TERMINAL_WO004_FINDING,
                                        _TERMINAL_WO005_FINDING,
                                        _TERMINAL_WO006_FINDING,
@@ -7631,7 +7721,7 @@ def _before_wo005_completion(drift_check):
     For fixtures after WO-004's completion but before WO-005's, which trip
     those locks and must still see every other finding, WO-004's included.
     """
-    return [finding for finding in drift_check.check_work_order_contract()
+    return [finding for finding in _historical_contract_findings(drift_check)
             if finding["type"] not in (_TERMINAL_WO005_FINDING,
                                        _TERMINAL_WO006_FINDING,
                                        _TERMINAL_WO007_FINDING)]
@@ -7815,7 +7905,7 @@ def test_wo002_acceptance_evidence_is_enforced_per_occurrence(
 
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     finding_types = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     assert expected in finding_types
 
@@ -7991,7 +8081,7 @@ def _acceptance_findings(drift_check, monkeypatch, case, finding_type):
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return [
         finding
-        for finding in drift_check.check_work_order_contract()
+        for finding in _historical_contract_findings(drift_check)
         if finding["type"] == finding_type
     ]
 
@@ -8351,7 +8441,7 @@ def test_completed_work_order_contract_rejects_terminal_state_mutations(
 
     def finding_types(case):
         monkeypatch.setattr(drift_check, "ROOT", str(case))
-        return {finding["type"] for finding in drift_check.check_work_order_contract()}
+        return {finding["type"] for finding in _historical_contract_findings(drift_check)}
 
     control = _make_completed_work_order_case(repo_root, tmp_path, "control")
     assert _without_terminal_lock(finding_types(control)) == set()
@@ -8504,7 +8594,7 @@ def test_completed_work_order_requires_exact_terminal_evidence(
     )
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     finding_types = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     assert expected in finding_types
 
@@ -8532,7 +8622,7 @@ def test_completed_work_order_rejects_wo002_activation(
     )
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     finding_types = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     assert "next work order authorization" in finding_types
 
@@ -8637,7 +8727,7 @@ def test_closed_work_order_rejects_permission_phrasings(
     )
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     finding_types = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     assert "implicit session authorization" in finding_types
 
@@ -8666,7 +8756,7 @@ def test_closed_work_order_rejects_contradiction_after_canonical_negative(
     )
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     finding_types = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     assert "implicit session authorization" in finding_types
 
@@ -8687,7 +8777,7 @@ def test_closed_work_order_accepts_canonical_closed_authority_language(
     )
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     finding_types = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     assert "implicit session authorization" not in finding_types
 
@@ -8708,7 +8798,7 @@ def test_work_order_issuance_contract_rejects_structural_authority_mutations(
 
     def finding_types(case):
         monkeypatch.setattr(drift_check, "ROOT", str(case))
-        return {finding["type"] for finding in drift_check.check_work_order_contract()}
+        return {finding["type"] for finding in _historical_contract_findings(drift_check)}
 
     wrong_status = make_case("wrong-status")
     wrong_status_issued = (
@@ -8804,7 +8894,7 @@ def test_authorized_session_a_contract_rejects_metadata_or_gate_drift(
 
     def finding_types(case):
         monkeypatch.setattr(drift_check, "ROOT", str(case))
-        return {finding["type"] for finding in drift_check.check_work_order_contract()}
+        return {finding["type"] for finding in _historical_contract_findings(drift_check)}
 
     closed_marker = make_case("closed-marker")
     issued = (
@@ -8894,7 +8984,7 @@ def test_authorized_session_rejects_later_session_activation(
     )
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     finding_types = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     assert "later session authorization" in finding_types
 
@@ -9512,7 +9602,7 @@ def test_wo002_completion_cannot_be_rolled_back(repo_root, tmp_path, monkeypatch
     )
 
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    found = {finding["type"] for finding in drift_check.check_work_order_contract()}
+    found = {finding["type"] for finding in _historical_contract_findings(drift_check)}
     assert _TERMINAL_WO002_FINDING in found, (
         "a coherent rollback to Session B was accepted: " + repr(sorted(found))
     )
@@ -11895,7 +11985,7 @@ def test_applied_cannot_complete_the_work_order(
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = {
-        finding["type"] for finding in drift_check.check_work_order_contract()
+        finding["type"] for finding in _historical_contract_findings(drift_check)
     }
     # The terminal lock now covers WO-003's document state only, so a forged
     # completion that copies the status and authorization markers no longer
@@ -13942,7 +14032,7 @@ def test_completed_wo003_stays_terminal_under_a_later_issuance(
                              "WO-004")
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    found = {f["type"] for f in drift_check.check_work_order_contract()}
+    found = {f["type"] for f in _historical_contract_findings(drift_check)}
     assert _TERMINAL_WO003_FINDING in found, (
         "WO-003 " + attack + " survived under a later issuance: "
         + repr(sorted(found))
@@ -14759,7 +14849,7 @@ def test_the_successor_grant_is_reported_against_the_document(
         encoding="utf-8")
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()}
+             for f in _historical_contract_findings(drift_check)}
     assert ("next work order authorization", _WO003_COMPLETED_REL) in found, (
         "the grant was reported against the wrong file: " + repr(sorted(found))
     )
@@ -16740,7 +16830,7 @@ def _wo005_done_findings(repo_root, tmp_path, monkeypatch, name, mutate,
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return _before_wo006_closure({(f["type"], f["file"])
-                                  for f in drift_check.check_work_order_contract()})
+                                  for f in _historical_contract_findings(drift_check)})
 
 
 def test_wo005_completed_state_is_clean(repo_root, tmp_path,
@@ -17000,7 +17090,7 @@ def _wo006_iss_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return _before_wo006_closure({(f["type"], f["file"])
-                                  for f in drift_check.check_work_order_contract()})
+                                  for f in _historical_contract_findings(drift_check)})
 
 
 def test_wo006_issued_state_is_clean(repo_root, tmp_path, monkeypatch) -> None:
@@ -17026,7 +17116,7 @@ def test_wo006_reconstruction_reaches_the_completed_wo005_state(
         "STATUS: PROPOSED", "AUTHORIZATION: NOT AUTHORIZED"]
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = _before_wo006_closure({(f["type"], f["file"])
-                                   for f in drift_check.check_work_order_contract()})
+                                   for f in _historical_contract_findings(drift_check)})
     assert found == set(), repr(sorted(found))
 
 
@@ -17173,7 +17263,7 @@ def _wo006_sa_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return _before_wo006_closure({(f["type"], f["file"])
-                                  for f in drift_check.check_work_order_contract()})
+                                  for f in _historical_contract_findings(drift_check)})
 
 
 def test_wo006_session_a_state_is_clean(repo_root, tmp_path,
@@ -17497,7 +17587,7 @@ def _wo006_sb_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return _before_wo006_closure({(f["type"], f["file"])
-                                  for f in drift_check.check_work_order_contract()})
+                                  for f in _historical_contract_findings(drift_check)})
 
 
 def test_wo006_session_b_state_is_clean(repo_root, tmp_path,
@@ -17934,7 +18024,7 @@ def _wo006_sup_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return _before_wo007_completion(
         {(f["type"], f["file"])
-         for f in drift_check.check_work_order_contract()})
+         for f in _historical_contract_findings(drift_check)})
 
 
 def test_wo006_superseded_state_is_clean(repo_root, tmp_path,
@@ -18239,7 +18329,7 @@ def _wo007_iss_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return _before_wo007_completion(
         {(f["type"], f["file"])
-         for f in drift_check.check_work_order_contract()})
+         for f in _historical_contract_findings(drift_check)})
 
 
 def test_wo007_issued_state_is_clean(repo_root, tmp_path, monkeypatch) -> None:
@@ -18266,7 +18356,7 @@ def test_wo007_reconstruction_reaches_the_superseded_wo006_state(
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = _before_wo007_completion(
         {(f["type"], f["file"])
-         for f in drift_check.check_work_order_contract()})
+         for f in _historical_contract_findings(drift_check)})
     assert found == set(), repr(sorted(found))
 
 
@@ -18542,11 +18632,7 @@ def test_wo007_issued_state_accepts_closed_language(
 
 def _wo007_bare_root(repo_root, tmp_path):
     """The pointer and work orders with proposed/ genuinely absent."""
-    bare = tmp_path / "bare-root"
-    bare.mkdir()
-    shutil.copy2(repo_root / "WORKORDER.md", bare / "WORKORDER.md")
-    shutil.copytree(repo_root / "docs" / "work-orders",
-                    bare / "docs" / "work-orders")
+    bare = _make_wo007_issued_case(repo_root, tmp_path, "bare-root")
     proposed = bare / "docs" / "work-orders" / "proposed"
     if proposed.exists():
         shutil.rmtree(proposed)
@@ -18579,7 +18665,7 @@ def test_wo007_reconstruction_needs_no_proposed_directory(
     monkeypatch.setattr(drift_check, "ROOT", str(rebuilt))
     found = _before_wo007_completion(
         {(f["type"], f["file"])
-         for f in drift_check.check_work_order_contract()})
+         for f in _historical_contract_findings(drift_check)})
     assert found == set(), repr(sorted(found))
 
 
@@ -18598,7 +18684,7 @@ def test_wo007_left_behind_proposal_is_caught_without_proposed_directory(
         monkeypatch.setattr(drift_check, "ROOT", str(case))
         found = _before_wo007_completion(
             {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()})
+             for f in _historical_contract_findings(drift_check)})
         if name == "control":
             assert found == set(), repr(sorted(found))
         else:
@@ -18629,8 +18715,8 @@ def test_wo007_proposed_readme_is_guidance_not_a_work_order(
                          "Work Order:", "- Authorized session:",
                          "- Current gate:"))
         for line in text.splitlines())
-    _assert_wo008_proposal_presence(readme.parent)
-    assert normalized.count(" ".join(_WO008_GUIDANCE.split())) == 1
+    assert list(readme.parent.glob("WO-*.md")) == []
+    assert normalized.count(" ".join(_WO008_CLOSED_GUIDANCE.split())) == 1
 
     # With WO-007 gone, the README alone does not satisfy the train.
     found = _wo007_iss_findings(
@@ -18675,7 +18761,7 @@ def _wo007_sa_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return _before_wo007_completion(
         {(f["type"], f["file"])
-         for f in drift_check.check_work_order_contract()})
+         for f in _historical_contract_findings(drift_check)})
 
 
 def test_wo007_session_a_state_is_clean(repo_root, tmp_path,
@@ -18704,7 +18790,7 @@ def test_wo007_session_a_reconstruction_reaches_the_issued_state(
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = _before_wo007_completion(
         {(f["type"], f["file"])
-         for f in drift_check.check_work_order_contract()})
+         for f in _historical_contract_findings(drift_check)})
     assert found == set(), repr(sorted(found))
 
 
@@ -19012,7 +19098,7 @@ def _wo007_cmp_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return _before_final_audit_record(
         {(f["type"], f["file"])
-         for f in drift_check.check_work_order_contract()})
+         for f in _historical_contract_findings(drift_check)})
 
 
 def test_wo007_completed_state_is_clean(repo_root, tmp_path,
@@ -19041,7 +19127,7 @@ def test_wo007_completion_reconstruction_reaches_the_session_a_state(
         case / "WORKORDER.md").read_text(encoding="utf-8")
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()}
+             for f in _historical_contract_findings(drift_check)}
     assert found == {(_TERMINAL_WO007_FINDING, "docs/work-orders")}, (
         repr(sorted(found)))
 
@@ -19323,19 +19409,16 @@ def test_wo007_completion_needs_no_issued_or_proposed_directory(
     """A checkout keeps only directories that hold files. With both issued/
     and proposed/ genuinely absent, the completed state is clean, and the
     chain still recreates them and reaches the superseded-WO-006 state."""
-    bare = tmp_path / "bare-cmp"
-    bare.mkdir()
-    shutil.copy2(repo_root / "WORKORDER.md", bare / "WORKORDER.md")
-    shutil.copytree(repo_root / "docs" / "work-orders",
-                    bare / "docs" / "work-orders")
+    bare = _make_wo007_completed_case(repo_root, tmp_path, "bare-cmp")
     for state in ("issued", "proposed"):
         shutil.rmtree(bare / "docs" / "work-orders" / state,
                       ignore_errors=True)
         assert not (bare / "docs" / "work-orders" / state).exists()
     drift_check = _load_drift_check(repo_root, "wo007_cmp_bare")
     monkeypatch.setattr(drift_check, "ROOT", str(bare))
-    found = {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()}
+    found = _before_final_audit_record(
+        {(f["type"], f["file"])
+         for f in _historical_contract_findings(drift_check)})
     assert found == set(), repr(sorted(found))
     rebuilt = _make_wo006_superseded_case(bare, tmp_path, "bare-cmp-rebuilt")
     reference = _make_wo006_superseded_case(repo_root, tmp_path,
@@ -19368,7 +19451,7 @@ def _final_audit_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return _before_release_preparation_record(
         {(f["type"], f["file"])
-         for f in drift_check.check_work_order_contract()})
+         for f in _historical_contract_findings(drift_check)})
 
 
 def test_final_audit_record_state_is_clean(repo_root, tmp_path,
@@ -19394,7 +19477,7 @@ def test_final_audit_reconstruction_reaches_the_completed_state(
     assert _FINAL_AUDIT_RECORD_OPENING not in text
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()}
+             for f in _historical_contract_findings(drift_check)}
     assert found == {(_FINAL_AUDIT_RECORD_FINDING, "WORKORDER.md")}, (
         repr(sorted(found)))
 
@@ -19583,7 +19666,7 @@ def _release_prep_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return _before_audit_recheck_record(
         {(f["type"], f["file"])
-         for f in drift_check.check_work_order_contract()})
+         for f in _historical_contract_findings(drift_check)})
 
 
 def test_release_prep_record_state_is_clean(repo_root, tmp_path,
@@ -19609,7 +19692,7 @@ def test_release_prep_reconstruction_reaches_the_final_audit_state(
     assert "stays at version 2.4.1" in text
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()}
+             for f in _historical_contract_findings(drift_check)}
     assert found == {(_RELEASE_PREP_RECORD_FINDING, "WORKORDER.md")}, (
         repr(sorted(found)))
 
@@ -20103,7 +20186,7 @@ def _audit_recheck_findings(repo_root, tmp_path, monkeypatch, name, mutate):
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return _before_release_conditions_record(
         {(f["type"], f["file"])
-         for f in drift_check.check_work_order_contract()})
+         for f in _historical_contract_findings(drift_check)})
 
 
 def test_audit_recheck_record_state_is_clean(repo_root, tmp_path,
@@ -20130,7 +20213,7 @@ def test_audit_recheck_reconstruction_reaches_the_prepared_state(
     assert "which this authorization does not open" in " ".join(text.split())
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()}
+             for f in _historical_contract_findings(drift_check)}
     assert found == {(_AUDIT_RECHECK_RECORD_FINDING, "WORKORDER.md")}, (
         repr(sorted(found)))
 
@@ -20332,7 +20415,7 @@ def _release_conditions_findings(repo_root, tmp_path, monkeypatch, name,
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return _before_release_publication_record(
         {(f["type"], f["file"])
-         for f in drift_check.check_work_order_contract()})
+         for f in _historical_contract_findings(drift_check)})
 
 
 def test_release_conditions_record_state_is_clean(repo_root, tmp_path,
@@ -20359,7 +20442,7 @@ def test_release_conditions_reconstruction_reaches_the_rechecked_state(
     assert "AUDIT FIRST" in text
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()}
+             for f in _historical_contract_findings(drift_check)}
     assert found == {(_RELEASE_CONDITIONS_RECORD_FINDING, "WORKORDER.md")}, (
         repr(sorted(found)))
 
@@ -20550,7 +20633,7 @@ def test_satisfied_release_gate_is_bound_to_the_recorded_conditions(
           "- Release gate: " + _SATISFIED_RELEASE_GATE)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()}
+             for f in _historical_contract_findings(drift_check)}
     assert ("release authorization", "WORKORDER.md") in found, (
         repr(sorted(found)))
 
@@ -20571,6 +20654,417 @@ def test_release_conditions_record_accepts_closed_language(
         "control-" + str(sum(map(ord, sentence))),
         _wo007_iss_append("WORKORDER.md", sentence))
     assert found == set(), repr(sorted(found))
+
+
+# --- WO-008 closed issuance: raw production contract ----------------------
+
+def _wo008_closed_findings(repo_root, case, monkeypatch, label):
+    drift_check = _load_drift_check(repo_root, "wo008_closed_" + label)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return {(f["type"], f["file"])
+            for f in drift_check.check_work_order_contract()}
+
+
+@pytest.mark.parametrize("newline", ("\n", "\r\n"), ids=("lf", "crlf"))
+def test_wo008_closed_issuance_is_clean(repo_root, tmp_path, monkeypatch, newline):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "closed-control")
+    for rel in ("WORKORDER.md", _WO008_ISSUED_REL):
+        path = case / rel
+        path.write_bytes(path.read_text(encoding="utf-8").replace("\n", newline).encode())
+    assert _wo008_closed_findings(repo_root, case, monkeypatch, "clean") == set()
+    assert list((case / "docs/work-orders/proposed").glob("WO-*.md")) == []
+
+
+@pytest.mark.parametrize("surface", ("WORKORDER.md", _WO008_ISSUED_REL))
+def test_wo008_implicit_activation_is_attributed_to_its_surface(
+    repo_root, tmp_path, monkeypatch, surface
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "activation")
+    path = case / surface
+    path.write_text(path.read_text(encoding="utf-8") + "\nYou may now start.\n",
+                    encoding="utf-8")
+    drift_check = _load_drift_check(repo_root, "wo008_activation_predicate")
+    assert not drift_check._has_other_session_authorization("You may now start.", "", "")
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "activation")
+    assert ("implicit session authorization", surface) in found, repr(sorted(found))
+    other = _WO008_ISSUED_REL if surface == "WORKORDER.md" else "WORKORDER.md"
+    assert ("implicit session authorization", other) not in found, repr(sorted(found))
+
+
+@pytest.mark.parametrize("surface", ("WORKORDER.md", _WO008_ISSUED_REL))
+@pytest.mark.parametrize("payload", (
+    "Session A is authorized.", "Session B may start.", "Session C is approved.",
+    "The current session may connect to UEFN.", "Session AA may proceed.",
+))
+def test_wo008_closed_issuance_rejects_labeled_and_current_grants(
+    repo_root, tmp_path, monkeypatch, surface, payload
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "grant")
+    path = case / surface
+    path.write_text(path.read_text(encoding="utf-8") + "\n" + payload + "\n",
+                    encoding="utf-8")
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "grant")
+    assert any(rel == surface and kind in {
+        "implicit session authorization", "later session authorization",
+        "session scope widening"} for kind, rel in found), repr(sorted(found))
+
+
+@pytest.mark.parametrize("surface", ("WORKORDER.md", _WO008_ISSUED_REL))
+@pytest.mark.parametrize("payload", (
+    "Session A must not start without separate owner authorization.",
+    "Session B is not authorized.", "You may not start.",
+    "No implementation authority is given here.",
+))
+def test_wo008_closed_issuance_denials_stay_clean(
+    repo_root, tmp_path, monkeypatch, surface, payload
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "denial")
+    path = case / surface
+    path.write_text(path.read_text(encoding="utf-8") + "\n" + payload + "\n",
+                    encoding="utf-8")
+    assert _wo008_closed_findings(repo_root, case, monkeypatch, "denial") == set()
+
+
+@pytest.mark.parametrize("index", range(5))
+@pytest.mark.parametrize("damage", ("missing", "duplicated", "fused", "displaced", "widened"))
+def test_wo008_conditional_exemptions_require_whole_anchored_paragraphs(
+    repo_root, tmp_path, monkeypatch, index, damage
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "context")
+    drift_check = _load_drift_check(repo_root, "wo008_context_values")
+    heading, paragraph = drift_check._WO008_CONDITIONAL_PARAGRAPHS[index]
+    path = case / _WO008_ISSUED_REL
+    text = path.read_text(encoding="utf-8")
+    if damage == "missing":
+        text = _replace_once(text, paragraph, "", "context damage")
+    elif damage == "duplicated":
+        text += "\n" + paragraph + "\n"
+    elif damage == "fused":
+        text = _replace_once(text, paragraph, paragraph + " Session A may start.",
+                             "context damage")
+    elif damage == "widened":
+        text = _replace_once(text, paragraph, paragraph + " Session B may start.",
+                             "context damage")
+    else:
+        text = _replace_once(text, paragraph, "", "context damage")
+        text += "\n## Decoy\n\n" + paragraph + "\n"
+    path.write_text(text, encoding="utf-8")
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "context")
+    assert ("WO-008 conditional context", _WO008_ISSUED_REL) in found
+    # Failed validation yields NO removal, not an empty scannable surrogate.
+    findings, residual = drift_check._wo008_phase_findings(
+        (case / "WORKORDER.md").read_text(encoding="utf-8"), text,
+        _WO008_ISSUED_REL, "document")
+    assert findings and residual == text
+
+
+@pytest.mark.parametrize("index", range(5))
+def test_wo008_conditional_prose_reflow_is_clean(repo_root, tmp_path, monkeypatch, index):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "reflow")
+    drift_check = _load_drift_check(repo_root, "wo008_reflow_values")
+    _heading, paragraph = drift_check._WO008_CONDITIONAL_PARAGRAPHS[index]
+    _edit(case, _WO008_ISSUED_REL, paragraph, textwrap.fill(" ".join(paragraph.split()), 59))
+    assert _wo008_closed_findings(repo_root, case, monkeypatch, "reflow") == set()
+
+
+@pytest.mark.parametrize("index", range(5))
+def test_wo008_mandate_context_is_not_a_pointer_exemption(
+    repo_root, tmp_path, monkeypatch, index
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "wrong-surface")
+    drift_check = _load_drift_check(repo_root, "wo008_wrong_surface_values")
+    _heading, paragraph = drift_check._WO008_CONDITIONAL_PARAGRAPHS[index]
+    pointer = case / "WORKORDER.md"
+    pointer.write_text(pointer.read_text(encoding="utf-8") + "\n" + paragraph + "\n",
+                       encoding="utf-8")
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "wrong-surface")
+    assert any(rel == "WORKORDER.md" and kind in {
+        "implicit session authorization", "later session authorization",
+        "session scope widening"} for kind, rel in found)
+
+
+@pytest.mark.parametrize("surface", ("WORKORDER.md", _WO008_ISSUED_REL))
+@pytest.mark.parametrize("damage", ("missing", "duplicated", "corrupted", "displaced"))
+def test_wo008_closed_records_are_validated_before_removal(
+    repo_root, tmp_path, monkeypatch, surface, damage
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "record")
+    old = (_WO008_CLOSED_POINTER_RECORD if surface == "WORKORDER.md"
+           else "## Issuance basis\n\n" + _WO008_CLOSED_PREREQUISITES.split(
+               "## Issuance basis\n\n", 1)[1])
+    text = (case / surface).read_text(encoding="utf-8")
+    if damage == "missing":
+        text = _replace_once(text, old, "", "record damage")
+    elif damage == "duplicated":
+        text += "\n" + old + "\n"
+    elif damage == "corrupted":
+        text = _replace_once(text, old, old.replace("5997654f", "9997654f"), "record damage")
+    else:
+        text = _replace_once(text, old, "", "record damage")
+        # Same text under another section is not its owning closed record.
+        text += "\n## Decoy\n\n" + old.replace("## Issuance basis\n\n", "") + "\n"
+    (case / surface).write_text(text, encoding="utf-8")
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "record")
+    assert any(kind.startswith("WO-008 issuance") for kind, rel in found if rel == surface)
+
+
+@pytest.mark.parametrize("name", ("WO-009-unknown.md", "WO-008-renamed.md",
+                                  "WO-0080-user-reliability.md"))
+def test_wo008_closed_identity_is_exact(repo_root, tmp_path, monkeypatch, name):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "identity")
+    path = case / _WO008_ISSUED_REL
+    path.rename(path.with_name(name))
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "identity")
+    assert ("issued work order identity", "docs/work-orders/issued") in found
+
+
+@pytest.mark.parametrize("state", ("proposed", "completed", "superseded", "issued/nested", ""))
+@pytest.mark.parametrize("copy", (False, True), ids=("move", "copy"))
+def test_wo008_closed_placement_and_inventory_are_exact(
+    repo_root, tmp_path, monkeypatch, state, copy
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "placement")
+    source = case / _WO008_ISSUED_REL
+    target = case / "docs/work-orders" / state / _WO008_PROPOSAL_NAME
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if copy:
+        shutil.copy2(source, target)
+    else:
+        source.rename(target)
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "placement")
+    assert ("WO-008 issued state", "docs/work-orders") in found or (
+        "planning-only proposal placement", target.relative_to(case).as_posix()) in found
+    if copy and state in {"proposed", "completed", "superseded"}:
+        assert ("duplicate work order state", "docs/work-orders") in found
+
+
+@pytest.mark.parametrize("session", ("A", "B", "C", "AA"))
+def test_wo008_later_sessions_are_not_installed(repo_root, tmp_path, monkeypatch, session):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "later")
+    _edit(case, "WORKORDER.md", "- Authorized session: NONE",
+          "- Authorized session: " + session)
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "later")
+    assert any(kind.startswith("WO-008 issuance") for kind, rel in found
+               if rel == "WORKORDER.md")
+
+
+@pytest.mark.parametrize("heading", (
+    "## Session A authorization basis", "## Session A offline preparation record",
+    "## Session A live-start record", "## Session B authorization basis",
+    "## Session C authorization basis", "## Session A acceptance record",
+))
+def test_wo008_unsupported_phase_traces_are_rejected(
+    repo_root, tmp_path, monkeypatch, heading
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "phase-trace")
+    path = case / _WO008_ISSUED_REL
+    path.write_text(path.read_text(encoding="utf-8") + "\n" + heading + "\n\nClosed.\n",
+                    encoding="utf-8")
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "phase-trace")
+    assert ("WO-008 unsupported phase", _WO008_ISSUED_REL) in found
+
+
+@pytest.mark.parametrize("surface", ("WORKORDER.md", _WO008_ISSUED_REL))
+@pytest.mark.parametrize(("payload", "kind"), (
+    ("A GitHub Release is authorized.", "release authorization"),
+    ("Social publication is authorized.", "external-action boundary"),
+    ("Repository metadata is approved.", "external-action boundary"),
+))
+def test_wo008_external_scans_keep_original_surfaces(
+    repo_root, tmp_path, monkeypatch, surface, payload, kind
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "external")
+    path = case / surface
+    path.write_text(path.read_text(encoding="utf-8") + "\n" + payload + "\n",
+                    encoding="utf-8")
+    assert (kind, surface) in _wo008_closed_findings(repo_root, case, monkeypatch, "external")
+
+
+@pytest.mark.parametrize("step", range(4))
+def test_wo008_each_partial_reversal_is_detected(repo_root, tmp_path, monkeypatch, step):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "partial")
+    _name, undo = _WO008_ISSUANCE_REVERSAL[step]
+    undo(case)
+    # Guide-only rollback is a live pin, not an authority mutation.
+    if step == 3:
+        assert (case / _WO007_ISS_PROPOSED_README_REL).read_text(
+            encoding="utf-8").count(_WO008_CLOSED_GUIDANCE) == 0
+    else:
+        assert _wo008_closed_findings(repo_root, case, monkeypatch, "partial")
+
+
+def test_wo008_coherent_rollback_trips_only_its_new_lock(repo_root, tmp_path, monkeypatch):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "rollback")
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "rollback")
+    assert found == {(_WO008_ISSUANCE_FINDING, "docs/work-orders")}
+    drift_check = _load_drift_check(repo_root, "wo008_filter")
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    assert _historical_contract_findings(drift_check) == []
+    (case / _WO006_SUP_REL).unlink()
+    assert any(f["type"] == "superseded WO-006 state"
+               for f in _historical_contract_findings(drift_check))
+
+
+def test_wo008_reversal_reproduces_admitted_proposal_bytes(repo_root, tmp_path):
+    case = _make_proposal_admitted_case(repo_root, tmp_path, "exact-admission")
+    proposal = (case / _WO008_PROPOSAL_REL).read_text(encoding="utf-8")
+    assert hashlib.sha256(proposal.encode()).hexdigest() == (
+        "d76399570ded2c329f40cce895d6f2408ed6167e9dbd86deb85f4fa40b6ac3fb")
+    assert not (case / _WO008_ISSUED_REL).exists()
+    assert _WO008_ADMITTED_HEADER in (case / "WORKORDER.md").read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize("damage", ("missing", "duplicated"))
+def test_wo008_reconstruction_rejects_bad_anchors(repo_root, tmp_path, damage):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "bad-reconstruction")
+    replacement = "" if damage == "missing" else (
+        _WO008_CLOSED_POINTER_RECORD + "\n\n" + _WO008_CLOSED_POINTER_RECORD)
+    _edit(case, "WORKORDER.md", _WO008_CLOSED_POINTER_RECORD, replacement)
+    with pytest.raises(AssertionError, match="WO-008 issuance record reversal"):
+        _make_proposal_admitted_case(case, tmp_path, "bad-reconstruction-result")
+
+
+@pytest.mark.parametrize(("marker", "replacement", "kind", "rel"), (
+    ("- Issuance CI workflow: `37050236355`", "", "frozen publication history", "WORKORDER.md"),
+    ("- Release train: WO-001 through WO-007", "- Release train: WO-001 through WO-008",
+     "release train", "WORKORDER.md"),
+    ("WO-008 closed issuance record:", "WO-008 broken issuance record:",
+     "WO-008 issuance record", "WORKORDER.md"),
+))
+def test_wo008_keeps_history_checks_after_pointer_takeover(
+    repo_root, tmp_path, monkeypatch, marker, replacement, kind, rel
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "history")
+    _edit(case, rel, marker, replacement)
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "history")
+    assert any(actual.startswith(kind) and file == rel for actual, file in found)
+
+
+@pytest.mark.parametrize("missing", range(3))
+@pytest.mark.parametrize("duplicate", (False, True), ids=("missing", "duplicate"))
+def test_legacy_implicit_scanner_keeps_each_mandatory_context(
+    repo_root, missing, duplicate
+):
+    drift_check = _load_drift_check(repo_root, "wo008_legacy_context")
+    contexts = ("WO-004 ISSUED — SESSION A IMPLEMENTATION NOT AUTHORIZED",
+                "Authorized session: NONE", "AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED")
+    text = "\n".join(contexts)
+    damaged = text + "\n" + contexts[missing] if duplicate else text.replace(contexts[missing], "")
+    assert drift_check._has_implicit_session_authorization(damaged, "", contexts[0])
+    assert not drift_check._has_implicit_session_authorization(
+        text + "\nYou may not start.", "", contexts[0])
+
+
+@pytest.mark.parametrize(("text", "expected"), (
+    ("", False), ("you may not start.", False), ("you may now start.", True),
+))
+def test_residual_implicit_scanner_is_activation_only(repo_root, text, expected):
+    drift_check = _load_drift_check(repo_root, "wo008_residual")
+    assert drift_check._has_residual_session_authorization(text) is expected
+
+
+@pytest.mark.parametrize("index", range(8))
+@pytest.mark.parametrize("damage", ("missing", "duplicate", "corrupt"))
+def test_wo008_pointer_fields_are_exact_and_single(
+    repo_root, tmp_path, monkeypatch, index, damage
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "field")
+    old = _WO008_CLOSED_HEADER.splitlines()[index]
+    new = "" if damage == "missing" else old + "\n" + old if damage == "duplicate" else (
+        old + " altered")
+    _edit(case, "WORKORDER.md", old, new)
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "field")
+    assert any(kind.startswith("WO-008 issuance") for kind, rel in found
+               if rel == "WORKORDER.md")
+
+
+@pytest.mark.parametrize(("marker", "replacement"), (
+    ("STATUS: ISSUED", "STATUS: COMPLETED"),
+    ("AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED",
+     "AUTHORIZATION: ISSUED — SESSION A AUTHORIZED"),
+    ("Owner: Ocean Bennett", "Owner: Agent"),
+    ("Revision: r2", "Revision: r3"),
+    ("Planning baseline: `9879d39fbdb58083a0f7229a9c9c90c7d6fb375f`",
+     "Planning baseline: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`"),
+    ("BASELINE: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`", ""),
+    ("Admission CI workflow: `37246398757`", ""),
+    ("Admission CI job: `111565059168` — Lint, types, tests",
+     "Admission CI job: `111565059169` — Lint, types, tests"),
+    ("NEXT GATE: separate owner decision on Session A offline preparation.",
+     "NEXT GATE: Session A may start."),
+))
+def test_wo008_mandate_fields_records_and_next_gate_are_exact(
+    repo_root, tmp_path, monkeypatch, marker, replacement
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "mandate-field")
+    _edit(case, _WO008_ISSUED_REL, marker, replacement)
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "mandate-field")
+    assert any(kind.startswith("WO-008 issuance") for kind, rel in found
+               if rel == _WO008_ISSUED_REL)
+
+
+@pytest.mark.parametrize("name", (
+    "completed/WO-001-custom-mcp-security.md",
+    "completed/WO-002-epic-toolset-integration.md",
+    "completed/WO-003-official-mcp-doc-convergence.md",
+    "completed/WO-004-modal-observability.md",
+    "completed/WO-005-coverage-source-of-truth.md",
+    "superseded/WO-006-official-vs-toolbelt-benchmark.md",
+    "completed/WO-007-public-mcp-explainer.md",
+))
+def test_wo008_does_not_retire_any_frozen_document(repo_root, tmp_path, monkeypatch, name):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "frozen")
+    (case / "docs/work-orders" / name).unlink()
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "frozen")
+    assert ("release train inventory", "docs/work-orders") in found
+
+
+def test_wo008_reconstruction_makes_missing_proposed_parent(repo_root, tmp_path):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "bare")
+    proposed = case / "docs/work-orders/proposed"
+    shutil.rmtree(proposed)
+    admitted = _make_proposal_admitted_case(case, tmp_path, "bare-admitted")
+    _assert_wo008_proposal_presence(admitted / "docs/work-orders/proposed")
+    assert not (admitted / _WO007_ISS_PROPOSED_README_REL).exists()
+
+
+@pytest.mark.parametrize("field", ("train", "release"))
+def test_wo008_bad_legacy_gate_gets_no_residual_exemption(
+    repo_root, tmp_path, monkeypatch, field
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "bad-legacy-gate")
+    old = ("- Release train: WO-001 through WO-007" if field == "train"
+           else "- Release gate: " + _PUBLISHED_RELEASE_GATE)
+    _edit(case, "WORKORDER.md", old, old + " Session A may start.")
+    pointer = (case / "WORKORDER.md").read_text(encoding="utf-8")
+    mandate = (case / _WO008_ISSUED_REL).read_text(encoding="utf-8")
+    drift_check = _load_drift_check(repo_root, "wo008_bad_legacy_gate")
+    findings, residual = drift_check._wo008_phase_findings(
+        pointer, mandate, _WO008_ISSUED_REL, "pointer")
+    assert findings and residual == pointer
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "bad-legacy-gate")
+    assert ("implicit session authorization", "WORKORDER.md") in found
+
+
+def test_wo008_activation_damage_test_kills_residual_dispatch_mutant(
+    repo_root, tmp_path, monkeypatch
+):
+    drift_check = _load_drift_check(repo_root, "wo008_dispatch_mutant")
+    case = _make_wo008_closed_case(repo_root, tmp_path, "dispatch-mutant")
+    pointer = case / "WORKORDER.md"
+    pointer.write_text(pointer.read_text(encoding="utf-8") + "\nYou may now start.\n",
+                       encoding="utf-8")
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    control = {(f["type"], f["file"]) for f in drift_check.check_work_order_contract()}
+    assert ("implicit session authorization", "WORKORDER.md") in control
+    monkeypatch.setattr(drift_check, "_has_residual_session_authorization", lambda _text: False)
+    mutant = {(f["type"], f["file"]) for f in drift_check.check_work_order_contract()}
+    assert ("implicit session authorization", "WORKORDER.md") not in mutant
+    # The actual damage-test assertion, not a helper-only predicate, kills it.
+    with pytest.raises(AssertionError):
+        assert ("implicit session authorization", "WORKORDER.md") in mutant
+
+
 
 
 # --- Release publication record: the live state --------------------------
@@ -20595,7 +21089,7 @@ def _release_published_findings(repo_root, tmp_path, monkeypatch, name,
     mutate(case)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+            for f in _historical_contract_findings(drift_check)}
 
 
 def test_release_published_record_state_is_clean(repo_root, tmp_path,
@@ -20622,7 +21116,7 @@ def test_release_published_reconstruction_reaches_the_conditions_state(
     assert _RELEASE_PUBLISHED_RECORD_OPENING not in text
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()}
+             for f in _historical_contract_findings(drift_check)}
     assert found == {(_RELEASE_PUBLISHED_RECORD_FINDING, "WORKORDER.md")}, (
         repr(sorted(found)))
 
@@ -20818,7 +21312,7 @@ def test_later_release_gate_texts_are_rejected_in_an_early_pointer(
           "- Release gate: " + text)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     found = {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()}
+             for f in _historical_contract_findings(drift_check)}
     assert ("release authorization", "WORKORDER.md") in found, (
         repr(sorted(found)))
 
@@ -20829,7 +21323,7 @@ def _wo008_proposal_findings(repo_root, case, monkeypatch, label):
     drift_check = _load_drift_check(repo_root, "wo008_proposal_" + label)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return {(finding["type"], finding["file"])
-            for finding in drift_check.check_work_order_contract()}
+            for finding in _historical_contract_findings(drift_check)}
 
 
 def _wo008_contract_tree(case):
@@ -20872,7 +21366,7 @@ def test_wo008_proposal_admission_without_registration_fails_frozen_set(
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     monkeypatch.setattr(drift_check, "_PLANNING_ONLY_PROPOSALS", frozenset())
     found = {(f["type"], f["file"])
-             for f in drift_check.check_work_order_contract()}
+             for f in _historical_contract_findings(drift_check)}
     assert ("release train proposal set", "docs/work-orders/proposed") in found
 
 
@@ -20960,7 +21454,7 @@ def test_wo008_proposal_admission_enforces_exact_placement(
 
 
 @pytest.mark.parametrize("session", ("NONE", "A", "B", "C"))
-def test_wo008_proposal_admission_does_not_register_an_issued_identity(
+def test_wo008_proposal_admission_cannot_issue_without_closed_records(
     repo_root, tmp_path, monkeypatch, session
 ):
     case = _make_proposal_admitted_case(repo_root, tmp_path, "no-issuance")
@@ -20977,7 +21471,7 @@ def test_wo008_proposal_admission_does_not_register_an_issued_identity(
     _edit(case, "WORKORDER.md", "- Authorized session: NONE",
           "- Authorized session: " + session)
     found = _wo008_proposal_findings(repo_root, case, monkeypatch, "no-issuance")
-    assert ("issued work order identity", "docs/work-orders/issued") in found
+    assert any(kind.startswith("WO-008 issuance") for kind, _rel in found)
     assert ("planning-only proposal placement",
             target.relative_to(case).as_posix()) in found
 
@@ -20987,7 +21481,8 @@ def test_wo008_proposal_admission_cannot_replace_a_missing_frozen_proposal(
 ):
     case = _make_wo006_superseded_case(repo_root, tmp_path, "missing-frozen")
     proposed = case / _WO008_PROPOSAL_REL
-    shutil.copy2(repo_root / _WO008_PROPOSAL_REL, proposed)
+    admitted = _make_proposal_admitted_case(repo_root, tmp_path, "source-admitted")
+    shutil.copy2(admitted / _WO008_PROPOSAL_REL, proposed)
     control = _wo008_proposal_findings(repo_root, case, monkeypatch, "frozen-control")
     assert _before_wo007_completion(control) == set(), repr(sorted(control))
     (case / _WO007_ISS_PROPOSED_REL).unlink()

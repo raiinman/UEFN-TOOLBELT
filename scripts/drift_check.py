@@ -4462,7 +4462,7 @@ def _wo007_completed_findings(pointer, text, rel, surface,
                               audit_recorded=False, release_prepared=False,
                               audit_rechecked=False,
                               conditions_satisfied=False,
-                              release_published=False):
+                              release_published=False, following_wo008=False):
     """WO-007's completed record, on one surface at a time.
 
     The WO-005 completion pattern. On the pointer: the canonical slice with
@@ -4525,6 +4525,11 @@ def _wo007_completed_findings(pointer, text, rel, surface,
             sequence = _RELEASE_PUBLISHED_POINTER_SEQUENCE
             keys = _RELEASE_PUBLISHED_POINTER_KEYS
             label = "release publication"
+        if following_wo008:
+            sequence = _RELEASE_PUBLISHED_POINTER_SEQUENCE[4:]
+            keys = tuple(pair for pair in _RELEASE_PUBLISHED_POINTER_KEYS
+                         if pair[0] != "- Base commit:")
+            label = "frozen publication history"
 
         def stop(line):
             return _WO001_COMPLETED_LINK in line
@@ -4878,6 +4883,236 @@ def _accepted_record_findings(
     return out
 
 
+# WO-008 is an exact following-train identity, not a frozen-train extension.
+_WO008_ID = "WO-008"
+_WO008_NAME = "WO-008-user-reliability-and-mcp-client-acceptance.md"
+_WO008_BASE = "4ff86e8d1c9c89ebda597570ad4f757605ccd81e"
+_WO008_GATE = "WO-008 ISSUED — SESSION A OFFLINE PREPARATION NOT AUTHORIZED"
+_WO008_INSTRUCTION_SHA256 = (
+    "5997654fb63b587ae72265d4382bf9f2f8a752e4fb09a6d79593a5b88725746a"
+)
+_WO008_POINTER_RECORD = "WO-008 closed issuance record: the owner adopted the accepted\nissuance/session-enforcement plan r2 and authorized only its seven-path\nclosed-issuance implementation under an offline-verification exemption for\nthis governance scope. The instruction is identified by SHA-256\n`5997654fb63b587ae72265d4382bf9f2f8a752e4fb09a6d79593a5b88725746a`.\n[`WO-008-user-reliability-and-mcp-client-acceptance.md`](docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md)\nis issued outside the frozen train with session NONE. Admission CI workflow\n`37246398757` and job `111565059168` succeeded on\n`4ff86e8d1c9c89ebda597570ad4f757605ccd81e`; they cover admission only,\nnot this transition, Session A outputs, a live build or MCP-host acceptance.\nSession A offline preparation, live start, Session B and Session C remain\nunauthorized. Runtime or live need stops this transition. Configuration\nchanges, installations, recovery, exact commits, pushes, cleanup, further\ntags or Releases, metadata and publication remain separately gated.\nThis record grants none of those authorities."
+_WO008_OPENING = "This is an issued following-train Work Order, outside the frozen\nWO-001 through WO-007 train. Issuance alone grants no session authority.\nThe root pointer identifies WO-008 with session NONE. Session A offline\npreparation, live start, Session B and Session C remain unauthorized."
+_WO008_PREREQUISITES = "Proposal admission was separately accepted and committed at\n`4ff86e8d1c9c89ebda597570ad4f757605ccd81e`. It recognized this exact\nfollowing-train proposal only and retained NONE/NONE. WO-008 is not added\nto the frozen WO-001 through WO-007 train.\n\nThe separately adopted issuance/session-enforcement plan r2 supports this\nclosed issuance only. Later offline preparation, live start, product\ncorrections and live acceptance still need separately reviewed enforcement\ntransitions and explicit owner decisions. No later phase is installed here.\nFrozen-train missing, duplicate and misplaced-order protections, publication\nhistory and earlier terminal records remain in force. Unknown issued orders\nremain invalid; there is no blanket scanner exemption."
+_WO008_ISSUANCE_RECORD = "BASELINE: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`\nAdmission CI workflow: `37246398757`\nAdmission CI job: `111565059168` — Lint, types, tests\nOwner issuance instruction SHA-256: `5997654fb63b587ae72265d4382bf9f2f8a752e4fb09a6d79593a5b88725746a`\n\nThe owner adopted the accepted plan r2 and authorized only this closed\ngovernance issuance transition. Admission CI succeeded on the baseline,\nnot on this uncommitted transition or any session output; it demonstrates\nneither an MCP host nor a live UEFN build.\n\nThe owner accepted a narrow offline-verification exemption for these seven\ngovernance paths only. Runtime or live need stops this transition. This\nrecord grants no session execution, configuration change, installation,\nUEFN contact, recovery, commit, push, cleanup or publication authority."
+_WO008_NEXT_GATE = "NEXT GATE: separate owner decision on Session A offline preparation.\nNo session is authorized. Live start, Session B, Session C, product corrections,\nrecovery, exact commits and pushes remain separate decisions. This mandate\ngrants no review, implementation, commit or push authority."
+_WO008_POINTER_SEQUENCE = (
+    "- Current issued Work Order: WO-008",
+    "- Authorized session: NONE",
+    "- Base commit: `" + _WO008_BASE + "`",
+    "- Current gate: " + _WO008_GATE,
+    "- WO-008 admission basis commit: `" + _WO008_BASE + "`",
+    "- WO-008 admission CI workflow: `37246398757`",
+    "- WO-008 admission CI job: `111565059168` — Lint, types, tests",
+    "- WO-008 issuance decision SHA-256: `" + _WO008_INSTRUCTION_SHA256 + "`",
+)
+_WO008_ISSUED_SEQUENCE = (
+    "STATUS: ISSUED", _ISSUED_NO_SESSION_AUTH,
+    "Owner: Ocean Bennett",
+    "Priority: user-facing reliability and missing integration evidence",
+    "Draft date: 2026-10-04", "Revision: r2",
+    "Planning baseline: `9879d39fbdb58083a0f7229a9c9c90c7d6fb375f`",
+)
+_WO008_CONDITIONAL_PARAGRAPHS = (
+    ("## Session A Real client baseline", "The owner selected **Claude Code** as the first MCP client. This selects a test\ntarget only; it grants no setup or live authority and establishes no compatibility.\nSession A, if separately authorized, changes no product code. Use Claude Code\nand an owner-approved disposable project, not a production project or recovery\nof the old WO-006 fixture. Prepare and review the exact call sequence offline\nbefore a separate owner instruction starts live contact. No launcher rehearsal\nor timing harness is required."),
+    ("## Session B Bounded reliability corrections", "Session B requires accepted Session A evidence and a separate owner-authorized\nfile/test plan. An unexpected integration defect needs its own bounded amendment;\nthe words \"fix integration\" do not authorize an open-ended transport rewrite."),
+    ("## Session B Bounded reliability corrections", "Proposed maximum product scope is\n`Content/Python/UEFN_Toolbelt/tools/mcp_bridge.py`,\n`Content/Python/UEFN_Toolbelt/dashboard_pyside6.py`,\n`Content/Python/UEFN_Toolbelt/menu.py`, `tests/test_mcp_security.py`,\n`tests/test_repo_integrity.py`, `README.md`, `SECURITY.md`,\n`.claude/mcp_reference.md`, `docs/OFFICIAL_MCP_AND_TOOLBELT.md`, and a new\nunreleased entry in `docs/CHANGELOG.md`. The owner-approved Session B plan must\nnarrow this list to files actually needed. Do not edit historical records or\nthe released 2.5.0 notes. No version change is proposed."),
+    ("## Session B Bounded reliability corrections", "Run affected tests and static gates on final uncommitted content. Damage probes\nmust show the new tests catch the intended defects. Leave all work uncommitted\nfor independent review; apply only authorized corrections before Session C."),
+    ("## Decision locks and next gate", "The owner reserves proposal adoption and admission, issuance, session starts,\nthe client/project/fixture/target choices, live start, any unexpected repair,\nrecovery, exact commits, pushes, completion, and any later release decision.\nReview acceptance never substitutes for these decisions."),
+)
+# Exact accepted historical paragraphs, on the pointer surface only. They
+# are independently bound to the preserved publication pointer below; a
+# changed, duplicated, fused or displaced paragraph receives no exemption.
+_WO008_POINTER_HISTORY_PARAGRAPHS = (
+    "[`WO-001-custom-mcp-security.md`](docs/work-orders/completed/WO-001-custom-mcp-security.md)\r\nis completed as `ffcbe8b1bfa03cb37453b9beefda0bbdbe45543c` after\r\n[CI workflow `32921154482`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/32921154482)\r\npassed.\r",
+    "[`WO-002`](docs/work-orders/completed/WO-002-epic-toolset-integration.md)\r\nis completed. Session A was independently accepted, committed, and pushed as\r\n`50b881716abea3b5838c2a971caac40ee4cd5d30`; [CI workflow\r\n`32937631903`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/32937631903)\r\ncompleted successfully, including required job\r\n[`98081919978` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/32937631903/job/98081919978).\r\nSession A is accepted and complete.\r",
+    "Session B was independently accepted and committed as\r\n`c031f20e33c716ecc9f9ce546a7419b865ed8641`; [CI workflow\r\n`33133090929`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/33133090929)\r\ncompleted successfully, including required job\r\n[`98726805137` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/33133090929/job/98726805137).\r\nExternal official-MCP exposure failed and was accepted as a terminal\r\nnegative result bounded by ToolsetPolicy. WO-002 is complete; no session\r\nis authorized.\r",
+    "[`WO-003`](docs/work-orders/completed/WO-003-official-mcp-doc-convergence.md)\r\nis completed. Its accepted planning baseline is\r\n`e0b1063f5300404534c76789bdb6742f639425ba`; the accepted revision was\r\ncommitted as `19350aa324bea4d88e494ee806801586a383d76e` after CI\r\nworkflow `33148089523` and required job `98773518991` passed.\r",
+    "Session A was independently accepted, committed, and pushed as\r\n`d23add58e02ddc855573cf9be7a2542776d25e7e`; successful CI workflow\r\n`33344006899` included successful required job `99344607213` (`Lint, types,\r\ntests`). Accepted live `TOOL_TEST` evidence recorded a deploy and full UEFN\r\nrestart, 362 tools across 55 categories, corrected dashboard About ordering,\r\nmatching source and deployed runtime hashes, no Fortnite or play session and no\r\nlevel mutation, then a stopped listener, closed UEFN, absent handoff, and closed\r\nports 8765–8770. At the Session A acceptance gate, Session A was accepted and\r\ncomplete with no current implementation authority; Session B was not authorized\r\npending separate owner authorization.\r",
+    "Session B's repository-description draft was independently accepted. The\r\naccepted draft was committed and pushed as\r\n`e23baa40c4b9358eb6b4448f460c054650ae64f0`; successful CI workflow\r\n`33476969423` included successful required job `99758148278` (`Lint, types,\r\ntests`). At that gate the live GitHub repository description was still\r\nunchanged, applying the exact accepted repository description was still a\r\nseparate owner-authorized external action, and metadata application was not\r\nauthorized. Tags, Releases, and social publication remain unauthorized, as do\r\nSession C and WO-004.\r",
+    "The exact accepted repository description was applied to the live GitHub\r\nrepository under separate BDFL/owner authorization, at repository commit\r\n`624ccc7f8f28cc897ec580c660607524ad5a4a3d`. The applied value is exactly\r\n`UEFN Toolbelt: 362 Python automation tools across 55 categories, with a PySide6 dashboard and an experimental, authenticated same-user loopback bridge for local AI control. Complements Epic's official UEFN MCP; Toolbelt is not exposed through Epic's MCP server.`\r\nIts character count is `261` and\r\nits SHA-256 is\r\n`a2d3b9a40e187c1fc4bce18666e3095687cc94b45d10ab27f1bee1e1e3417415`; a\r\nread-only `gh repo view` read-back returned the applied value byte for byte.\r\nThe homepage `https://www.fortnite.com/@ohshh`, PUBLIC visibility, archived\r\nstate `false`, and all 20 repository topics are unchanged. No file, commit,\r\npush, tag, Release, branch-protection setting, other repository metadata, or\r\nsocial state changed. At that gate WO-003 remained issued, and its completion\r\ntransition required a separate owner gate.\r",
+    "WO-003 is completed as `7a7eedb493cbf810f758383a1fc66a285bca841a`; [CI workflow\r\n`34301244038`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/34301244038)\r\ncompleted successfully, including required job\r\n[`102308406590` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/34301244038/job/102308406590).\r\nThe repository-description application record is preserved and still enforced\r\nfrom the completed Work Order document. WO-003 is complete; no session is\r\nauthorized. Session C or any later session, tagging, Release creation,\r\nbranch-protection changes, other repository metadata changes, and social\r\npublication all remain unauthorized.\r",
+    "[`WO-004`](docs/work-orders/completed/WO-004-modal-observability.md) is\r\ncompleted. Its accepted planning baseline is\r\n`0d513f1639cf197707132205f4074d0fe3a750cc`; the independently accepted\r\nproposal was committed as `8444faf340afe47765c43d943200db712880817b`\r\nafter [CI workflow\r\n`34441169191`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/34441169191)\r\ncompleted successfully, including required job\r\n[`102756337393` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/34441169191/job/102756337393).\r",
+    "At that gate, issuance gave no implementation authority and opened no\r\nsession. Session A feasibility work needed its own separate owner gate recorded\r\nin this pointer, and Session B and Session C stayed closed behind it. Tagging,\r\nRelease creation, branch-protection changes, other repository metadata\r\nchanges, and social publication remained unauthorized, as did WO-005,\r\nWO-006, and WO-007, which stayed proposed.\r",
+    "At the Session A authorization gate, this pointer opened read-only\r\nfeasibility planning only, on the basis of commit\r\n`f9fc7268d63dad92f5dd009bbf20e11477b8f926`, successful CI workflow\r\n`34509193110`, and successful required job `102978793893` (`Lint, types,\r\ntests`). That gate covered source and documentation inspection and the\r\ndrafting of proposed probes, and it opened no live UEFN work. Live Probe A\r\nran later under a separate owner authorization and is recorded in Section 6\r\nof the [Session A record](docs/audits/2026-09-10-wo004-session-a-modal-feasibility.md),\r\nwith preserved evidence under `docs/audits/evidence/wo004-probe-a/`. Probes\r\nB and C were not run.\r",
+    "The owner accepted Session A's bounded findings. Session A is accepted as\r\n`c4c21caa0960c430a4bcfb90cd65ef1edfc1a790`; [CI workflow\r\n`34735715115`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/34735715115)\r\ncompleted successfully, including required job\r\n[`103666661855` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/34735715115/job/103666661855).\r\nPython post-tick callback silence was observed; its cause, any modal\r\ndiagnosis, and heartbeat reliability remain unproven. WO-004's remaining work\r\nis narrowed to client timeout and error semantics, to direct loopback client\r\ntransport that bypasses HTTP proxies, and to no-automatic-retry guidance; modal\r\ndetection, heartbeat and status endpoints, and further feasibility probes are\r\ndeferred. The decision and the amended Session B and\r\nSession C scope are recorded in the issued mandate. At that gate, Session B\r\nimplementation and Session C live testing were not authorized, and each\r\nrequired a separate owner gate recorded here.\r",
+    "At the Session B authorization gate, this pointer opened client outcome\r\nsemantics only, on the basis of commit `da846ec36773d673ca9dcab3025ac36555579d0f`,\r\nsuccessful CI workflow `36375370541`, and successful required job\r\n`108780005124` (`Lint, types, tests`). That gate covered the amended Session B\r\nscope recorded in the issued mandate - client outcome classification and\r\nwording, direct loopback transport for bridge requests, and no-automatic-retry\r\nguidance - in `client.py`, `mcp_server.py`, `.claude/mcp_reference.md`, and\r\n`tests/test_mcp_security.py` only, ending with that worktree uncommitted for\r\nindependent review. It opened no bridge change, deploy, UEFN launch, bridge startup,\r\nMCP call, commit, or push, and Session C live testing was not authorized\r\nat that gate.\r",
+    "At the Session C authorization gate, this pointer opened owner-operated live\r\nacceptance only, on the basis of commit `17b5afe3f50bfa3ab882ff362a10eef70750c694`,\r\nsuccessful CI workflow `36385787242`, and successful required job\r\n`108810759914` (`Lint, types, tests`). That CI ran on the base commit, which did\r\nnot contain the Session B implementation. At that gate the implementation was\r\nuncommitted; it had been accepted on local checks and independent static review\r\nonly, and the mandate records its reviewed file identities. That gate covered\r\nthe owner-operated live acceptance procedure in the mandate, including its\r\nruntime and updated-editor prerequisites, against exactly that uncommitted\r\nimplementation. It changed no implementation file and opened no commit or push.\r",
+    "WO-004 is completed as `b4fa0a5245944fd992b6a2b52dbac1e59de242ae`; [CI workflow\r\n`36494750779`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36494750779)\r\ncompleted successfully, including required job\r\n[`109171582586` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36494750779/job/109171582586).\r\nThat commit carries the independently accepted client implementation, the\r\nSession C authorization transition, and the independently accepted [Session C\r\nlive-acceptance record](docs/audits/2026-09-28-wo004-session-c-live-acceptance.md)\r\nwith its evidence. Completion accepts the narrowed client-outcome work only; it\r\nclaims no modal detection, exactly-once execution, MCP-host integration, or\r\nbridge exception fix. WO-004 is complete; no session is authorized. WO-006 and\r\nWO-007 stayed proposed. Any later session, tagging, Release creation,\r\nbranch-protection changes, other repository metadata changes, and social\r\npublication all remain unauthorized.\r",
+    "[`WO-005`](docs/work-orders/completed/WO-005-coverage-source-of-truth.md) is\r\ncompleted. Its planning baseline is `1925ba8a09c3696d25de7ffc3f23caf970362c4d`;\r\nthe independently accepted proposal was committed as\r\n`528f1962c0c45c0631bab3637f3fd40db6317027` after [CI workflow\r\n`36529997892`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36529997892)\r\ncompleted successfully, including required job\r\n[`109281301869` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36529997892/job/109281301869).\r",
+    "At its issuance gate, WO-005 gave no implementation authority and opened no\r\nsession. Session A needed its own separate owner gate recorded in this\r\npointer, and the live-verification exemption proposed for it was not accepted\r\nat that gate.\r",
+    "At the Session A authorization gate, this pointer opened the offline coverage\r\nmodel only, on the basis of commit `867074f8a520450ef6073b4c922079a897a83886`,\r\nsuccessful CI workflow `36596756689`, and successful required job\r\n`109503539592` (`Lint, types, tests`). That gate covered the Session A scope\r\nrecorded in the mandate, unchanged, and ended with that worktree uncommitted\r\nfor independent review. The owner accepted the proposed live-verification\r\nexemption for that offline scope only, on the terms recorded in the mandate;\r\nit gave no commit, push, deploy, or live-run permission. That gate opened no\r\ndeploy, UEFN launch, bridge startup, MCP call, commit, or push.\r",
+    "WO-005 is completed as `5ef3aef2934b33a357ab9114e68aae41bc78639c`; [CI workflow\r\n`36662471593`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36662471593)\r\ncompleted successfully, including required job\r\n[`109719997181` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36662471593/job/109719997181).\r\nThat commit carries the independently accepted Session A implementation: the\r\nregistry-derived coverage report with its explicit evidence mappings and\r\ntests, the generated `TOOL_STATUS.md` block with the named corrections, the\r\nshared registry enumerator behind `drift_check`, and the `list_untested.py`\r\nmigration shim. Source categories describe what test code is written to\r\ncheck; they establish no live verification of any tool. WO-005 is complete;\r\nno session is authorized. WO-006 and WO-007 stayed proposed, and the optional\r\nintegration run stayed deferred. Any later session, tagging, Release creation,\r\nbranch-protection changes, other repository metadata changes, and social\r\npublication all remain unauthorized.\r",
+    "[`WO-006`](docs/work-orders/superseded/WO-006-official-vs-toolbelt-benchmark.md) is\r\nsuperseded. Its planning baseline is `f9354feaf4ab072c9941ab4d6ec8337395ce18a0`;\r\nthe independently accepted proposal was committed as\r\n`0c0bf26191ee953c7a27237109b4a91a4db97275` after [CI workflow\r\n`36743995194`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36743995194)\r\ncompleted successfully, including required job\r\n[`109985389182` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/36743995194/job/109985389182).\r",
+    "At its issuance gate, WO-006 gave no implementation authority and opened no\r\nsession. Session A, the offline design and harness, needed its own separate\r\nowner gate recorded in this pointer, and Session B, the owner-operated live\r\nmeasurement, stayed closed behind it.\r",
+    "At the Session A authorization gate, this pointer opened the offline design and\r\nharness only, on the basis of commit `d46a30ed9de54ec01536d132e1032fcf762fa3c7`,\r\nsuccessful CI workflow `36756889729`, and successful required job\r\n`110029304446` (`Lint, types, tests`). That evidence established the issued\r\nmandate, not any harness implementation or test result. That gate covered the\r\nSession A scope recorded in the issued mandate, unchanged, changed no\r\nrepository file, and ended with its private artifacts held for independent\r\nreview. It opened no deploy, UEFN launch, bridge startup, MCP call, connection\r\nto a real editor endpoint, live measurement, commit, or push, and Session B\r\nstayed closed at that gate.\r",
+    "The owner accepted Session A's private offline artifacts after independent\r\nreview, as offline preparation only and not as proof of live compatibility.\r\nThe accepted harness package and its preserved independent review are kept in\r\nthe owner's private evidence folder, identified by their `SHA256SUMS` digests\r\n`f17a44a477b2fb2d3d347a75232c7076516ce110308aeb25c0efefad90dff3f8` and\r\n`a856bdfff88565831905b0e1fcd77862e408b0eb704774ac1631da9225ac94c1`. The\r\nharness and its stub tests ran offline on the owner's Windows machine only;\r\nthey have never run in GitHub CI, and no repository commit or CI run attests\r\nto them. Session A is accepted and closed.\r",
+    "At the Session B authorization gate, this pointer opened owner-operated live\r\nmeasurement only, on the basis of commit\r\n`8667b0e0ef78d504586d710984ef1a1fef7263b2`, successful CI workflow\r\n`36801338578`, and successful required job `110176132684` (`Lint, types,\r\ntests`). That CI tested the repository's checker and tests, not the private\r\nharness, and established no live result. That gate covered the Session B scope\r\nrecorded in the issued mandate, unchanged: the owner operated UEFN and\r\nperformed the owner checks, and the accepted harness ran only after the\r\nowner's separate, explicit instruction to begin the live run. It changed no\r\nrepository file and ended with its private artifacts held for independent\r\nreview. It opened no code change, fallback, emulation, policy change, live\r\nrepair, commit, or push, and the evidence-recording transition and WO-006\r\ncompletion stayed closed at that gate. Tagging, Release creation,\r\nbranch-protection changes, other repository metadata changes, and social\r\npublication all remain unauthorized, and WO-007 stayed proposed at that gate.\r",
+    "[`WO-006`](docs/work-orders/superseded/WO-006-official-vs-toolbelt-benchmark.md)\r\nis superseded. It closed without an accepted measurement under the owner's\r\nclosure decision recorded in its mandate, which keeps its unmet requirements.\r\nWO-006 cannot be resumed or completed, and no session is authorized. WO-007\r\nstayed proposed at that gate.\r",
+    "WO-006 was superseded as `5d88a4ee56309df43537d289514a150615dfeba6`; [CI\r\nworkflow `37037329967`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37037329967)\r\ncompleted successfully, including required job\r\n[`110938646551` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37037329967/job/110938646551).\r\nIts closure basis was commit `13e0bbb67f98ac3f33aff917737fcf9b77a3d64c`,\r\nsuccessful CI workflow `36817435116`, and successful required job\r\n`110225453445` (`Lint, types, tests`).\r",
+    "[`WO-007`](docs/work-orders/completed/WO-007-public-mcp-explainer.md) is completed.\r\nIts planning baseline is `5d88a4ee56309df43537d289514a150615dfeba6`; the\r\nindependently accepted proposal was committed as\r\n`c04e4a794f1e7d0c607c7ad712cbd28e86a55914` after [CI workflow\r\n`37050236355`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37050236355)\r\ncompleted successfully, including required job\r\n[`110981533635` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37050236355/job/110981533635).\r",
+    "At its issuance gate, WO-007 gave no implementation authority and opened no\r\nsession. Session A, the repository explainer and draft variants, needed its\r\nown separate owner gate recorded in this pointer, and its proposed\r\nlive-verification exemption remained pending the owner's decision at that\r\ngate.\r",
+    "At the Session A authorization gate, this pointer opened the repository\r\nexplainer and the two private drafts only, on the basis of commit\r\n`c49905067e6c0d7038c467b3ae6f1116640a904a`, successful CI workflow\r\n`37091060115`, and successful required job `111111315920` (`Lint, types,\r\ntests`). That evidence was CI on the issuance commit; it established the issued\r\nmandate, not any Session A output. That gate covered the Session A scope\r\nrecorded in the mandate, unchanged, and ended with its three repository paths\r\nuncommitted and its two private drafts held for independent review. The owner\r\naccepted the proposed live-verification exemption for exactly that scope, with\r\noffline verification only, on the terms recorded in the mandate; it accepted\r\nno publication, runtime change, or live activity. That gate opened no\r\npublication, deploy, UEFN launch, bridge startup, MCP call, benchmark, commit,\r\nor push.\r",
+    "WO-007 is completed as `e34e9fcdfb27ef7e443ae4e47799512d5c28489b`; [CI workflow\r\n`37137035181`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37137035181)\r\ncompleted successfully, including required job\r\n[`111243552871` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37137035181/job/111243552871).\r\nThat commit carries the independently accepted Session A repository output:\r\nthe explainer `docs/OFFICIAL_MCP_AND_TOOLBELT.md`, its drift scan-target\r\nentry, and the matching test entry. The two accepted drafts stay private;\r\ntheir counts and SHA-256 identities are recorded in the completed mandate.\r\nCompletion accepts no benchmark result, performance comparison, version\r\nchoice, or publication, and approves publishing neither draft. WO-007 is\r\ncomplete; no session is authorized. With WO-007 completed and WO-006\r\nsuperseded, the frozen train meets the completion condition of the\r\nrelease-train amendment below. The final integration/repository-truth audit,\r\nversion selection, tagging, Release creation, branch-protection changes, other\r\nrepository metadata changes, and social publication all remained unauthorized\r\nat that gate.\r",
+    "WO-001 through WO-007 form the frozen next release train. The owner selected\r\nrelease version 2.5.0, recorded in the release preparation record below. No tag\r\nor GitHub Release is authorized until the frozen train is complete, a final\r\nintegration/repository-truth audit passes, and the owner separately authorizes\r\na release session. New proposals default to the following release train unless\r\nthe owner explicitly classifies one as a blocker.\r",
+    "Release-train amendment (owner decision): the frozen train remains WO-001\r\nthrough WO-007. WO-006 is closed as superseded without an accepted\r\nmeasurement. It is resolved for this train, not completed, and its unmet\r\nrequirements stay recorded in its mandate. For the release gate above, the\r\nfrozen train is complete when WO-001 through WO-005 and WO-007 are completed\r\nand WO-006 remains superseded. This amendment opens no session and grants\r\nnothing: WO-007 is completed with no session authorized, and the final\r\nintegration/repository-truth audit and a separate owner decision on any\r\nrelease remained required at that gate.\r",
+    "Final integration/repository-truth audit record: under a separate owner\r\nauthorization for a read-only audit only, which opened no implementation\r\nsession and no release authority, an independent auditor audited commit\r\n`066cf6d751740c0daaff165fc076be19e1b8e22d`; [CI workflow\r\n`37142847095`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37142847095)\r\ncompleted successfully on that commit, including required job\r\n[`111260679508` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37142847095/job/111260679508).\r\nThe audit changed no repository file and ran no UEFN, deploy, endpoint\r\ncontact, or benchmark. Its verdict is ACCEPT WITH REQUIRED FIX. The private\r\naudit report is identified by its SHA-256\r\n`aed10f85280517a6916398cff384562e2af6fb75d5a0896be7985b01204288f3` and its private logs\r\nby their manifest digest\r\n`88dc0e5bb7c3d246f3fdb03ef05c0ba549805f3012d926feef356f63e3c933b9`.\r",
+    "At that gate, two required fixes were outstanding. P1-1: public and agent pages\r\nclaimed MCP-host compatibility that no accepted record supports. P1-2: public\r\nand agent pages presented the smoke test's registration checks as tool\r\nexecution or schema validation. At that gate, the final audit had not passed\r\nthe release gate. The `.mcp.json` fresh-clone documentation defect remained\r\nqueued for\r\ncorrection with them. The version choice, the checker's handling of historical\r\nversion lines, the pinned-port configuration, the agent settings, the privacy\r\nfinding, and the disclosure of the security fix remained open owner decisions;\r\nthat record neither accepted nor waived any of them. Release preparation, any\r\nversion bump, tagging, Release creation, branch-protection changes, other\r\nrepository metadata changes, and social publication all remained unauthorized\r\nat that gate.\r",
+    "Release preparation record: under a separate owner authorization for one\r\nbounded release-preparation session, which opened no review, commit, push, tag,\r\nRelease, or publication authority, the repository was prepared on base commit\r\n`fb7f9540464ac0898662087d4f70caa534de60d6`; [CI workflow\r\n`37149178090`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37149178090)\r\ncompleted successfully on that commit, including required job\r\n[`111279224830` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37149178090/job/111279224830).\r\nThe owner adopted version 2.5.0, with an explicit read-before-upgrading section\r\nand no backward-compatibility claim; MCP-host claims limited to the evidence,\r\nso integration after the hardening is stated as untested; the smoke test\r\ndescribed as registration and module-loading checks that execute no tool and\r\nvalidate no schema; fresh-clone setup through a local, gitignored `.mcp.json`\r\ncopied from `.mcp.json.template`; no pinned port in that template;\r\n`enableAllProjectMcpServers`, `Bash(python -c *)`, and `Bash(find*)` removed\r\nfrom the shared agent settings; the profile path in `docs/UEFN_QUIRKS.md`\r\nredacted, with completed mandates and Git history unchanged; disclosure of the\r\nreleased unauthenticated `execute_python` issue and of the proxy and redirect\r\nbearer leak on unreleased `main`, without exploit detail or a GitHub advisory;\r\nthe checker's historical-version exemption limited to exact lines; and an\r\noffline live-verification exemption for this preparation change, whose only\r\n`Content/Python` edit is `__version__` and which supplies no live verification.\r\nThe private authorization is identified by its SHA-256\r\n`aa6f386781c9db3d11ae54012aaef2184ca985edc876cf25ae4d95b880f2f40a`. At that\r\ngate, the final audit had not passed the release gate; passing it required an\r\nindependent recheck of the required fixes and the affected changes, which that\r\nauthorization did not open. Tagging, Release creation, branch-protection\r\nchanges, other repository metadata changes, and draft or social publication all\r\nremained unauthorized at that gate.\r",
+    "Final audit recheck record: under separate owner authorizations, an independent\r\nreviewer that authored none of the release preparation reviewed it against the\r\nfinal audit's required fixes and returned ACCEPT WITH REQUIRED FIX; after a\r\nbounded correction, its scoped re-review of that correction returned ACCEPT,\r\nand the owner accepted that review. The accepted content is committed as\r\n`82f256da98dc606de9fcca19afd68de2c69a026d`; [CI workflow\r\n`37172802902`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37172802902)\r\ncompleted successfully on that commit, including required job\r\n[`111349057775` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37172802902/job/111349057775),\r\nwhich logged 2529 passed and 14 skipped on Linux. Within the accepted scope,\r\nP1-1, P1-2, and the queued `.mcp.json` fresh-clone documentation defect are\r\nresolved. The original audit record above keeps its verdict, ACCEPT WITH\r\nREQUIRED FIX, as history; this record is a separate follow-up acceptance, not a\r\nrewritten pass. The private review reports are identified by their SHA-256\r\n`4ecc6fd0284c1bfb9a1461b11355904615f49852219c87b29474f5a288e10b00` and\r\n`9e848b0fe84bc002689548db6cbde834fded5574eb94b7a2370a5227b860a642`, and their\r\nprivate logs by their manifest digests\r\n`7da7879c48f5b2f7577f10c52f461cf7d6c029055f8a35838e765bd570c22b69` and\r\n`1ca8d489fee0b1481c1986a21e134cf61742eadd1fb506054179d4e58cca72da`. The\r\ndashboard and menu runtime wording about MCP-compatible clients, and the\r\nlimitations the release notes defer, are disclosed; this record neither fixes\r\nnor waives them. This acceptance supplies no live UEFN, MCP-host, or\r\neffective-permissions evidence. Tagging, Release creation, branch-protection\r\nchanges, other repository metadata changes, and draft or social publication all\r\nremain unauthorized.\r",
+    "Release conditions record: the owner accepted that the original final\r\nintegration/repository-truth audit, together with the accepted corrective\r\nrecheck and green CI, satisfies the frozen train's audit condition; this does\r\nnot rewrite the original verdict, ACCEPT WITH REQUIRED FIX, which the audit\r\nrecord above keeps as history with its evidence identities and digests. The\r\nrecheck recording is committed as `b305a1746c59637854a6877fe6196f17ec84e245`;\r\n[CI workflow\r\n`37180447555`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37180447555)\r\ncompleted successfully on that commit, including required job\r\n[`111371778482` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37180447555/job/111371778482).\r\nThe frozen train, WO-001 through WO-007, meets its completion condition: WO-001\r\nthrough WO-005 and WO-007 are completed, and WO-006 remains superseded with no\r\naccepted benchmark. Its audit condition is satisfied. Version 2.5.0 and the\r\naccepted release-preparation content committed as\r\n`82f256da98dc606de9fcca19afd68de2c69a026d` are unchanged. The owner deferred\r\nthe nonblocking review advisories to post-release hygiene: the `.MCP.json` case\r\nvariant in the tracked-configuration test, the incomplete dashboard quotation\r\nin the known issues, the historical-tag wording in `SECURITY.md`, and the\r\nresidual README intent wording (review item P2-7); they remain open, neither\r\nfixed nor waived. The owner's instruction is identified by its SHA-256\r\n`e7083af5399b4c0e0196e4cf481ab85e90d42c8b93905f15d78b59ea77c8a416`. Tagging,\r\nGitHub Release creation, branch-protection changes, other repository metadata\r\nchanges, and draft or social publication each still required a separate owner\r\nexecution authorization at that gate, and that record gave none.\r",
+    "Release publication record: under separate owner authorizations given after the\r\nconditions record, the annotated tag `v2.5.0`, tag object\r\n`39afcab4d2f3a8ae3af58fdbd01312c7ec05c93a`, was created on commit\r\n`eabce22518d07725e05173aa707909023166a799` and pushed; [CI workflow\r\n`37186239025`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37186239025)\r\ncompleted successfully on that commit, including required job\r\n[`111388630828` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37186239025/job/111388630828).\r\nGitHub Release `402913965`, titled \"UEFN Toolbelt v2.5.0\", was then published\r\nfrom that tag at 2026-10-04T08:10:21Z, not as a prerelease, and marked Latest.\r\nIts body is the 2.5.0 section of `docs/CHANGELOG.md` at the tag, with only the\r\n`SECURITY.md` link made absolute, and is identified by its SHA-256\r\n`6c1234865662798fdf13eb3f72449565264545b690c6218bc549a794a6e1eb4a`. Statements\r\nin the earlier records above that tagging or Release creation remain\r\nunauthorized describe their own gates; only those separate owner authorizations\r\nchanged that, for v2.5.0 alone. This record is a post-release change and is not\r\npart of the tagged package; `v2.5.0` and every earlier tag stay where they are.\r\nThe owner's instruction is identified by its SHA-256\r\n`aadad5fbeccd0f656dfba476cf035e7cf4aba24324ae93ab47c0ab396168920a`. No further\r\ntagging or GitHub Release creation follows from this record. Social\r\npublication, private-draft publication, and scratch cleanup remain separately\r\ngated, and the deferred review advisories remain open. The next Work Order\r\nawaits a separate owner decision, and no implementation follows from this\r\nrecord.",
+)
+
+
+_WO008_SECTION_HEADINGS = (
+    "## Purpose and evidence",
+    "## Admission and issuance prerequisites",
+    "## Issuance basis",
+    "## Session A Real client baseline",
+    "## Session B Bounded reliability corrections",
+    "## Session C Live acceptance of the corrections",
+    "## Process discipline and exclusions",
+    "## Decision locks and next gate",
+)
+
+
+def _wo008_paragraph_residual(
+    text: str, contexts: tuple[tuple[str | None, str], ...],
+) -> tuple[list[str], str]:
+    """Validate full paragraphs in their own sections before removing once.
+
+    Preserve original case and statement/newline boundaries for the labeled
+    and current-session scanners. Failure returns the original text unchanged.
+    """
+    problems: list[str] = []
+    spans: list[tuple[int, int]] = []
+    paragraphs = list(re.finditer(r"(?ms)\S.*?(?=\n[ \t]*\n|\Z)", text))
+    for heading, expected in contexts:
+        normalized = " ".join(expected.split())
+        candidates = [m for m in paragraphs
+                      if " ".join(m.group().split()) == normalized]
+        if " ".join(text.split()).count(normalized) != 1 or len(candidates) != 1:
+            problems.append(expected)
+            continue
+        match = candidates[0]
+        headings = list(re.finditer(r"(?m)^## .+$", text))
+        owning = [h for h in headings if h.start() < match.start()]
+        if heading is None and owning:
+            problems.append(expected)
+            continue
+        if heading is not None:
+            if (sum(h.group().strip() == heading for h in headings) != 1
+                    or not owning or owning[-1].group().strip() != heading):
+                problems.append(expected)
+                continue
+        spans.append(match.span())
+    if problems:
+        return problems, text
+    residual = text
+    for start, end in sorted(spans, reverse=True):
+        residual = residual[:start] + "\n" + residual[end:]
+    return [], residual
+
+
+def _wo008_issuance_findings(
+    pointer: str, text: str, rel: str, surface: str,
+) -> list[tuple[str, str, str, str]]:
+    """Validate the actual closed records, never a fabricated wrapper."""
+    where = "WORKORDER.md" if surface == "pointer" else rel
+    history_sequence = tuple(
+        "- Release train: " + _FROZEN_RELEASE_TRAIN if line == "- Release train:"
+        else "- Release gate: " + _PUBLISHED_RELEASE_GATE if line == "- Release gate:"
+        else line for line in _RELEASE_PUBLISHED_POINTER_SEQUENCE[4:])
+    sequence = (_WO008_POINTER_SEQUENCE + history_sequence
+                if surface == "pointer" else _WO008_ISSUED_SEQUENCE)
+    stop = (lambda line: line.startswith("[`WO-001")) if surface == "pointer" else (
+        lambda line: line.startswith("This is an issued"))
+    keys = tuple((line.split(":", 1)[0] + ":", line) for line in (
+        _WO008_POINTER_SEQUENCE if surface == "pointer" else sequence))
+    out = [(where, kind, found, want) for kind, found, want
+           in _canonical_field_findings(
+               pointer if surface == "pointer" else text, sequence, stop,
+               where, exact=frozenset(sequence),
+               terminal=True, label="WO-008 issuance")]
+    out.extend((where, kind, found, want) for kind, found, want
+               in _canonical_key_findings(
+                   pointer if surface == "pointer" else text, stop, keys,
+                   label="WO-008 issuance"))
+    contexts: tuple[tuple[str | None, str], ...]
+    if surface == "pointer":
+        contexts = ((None, _WO008_POINTER_RECORD),)
+    else:
+        if tuple(line for line in text.splitlines() if line.startswith("## ")) != (
+            _WO008_SECTION_HEADINGS
+        ):
+            out.append((where, "WO-008 unsupported phase", "changed section inventory",
+                        "only the accepted closed-issuance sections"))
+        contexts = (
+            (None, _WO008_OPENING),
+            ("## Decision locks and next gate", _WO008_NEXT_GATE),
+        ) + tuple(("## Admission and issuance prerequisites", paragraph)
+                  for paragraph in _WO008_PREREQUISITES.split("\n\n"))
+        # A closed section may contain several paragraphs. Pin it as a
+        # section, not as a prefix or a non-anchored substring.
+        for heading, expected in (
+            ("## Issuance basis", _WO008_ISSUANCE_RECORD),
+        ):
+            lines = text.splitlines()
+            actual = (_wo005_closed_section(lines, heading)
+                      if heading in lines else "")
+            if (lines.count(heading) != 1
+                    or actual != heading + " " + " ".join(expected.split())):
+                out.append((where, "WO-008 issuance record", heading,
+                            "exact accepted closed section"))
+        if sum(line.startswith("NEXT GATE:") for line in text.splitlines()) != 1:
+            out.append((where, "WO-008 next gate", "missing or duplicated",
+                        "exactly one closed NEXT GATE"))
+    bad, _residual = _wo008_paragraph_residual(
+        pointer if surface == "pointer" else text, contexts)
+    out.extend((where, "WO-008 issuance record", value,
+                "one exact accepted paragraph on its owning surface") for value in bad)
+    return out
+
+
+def _wo008_phase_findings(
+    pointer: str, text: str, rel: str, surface: str,
+) -> tuple[list[tuple[str, str, str, str]], str]:
+    """Only ISSUED_CLOSED exists here; later phases need separate transitions."""
+    source = pointer if surface == "pointer" else text
+    out = _wo008_issuance_findings(pointer, text, rel, surface)
+    where = "WORKORDER.md" if surface == "pointer" else rel
+    contexts = (
+        tuple((None, value) for value in _WO008_POINTER_HISTORY_PARAGRAPHS)
+        + ((None, _WO008_POINTER_RECORD),)
+        if surface == "pointer" else
+        _WO008_CONDITIONAL_PARAGRAPHS + (
+            (None, _WO008_OPENING),
+            ("## Decision locks and next gate", _WO008_NEXT_GATE),
+        ) + tuple(("## Admission and issuance prerequisites", paragraph)
+                  for paragraph in _WO008_PREREQUISITES.split("\n\n")))
+    bad, residual = _wo008_paragraph_residual(source, contexts)
+    out.extend((where, "WO-008 conditional context", value,
+                "one full accepted paragraph in its own section") for value in bad)
+    if surface == "pointer":
+        # The header is removed only after actual field validation.
+        spans = _WO008_POINTER_SEQUENCE + _RELEASE_PUBLISHED_POINTER_SEQUENCE[4:]
+        for line in spans:
+            suffix = r"[^\r\n]*" if line in (
+                "- Release train:", "- Release gate:") else ""
+            residual = re.sub(r"(?m)^" + re.escape(line) + suffix + r"\r?$", "", residual,
+                              count=1)
+    else:
+        # These are section-bound closed records, validated above. Removal
+        # preserves case and line boundaries and is singular, never global.
+        for value in (_WO008_ISSUANCE_RECORD, _WO008_NEXT_GATE):
+            pattern = r"\s+".join(re.escape(word) for word in value.split())
+            residual = re.sub(pattern, "\n", residual, count=1)
+        residual = re.sub(r"(?m)^" + re.escape(_ISSUED_NO_SESSION_AUTH) + r"\r?$",
+                          "", residual, count=1)
+    return out, source if out else residual
+
+
 def _has_implicit_session_authorization(
     pointer: str, issued_text: str, expected_gate: str
 ) -> bool:
@@ -4893,6 +5128,11 @@ def _has_implicit_session_authorization(
             return True
         authority_text = authority_text.replace(context, "", 1)
 
+    return _has_residual_session_authorization(authority_text)
+
+
+def _has_residual_session_authorization(authority_text: str) -> bool:
+    """Scan a prevalidated residual; caller owns canonical context handling."""
     # Scan individual statements so an unrelated noun in the mandate cannot
     # combine with a distant verb to create a false positive. Contrast words
     # are boundaries too: "not authorized; nevertheless work may commence"
@@ -5538,7 +5778,9 @@ def check_work_order_contract() -> list[dict]:
     for path in work_order_docs:
         if path.name in _PLANNING_ONLY_PROPOSALS:
             canonical_proposal = proposed_dir / path.name
-            if path != canonical_proposal:
+            if (path != canonical_proposal
+                    and not (path == issued_dir / _WO008_NAME
+                             and current == _WO008_ID)):
                 add(path.relative_to(root).as_posix(),
                     "planning-only proposal placement",
                     "registered proposal outside its canonical path",
@@ -5799,6 +6041,40 @@ def check_work_order_contract() -> list[dict]:
     if _WO007_NAME in completed_metadata:
         wo007_completed_text = completed_metadata[_WO007_NAME][2]
 
+    wo008_paths = [path for path in state_paths if path.name == _WO008_NAME]
+    wo008_issued = issued_dir / _WO008_NAME
+    wo008_status, wo008_auth, wo008_text = issued_metadata.get(
+        _WO008_NAME, ([], [], ""))
+    if not (wo008_paths == [wo008_issued]
+            and wo008_status == ["STATUS: ISSUED"]
+            and wo008_auth == [_ISSUED_NO_SESSION_AUTH]):
+        add("docs/work-orders", "WO-008 issued state",
+            "the closed issued WO-008 state was removed or changed",
+            "WO-008 exclusively under issued/ with closed session markers")
+    wo008_trace = (
+        current == _WO008_ID or bool(wo008_text)
+        or "WO-008 closed issuance record:" in pointer
+        or "- WO-008 admission basis commit:" in pointer)
+    wo008_pointer_residual = pointer
+    wo008_history_findings = []
+    if wo008_trace:
+        # Old NONE fields retire, not their canonical history or terminal locks.
+        wo008_history_findings = _wo007_completed_findings(
+            pointer, wo007_completed_text,
+            (completed_dir / _WO007_NAME).relative_to(root).as_posix(),
+            "pointer", audit_recorded=True, release_prepared=True,
+            audit_rechecked=True, conditions_satisfied=True,
+            release_published=True, following_wo008=True)
+        for _f, _k, _found, _want in wo008_history_findings:
+            add(_f, _k, _found, _want)
+        wo008_pointer_findings, wo008_pointer_residual = _wo008_phase_findings(
+            pointer, wo008_text,
+            wo008_issued.relative_to(root).as_posix(), "pointer")
+        for _f, _k, _found, _want in wo008_pointer_findings:
+            add(_f, _k, _found, _want)
+        if wo008_history_findings:
+            wo008_pointer_residual = pointer
+
     # Whichever Work Order closed last owns the pointer's base and gate,
     # and its document is the basis for the successor guard. Selecting it
     # here rather than inside the branch below is what lets the ARTIFACT
@@ -6055,7 +6331,9 @@ def check_work_order_contract() -> list[dict]:
             # running - the enforcement fails open, which is the one direction
             # a governance check must never fail.
             _declared = dict(_RELEASE_TRAIN)
-            if _declared.get(issued_id) != issued[0].name:
+            exact_wo008 = (current == _WO008_ID and issued_id == _WO008_ID
+                           and issued[0].name == _WO008_NAME)
+            if (_declared.get(issued_id) != issued[0].name and not exact_wo008):
                 add("docs/work-orders/issued", "issued work order identity",
                     issued_id + " / " + issued[0].name,
                     "a declared frozen-train order under its canonical "
@@ -6140,7 +6418,7 @@ def check_work_order_contract() -> list[dict]:
             # the pointer, and the body was previously unscanned for these
             # three classes. The existing scanners and their vocabulary are
             # reused unchanged: nothing new parses prose.
-            if issued[0].name not in (_WO002_NAME, _WO003_NAME):
+            if issued[0].name not in (_WO002_NAME, _WO003_NAME, _WO008_NAME):
                 rel = issued[0].relative_to(root).as_posix()
                 normalized_issued = " ".join(issued_text.split())
                 # Attribution: each surface is scanned alone first, so a claim
@@ -6221,7 +6499,49 @@ def check_work_order_contract() -> list[dict]:
                         add(rel, "next work order authorization",
                             f"implicit {successor} permission", _next_want)
 
-            if session == "NONE":
+            if exact_wo008:
+                rel = issued[0].relative_to(root).as_posix()
+                phase_findings, body_residual = _wo008_phase_findings(
+                    pointer, issued_text, rel, "document")
+                for _f, _k, _found, _want in phase_findings:
+                    add(_f, _k, _found, _want)
+                if phase_findings:
+                    add(rel, "planning-only proposal placement",
+                        "issuance record missing or malformed",
+                        "canonical issued WO-008 with validated closed records")
+                for where, residual in (
+                    ("WORKORDER.md", wo008_pointer_residual),
+                    (rel, body_residual),
+                ):
+                    if _has_residual_session_authorization(
+                        " ".join(residual.lower().split())
+                    ):
+                        add(where, "implicit session authorization",
+                            "positive activation outside accepted records", _WO008_GATE)
+                    if _has_other_session_authorization(residual, "", ""):
+                        add(where, "later session authorization",
+                            "positive labeled session permission", "no session authorized")
+                    if _current_session_widening(residual, "A", ()):
+                        add(where, "session scope widening",
+                            "positive Session A permission", "no session authorized")
+                # Release/external scans always see the original surfaces.
+                if _has_release_authorization(pointer):
+                    add("WORKORDER.md", "release authorization", "positive permission",
+                        _PUBLISHED_RELEASE_GATE)
+                elif _has_release_authorization(pointer, issued_text):
+                    add(rel, "release authorization", "positive permission",
+                        _PUBLISHED_RELEASE_GATE)
+                allowed_history = (
+                    _WO003_PRE_APPLICATION_POINTER_STATEMENT,
+                    _WO003_COMPLETED_APPLIED_POINTER_STATEMENT,
+                    _WO003_COMPLETION_POINTER_STATEMENT)
+                if _has_session_b_external_action_authorization(pointer, allowed_history):
+                    add("WORKORDER.md", "external-action boundary", "positive permission",
+                        "metadata and social publication remain unauthorized")
+                if _has_session_b_external_action_authorization("", (), issued_text):
+                    add(rel, "external-action boundary", "positive permission",
+                        "metadata and social publication remain unauthorized")
+            elif session == "NONE":
                 wo002_session_a_accepted = issued[0].name == _WO002_NAME and (
                     current_gate == _WO002_SESSION_A_ACCEPTED_GATE
                     or auth_lines == [_ISSUED_SESSION_A_ACCEPTED]
@@ -6908,7 +7228,10 @@ def check_work_order_contract() -> list[dict]:
                 "positive permission for a further external action",
                 "WO-003 is completed; repository metadata, branch-protection, "
                 "and social publication remain unauthorized")
-        if _has_other_session_authorization(pointer, "", session or ""):
+        if _has_other_session_authorization(
+            wo008_pointer_residual if current == _WO008_ID else pointer,
+            "", session or ""
+        ):
             add("WORKORDER.md", "session authorization reopening",
                 "positive permission for a session other than the authorized "
                 "one",

@@ -13,8 +13,8 @@
 > that the frozen train's completion and audit conditions are satisfied. Under
 > separate owner authorizations, v2.5.0 was then tagged and published as a
 > GitHub Release. Social publication, private-draft publication, and scratch
-> cleanup remain separately gated, and the next Work Order awaits a separate
-> owner decision.
+> cleanup remain separately gated. WO-008 is issued outside the frozen train
+> with session NONE; Session A offline preparation is not authorized.
 > This roadmap grants no implementation authority — root
 > [`WORKORDER.md`](WORKORDER.md) is the sole current gate.
 
