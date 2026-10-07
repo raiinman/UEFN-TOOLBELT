@@ -5,13 +5,17 @@ state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
 - Current issued Work Order: WO-008
-- Authorized session: NONE
-- Base commit: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`
-- Current gate: WO-008 ISSUED — SESSION A OFFLINE PREPARATION NOT AUTHORIZED
+- Authorized session: A
+- Base commit: `0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`
+- Current gate: WO-008 SESSION A OFFLINE PREPARATION ONLY — LIVE START NOT AUTHORIZED
 - WO-008 admission basis commit: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`
 - WO-008 admission CI workflow: `37246398757`
 - WO-008 admission CI job: `111565059168` — Lint, types, tests
 - WO-008 issuance decision SHA-256: `5997654fb63b587ae72265d4382bf9f2f8a752e4fb09a6d79593a5b88725746a`
+- WO-008 closed issuance commit: `0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`
+- WO-008 closed issuance CI workflow: `37359992194`
+- WO-008 closed issuance CI job: `111931901481` — Lint, types, tests
+- WO-008 Session A preparation decision SHA-256: `3f2218b675dc2257fffe3ea4e4ceb4e351a23bc651cfd53177fe7ef62882c9ed`
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
@@ -493,12 +497,30 @@ closed-issuance implementation under an offline-verification exemption for
 this governance scope. The instruction is identified by SHA-256
 `5997654fb63b587ae72265d4382bf9f2f8a752e4fb09a6d79593a5b88725746a`.
 [`WO-008-user-reliability-and-mcp-client-acceptance.md`](docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md)
-is issued outside the frozen train with session NONE. Admission CI workflow
+was issued outside the frozen train with session NONE. Admission CI workflow
 `37246398757` and job `111565059168` succeeded on
 `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`; they cover admission only,
 not this transition, Session A outputs, a live build or MCP-host acceptance.
-Session A offline preparation, live start, Session B and Session C remain
-unauthorized. Runtime or live need stops this transition. Configuration
+At that gate, Session A offline preparation, live start, Session B and
+Session C remained unauthorized. Runtime or live need stops this transition. Configuration
 changes, installations, recovery, exact commits, pushes, cleanup, further
 tags or Releases, metadata and publication remain separately gated.
 This record grants none of those authorities.
+
+WO-008 Session A offline preparation record: the owner authorized Session A
+for offline preparation only, on the basis of the closed issuance committed as
+`0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`; [CI workflow
+`37359992194`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37359992194)
+completed successfully on that commit, including required job
+[`111931901481` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37359992194/job/111931901481).
+That CI tested the closed issuance enforcement, not this transition, a
+Session A output, an MCP host or a live build. The instruction is identified
+by SHA-256 `3f2218b675dc2257fffe3ea4e4ceb4e351a23bc651cfd53177fe7ef62882c9ed`.
+Preparation produces only a redacted exact call plan and a fixture/setup
+checklist, outside the checkout, for independent review, and changes no
+repository file. Client launch, configuration reads or changes, dependency
+installation, deploy, editor contact, bridge lifecycle, endpoint calls,
+fixture mutation, product changes, recovery, commits and pushes remain
+unauthorized. Live start needs an accepted call plan and a separate owner
+live-start instruction recorded here. Session B and Session C remain
+unauthorized, and this record grants no further authority.

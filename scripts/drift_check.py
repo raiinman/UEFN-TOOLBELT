@@ -4976,6 +4976,194 @@ _WO008_SECTION_HEADINGS = (
     "## Decision locks and next gate",
 )
 
+# Session A offline preparation (A_PREP) is the only later phase installed.
+# Its records replace the closed current gate and marker; the closed record
+# stays as history. Later phases have no entry in _WO008_PHASES, so their
+# traces fail instead of falling back to a permissive shape.
+_WO008_A_PREP_BASE = "0d1de9e6a1f49ea422cd7911d1c40d67787ddde4"
+_WO008_A_PREP_WORKFLOW = "37359992194"
+_WO008_A_PREP_JOB = "111931901481"
+_WO008_A_PREP_INSTRUCTION_SHA256 = (
+    "3f2218b675dc2257fffe3ea4e4ceb4e351a23bc651cfd53177fe7ef62882c9ed"
+)
+_WO008_A_PREP_GATE = (
+    "WO-008 SESSION A OFFLINE PREPARATION ONLY — LIVE START NOT AUTHORIZED"
+)
+_ISSUED_SESSION_A_PREP_AUTH = (
+    "AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR OFFLINE PREPARATION ONLY"
+)
+_WO008_A_PREP_POINTER_SEQUENCE = (
+    "- Current issued Work Order: WO-008",
+    "- Authorized session: A",
+    "- Base commit: `" + _WO008_A_PREP_BASE + "`",
+    "- Current gate: " + _WO008_A_PREP_GATE,
+) + _WO008_POINTER_SEQUENCE[4:] + (
+    "- WO-008 closed issuance commit: `" + _WO008_A_PREP_BASE + "`",
+    "- WO-008 closed issuance CI workflow: `" + _WO008_A_PREP_WORKFLOW + "`",
+    "- WO-008 closed issuance CI job: `" + _WO008_A_PREP_JOB
+    + "` — Lint, types, tests",
+    "- WO-008 Session A preparation decision SHA-256: `"
+    + _WO008_A_PREP_INSTRUCTION_SHA256 + "`",
+)
+# The closed record as history: exactly two present-tense passages change.
+_WO008_CLOSED_HISTORY_RECORD = _replaced_once(_WO008_POINTER_RECORD, (
+    ("\nis issued outside the frozen train with session NONE. Admission CI workflow\n",
+     "\nwas issued outside the frozen train with session NONE. Admission CI workflow\n"),
+    ("Session A offline preparation, live start, Session B and Session C remain\n"
+     "unauthorized.",
+     "At that gate, Session A offline preparation, live start, Session B and\n"
+     "Session C remained unauthorized."),
+))
+_WO008_A_PREP_POINTER_RECORD = (
+    "WO-008 Session A offline preparation record: the owner authorized Session A\n"
+    "for offline preparation only, on the basis of the closed issuance committed as\n"
+    "`" + _WO008_A_PREP_BASE + "`; [CI workflow\n"
+    "`" + _WO008_A_PREP_WORKFLOW + "`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _WO008_A_PREP_WORKFLOW + ")\n"
+    "completed successfully on that commit, including required job\n"
+    "[`" + _WO008_A_PREP_JOB + "` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/"
+    + _WO008_A_PREP_WORKFLOW + "/job/" + _WO008_A_PREP_JOB + ").\n"
+    "That CI tested the closed issuance enforcement, not this transition, a\n"
+    "Session A output, an MCP host or a live build. The instruction is identified\n"
+    "by SHA-256 `" + _WO008_A_PREP_INSTRUCTION_SHA256 + "`.\n"
+    "Preparation produces only a redacted exact call plan and a fixture/setup\n"
+    "checklist, outside the checkout, for independent review, and changes no\n"
+    "repository file. Client launch, configuration reads or changes, dependency\n"
+    "installation, deploy, editor contact, bridge lifecycle, endpoint calls,\n"
+    "fixture mutation, product changes, recovery, commits and pushes remain\n"
+    "unauthorized. Live start needs an accepted call plan and a separate owner\n"
+    "live-start instruction recorded here. Session B and Session C remain\n"
+    "unauthorized, and this record grants no further authority."
+)
+_WO008_A_PREP_OPENING = (
+    "This is an issued following-train Work Order, outside the frozen\n"
+    "WO-001 through WO-007 train. The root pointer identifies WO-008 with\n"
+    "Session A authorized for offline preparation only. Live start, Session B\n"
+    "and Session C remain unauthorized."
+)
+_WO008_CLOSED_PREREQUISITES_HEAD = (
+    "The separately adopted issuance/session-enforcement plan r2 supports this\n"
+    "closed issuance only. Later offline preparation, live start, product\n"
+    "corrections and live acceptance still need separately reviewed enforcement\n"
+    "transitions and explicit owner decisions. No later phase is installed here."
+)
+_WO008_A_PREP_PREREQUISITES = _replaced_once(_WO008_PREREQUISITES, ((
+    _WO008_CLOSED_PREREQUISITES_HEAD,
+    "The separately adopted issuance/session-enforcement plan r2 supported the\n"
+    "closed issuance, and a separate transition installs Session A offline\n"
+    "preparation only. Live start, product corrections and live acceptance still\n"
+    "need separately reviewed enforcement transitions and explicit owner\n"
+    "decisions. No later phase is installed here.",
+),))
+_WO008_A_PREP_HEADING = "## Session A offline preparation record"
+_WO008_A_PREP_RECORD = (
+    "Session A preparation basis commit: `" + _WO008_A_PREP_BASE + "`\n"
+    "Session A preparation CI workflow: `" + _WO008_A_PREP_WORKFLOW + "`\n"
+    "Session A preparation CI job: `" + _WO008_A_PREP_JOB + "` — Lint, types, tests\n"
+    "Owner Session A preparation instruction SHA-256: `"
+    + _WO008_A_PREP_INSTRUCTION_SHA256 + "`\n"
+    "\n"
+    "The owner authorized Session A for offline preparation only. CI succeeded on\n"
+    "the closed issuance commit, not on this transition or any Session A output;\n"
+    "it demonstrates neither an MCP host nor a live UEFN build.\n"
+    "\n"
+    "Preparation produces, outside the checkout, a redacted exact call plan and a\n"
+    "fixture/setup checklist for independent review. It reads no owner\n"
+    "`.mcp.json`, credential, session handoff or private editor log, and changes\n"
+    "no repository file. Client launch, configuration reads or changes, dependency\n"
+    "installation, deploy, editor contact, bridge lifecycle, endpoint calls,\n"
+    "fixture mutation, product changes, recovery, commits and pushes remain\n"
+    "unauthorized. Planned values are not recorded as observed results.\n"
+    "\n"
+    "The owner accepted a narrow offline-verification exemption for this\n"
+    "transition's five governance paths only. Runtime or live need stops the work."
+)
+_WO008_A_PREP_NEXT_GATE = (
+    "NEXT GATE: separate owner decisions on an independent review of the Session A\n"
+    "offline call plan and fixture/setup checklist, and then on live start.\n"
+    "Live start, Session B, Session C, product corrections, recovery, exact\n"
+    "commits and pushes remain separate decisions. This mandate grants no review,\n"
+    "implementation, commit or push authority."
+)
+_WO008_A_PREP_ISSUED_SEQUENCE = tuple(
+    _ISSUED_SESSION_A_PREP_AUTH if line == _ISSUED_NO_SESSION_AUTH else line
+    for line in _WO008_ISSUED_SEQUENCE)
+_WO008_A_PREP_SECTION_HEADINGS = (
+    _WO008_SECTION_HEADINGS[:3] + (_WO008_A_PREP_HEADING,)
+    + _WO008_SECTION_HEADINGS[3:])
+# Substring traces on either surface; the session line is matched exactly so
+# that "AA" cannot pass for "A".
+_WO008_A_PREP_TRACES = (
+    _WO008_A_PREP_GATE,
+    "- WO-008 closed issuance commit:",
+    "- WO-008 Session A preparation decision SHA-256:",
+    "WO-008 Session A offline preparation record:",
+    _ISSUED_SESSION_A_PREP_AUTH,
+    _WO008_A_PREP_HEADING,
+)
+# Two literal entries, not a policy engine. Each phase names its own current
+# texts and the prior-state texts that must not survive the change.
+_WO008_PHASES: dict[str, dict] = {
+    "ISSUED_CLOSED": {
+        "pointer_sequence": _WO008_POINTER_SEQUENCE,
+        "issued_sequence": _WO008_ISSUED_SEQUENCE,
+        "marker": _ISSUED_NO_SESSION_AUTH,
+        "gate": _WO008_GATE,
+        "pointer_records": (_WO008_POINTER_RECORD,),
+        "opening": _WO008_OPENING,
+        "prerequisites": _WO008_PREREQUISITES,
+        "sections": (("## Issuance basis", _WO008_ISSUANCE_RECORD),),
+        "next_gate": _WO008_NEXT_GATE,
+        "headings": _WO008_SECTION_HEADINGS,
+        "forbidden_pointer": (),
+        "forbidden_document": (),
+        "label": "WO-008 issuance",
+        "record": "WO-008 issuance record",
+        "session": "",
+    },
+    "A_PREP": {
+        "pointer_sequence": _WO008_A_PREP_POINTER_SEQUENCE,
+        "issued_sequence": _WO008_A_PREP_ISSUED_SEQUENCE,
+        "marker": _ISSUED_SESSION_A_PREP_AUTH,
+        "gate": _WO008_A_PREP_GATE,
+        "pointer_records": (_WO008_CLOSED_HISTORY_RECORD,
+                            _WO008_A_PREP_POINTER_RECORD),
+        "opening": _WO008_A_PREP_OPENING,
+        "prerequisites": _WO008_A_PREP_PREREQUISITES,
+        "sections": (("## Issuance basis", _WO008_ISSUANCE_RECORD),
+                     (_WO008_A_PREP_HEADING, _WO008_A_PREP_RECORD)),
+        "next_gate": _WO008_A_PREP_NEXT_GATE,
+        "headings": _WO008_A_PREP_SECTION_HEADINGS,
+        # A restored prior-state text reads as a denial; the old
+        # prerequisites head trips no scanner at all, so it is named here.
+        "forbidden_pointer": (_WO008_POINTER_RECORD, _WO008_GATE),
+        "forbidden_document": (_WO008_OPENING, _WO008_NEXT_GATE,
+                               _WO008_CLOSED_PREREQUISITES_HEAD,
+                               _ISSUED_NO_SESSION_AUTH),
+        "label": "WO-008 Session A preparation",
+        "record": "WO-008 Session A preparation record",
+        "session": "A",
+    },
+}
+
+
+def _wo008_phase(pointer: str, text: str) -> str:
+    """Any A_PREP trace on either surface selects the full A_PREP shape.
+
+    A partial install is then validated against A_PREP and fails on what is
+    missing; it can never fall back to the clean closed shape. The session
+    line counts only while the pointer names WO-008: an earlier order's
+    Session A, such as WO-007's in its historical states, is not a trace.
+    """
+    lines = pointer.splitlines()
+    session_a = ("- Authorized session: A" in lines
+                 and "- Current issued Work Order: WO-008" in lines)
+    if session_a or any(
+        trace in pointer or trace in text for trace in _WO008_A_PREP_TRACES
+    ):
+        return "A_PREP"
+    return "ISSUED_CLOSED"
+
 
 def _wo008_paragraph_residual(
     text: str, contexts: tuple[tuple[str | None, str], ...],
@@ -5016,87 +5204,94 @@ def _wo008_paragraph_residual(
 
 
 def _wo008_issuance_findings(
-    pointer: str, text: str, rel: str, surface: str,
+    pointer: str, text: str, rel: str, surface: str, phase: str | None = None,
 ) -> list[tuple[str, str, str, str]]:
-    """Validate the actual closed records, never a fabricated wrapper."""
+    """Validate the actual phase records, never a fabricated wrapper."""
+    spec = _WO008_PHASES[phase or _wo008_phase(pointer, text)]
     where = "WORKORDER.md" if surface == "pointer" else rel
     history_sequence = tuple(
         "- Release train: " + _FROZEN_RELEASE_TRAIN if line == "- Release train:"
         else "- Release gate: " + _PUBLISHED_RELEASE_GATE if line == "- Release gate:"
         else line for line in _RELEASE_PUBLISHED_POINTER_SEQUENCE[4:])
-    sequence = (_WO008_POINTER_SEQUENCE + history_sequence
-                if surface == "pointer" else _WO008_ISSUED_SEQUENCE)
+    sequence = (spec["pointer_sequence"] + history_sequence
+                if surface == "pointer" else spec["issued_sequence"])
     stop = (lambda line: line.startswith("[`WO-001")) if surface == "pointer" else (
         lambda line: line.startswith("This is an issued"))
     keys = tuple((line.split(":", 1)[0] + ":", line) for line in (
-        _WO008_POINTER_SEQUENCE if surface == "pointer" else sequence))
+        spec["pointer_sequence"] if surface == "pointer" else sequence))
     out = [(where, kind, found, want) for kind, found, want
            in _canonical_field_findings(
                pointer if surface == "pointer" else text, sequence, stop,
                where, exact=frozenset(sequence),
-               terminal=True, label="WO-008 issuance")]
+               terminal=True, label=spec["label"])]
     out.extend((where, kind, found, want) for kind, found, want
                in _canonical_key_findings(
                    pointer if surface == "pointer" else text, stop, keys,
-                   label="WO-008 issuance"))
+                   label=spec["label"]))
     contexts: tuple[tuple[str | None, str], ...]
     if surface == "pointer":
-        contexts = ((None, _WO008_POINTER_RECORD),)
+        contexts = tuple((None, record) for record in spec["pointer_records"])
     else:
         if tuple(line for line in text.splitlines() if line.startswith("## ")) != (
-            _WO008_SECTION_HEADINGS
+            spec["headings"]
         ):
             out.append((where, "WO-008 unsupported phase", "changed section inventory",
-                        "only the accepted closed-issuance sections"))
+                        "only the accepted sections of the installed phase"))
         contexts = (
-            (None, _WO008_OPENING),
-            ("## Decision locks and next gate", _WO008_NEXT_GATE),
+            (None, spec["opening"]),
+            ("## Decision locks and next gate", spec["next_gate"]),
         ) + tuple(("## Admission and issuance prerequisites", paragraph)
-                  for paragraph in _WO008_PREREQUISITES.split("\n\n"))
+                  for paragraph in spec["prerequisites"].split("\n\n"))
         # A closed section may contain several paragraphs. Pin it as a
         # section, not as a prefix or a non-anchored substring.
-        for heading, expected in (
-            ("## Issuance basis", _WO008_ISSUANCE_RECORD),
-        ):
+        for heading, expected in spec["sections"]:
             lines = text.splitlines()
             actual = (_wo005_closed_section(lines, heading)
                       if heading in lines else "")
             if (lines.count(heading) != 1
                     or actual != heading + " " + " ".join(expected.split())):
-                out.append((where, "WO-008 issuance record", heading,
+                out.append((where, spec["record"], heading,
                             "exact accepted closed section"))
         if sum(line.startswith("NEXT GATE:") for line in text.splitlines()) != 1:
             out.append((where, "WO-008 next gate", "missing or duplicated",
                         "exactly one closed NEXT GATE"))
     bad, _residual = _wo008_paragraph_residual(
         pointer if surface == "pointer" else text, contexts)
-    out.extend((where, "WO-008 issuance record", value,
+    out.extend((where, spec["record"], value,
                 "one exact accepted paragraph on its owning surface") for value in bad)
+    # A prior-state text restored beside valid records would read as a
+    # denial; it must not survive the phase change at all.
+    normalized = " ".join((pointer if surface == "pointer" else text).split())
+    for value in spec["forbidden_" + surface]:
+        if " ".join(value.split()) in normalized:
+            out.append((where, spec["record"], value,
+                        "no prior-state text after the phase change"))
     return out
 
 
 def _wo008_phase_findings(
-    pointer: str, text: str, rel: str, surface: str,
+    pointer: str, text: str, rel: str, surface: str, phase: str | None = None,
 ) -> tuple[list[tuple[str, str, str, str]], str]:
-    """Only ISSUED_CLOSED exists here; later phases need separate transitions."""
+    """ISSUED_CLOSED or A_PREP only; later phases need separate transitions."""
+    spec = _WO008_PHASES[phase or _wo008_phase(pointer, text)]
     source = pointer if surface == "pointer" else text
-    out = _wo008_issuance_findings(pointer, text, rel, surface)
+    out = _wo008_issuance_findings(pointer, text, rel, surface, phase)
     where = "WORKORDER.md" if surface == "pointer" else rel
     contexts = (
         tuple((None, value) for value in _WO008_POINTER_HISTORY_PARAGRAPHS)
-        + ((None, _WO008_POINTER_RECORD),)
+        + tuple((None, record) for record in spec["pointer_records"])
         if surface == "pointer" else
         _WO008_CONDITIONAL_PARAGRAPHS + (
-            (None, _WO008_OPENING),
-            ("## Decision locks and next gate", _WO008_NEXT_GATE),
+            (None, spec["opening"]),
+            ("## Decision locks and next gate", spec["next_gate"]),
         ) + tuple(("## Admission and issuance prerequisites", paragraph)
-                  for paragraph in _WO008_PREREQUISITES.split("\n\n")))
+                  for paragraph in spec["prerequisites"].split("\n\n")))
     bad, residual = _wo008_paragraph_residual(source, contexts)
     out.extend((where, "WO-008 conditional context", value,
                 "one full accepted paragraph in its own section") for value in bad)
     if surface == "pointer":
         # The header is removed only after actual field validation.
-        spans = _WO008_POINTER_SEQUENCE + _RELEASE_PUBLISHED_POINTER_SEQUENCE[4:]
+        spans = spec["pointer_sequence"] + _RELEASE_PUBLISHED_POINTER_SEQUENCE[4:]
         for line in spans:
             suffix = r"[^\r\n]*" if line in (
                 "- Release train:", "- Release gate:") else ""
@@ -5105,10 +5300,12 @@ def _wo008_phase_findings(
     else:
         # These are section-bound closed records, validated above. Removal
         # preserves case and line boundaries and is singular, never global.
-        for value in (_WO008_ISSUANCE_RECORD, _WO008_NEXT_GATE):
+        for value in tuple(body for _heading, body in spec["sections"]) + (
+            spec["next_gate"],
+        ):
             pattern = r"\s+".join(re.escape(word) for word in value.split())
             residual = re.sub(pattern, "\n", residual, count=1)
-        residual = re.sub(r"(?m)^" + re.escape(_ISSUED_NO_SESSION_AUTH) + r"\r?$",
+        residual = re.sub(r"(?m)^" + re.escape(spec["marker"]) + r"\r?$",
                           "", residual, count=1)
     return out, source if out else residual
 
@@ -6045,19 +6242,27 @@ def check_work_order_contract() -> list[dict]:
     wo008_issued = issued_dir / _WO008_NAME
     wo008_status, wo008_auth, wo008_text = issued_metadata.get(
         _WO008_NAME, ([], [], ""))
+    wo008_phase = _wo008_phase(pointer, wo008_text)
     if not (wo008_paths == [wo008_issued]
             and wo008_status == ["STATUS: ISSUED"]
-            and wo008_auth == [_ISSUED_NO_SESSION_AUTH]):
+            and wo008_auth == [_WO008_PHASES[wo008_phase]["marker"]]):
         add("docs/work-orders", "WO-008 issued state",
             "the closed issued WO-008 state was removed or changed",
-            "WO-008 exclusively under issued/ with closed session markers")
+            "WO-008 exclusively under issued/ with the installed phase marker")
     wo008_trace = (
         current == _WO008_ID or bool(wo008_text)
         or "WO-008 closed issuance record:" in pointer
-        or "- WO-008 admission basis commit:" in pointer)
+        or "- WO-008 admission basis commit:" in pointer
+        or wo008_phase == "A_PREP")
     wo008_pointer_residual = pointer
     wo008_history_findings = []
     if wo008_trace:
+        # One-way: once Session A offline preparation is installed, a
+        # coherent rollback to closed issuance trips exactly this lock.
+        if wo008_phase == "ISSUED_CLOSED":
+            add("WORKORDER.md", "WO-008 Session A preparation state",
+                "the Session A offline preparation records were removed",
+                "WO-008 Session A offline preparation records")
         # Old NONE fields retire, not their canonical history or terminal locks.
         wo008_history_findings = _wo007_completed_findings(
             pointer, wo007_completed_text,
@@ -6069,7 +6274,7 @@ def check_work_order_contract() -> list[dict]:
             add(_f, _k, _found, _want)
         wo008_pointer_findings, wo008_pointer_residual = _wo008_phase_findings(
             pointer, wo008_text,
-            wo008_issued.relative_to(root).as_posix(), "pointer")
+            wo008_issued.relative_to(root).as_posix(), "pointer", wo008_phase)
         for _f, _k, _found, _want in wo008_pointer_findings:
             add(_f, _k, _found, _want)
         if wo008_history_findings:
@@ -6501,14 +6706,17 @@ def check_work_order_contract() -> list[dict]:
 
             if exact_wo008:
                 rel = issued[0].relative_to(root).as_posix()
+                spec = _WO008_PHASES[wo008_phase]
                 phase_findings, body_residual = _wo008_phase_findings(
-                    pointer, issued_text, rel, "document")
+                    pointer, issued_text, rel, "document", wo008_phase)
                 for _f, _k, _found, _want in phase_findings:
                     add(_f, _k, _found, _want)
                 if phase_findings:
                     add(rel, "planning-only proposal placement",
                         "issuance record missing or malformed",
                         "canonical issued WO-008 with validated closed records")
+                # In A_PREP the other-session scan exempts only Session A;
+                # any Session A grant beyond the records is widening below.
                 for where, residual in (
                     ("WORKORDER.md", wo008_pointer_residual),
                     (rel, body_residual),
@@ -6517,8 +6725,8 @@ def check_work_order_contract() -> list[dict]:
                         " ".join(residual.lower().split())
                     ):
                         add(where, "implicit session authorization",
-                            "positive activation outside accepted records", _WO008_GATE)
-                    if _has_other_session_authorization(residual, "", ""):
+                            "positive activation outside accepted records", spec["gate"])
+                    if _has_other_session_authorization(residual, "", spec["session"]):
                         add(where, "later session authorization",
                             "positive labeled session permission", "no session authorized")
                     if _current_session_widening(residual, "A", ()):

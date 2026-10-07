@@ -14,6 +14,7 @@ from __future__ import annotations
 import ast
 import hashlib
 import importlib.util
+import itertools
 import json
 import re
 import shutil
@@ -223,8 +224,9 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert [path.name for path in issued] == [_WO008_PROPOSAL_NAME]
     issued_text = issued[0].read_text(encoding="utf-8")
     assert issued_text.splitlines().count("STATUS: ISSUED") == 1
+    assert issued_text.splitlines().count(_WO008_A_PREP_MARKER) == 1
     assert issued_text.splitlines().count(
-        "AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED") == 1
+        "AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED") == 0
     for state in ("proposed", "issued"):
         assert not (
             work_orders / state / "WO-007-public-mcp-explainer.md"
@@ -256,16 +258,23 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         work_orders / "issued" / "WO-006-official-vs-toolbelt-benchmark.md"
     ).exists()
     assert current == "WO-008"
-    assert session == "NONE"
-    # The base is the tagged commit, declared in its own bullet after the
-    # recheck-recording bullets. The gate records the completed tag and
-    # Release and leaves the next Work Order to a separate owner decision.
+    # Session A is open for offline preparation only. The base is the closed
+    # issuance commit, and the gate still denies live start.
+    assert session == "A"
     assert base_lines == [
-        "- Base commit: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`"
+        "- Base commit: `0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`"
     ]
     assert gate_lines == [
-        "- Current gate: WO-008 ISSUED — SESSION A OFFLINE PREPARATION NOT AUTHORIZED"
+        "- Current gate: WO-008 SESSION A OFFLINE PREPARATION ONLY — LIVE START NOT AUTHORIZED"
     ]
+    for line in (
+        "- WO-008 closed issuance commit: `0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`",
+        "- WO-008 closed issuance CI workflow: `37359992194`",
+        "- WO-008 closed issuance CI job: `111931901481` — Lint, types, tests",
+        "- WO-008 Session A preparation decision SHA-256: "
+        "`3f2218b675dc2257fffe3ea4e4ceb4e351a23bc651cfd53177fe7ef62882c9ed`",
+    ):
+        assert pointer_lines.count(line) == 1, line
     for line in (
         "- Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`",
         "- Issuance CI workflow: `37050236355`",
@@ -386,7 +395,8 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "authorizations, v2.5.0 was then tagged and published as a GitHub "
         "Release. Social publication, private-draft publication, and scratch "
         "cleanup remain separately gated. WO-008 is issued outside the frozen "
-        "train with session NONE; Session A offline preparation is not authorized."
+        "train; Session A is authorized for offline preparation only, and live "
+        "start is not authorized."
         in normalized_roadmap
     )
     assert "its recheck is not authorized" not in normalized_roadmap
@@ -4165,27 +4175,133 @@ _WO008_ADMITTED_PREREQUISITES = "At the planning baseline, the checker admitted 
 _WO008_CLOSED_NEXT = "NEXT GATE: separate owner decision on Session A offline preparation.\nNo session is authorized. Live start, Session B, Session C, product corrections,\nrecovery, exact commits and pushes remain separate decisions. This mandate\ngrants no review, implementation, commit or push authority."
 _WO008_ADMITTED_NEXT = "NEXT GATE: independent review of the proposal-admission deliverable.\nIssuance/session enforcement requires its own file/test plan, independent\nreview, and separate owner authorization. No session is authorized, and\nthis proposal grants no review, implementation, commit, or push authority."
 
+# --- WO-008 Session A offline preparation (A_PREP): exact live texts -------
+# Generated from the accepted plan r3 texts and checked against the live
+# worktree. The closed state is reconstructed by undoing exactly these.
+_WO008_A_PREP_FINDING = "WO-008 Session A preparation state"
+_WO008_A_PREP_RECORD_KIND = "WO-008 Session A preparation record"
+_WO008_A_PREP_GATE = "WO-008 SESSION A OFFLINE PREPARATION ONLY — LIVE START NOT AUTHORIZED"
+_WO008_A_PREP_MARKER = "AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR OFFLINE PREPARATION ONLY"
+_WO008_A_PREP_HEADER = "- Current issued Work Order: WO-008\n- Authorized session: A\n- Base commit: `0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`\n- Current gate: WO-008 SESSION A OFFLINE PREPARATION ONLY — LIVE START NOT AUTHORIZED\n- WO-008 admission basis commit: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`\n- WO-008 admission CI workflow: `37246398757`\n- WO-008 admission CI job: `111565059168` — Lint, types, tests\n- WO-008 issuance decision SHA-256: `5997654fb63b587ae72265d4382bf9f2f8a752e4fb09a6d79593a5b88725746a`\n- WO-008 closed issuance commit: `0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`\n- WO-008 closed issuance CI workflow: `37359992194`\n- WO-008 closed issuance CI job: `111931901481` — Lint, types, tests\n- WO-008 Session A preparation decision SHA-256: `3f2218b675dc2257fffe3ea4e4ceb4e351a23bc651cfd53177fe7ef62882c9ed`"
+_WO008_A_PREP_POINTER_RECORD = "WO-008 Session A offline preparation record: the owner authorized Session A\nfor offline preparation only, on the basis of the closed issuance committed as\n`0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`; [CI workflow\n`37359992194`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37359992194)\ncompleted successfully on that commit, including required job\n[`111931901481` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37359992194/job/111931901481).\nThat CI tested the closed issuance enforcement, not this transition, a\nSession A output, an MCP host or a live build. The instruction is identified\nby SHA-256 `3f2218b675dc2257fffe3ea4e4ceb4e351a23bc651cfd53177fe7ef62882c9ed`.\nPreparation produces only a redacted exact call plan and a fixture/setup\nchecklist, outside the checkout, for independent review, and changes no\nrepository file. Client launch, configuration reads or changes, dependency\ninstallation, deploy, editor contact, bridge lifecycle, endpoint calls,\nfixture mutation, product changes, recovery, commits and pushes remain\nunauthorized. Live start needs an accepted call plan and a separate owner\nlive-start instruction recorded here. Session B and Session C remain\nunauthorized, and this record grants no further authority."
+_WO008_A_PREP_OPENING = "This is an issued following-train Work Order, outside the frozen\nWO-001 through WO-007 train. The root pointer identifies WO-008 with\nSession A authorized for offline preparation only. Live start, Session B\nand Session C remain unauthorized."
+_WO008_CLOSED_PREREQ_HEAD = "The separately adopted issuance/session-enforcement plan r2 supports this\nclosed issuance only. Later offline preparation, live start, product\ncorrections and live acceptance still need separately reviewed enforcement\ntransitions and explicit owner decisions. No later phase is installed here."
+_WO008_A_PREP_PREREQ_HEAD = "The separately adopted issuance/session-enforcement plan r2 supported the\nclosed issuance, and a separate transition installs Session A offline\npreparation only. Live start, product corrections and live acceptance still\nneed separately reviewed enforcement transitions and explicit owner\ndecisions. No later phase is installed here."
+_WO008_A_PREP_SECTION = "## Session A offline preparation record\n\nSession A preparation basis commit: `0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`\nSession A preparation CI workflow: `37359992194`\nSession A preparation CI job: `111931901481` — Lint, types, tests\nOwner Session A preparation instruction SHA-256: `3f2218b675dc2257fffe3ea4e4ceb4e351a23bc651cfd53177fe7ef62882c9ed`\n\nThe owner authorized Session A for offline preparation only. CI succeeded on\nthe closed issuance commit, not on this transition or any Session A output;\nit demonstrates neither an MCP host nor a live UEFN build.\n\nPreparation produces, outside the checkout, a redacted exact call plan and a\nfixture/setup checklist for independent review. It reads no owner\n`.mcp.json`, credential, session handoff or private editor log, and changes\nno repository file. Client launch, configuration reads or changes, dependency\ninstallation, deploy, editor contact, bridge lifecycle, endpoint calls,\nfixture mutation, product changes, recovery, commits and pushes remain\nunauthorized. Planned values are not recorded as observed results.\n\nThe owner accepted a narrow offline-verification exemption for this\ntransition's five governance paths only. Runtime or live need stops the work."
+_WO008_A_PREP_NEXT = "NEXT GATE: separate owner decisions on an independent review of the Session A\noffline call plan and fixture/setup checklist, and then on live start.\nLive start, Session B, Session C, product corrections, recovery, exact\ncommits and pushes remain separate decisions. This mandate grants no review,\nimplementation, commit or push authority."
+_WO008_A_PREP_ROADMAP = "cleanup remain separately gated. WO-008 is issued outside the frozen train; Session A is authorized for offline preparation only, and live start is not authorized."
+_WO008_CLOSED_HISTORY_PAIRS = (
+    ("\nis issued outside the frozen train with session NONE. Admission CI workflow\n",
+     "\nwas issued outside the frozen train with session NONE. Admission CI workflow\n"),
+    ("Session A offline preparation, live start, Session B and Session C remain\nunauthorized.",
+     "At that gate, Session A offline preparation, live start, Session B and\nSession C remained unauthorized."),
+)
+
 
 def _before_wo008_issuance(findings):
     """Set aside only the new issuance lock after historical reconstruction."""
     return [f for f in findings if f["type"] != _WO008_ISSUANCE_FINDING]
 
 
+def _before_wo008_session_a_prep(findings):
+    """Set aside only the one-way A_PREP lock after reconstructing closed issuance."""
+    return [f for f in findings if f["type"] != _WO008_A_PREP_FINDING]
+
+
 def _historical_contract_findings(drift_check):
-    """Historical routes set aside only the later WO-008 issuance lock.
+    """Historical routes set aside only the later WO-008 locks.
 
-    New closed-state tests use the raw production contract. All older routes
-    reconstruct admission first and retain every other historical finding.
+    New A_PREP tests use the raw production contract. Closed-issuance routes
+    set aside only the A_PREP lock; older routes reconstruct admission first
+    and retain every other historical finding.
     """
-    return _before_wo008_issuance(drift_check.check_work_order_contract())
+    return _before_wo008_issuance(_before_wo008_session_a_prep(
+        drift_check.check_work_order_contract()))
 
 
-def _make_wo008_closed_case(repo_root, tmp_path, name):
+def _make_wo008_a_prep_case(repo_root, tmp_path, name):
+    """An untouched copy of the live A_PREP pointer and Work Order documents."""
     case = tmp_path / name
     case.mkdir(parents=True)
     shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
     shutil.copytree(repo_root / "docs" / "work-orders",
                     case / "docs" / "work-orders")
+    return case
+
+
+def _wo008_a_prep_reverse_marker(case):
+    path = case / _WO008_ISSUED_REL
+    path.write_text(_replace_once(
+        path.read_text(encoding="utf-8"), _WO008_A_PREP_MARKER,
+        "AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED",
+        "WO-008 A_PREP marker reversal"), encoding="utf-8")
+
+
+def _wo008_a_prep_reverse_mandate_records(case):
+    path = case / _WO008_ISSUED_REL
+    text = path.read_text(encoding="utf-8")
+    for old, new in (
+        (_WO008_A_PREP_OPENING, _WO008_CLOSED_OPENING),
+        (_WO008_A_PREP_PREREQ_HEAD, _WO008_CLOSED_PREREQ_HEAD),
+        (_WO008_A_PREP_SECTION + _NL + _NL, ""),
+        (_WO008_A_PREP_NEXT, _WO008_CLOSED_NEXT),
+    ):
+        text = _replace_once(text, old, new, "WO-008 A_PREP mandate reversal")
+    path.write_text(text, encoding="utf-8")
+
+
+def _wo008_a_prep_reverse_header(case):
+    path = case / "WORKORDER.md"
+    path.write_text(_replace_once(
+        path.read_text(encoding="utf-8"), _WO008_A_PREP_HEADER,
+        _WO008_CLOSED_HEADER, "WO-008 A_PREP header reversal"), encoding="utf-8")
+
+
+def _wo008_a_prep_reverse_pointer_records(case):
+    path = case / "WORKORDER.md"
+    text = _replace_once(path.read_text(encoding="utf-8"),
+                         _NL + _WO008_A_PREP_POINTER_RECORD + _NL, "",
+                         "WO-008 A_PREP record reversal")
+    for old, new in _WO008_CLOSED_HISTORY_PAIRS:
+        text = _replace_once(text, new, old, "WO-008 closed record tense reversal")
+    path.write_text(text, encoding="utf-8")
+
+
+_WO008_A_PREP_REVERSAL = (
+    ("mandate-marker", _wo008_a_prep_reverse_marker),
+    ("mandate-records", _wo008_a_prep_reverse_mandate_records),
+    ("pointer-header", _wo008_a_prep_reverse_header),
+    ("pointer-records", _wo008_a_prep_reverse_pointer_records),
+)
+
+
+def _has_wo008_a_prep_trace(case):
+    pointer = (case / "WORKORDER.md").read_text(encoding="utf-8")
+    issued = case / _WO008_ISSUED_REL
+    mandate = issued.read_text(encoding="utf-8") if issued.exists() else ""
+    return any(trace in pointer or trace in mandate for trace in (
+        _WO008_A_PREP_GATE, _WO008_A_PREP_MARKER,
+        "WO-008 Session A offline preparation record:",
+        "## Session A offline preparation record",
+        "- WO-008 closed issuance commit:"))
+
+
+def _make_wo008_closed_case(repo_root, tmp_path, name):
+    """Exactly undo A_PREP when present; an already-closed input stays so."""
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, name)
+    if _has_wo008_a_prep_trace(case):
+        for _label, undo in _WO008_A_PREP_REVERSAL:
+            undo(case)
+        pointer = (case / "WORKORDER.md").read_text(encoding="utf-8")
+        mandate = (case / _WO008_ISSUED_REL).read_text(encoding="utf-8")
+        _assert_reconstructed(
+            "WO-008 closed issuance", pointer + _NL + mandate,
+            (_WO008_CLOSED_HEADER, _WO008_CLOSED_POINTER_RECORD,
+             _WO008_CLOSED_OPENING, _WO008_CLOSED_NEXT,
+             "AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED"),
+            (_WO008_A_PREP_GATE, _WO008_A_PREP_MARKER,
+             "WO-008 Session A offline preparation record:",
+             "## Session A offline preparation record"))
     return case
 
 
@@ -20659,10 +20775,12 @@ def test_release_conditions_record_accepts_closed_language(
 # --- WO-008 closed issuance: raw production contract ----------------------
 
 def _wo008_closed_findings(repo_root, case, monkeypatch, label):
+    """Closed-issuance state, reconstructed: only the A_PREP lock is set aside."""
     drift_check = _load_drift_check(repo_root, "wo008_closed_" + label)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
     return {(f["type"], f["file"])
-            for f in drift_check.check_work_order_contract()}
+            for f in _before_wo008_session_a_prep(
+                drift_check.check_work_order_contract())}
 
 
 @pytest.mark.parametrize("newline", ("\n", "\r\n"), ids=("lf", "crlf"))
@@ -20838,7 +20956,9 @@ def test_wo008_closed_placement_and_inventory_are_exact(
         assert ("duplicate work order state", "docs/work-orders") in found
 
 
-@pytest.mark.parametrize("session", ("A", "B", "C", "AA"))
+# Session A alone now selects the A_PREP shape and fails it; that case is in
+# test_wo008_a_prep_shape_is_selected_by_any_trace.
+@pytest.mark.parametrize("session", ("B", "C", "AA"))
 def test_wo008_later_sessions_are_not_installed(repo_root, tmp_path, monkeypatch, session):
     case = _make_wo008_closed_case(repo_root, tmp_path, "later")
     _edit(case, "WORKORDER.md", "- Authorized session: NONE",
@@ -20848,8 +20968,10 @@ def test_wo008_later_sessions_are_not_installed(repo_root, tmp_path, monkeypatch
                if rel == "WORKORDER.md")
 
 
+# The A_PREP heading is a trace of the installed A_PREP phase, not an
+# unsupported phase; it is covered by the A_PREP shape-selection test.
 @pytest.mark.parametrize("heading", (
-    "## Session A authorization basis", "## Session A offline preparation record",
+    "## Session A authorization basis",
     "## Session A live-start record", "## Session B authorization basis",
     "## Session C authorization basis", "## Session A acceptance record",
 ))
@@ -21065,6 +21187,497 @@ def test_wo008_activation_damage_test_kills_residual_dispatch_mutant(
         assert ("implicit session authorization", "WORKORDER.md") in mutant
 
 
+
+
+# --- WO-008 Session A offline preparation (A_PREP): raw production contract
+
+_WO008_A_PREP_TYPES = {
+    "implicit": "implicit session authorization",
+    "widening": "session scope widening",
+    "later": "later session authorization",
+    "reopening": "session authorization reopening",
+    "release": "release authorization",
+    "external": "external-action boundary",
+    "wo003-external": "WO-003 external-action boundary",
+}
+
+
+def _wo008_a_prep_raw(repo_root, case, monkeypatch, label):
+    drift_check = _load_drift_check(repo_root, "wo008_a_prep_" + label)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return drift_check.check_work_order_contract()
+
+
+def _wo008_a_prep_findings(repo_root, case, monkeypatch, label):
+    return {(f["type"], f["file"])
+            for f in _wo008_a_prep_raw(repo_root, case, monkeypatch, label)}
+
+
+def _wo008_append(case, rel, text):
+    path = case / rel
+    path.write_text(path.read_text(encoding="utf-8") + _NL + text + _NL,
+                    encoding="utf-8")
+
+
+def _wo008_a_prep_kinds(found, surface):
+    return {kind for kind, rel in found if rel == surface}
+
+
+@pytest.mark.parametrize("newline", ("\n", "\r\n"), ids=("lf", "crlf"))
+def test_wo008_a_prep_state_is_clean(repo_root, tmp_path, monkeypatch, newline):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-control")
+    for rel in ("WORKORDER.md", _WO008_ISSUED_REL):
+        path = case / rel
+        path.write_bytes(path.read_text(encoding="utf-8").replace("\n", newline).encode())
+    assert _wo008_a_prep_findings(repo_root, case, monkeypatch, "clean") == set()
+    assert list((case / "docs/work-orders/proposed").glob("WO-*.md")) == []
+
+
+def test_wo008_a_prep_live_pins(repo_root):
+    pointer = (repo_root / "WORKORDER.md").read_text(encoding="utf-8")
+    mandate = (repo_root / _WO008_ISSUED_REL).read_text(encoding="utf-8")
+    history = _WO008_CLOSED_POINTER_RECORD
+    for old, new in _WO008_CLOSED_HISTORY_PAIRS:
+        history = _replace_once(history, old, new, "closed record history form")
+    assert pointer.count(_WO008_A_PREP_HEADER) == 1
+    assert pointer.count(_WO008_A_PREP_POINTER_RECORD) == 1
+    assert pointer.count(history) == 1
+    assert pointer.count(_WO008_CLOSED_POINTER_RECORD) == 0
+    assert mandate.splitlines().count(_WO008_A_PREP_MARKER) == 1
+    for value in (_WO008_A_PREP_OPENING, _WO008_A_PREP_PREREQ_HEAD,
+                  _WO008_A_PREP_SECTION, _WO008_A_PREP_NEXT):
+        assert mandate.count(value) == 1, value[:60]
+    for value in (_WO008_CLOSED_OPENING, _WO008_CLOSED_PREREQ_HEAD, _WO008_CLOSED_NEXT):
+        assert mandate.count(value) == 0, value[:60]
+    assert sum(line.startswith("NEXT GATE:") for line in mandate.splitlines()) == 1
+    roadmap = (repo_root / "ROADMAP.md").read_text(encoding="utf-8")
+    assert _WO008_A_PREP_ROADMAP in " ".join(roadmap.replace(">", " ").split())
+
+
+@pytest.mark.parametrize(("surface", "value"), (
+    ("WORKORDER.md", "- WO-008 closed issuance commit: `0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`"),
+    ("WORKORDER.md", "- WO-008 closed issuance CI workflow: `37359992194`"),
+    ("WORKORDER.md", "- WO-008 closed issuance CI job: `111931901481` — Lint, types, tests"),
+    ("WORKORDER.md", "- WO-008 Session A preparation decision SHA-256: "
+     "`3f2218b675dc2257fffe3ea4e4ceb4e351a23bc651cfd53177fe7ef62882c9ed`"),
+    (_WO008_ISSUED_REL,
+     "Session A preparation basis commit: `0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`"),
+    (_WO008_ISSUED_REL, "Session A preparation CI workflow: `37359992194`"),
+    (_WO008_ISSUED_REL, "Session A preparation CI job: `111931901481` — Lint, types, tests"),
+    (_WO008_ISSUED_REL, "Owner Session A preparation instruction SHA-256: "
+     "`3f2218b675dc2257fffe3ea4e4ceb4e351a23bc651cfd53177fe7ef62882c9ed`"),
+))
+def test_wo008_a_prep_evidence_is_pinned(repo_root, tmp_path, monkeypatch, surface, value):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-evidence")
+    end = value.index("`", value.index("`") + 1)
+    corrupt = value[:end - 1] + ("0" if value[end - 1] != "0" else "1") + value[end:]
+    _edit(case, surface, value, corrupt)
+    found = _wo008_a_prep_findings(repo_root, case, monkeypatch, "evidence")
+    assert any(kind.startswith("WO-008 Session A preparation")
+               for kind in _wo008_a_prep_kinds(found, surface)), repr(sorted(found))
+
+
+@pytest.mark.parametrize("index", range(12))
+@pytest.mark.parametrize("damage", ("missing", "duplicate", "corrupt"))
+def test_wo008_a_prep_fields_are_exact_and_single(
+    repo_root, tmp_path, monkeypatch, index, damage
+):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-field")
+    old = _WO008_A_PREP_HEADER.splitlines()[index]
+    new = "" if damage == "missing" else old + _NL + old if damage == "duplicate" else (
+        old + " altered")
+    _edit(case, "WORKORDER.md", old, new)
+    found = _wo008_a_prep_findings(repo_root, case, monkeypatch, "field")
+    assert any(kind.startswith("WO-008 Session A preparation")
+               for kind in _wo008_a_prep_kinds(found, "WORKORDER.md")), repr(sorted(found))
+
+
+def _wo008_a_prep_history_record():
+    history = _WO008_CLOSED_POINTER_RECORD
+    for old, new in _WO008_CLOSED_HISTORY_PAIRS:
+        history = history.replace(old, new)
+    return history
+
+
+_WO008_A_PREP_RECORD_CASES = {
+    "pointer-record": ("WORKORDER.md", _WO008_A_PREP_POINTER_RECORD),
+    "closed-history": ("WORKORDER.md", _wo008_a_prep_history_record()),
+    "mandate-section": (_WO008_ISSUED_REL, _WO008_A_PREP_SECTION),
+    "opening": (_WO008_ISSUED_REL, _WO008_A_PREP_OPENING),
+    "next-gate": (_WO008_ISSUED_REL, _WO008_A_PREP_NEXT),
+}
+_WO008_A_PREP_STRUCTURAL = ("WO-008 Session A preparation", "WO-008 conditional context",
+                            "WO-008 next gate", "WO-008 unsupported phase")
+
+
+@pytest.mark.parametrize("record", sorted(_WO008_A_PREP_RECORD_CASES))
+@pytest.mark.parametrize("damage", ("missing", "duplicated", "corrupted", "displaced",
+                                    "fused"))
+def test_wo008_a_prep_records_are_validated_before_removal(
+    repo_root, tmp_path, monkeypatch, record, damage
+):
+    surface, old = _WO008_A_PREP_RECORD_CASES[record]
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-record")
+    text = (case / surface).read_text(encoding="utf-8")
+    if damage == "missing":
+        text = _replace_once(text, old, "", "record damage")
+    elif damage == "duplicated":
+        text += _NL + old + _NL
+    elif damage == "corrupted":
+        text = _replace_once(text, old, old[:-1] + "!", "record damage")
+    elif damage == "fused":
+        text = _replace_once(text, old, old + " Session B may start.", "record damage")
+    else:
+        text = _replace_once(text, old, "", "record damage")
+        text += _NL + "## Decoy" + _NL + _NL + old + _NL
+    (case / surface).write_text(text, encoding="utf-8")
+    found = _wo008_a_prep_findings(repo_root, case, monkeypatch, "record")
+    assert any(kind.startswith(_WO008_A_PREP_STRUCTURAL)
+               for kind in _wo008_a_prep_kinds(found, surface)), repr(sorted(found))
+    if damage == "fused":
+        drift_check = _load_drift_check(repo_root, "wo008_a_prep_fused")
+        pointer = (case / "WORKORDER.md").read_text(encoding="utf-8")
+        mandate = (case / _WO008_ISSUED_REL).read_text(encoding="utf-8")
+        findings, residual = drift_check._wo008_phase_findings(
+            pointer, mandate, _WO008_ISSUED_REL,
+            "pointer" if surface == "WORKORDER.md" else "document")
+        # Failed validation removes nothing: the whole surface stays scannable.
+        assert findings and residual == (pointer if surface == "WORKORDER.md" else mandate)
+
+
+@pytest.mark.parametrize("trace", (
+    "session", "gate", "bullet-commit", "bullet-workflow", "bullet-job",
+    "bullet-digest", "record-opening", "marker", "heading",
+))
+def test_wo008_a_prep_shape_is_selected_by_any_trace(
+    repo_root, tmp_path, monkeypatch, trace
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "a-prep-trace")
+    bullets = dict(zip(("bullet-commit", "bullet-workflow", "bullet-job", "bullet-digest"),
+                       _WO008_A_PREP_HEADER.splitlines()[8:], strict=True))
+    decision = _WO008_CLOSED_HEADER.splitlines()[-1]
+    if trace == "session":
+        _edit(case, "WORKORDER.md", "- Authorized session: NONE", "- Authorized session: A")
+    elif trace == "gate":
+        _edit(case, "WORKORDER.md", _WO008_CLOSED_HEADER.splitlines()[3],
+              "- Current gate: " + _WO008_A_PREP_GATE)
+    elif trace in bullets:
+        _edit(case, "WORKORDER.md", decision, decision + _NL + bullets[trace])
+    elif trace == "record-opening":
+        _wo008_append(case, "WORKORDER.md",
+                      "WO-008 Session A offline preparation record: pending.")
+    elif trace == "marker":
+        _edit(case, _WO008_ISSUED_REL, "AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED",
+              _WO008_A_PREP_MARKER)
+    else:
+        _wo008_append(case, _WO008_ISSUED_REL,
+                      "## Session A offline preparation record" + _NL + _NL + "Pending.")
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "trace")
+    kinds = {kind for kind, _rel in found}
+    if trace in ("bullet-workflow", "bullet-job"):
+        # Not A_PREP traces in the accepted design (plan section 5.2 names only
+        # the commit and decision bullets). The closed shape still rejects them.
+        assert ("WO-008 issuance (WORKORDER.md)", "WORKORDER.md") in found, (
+            repr(sorted(found)))
+        return
+    # The full A_PREP shape is demanded and fails; the clean closed shape is
+    # never used as a fallback once any A_PREP trace exists.
+    assert any(kind.startswith("WO-008 Session A preparation") for kind in kinds), (
+        repr(sorted(found)))
+    assert not any(kind.startswith("WO-008 issuance") for kind in kinds), repr(sorted(found))
+
+
+_WO008_CLOSED_PREREQ_PARAGRAPH = _WO008_CLOSED_PREREQUISITES.split(_NL + _NL)[1]
+
+
+def _wo008_a_prep_mixed(case, name):
+    gate_line = "- Current gate: " + _WO008_A_PREP_GATE
+    closed_gate = _WO008_CLOSED_HEADER.splitlines()[3]
+    if name == "closed-gate-session-a":
+        _edit(case, "WORKORDER.md", gate_line, closed_gate)
+    elif name == "a-prep-gate-session-none":
+        _edit(case, "WORKORDER.md", "- Authorized session: A", "- Authorized session: NONE")
+    elif name == "a-prep-marker-closed-pointer":
+        _wo008_a_prep_reverse_header(case)
+        _wo008_a_prep_reverse_pointer_records(case)
+    elif name == "closed-marker-a-prep-pointer":
+        _edit(case, _WO008_ISSUED_REL, _WO008_A_PREP_MARKER,
+              "AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED")
+    elif name == "closed-record-beside":
+        _edit(case, "WORKORDER.md", _WO008_A_PREP_POINTER_RECORD,
+              _WO008_A_PREP_POINTER_RECORD + _NL + _NL + _WO008_CLOSED_POINTER_RECORD)
+    elif name == "closed-opening-beside":
+        _edit(case, _WO008_ISSUED_REL, _WO008_A_PREP_OPENING,
+              _WO008_A_PREP_OPENING + _NL + _NL + _WO008_CLOSED_OPENING)
+    elif name == "closed-next-beside":
+        _edit(case, _WO008_ISSUED_REL, _WO008_A_PREP_NEXT,
+              _WO008_A_PREP_NEXT + _NL + _NL + _WO008_CLOSED_NEXT)
+    elif name == "closed-prerequisites-beside":
+        # Its own paragraph after the A_PREP paragraph ends, so every
+        # accepted context still validates once.
+        tail = "remain invalid; there is no blanket scanner exemption."
+        _edit(case, _WO008_ISSUED_REL, tail + _NL + _NL + "## Issuance basis",
+              tail + _NL + _NL + _WO008_CLOSED_PREREQ_PARAGRAPH + _NL + _NL
+              + "## Issuance basis")
+    else:
+        raise AssertionError(name)
+
+
+@pytest.mark.parametrize("name", (
+    "closed-gate-session-a", "a-prep-gate-session-none", "a-prep-marker-closed-pointer",
+    "closed-marker-a-prep-pointer",
+    "closed-record-beside", "closed-opening-beside", "closed-next-beside",
+    "closed-prerequisites-beside",
+))
+def test_wo008_a_prep_mixed_states_are_rejected(repo_root, tmp_path, monkeypatch, name):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-mixed")
+    _wo008_a_prep_mixed(case, name)
+    raw = _wo008_a_prep_raw(repo_root, case, monkeypatch, "mixed")
+    found = {(f["type"], f["file"]) for f in raw}
+    assert found, name
+    if name == "a-prep-marker-closed-pointer":
+        assert any(kind.startswith("WO-008 Session A preparation")
+                   for kind in _wo008_a_prep_kinds(found, "WORKORDER.md")), repr(sorted(found))
+    if name == "closed-marker-a-prep-pointer":
+        assert ("WO-008 issued state", "docs/work-orders") in found
+    restored = {
+        "closed-record-beside": ("WORKORDER.md", _WO008_CLOSED_POINTER_RECORD),
+        "closed-opening-beside": (_WO008_ISSUED_REL, _WO008_CLOSED_OPENING),
+        "closed-next-beside": (_WO008_ISSUED_REL, _WO008_CLOSED_NEXT),
+        "closed-prerequisites-beside": (_WO008_ISSUED_REL, _WO008_CLOSED_PREREQ_HEAD),
+    }
+    if name in restored:
+        surface, text = restored[name]
+        hits = [f for f in raw if f["file"] == surface
+                and f["type"] == _WO008_A_PREP_RECORD_KIND]
+        assert [f["found"] for f in hits if f["found"] == text] == [text], repr(hits)
+    if name == "closed-prerequisites-beside":
+        # Context failures and prior-state hits share a type: tell them apart
+        # by `found`. Only the prior-state hit may name the mandate; any other
+        # findings come from the fail-closed fallback that rescans the whole
+        # mandate, and are recorded rather than asserted away.
+        structural = [f for f in raw if f["file"] == _WO008_ISSUED_REL
+                      and f["type"] in (_WO008_A_PREP_RECORD_KIND,
+                                        "WO-008 conditional context")]
+        assert [f["found"] for f in structural] == [_WO008_CLOSED_PREREQ_HEAD], (
+            repr(structural))
+
+
+def test_wo008_a_prep_reverted_gate_alone_is_rejected(repo_root, tmp_path, monkeypatch):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-gate")
+    closed_gate = _WO008_CLOSED_HEADER.splitlines()[3]
+    _edit(case, "WORKORDER.md", "- Current gate: " + _WO008_A_PREP_GATE, closed_gate)
+    raw = _wo008_a_prep_raw(repo_root, case, monkeypatch, "gate")
+    assert any(f["type"].startswith("WO-008 Session A preparation (")
+               and f["file"] == "WORKORDER.md" for f in raw), repr(raw)
+    assert any(f["type"] == _WO008_A_PREP_RECORD_KIND and f["found"] == closed_gate.split(
+        ": ", 1)[1] for f in raw), repr(raw)
+
+
+@pytest.mark.parametrize("subset", [
+    combo for size in range(1, 5)
+    for combo in itertools.combinations(range(4), size)
+], ids=lambda combo: "+".join(_WO008_A_PREP_REVERSAL[i][0] for i in combo))
+def test_wo008_a_prep_each_partial_reversal_is_detected(
+    repo_root, tmp_path, monkeypatch, subset
+):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-partial")
+    for index in subset:
+        _WO008_A_PREP_REVERSAL[index][1](case)
+    found = _wo008_a_prep_findings(repo_root, case, monkeypatch, "partial")
+    lock = (_WO008_A_PREP_FINDING, "WORKORDER.md")
+    if len(subset) == 4:
+        assert found == {lock}
+    else:
+        assert found - {lock}, repr(sorted(found))
+
+
+def test_wo008_a_prep_coherent_reversal_trips_only_its_new_lock(
+    repo_root, tmp_path, monkeypatch
+):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "a-prep-rollback")
+    drift_check = _load_drift_check(repo_root, "wo008_a_prep_rollback")
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    assert {(f["type"], f["file"]) for f in drift_check.check_work_order_contract()} == {
+        (_WO008_A_PREP_FINDING, "WORKORDER.md")}
+    assert _before_wo008_session_a_prep(drift_check.check_work_order_contract()) == []
+    # The filter keeps an unrelated historical finding...
+    superseded = case / _WO006_SUP_REL
+    saved = superseded.read_bytes()
+    superseded.unlink()
+    assert any(f["type"] == "superseded WO-006 state" for f in
+               _before_wo008_session_a_prep(drift_check.check_work_order_contract()))
+    superseded.write_bytes(saved)
+    # ...and a WO-008 kind, so a filter broadened to every WO-008 type fails.
+    _edit(case, "WORKORDER.md", "- WO-008 admission CI workflow: `37246398757`",
+          "- WO-008 admission CI workflow: `37246398758`")
+    assert any(f["type"].startswith("WO-008 issuance") and f["file"] == "WORKORDER.md"
+               for f in _before_wo008_session_a_prep(
+                   drift_check.check_work_order_contract()))
+
+
+def test_wo008_a_prep_reversal_reproduces_closed_issuance_bytes(repo_root, tmp_path):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "a-prep-exact")
+    for rel, digest in (
+        ("WORKORDER.md",
+         "629a46cb721c84045b460e43092864021c23b3ad851cb7ebb2790267d686a87b"),
+        (_WO008_ISSUED_REL,
+         "8afe37a91d12adb845de792ee39435d5c38979cbc2b5af3666c193bef9550e0a"),
+    ):
+        text = (case / rel).read_text(encoding="utf-8")
+        assert hashlib.sha256(text.encode()).hexdigest() == digest, rel
+
+
+@pytest.mark.parametrize("damage", ("missing", "duplicated"))
+def test_wo008_a_prep_reconstruction_rejects_bad_anchors(repo_root, tmp_path, damage):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-bad")
+    replacement = "" if damage == "missing" else (
+        _WO008_A_PREP_POINTER_RECORD + _NL + _NL + _WO008_A_PREP_POINTER_RECORD)
+    _edit(case, "WORKORDER.md", _WO008_A_PREP_POINTER_RECORD, replacement)
+    with pytest.raises(AssertionError, match="WO-008 A_PREP record reversal"):
+        _make_wo008_closed_case(case, tmp_path, "a-prep-bad-result")
+
+
+# Exact sets: confirmed on the implemented checker, not taken from a simulation.
+_WO008_A_PREP_GRANTS = {
+    "You may now start.": (("implicit",), ("implicit",)),
+    "Session A may connect to UEFN.": (("widening",), ("widening",)),
+    "This session may deploy.": (("widening",), ("widening",)),
+    "Session A is also authorized to launch Claude Code.": (
+        ("implicit", "widening"), ("implicit", "widening")),
+    "Session B may start.": (("implicit", "later", "reopening"), ("implicit", "later")),
+    "Session C is approved.": (("implicit", "later", "reopening"), ("implicit", "later")),
+    "Session AA may proceed.": (("implicit", "later", "reopening"), ("implicit", "later")),
+    "A GitHub Release is authorized.": (("release",), ("release",)),
+    "Social publication is authorized.": (("external", "wo003-external"), ("external",)),
+}
+
+
+@pytest.mark.parametrize("surface", ("WORKORDER.md", _WO008_ISSUED_REL))
+@pytest.mark.parametrize("payload", sorted(_WO008_A_PREP_GRANTS))
+def test_wo008_a_prep_rejects_grants(repo_root, tmp_path, monkeypatch, surface, payload):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-grant")
+    _wo008_append(case, surface, payload)
+    found = _wo008_a_prep_findings(repo_root, case, monkeypatch, "grant")
+    on_pointer, on_mandate = _WO008_A_PREP_GRANTS[payload]
+    names = on_pointer if surface == "WORKORDER.md" else on_mandate
+    assert found == {(_WO008_A_PREP_TYPES[name], surface) for name in names}, (
+        repr(sorted(found)))
+
+
+def test_wo008_a_prep_completed_wo003_caller_still_scans(repo_root, tmp_path, monkeypatch):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-wo003")
+    assert _wo008_a_prep_findings(repo_root, case, monkeypatch, "wo003-control") == set()
+    _wo008_append(case, "WORKORDER.md", "Session B may start.")
+    found = _wo008_a_prep_findings(repo_root, case, monkeypatch, "wo003")
+    assert ("session authorization reopening", "WORKORDER.md") in found
+
+
+@pytest.mark.parametrize("surface", ("WORKORDER.md", _WO008_ISSUED_REL))
+@pytest.mark.parametrize("payload", (
+    "Live start is not authorized.",
+    "Session A must not start live contact without separate owner authorization.",
+    "Session B is not authorized.", "You may not start.",
+    "No implementation authority is given here.",
+))
+def test_wo008_a_prep_denials_stay_clean(repo_root, tmp_path, monkeypatch, surface, payload):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-denial")
+    _wo008_append(case, surface, payload)
+    assert _wo008_a_prep_findings(repo_root, case, monkeypatch, "denial") == set()
+
+
+@pytest.mark.parametrize("trace", (
+    "a-live-gate", "a-live-marker", "live-start-heading", "session-b", "session-c",
+    "a-recorded-gate", "stopped-gate",
+))
+def test_wo008_a_prep_later_phases_are_not_installed(
+    repo_root, tmp_path, monkeypatch, trace
+):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-later")
+    gate_line = "- Current gate: " + _WO008_A_PREP_GATE
+    surface = "WORKORDER.md"
+    if trace == "a-live-gate":
+        _edit(case, surface, gate_line, "- Current gate: WO-008 SESSION A LIVE BASELINE "
+              "ONLY — PRODUCT CORRECTIONS NOT AUTHORIZED")
+    elif trace == "a-live-marker":
+        surface = _WO008_ISSUED_REL
+        _edit(case, surface, _WO008_A_PREP_MARKER, "AUTHORIZATION: ISSUED — SESSION A "
+              "AUTHORIZED FOR THE PINNED LIVE BASELINE ONLY")
+    elif trace == "live-start-heading":
+        surface = _WO008_ISSUED_REL
+        _wo008_append(case, surface, "## Session A live-start record" + _NL + _NL + "Open.")
+    elif trace in ("session-b", "session-c"):
+        _edit(case, surface, "- Authorized session: A",
+              "- Authorized session: " + trace[-1].upper())
+    elif trace == "a-recorded-gate":
+        _edit(case, surface, gate_line,
+              "- Current gate: WO-008 SESSION A RECORDED — SESSION B NOT AUTHORIZED")
+    else:
+        _edit(case, surface, gate_line,
+              "- Current gate: WO-008 WORK STOPPED — A SEPARATE OWNER DECISION IS REQUIRED")
+    found = _wo008_a_prep_findings(repo_root, case, monkeypatch, "later")
+    assert _wo008_a_prep_kinds(found, surface), repr(sorted(found))
+
+
+@pytest.mark.parametrize(("marker", "replacement", "kind"), (
+    ("- Issuance CI workflow: `37050236355`", "", "frozen publication history"),
+    ("- Release train: WO-001 through WO-007", "- Release train: WO-001 through WO-008",
+     "release train"),
+    ("was issued outside the frozen train", "was issued beyond the frozen train",
+     _WO008_A_PREP_RECORD_KIND),
+))
+def test_wo008_a_prep_keeps_history_checks(
+    repo_root, tmp_path, monkeypatch, marker, replacement, kind
+):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-history")
+    _edit(case, "WORKORDER.md", marker, replacement)
+    found = _wo008_a_prep_findings(repo_root, case, monkeypatch, "history")
+    assert any(actual.startswith(kind) and rel == "WORKORDER.md" for actual, rel in found), (
+        repr(sorted(found)))
+
+
+def test_wo008_a_prep_context_is_not_a_pointer_exemption(repo_root, tmp_path, monkeypatch):
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-wrong-surface")
+    paragraph = _WO008_A_PREP_SECTION.split(_NL + _NL)[2]
+    assert paragraph.startswith("The owner authorized Session A for offline preparation only.")
+    _wo008_append(case, "WORKORDER.md", paragraph)
+    assert _wo008_a_prep_findings(repo_root, case, monkeypatch, "wrong-surface") == {
+        ("implicit session authorization", "WORKORDER.md"),
+        ("session scope widening", "WORKORDER.md"),
+    }
+
+
+def test_wo008_a_prep_widening_damage_kills_dispatch_mutant(repo_root, tmp_path, monkeypatch):
+    drift_check = _load_drift_check(repo_root, "wo008_a_prep_widening_mutant")
+    case = _make_wo008_a_prep_case(repo_root, tmp_path, "a-prep-widening")
+    _wo008_append(case, "WORKORDER.md", "Session A may connect to UEFN.")
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    control = {(f["type"], f["file"]) for f in drift_check.check_work_order_contract()}
+    assert control == {("session scope widening", "WORKORDER.md")}
+    monkeypatch.setattr(drift_check, "_current_session_widening", lambda *_args: [])
+    mutant = {(f["type"], f["file"]) for f in drift_check.check_work_order_contract()}
+    # The test 13 assertion for this payload fails against the mutant.
+    with pytest.raises(AssertionError):
+        assert mutant == {("session scope widening", "WORKORDER.md")}
+
+
+_WO008_CLOSED_GRANTS = {
+    "Session A is also authorized to launch Claude Code.": (
+        ("implicit", "later", "reopening", "widening"), ("implicit", "later", "widening")),
+    "Session B may start.": (("implicit", "later", "reopening"), ("implicit", "later")),
+}
+
+
+@pytest.mark.parametrize("surface", ("WORKORDER.md", _WO008_ISSUED_REL))
+@pytest.mark.parametrize("payload", sorted(_WO008_CLOSED_GRANTS))
+def test_wo008_closed_grant_sets_are_exact(repo_root, tmp_path, monkeypatch, surface, payload):
+    case = _make_wo008_closed_case(repo_root, tmp_path, "closed-grant-set")
+    _wo008_append(case, surface, payload)
+    found = _wo008_closed_findings(repo_root, case, monkeypatch, "closed-grant-set")
+    on_pointer, on_mandate = _WO008_CLOSED_GRANTS[payload]
+    names = on_pointer if surface == "WORKORDER.md" else on_mandate
+    assert found == {(_WO008_A_PREP_TYPES[name], surface) for name in names}, (
+        repr(sorted(found)))
 
 
 # --- Release publication record: the live state --------------------------
@@ -21471,7 +22084,10 @@ def test_wo008_proposal_admission_cannot_issue_without_closed_records(
     _edit(case, "WORKORDER.md", "- Authorized session: NONE",
           "- Authorized session: " + session)
     found = _wo008_proposal_findings(repo_root, case, monkeypatch, "no-issuance")
-    assert any(kind.startswith("WO-008 issuance") for kind, _rel in found)
+    # A bare session-A flip selects the installed A_PREP shape and fails its
+    # records; other values keep failing the closed-issuance records.
+    shape = "WO-008 Session A preparation" if session == "A" else "WO-008 issuance"
+    assert any(kind.startswith(shape) for kind, _rel in found)
     assert ("planning-only proposal placement",
             target.relative_to(case).as_posix()) in found
 

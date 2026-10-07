@@ -1,7 +1,7 @@
 # WO-008 User reliability and MCP client acceptance
 
 STATUS: ISSUED
-AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED
+AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR OFFLINE PREPARATION ONLY
 Owner: Ocean Bennett
 Priority: user-facing reliability and missing integration evidence
 Draft date: 2026-10-04
@@ -9,9 +9,9 @@ Revision: r2
 Planning baseline: `9879d39fbdb58083a0f7229a9c9c90c7d6fb375f`
 
 This is an issued following-train Work Order, outside the frozen
-WO-001 through WO-007 train. Issuance alone grants no session authority.
-The root pointer identifies WO-008 with session NONE. Session A offline
-preparation, live start, Session B and Session C remain unauthorized.
+WO-001 through WO-007 train. The root pointer identifies WO-008 with
+Session A authorized for offline preparation only. Live start, Session B
+and Session C remain unauthorized.
 
 ## Purpose and evidence
 
@@ -47,10 +47,11 @@ Proposal admission was separately accepted and committed at
 following-train proposal only and retained NONE/NONE. WO-008 is not added
 to the frozen WO-001 through WO-007 train.
 
-The separately adopted issuance/session-enforcement plan r2 supports this
-closed issuance only. Later offline preparation, live start, product
-corrections and live acceptance still need separately reviewed enforcement
-transitions and explicit owner decisions. No later phase is installed here.
+The separately adopted issuance/session-enforcement plan r2 supported the
+closed issuance, and a separate transition installs Session A offline
+preparation only. Live start, product corrections and live acceptance still
+need separately reviewed enforcement transitions and explicit owner
+decisions. No later phase is installed here.
 Frozen-train missing, duplicate and misplaced-order protections, publication
 history and earlier terminal records remain in force. Unknown issued orders
 remain invalid; there is no blanket scanner exemption.
@@ -71,6 +72,28 @@ The owner accepted a narrow offline-verification exemption for these seven
 governance paths only. Runtime or live need stops this transition. This
 record grants no session execution, configuration change, installation,
 UEFN contact, recovery, commit, push, cleanup or publication authority.
+
+## Session A offline preparation record
+
+Session A preparation basis commit: `0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`
+Session A preparation CI workflow: `37359992194`
+Session A preparation CI job: `111931901481` — Lint, types, tests
+Owner Session A preparation instruction SHA-256: `3f2218b675dc2257fffe3ea4e4ceb4e351a23bc651cfd53177fe7ef62882c9ed`
+
+The owner authorized Session A for offline preparation only. CI succeeded on
+the closed issuance commit, not on this transition or any Session A output;
+it demonstrates neither an MCP host nor a live UEFN build.
+
+Preparation produces, outside the checkout, a redacted exact call plan and a
+fixture/setup checklist for independent review. It reads no owner
+`.mcp.json`, credential, session handoff or private editor log, and changes
+no repository file. Client launch, configuration reads or changes, dependency
+installation, deploy, editor contact, bridge lifecycle, endpoint calls,
+fixture mutation, product changes, recovery, commits and pushes remain
+unauthorized. Planned values are not recorded as observed results.
+
+The owner accepted a narrow offline-verification exemption for this
+transition's five governance paths only. Runtime or live need stops the work.
 
 ## Session A Real client baseline
 
@@ -241,7 +264,8 @@ the client/project/fixture/target choices, live start, any unexpected repair,
 recovery, exact commits, pushes, completion, and any later release decision.
 Review acceptance never substitutes for these decisions.
 
-NEXT GATE: separate owner decision on Session A offline preparation.
-No session is authorized. Live start, Session B, Session C, product corrections,
-recovery, exact commits and pushes remain separate decisions. This mandate
-grants no review, implementation, commit or push authority.
+NEXT GATE: separate owner decisions on an independent review of the Session A
+offline call plan and fixture/setup checklist, and then on live start.
+Live start, Session B, Session C, product corrections, recovery, exact
+commits and pushes remain separate decisions. This mandate grants no review,
+implementation, commit or push authority.
