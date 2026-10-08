@@ -4,6 +4,9 @@
 > It gives Claude full knowledge of the UEFN Toolbelt so you can use natural language
 > to control UEFN without looking up tool names or parameters.
 
+Before editing, read [AGENTS.md](AGENTS.md) and follow its DOX traversal and
+closeout process, including every applicable child guide.
+
 <!-- last full audit: final integration/repository-truth audit, 2026-10-03 -->
 
 ---
