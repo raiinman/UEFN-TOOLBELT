@@ -82,7 +82,7 @@ def run_anim_list_sequences(search_path: str = "", **kwargs) -> dict:
         for a in assets:
             entry = {"name": str(a.asset_name), "path": str(a.package_name)}
             try:
-                loaded = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                loaded = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if loaded:
                     if hasattr(loaded, "get_play_length"):
                         entry["duration_sec"] = round(loaded.get_play_length(), 3)
@@ -122,7 +122,7 @@ def run_anim_list_montages(search_path: str = "", **kwargs) -> dict:
         for a in assets:
             entry = {"name": str(a.asset_name), "path": str(a.package_name)}
             try:
-                loaded = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                loaded = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if loaded and hasattr(loaded, "get_play_length"):
                     entry["duration_sec"] = round(loaded.get_play_length(), 3)
             except Exception:
@@ -156,7 +156,7 @@ def run_anim_list_blend_spaces(search_path: str = "", **kwargs) -> dict:
         )
         assets = _ar().get_assets(filter_)
         results = [
-            {"name": str(a.asset_name), "path": str(a.package_name), "class": str(a.asset_class)}
+            {"name": str(a.asset_name), "path": str(a.package_name), "class": str(a.asset_class_path.asset_name)}
             for a in assets
         ]
         log_info(f"[anim_list_blend_spaces] {len(results)} BlendSpaces in {search_path}")

@@ -36,13 +36,13 @@ from __future__ import annotations
 
 import json
 import os
-import re
 from datetime import datetime
 
 import unreal
 
-from ..core import log_info
+from ..core import detect_project_mount, log_info
 from ..registry import register_tool
+from .system_build import _pick_build_log, _scan_build_snapshot
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 
@@ -69,9 +69,12 @@ def _check_actor_count(actors: list, limit: int) -> dict:
 
 
 def _check_required_devices(req_list: list[str], actors: list) -> dict:
+    classes = [a.get_class().get_name().lower() for a in actors]
+    aliases = {"spawnpaddevice": {"bp_creative_player_spawner_prop_c"}}
     missing = [
         req for req in req_list
-        if not any(req.lower() in a.get_class().get_name().lower() for a in actors)
+        if not any(req.lower() in cls or cls in aliases.get(req.lower(), set())
+                   for cls in classes)
     ]
     return {
         "pass":     not missing,
@@ -100,7 +103,7 @@ def _check_lights(actors: list, warn_limit: int) -> dict:
 _SYSTEM_ACTOR_CLASSES = frozenset({
     "WorldDataLayers", "WorldPartitionMiniMap", "WorldPartitionReplay",
     "GlobalPostProcess", "WorldSettings", "WorldPartitionEditorCell",
-    "Brush",
+    "Brush", "WaterZone", "LevelBounds", "Device_ExperienceSettings_V2_UEFN_C",
 })
 
 
@@ -155,7 +158,7 @@ def _check_disallowed_text_actors(actors: list) -> dict:
 
 
 def _check_verse_build(project_saved_dir: str) -> dict:
-    log_dir = os.path.normpath(os.path.join(project_saved_dir, "..", "Logs"))
+    log_dir = os.path.normpath(os.path.join(project_saved_dir, "Logs"))
     try:
         if not os.path.isdir(log_dir):
             return {"pass": None, "status": "UNKNOWN", "severity": "warn",
@@ -164,19 +167,13 @@ def _check_verse_build(project_saved_dir: str) -> dict:
         if not logs:
             return {"pass": None, "status": "UNKNOWN", "severity": "warn",
                     "note": "No build log found — run a Verse build first"}
-        latest = max(logs, key=os.path.getmtime)
+        latest = _pick_build_log(logs)
         with open(latest, encoding="utf-8", errors="ignore") as f:
-            content = f.read()
-        if re.search(
-            r"VerseBuild.*SUCCESS|LogSolLoadCompiler.*finished.*SUCCESS",
-            content, re.IGNORECASE
-        ):
+            status, _error_count = _scan_build_snapshot(f)
+        if status == "SUCCESS":
             return {"pass": True, "status": "SUCCESS", "severity": "ok",
                     "note": "Verse build SUCCESS ✓"}
-        if re.search(
-            r"VerseBuild.*(?:FAIL|ERROR)|LogSolLoadCompiler.*finished.*(?:FAIL|ERROR)",
-            content, re.IGNORECASE
-        ):
+        if status == "FAILED":
             return {"pass": False, "status": "FAILED", "severity": "fail",
                     "note": "Verse build FAILED — run verse_patch_errors to see issues"}
         return {"pass": None, "status": "UNKNOWN", "severity": "warn",
@@ -208,13 +205,12 @@ def _check_unsaved(world) -> dict:
 
 def _check_redirectors() -> dict:
     try:
+        mount = detect_project_mount()
+        if mount.lower() in {"", "game", "engine", "temp"}:
+            raise ValueError("User project mount is unavailable")
         ar = unreal.AssetRegistryHelpers.get_asset_registry()
-        f  = unreal.ARFilter(
-            class_names=["ObjectRedirector"],
-            package_paths=["/Game"],
-            recursive_paths=True,
-        )
-        count = len(ar.get_assets(f))
+        metadata = ar.get_assets_by_path("/" + mount, recursive=True)
+        count = sum(str(a.asset_class_path.asset_name) == "ObjectRedirector" for a in metadata)
         return {
             "pass":     count == 0,
             "count":    count,
@@ -223,8 +219,8 @@ def _check_redirectors() -> dict:
                         else f"{count} stale redirectors — run ref_fix_redirectors",
         }
     except Exception as e:
-        return {"pass": True, "count": 0, "severity": "ok",
-                "note": f"Redirector check skipped: {e}"}
+        return {"pass": None, "count": None, "severity": "warn",
+                "note": f"Redirector check unavailable: {e}"}
 
 
 def _check_level_name(world) -> dict:

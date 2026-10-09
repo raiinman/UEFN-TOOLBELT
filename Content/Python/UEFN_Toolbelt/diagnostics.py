@@ -1,6 +1,7 @@
 
 import unreal
 
+from .core import resolve_scan_path
 from .registry import register_tool
 
 
@@ -81,18 +82,18 @@ def dump_actor_info(**kwargs) -> dict:
 @register_tool(
     name="debug_audit_verse_assets",
     category="Utilities",
-    description="Search the project asset registry for all Verse-generated Blueprints.",
+    description="Find Verse/device asset-name candidates in the resolved project mount using bounded metadata results.",
     tags=["debug", "verse", "audit"],
 )
-def audit_verse_assets(**kwargs) -> dict:
+def audit_verse_assets(scan_path: str = "", **kwargs) -> dict:
+    scan_path = resolve_scan_path(scan_path)
     ar = unreal.AssetRegistryHelpers.get_asset_registry()
     unreal.log("[ASSET AUDIT] Searching for Verse-related assets...")
 
     # Search for anything in the project content
-    filter = unreal.ARFilter(package_paths=["/TOOL_TEST"], recursive_paths=True)
-    assets = ar.get_assets(filter)
+    assets = ar.get_assets_by_path(scan_path, recursive=True)
 
-    found = False
+    matches = []
     for asset in assets:
         name = str(asset.asset_name)
         # Class path is now a TopLevelAssetPath in 5.1+
@@ -101,11 +102,13 @@ def audit_verse_assets(**kwargs) -> dict:
             # Skip the base VerseDevice class
             if name == "VerseDevice" or name == "CreativeDevice":
                 continue
-            unreal.log(f"  • Asset: {name} (Class: {cls})")
-            unreal.log(f"    - Path: {asset.package_name}")
-            found = True
+            matches.append({"name": name, "class": cls, "path": str(asset.package_name)})
 
-    if not found:
-        unreal.log_warning("[ASSET AUDIT] No student Verse assets found in /TOOL_TEST. Ensure Verse is compiled.")
+    for match in matches[:200]:
+        unreal.log(f"  • Asset: {match['name']} (Class: {match['class']})")
+        unreal.log(f"    - Path: {match['path']}")
+    if not matches:
+        unreal.log_warning(f"[ASSET AUDIT] No matching Verse/device asset names found in {scan_path}. Ensure Verse is compiled.")
 
-    return {"status": "ok", "found": found}
+    return {"status": "ok", "found": bool(matches), "scan_path": scan_path,
+            "count": len(matches), "assets": matches[:200], "truncated": len(matches) > 200}

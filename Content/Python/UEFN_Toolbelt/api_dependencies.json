@@ -3,28 +3,8 @@
   "symbol_count": 171,
   "symbols": {
     "ARFilter": {
-      "attributes": {
-        "class_names": {
-          "used_by": [
-            "tools/mcp_bridge.py"
-          ],
-          "optional": false
-        },
-        "package_paths": {
-          "used_by": [
-            "tools/mcp_bridge.py"
-          ],
-          "optional": false
-        },
-        "recursive_paths": {
-          "used_by": [
-            "tools/mcp_bridge.py"
-          ],
-          "optional": false
-        }
-      },
+      "attributes": {},
       "used_by": [
-        "diagnostics.py",
         "tools/animation_tools.py",
         "tools/api_capability_crawler.py",
         "tools/audio_design_tools.py",
@@ -34,9 +14,7 @@
         "tools/enhanced_input_tools.py",
         "tools/level_health.py",
         "tools/lod_tools.py",
-        "tools/mcp_bridge.py",
         "tools/optimization_tools.py",
-        "tools/publish_audit.py",
         "tools/skeletal_mesh_tools.py",
         "tools/sound_asset_tools.py",
         "tools/texture_tools.py"
@@ -2153,6 +2131,7 @@
         "tools/cooker_optimizer.py",
         "tools/integration_test.py",
         "tools/localization_tools.py",
+        "tools/mcp_bridge.py",
         "tools/physics_tools.py",
         "tools/prefab_stamp.py",
         "tools/procedural_geometry.py",
@@ -2580,7 +2559,26 @@
       "optional": false
     },
     "Transform": {
-      "attributes": {},
+      "attributes": {
+        "rotation": {
+          "used_by": [
+            "tools/mcp_bridge.py"
+          ],
+          "optional": false
+        },
+        "scale3d": {
+          "used_by": [
+            "tools/mcp_bridge.py"
+          ],
+          "optional": false
+        },
+        "translation": {
+          "used_by": [
+            "tools/mcp_bridge.py"
+          ],
+          "optional": false
+        }
+      },
       "used_by": [
         "tools/foliage_tools.py",
         "tools/mcp_bridge.py",

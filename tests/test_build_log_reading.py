@@ -119,3 +119,54 @@ def test_a_localised_editor_reports_unknown_and_that_is_deliberate():
     """
     mod = _load()
     assert mod._scan_build_status(["VerseBuild: ERFOLGREICH"]) == "UNKNOWN"
+
+
+def _live_status_from_log(monkeypatch, tmp_path, lines):
+    mod = _load()
+    logs = tmp_path / "Logs"
+    logs.mkdir()
+    (logs / "UnrealEditorFortnite.log").write_text("\n".join(lines), encoding="utf-8")
+    monkeypatch.setattr(mod.unreal.Paths, "project_saved_dir", lambda: str(tmp_path))
+    return mod.verse_build_status()
+
+
+def test_status_counts_current_native_ranges_once(monkeypatch, tmp_path):
+    first = "VerseBuild: Error: C:/Project With Spaces/test.verse(90,57, 90,71): Script error 3588: Ambiguous identifier"
+    duplicate = first.replace("): Script", ") : Script")
+    second = "VerseBuild: Error: C:/Project With Spaces/test.verse(86,29, 88,96): Script error 3532: Ambiguous definition"
+    result = _live_status_from_log(monkeypatch, tmp_path, [SUCCESS, first, duplicate, second,
+        "LogSolLoadCompiler: Display: Global Verse compile finished: FAILED."])
+    assert result["build_status"] == "FAILED"
+    assert result["error_count"] == 2
+
+
+def test_status_clears_errors_after_success(monkeypatch, tmp_path):
+    error = "VerseBuild: Error: C:/test.verse(2,3, 2,5): Script error 3506: Unknown name"
+    result = _live_status_from_log(monkeypatch, tmp_path, [error, FAILED, SUCCESS])
+    assert result["build_status"] == "SUCCESS"
+    assert result["error_count"] == 0
+
+
+def test_status_counts_only_last_consecutive_failed_compile(monkeypatch, tmp_path):
+    error = "VerseBuild: Error: C:/test.verse(2,3, 2,5): Script error 3506: Unknown name"
+    latest = "VerseBuild: Error: C:/test.verse(8,1, 8,4): Script error 3506: Unknown name"
+    finished = "LogSolLoadCompiler: Display: Global Verse compile finished: FAILED."
+    result = _live_status_from_log(monkeypatch, tmp_path, [error, finished, latest, finished])
+    assert result["build_status"] == "FAILED"
+    assert result["error_count"] == 1
+
+
+def test_status_preserves_legacy_locations(monkeypatch, tmp_path):
+    result = _live_status_from_log(monkeypatch, tmp_path, [
+        "VerseBuild: Error: C:/test.verse(2:3): error 3506: Unknown name", FAILED])
+    assert result["error_count"] == 1
+
+
+def test_long_unrelated_log_lines_do_not_stall_status():
+    import time
+
+    mod = _load()
+    lines = ["LogPlugins: " + "asset-with-no-diagnostic," * 210] * 100
+    started = time.perf_counter()
+    assert mod._scan_build_snapshot([*lines, SUCCESS]) == ("SUCCESS", 0)
+    assert time.perf_counter() - started < 1.0

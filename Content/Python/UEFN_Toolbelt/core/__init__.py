@@ -7,6 +7,7 @@ Shared helpers used by every tool module.
 from __future__ import annotations
 
 import contextlib
+import json
 import math
 import os
 import random
@@ -50,17 +51,16 @@ def detect_project_mount() -> str:
     """
     Return the user's project Content Browser mount point.
 
-    Primary strategy: walk up from __file__ to find the folder that contains
-    the 'Content' directory — that folder's name IS the project mount.  This
-    is the only 100% reliable method; AR-count heuristics fail when Fortnite
-    game paks (BRCosmetics, etc.) are loaded, as they have far more entries.
+    Primary strategy: locate the project from __file__ and read its root plugin
+    name from the .uefnproject descriptor. New UEFN projects use UUID mounts;
+    the display/folder name is not necessarily their asset mount.
 
     Fallback: AR path count excluding PLUGIN_MOUNTS (catches edge cases where
     __file__ walkup is unavailable or returns an unexpected path).
 
     Returns e.g. "Device_API_Mapping" (no leading slash).
     """
-    # ── Primary: __file__ walkup ──────────────────────────────────────────
+    # ── Primary: descriptor beside the Content directory ──────────────────
     try:
         path = os.path.abspath(__file__).replace("\\", "/")
         parts = path.split("/")
@@ -68,6 +68,13 @@ def detect_project_mount() -> str:
             if part == "Content" and i > 0:
                 candidate = parts[i - 1]
                 if candidate and candidate not in PLUGIN_MOUNTS:
+                    project_file = os.path.join("/".join(parts[:i]), candidate + ".uefnproject")
+                    if os.path.isfile(project_file):
+                        with open(project_file, encoding="utf-8") as descriptor:
+                            plugins = json.load(descriptor).get("plugins", [])
+                        roots = [p.get("name") for p in plugins if p.get("bIsRoot") is True]
+                        if len(roots) == 1 and isinstance(roots[0], str) and roots[0]:
+                            return roots[0]
                     return candidate
     except Exception:
         pass
@@ -161,6 +168,14 @@ def scannable_assets(paths) -> list[str]:
     return [p for p in paths if is_scannable_asset(p)]
 
 
+def _project_mount_path() -> str:
+    mount = detect_project_mount()
+    reserved = {name.lower() for name in PLUGIN_MOUNTS} | {"temp"}
+    if not mount or mount.lower() in reserved or "/" in mount or "\\" in mount:
+        raise ValueError("User project mount is unavailable; open the intended UEFN project first.")
+    return f"/{mount}"
+
+
 def resolve_scan_path(scan_path: str) -> str:
     """
     Resolve an empty scan_path to the project's Content Browser mount point.
@@ -173,7 +188,7 @@ def resolve_scan_path(scan_path: str) -> str:
     """
     if scan_path:
         return scan_path
-    return f"/{detect_project_mount()}"
+    return _project_mount_path()
 
 
 def resolve_content_path(path: str, default_subpath: str = "") -> str:
@@ -193,7 +208,7 @@ def resolve_content_path(path: str, default_subpath: str = "") -> str:
 
     Resolved at call time — mount detection needs a live editor.
     """
-    mount = f"/{detect_project_mount()}"
+    mount = _project_mount_path()
     if not path:
         return f"{mount}/{default_subpath}".rstrip("/")
     if path == "/Game" or path.startswith("/Game/"):

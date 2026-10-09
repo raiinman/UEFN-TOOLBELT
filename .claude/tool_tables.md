@@ -671,7 +671,7 @@ tb.run("screenshot_focus_selection", width=1920, height=1080, name="prop_focus")
 | `system_build_verse` | — | Trigger Verse compilation + parse errors back as structured JSON |
 | `system_get_last_build_log` | — | Read last 100 lines of the UEFN log for error analysis |
 | `verse_patch_errors` | `verse_file=""` | **Phase 5 error loop** — reads build log, extracts errors with `file/line/col/message` + `error_type` (undefined_identifier, type_mismatch, missing_override, syntax_error, etc.) + `fix_hint` per error. Returns `errors_by_file` dict and `error_type_summary` for at-a-glance categorisation. Full content of every erroring .verse file included so Claude can fix and redeploy in one shot. |
-| `verse_build_status` | `stale_threshold_sec=300` | **Lightweight build check** — reads the latest log, returns `SUCCESS`/`FAILED`/`UNKNOWN`, ISO timestamp, staleness flag, and error count. Call this after telling the user to click Build Verse to detect whether a fresh build has happened. Much lighter than `verse_patch_errors`. |
+| `verse_build_status` | `stale_threshold_sec=300` | **Lightweight build check** — returns the latest observed `SUCCESS`/`FAILED`/`UNKNOWN`, log-file timestamp, log staleness and error count. Confirm current-source compilation with the normal Compile Verse action and compiler output; log activity alone is not a new-build timestamp. |
 | `verse_template_list` | — | List all 6 battle-tested Verse game templates — `game_skeleton`, `elimination_scoring`, `zone_capture`, `round_flow`, `item_spawner_cycle`, `countdown_race`. Claude reads this first to pick the right template for the game mode it is building. |
 | `verse_template_get` | `name` | Return full Verse source for a named template + `devices_needed` list + `next_step` instructions. Claude fills device labels from `world_state_export` then deploys. |
 | `verse_template_deploy` | `name`, `filename`, `custom_source=""`, `overwrite=False` | Write a template (raw or Claude-edited) directly to the Verse source directory. Shortcut for `verse_template_get` + `verse_write_file` in one call. |
@@ -806,7 +806,7 @@ Low-frequency tools — check these exist before re-implementing similar functio
 | `system_perf_audit` | Project Admin | Fast performance check of the current level |
 | `publish_audit` | Project Admin | **Fortnite publish-readiness audit** — actor budget, required devices, lights, rogue actors, Verse build status, unsaved changes, redirectors, level name, memory. Returns `ready`/`warnings`/`blocked` with score and ordered next steps. |
 | `select_by_property` | Selection | Select actors where a property matches a value |
-| `select_by_verse_tag` | Selection | Select actors with a specific Verse tag |
+| `select_by_verse_tag` | Selection | Reports unsupported Verse tags; explicit `tag_scope='actor'` selects ordinary actor metadata tags |
 | `select_in_radius` | Selection | Select all actors of a class within a radius |
 | `seq_actor_to_spline` | Sequencer | Animate an actor along a spline in the Sequencer |
 | `seq_batch_keyframe` | Sequencer | Add transform keyframes for all selected actors at current time |

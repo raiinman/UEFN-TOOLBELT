@@ -14,6 +14,8 @@ Read the repository-root AGENTS.md and every parent AGENTS.md before editing thi
 
 - core/ provides helpers rather than tool registrations.
 - Use the existing project-mount helper for asset paths and theme.py for shared UI colors.
+- Mount detection reads the native descriptor's root plugin before falling back to the containing folder. UUID mounts must retain their identity.
+- Default scan and destination resolution refuse unknown/reserved project mounts instead of falling back to Fortnite's `/Game` content. Explicit read paths retain their identity.
 - Tool windows inherit ToolbeltWindow; persistent Qt/Slate state affects restart requirements.
 
 ## Work Guidance

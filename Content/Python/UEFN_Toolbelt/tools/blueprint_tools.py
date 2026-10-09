@@ -174,7 +174,7 @@ def run_blueprint_audit(scan_path: str = "", max_results: int = 200, **kwargs) -
             name = str(a.asset_name)
             path = str(a.package_name)
             try:
-                bp = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                bp = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if not isinstance(bp, unreal.Blueprint):
                     issues.append({"name": name, "path": path, "issue": "Not a Blueprint"})
                     continue
@@ -182,7 +182,8 @@ def run_blueprint_audit(scan_path: str = "", max_results: int = 200, **kwargs) -
                 try:
                     status = str(bp.get_editor_property("status"))
                 except Exception:
-                    pass
+                    issues.append({"name": name, "path": path, "issue": "Compile status unavailable; inspect the Blueprint in the editor"})
+                    continue
                 if "error" in status.lower():
                     issues.append({"name": name, "path": path, "issue": f"Compile status: {status}"})
                 else:
@@ -238,7 +239,7 @@ def run_blueprint_compile_folder(
             name = str(a.asset_name)
             try:
                 if not dry_run:
-                    bp = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                    bp = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                     if isinstance(bp, unreal.Blueprint):
                         unreal.EditorBlueprintLibrary.compile_blueprint(bp)
                 compiled.append(name)

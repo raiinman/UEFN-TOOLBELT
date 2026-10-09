@@ -73,7 +73,7 @@ def run_sound_asset_list(
             results.append({
                 "name": str(a.asset_name),
                 "path": str(a.package_name),
-                "type": str(a.asset_class),
+                "type": str(a.asset_class_path.asset_name),
                 "duration": a.get_tag_value("Duration"),
                 "channels": a.get_tag_value("NumChannels"),
                 "sample_rate": a.get_tag_value("SampleRateOverride") or a.get_tag_value("SampleRate"),
@@ -130,7 +130,7 @@ def run_sound_asset_audit(
 
             # SoundClass check requires load (only 1 prop read per asset)
             try:
-                sw = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                sw = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if isinstance(sw, unreal.SoundWave):
                     try:
                         sc = sw.get_editor_property("sound_class_object")

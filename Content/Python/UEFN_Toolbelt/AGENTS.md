@@ -15,6 +15,8 @@ Read the repository-root AGENTS.md and every parent AGENTS.md before editing thi
 - registry.py is the shared tool-registration/execution contract; tools/__init__.py activates registrations.
 - Root __init__.py constants are the source of truth for inventory and version. Tool additions update counts; release version changes require their own authorized session.
 - Dashboard reachability is explicitly wired; registration alone does not surface a tool in the UI.
+- `debug_audit_verse_assets` scans the resolved project mount and reports at most 200 metadata matches. Its name-based candidates do not prove an asset is a usable Verse-generated Blueprint.
+- Dashboard and tool windows use normal desktop stacking. Reopening the dashboard restores minimized windows and raises and activates both hidden and visible windows; keep its tool windows accessible without an always-on-top dashboard.
 
 ## Work Guidance
 

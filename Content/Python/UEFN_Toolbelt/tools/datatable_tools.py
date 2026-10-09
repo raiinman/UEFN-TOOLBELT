@@ -237,7 +237,7 @@ def run_datatable_audit(scan_path: str = "", min_rows: int = 1, **kwargs) -> dic
             path = str(a.package_name)
             name = str(a.asset_name)
             try:
-                table = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                table = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if not isinstance(table, unreal.DataTable):
                     issues.append({"name": name, "issue": "Not a DataTable (unexpected class)"})
                     continue

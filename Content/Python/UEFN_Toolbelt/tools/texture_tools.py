@@ -155,7 +155,7 @@ def run_texture_set_compression(
 
         for a in assets:
             try:
-                tex = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                tex = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if not isinstance(tex, unreal.Texture2D):
                     continue
                 current = str(tex.get_editor_property("compression_settings"))
@@ -224,7 +224,7 @@ def run_texture_set_group(
 
         for a in assets:
             try:
-                tex = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                tex = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if not isinstance(tex, unreal.Texture2D):
                     continue
                 current = str(tex.get_editor_property("lod_group"))
@@ -287,7 +287,7 @@ def run_texture_set_srgb(
 
         for a in assets:
             try:
-                tex = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                tex = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if not isinstance(tex, unreal.Texture2D):
                     continue
                 current = tex.get_editor_property("srgb")
@@ -349,7 +349,7 @@ def run_texture_apply_preset(
 
         for a in assets:
             try:
-                tex = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                tex = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if not isinstance(tex, unreal.Texture2D):
                     continue
                 if not dry_run:

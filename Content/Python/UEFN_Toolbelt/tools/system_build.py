@@ -62,6 +62,44 @@ def _scan_build_status(lines) -> str:
     return status
 
 
+_BUILD_ERROR_LOCATION_PAT = re.compile(
+    r"(?P<file>.+?\.verse)\((?P<location>\d+(?:\s*[:,]\s*\d+)*)\)"
+    r"\s*:\s*(?:Script\s+)?error\s*(?P<code>\d*)",
+    re.IGNORECASE,
+)
+_BUILD_FINISHED_PAT = re.compile(
+    r"LogSolLoadCompiler.*finished|VerseBuild:\s*(?:SUCCESS|FAILED)", re.IGNORECASE
+)
+
+
+def _scan_build_snapshot(lines) -> tuple[str, int]:
+    """Count unique diagnostics in the latest compile, including native ranges.
+
+    UEFN emits duplicate location lines with different colon spacing. A finished
+    compile bounds each batch, so previous failures cannot inflate a new result.
+    """
+    status = "UNKNOWN"
+    count = 0
+    pending = set()
+    for line in lines:
+        error = None
+        if ".verse(" in line:
+            diagnostic = line.partition("VerseBuild:")[2] if "VerseBuild:" in line else line
+            diagnostic = re.sub(r"^\s*Error:\s*", "", diagnostic, flags=re.IGNORECASE)
+            error = _BUILD_ERROR_LOCATION_PAT.match(diagnostic.lstrip())
+        if error:
+            pending.add((error["file"].strip(), re.sub(r"\s+", "", error["location"]), error["code"]))
+            status, count = "FAILED", len(pending)
+        elif _BUILD_SUCCESS_PAT.search(line):
+            status, count = "SUCCESS", 0
+            pending.clear()
+        elif _BUILD_FAILED_PAT.search(line):
+            status, count = "FAILED", len(pending)
+            if _BUILD_FINISHED_PAT.search(line):
+                pending.clear()
+    return status, count
+
+
 
 class VerseBuildService:
     @staticmethod
@@ -470,7 +508,7 @@ def verse_build_status(stale_threshold_sec: float = 300.0, **kwargs) -> dict:
           "log_modified":  str,     # ISO timestamp of the log file
           "stale":         bool,    # True if log is older than stale_threshold_sec
           "stale_seconds": float,   # age of the log in seconds
-          "error_count":   int,     # quick count of error lines (no file content)
+          "error_count":   int,     # unique diagnostics in the latest compile
           "log_path":      str,
           "tip":           str
         }
@@ -497,25 +535,9 @@ def verse_build_status(stale_threshold_sec: float = 300.0, **kwargs) -> dict:
     log_modified_iso = datetime.fromtimestamp(log_mtime, tz=UTC).isoformat()
 
     # -- Quick scan for build status --
-    build_status = "UNKNOWN"
-    error_count = 0
-
-    success_pat = _BUILD_SUCCESS_PAT
-    failed_pat = _BUILD_FAILED_PAT
-    error_line_pat = re.compile(
-        r'[^\s]+\.verse\(\d+(?::\d+)?\)\s*:.*(?:error\s+)?.+',
-        re.IGNORECASE
-    )
-
     try:
         with open(latest_log, encoding="utf-8", errors="ignore") as f:
-            for line in f:
-                if success_pat.search(line):
-                    build_status = "SUCCESS"
-                elif failed_pat.search(line):
-                    build_status = "FAILED"
-                if error_line_pat.search(line):
-                    error_count += 1
+            build_status, error_count = _scan_build_snapshot(f)
     except Exception as e:
         log_error(f"verse_build_status: failed to read log: {e}")
         return {"status": "error", "error": str(e)}

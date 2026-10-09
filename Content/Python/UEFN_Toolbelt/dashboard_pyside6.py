@@ -3127,7 +3127,6 @@ class ToolbeltDashboard(QMainWindow):
 
         self.setWindowFlags(
             Qt.Window |
-            Qt.WindowStaysOnTopHint |
             Qt.WindowCloseButtonHint |
             Qt.WindowMinimizeButtonHint
         )
@@ -3474,11 +3473,12 @@ def launch_dashboard() -> None:
     if _WINDOW is None:
         _WINDOW = ToolbeltDashboard()
 
-    if _WINDOW.isHidden():
-        _WINDOW.show()
+    if _WINDOW.isMinimized():
+        _WINDOW.showNormal()
     else:
-        _WINDOW.raise_()
-        _WINDOW.activateWindow()
+        _WINDOW.show()
+    _WINDOW.raise_()
+    _WINDOW.activateWindow()
 
     # Auto-start the MCP listener so Claude Code can connect immediately.
     # Silent if already running — mcp_start is idempotent.

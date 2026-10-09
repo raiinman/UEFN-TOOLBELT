@@ -79,7 +79,7 @@ def run_curve_list(scan_path: str = "", curve_type: str = "all", max_results: in
             {
                 "name": str(a.asset_name),
                 "path": str(a.package_name),
-                "type": str(a.asset_class),
+                "type": str(a.asset_class_path.asset_name),
             }
             for a in assets
         ]
@@ -180,11 +180,11 @@ def run_curve_export(scan_path: str = "", output_path: str = "", **kwargs) -> di
             entry = {
                 "name": str(a.asset_name),
                 "path": str(a.package_name),
-                "type": str(a.asset_class),
+                "type": str(a.asset_class_path.asset_name),
                 "keys": [],
             }
             try:
-                curve = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                curve = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if isinstance(curve, unreal.CurveFloat):
                     float_curve = curve.get_editor_property("float_curve")
                     for key in (float_curve.get_editor_property("keys") or []):

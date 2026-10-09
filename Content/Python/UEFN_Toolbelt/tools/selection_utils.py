@@ -112,12 +112,13 @@ def run_select_by_property(prop_name: str = "Actor Label", value: str = "", matc
 @register_tool(
     name="select_by_verse_tag",
     category="Selection",
-    description="Selects actors that have a specific Verse tag.",
+    description="Reports unavailable Verse-tag inspection; explicitly select ordinary actor tags with tag_scope='actor'.",
     tags=["selection", "verse", "tag", "filter"]
 )
-def run_select_by_verse_tag(tag_name: str = "", **kwargs) -> dict:
+def run_select_by_verse_tag(tag_name: str = "", tag_scope: str = "verse", **kwargs) -> dict:
     """
-    Selects actors with matching tags.
+    This build has no verified Python reader for VerseTagMarkup.
+    Ordinary Actor.tags are a separate, explicitly selected scope.
 
     Returns:
         dict: {"status", "count", "labels": [str]}
@@ -125,6 +126,11 @@ def run_select_by_verse_tag(tag_name: str = "", **kwargs) -> dict:
     if not tag_name:
         log_error("Tag name is required.")
         return {"status": "error", "message": "Tag name is required."}
+    if tag_scope not in ("verse", "actor"):
+        return {"status": "error", "message": "tag_scope must be 'verse' or 'actor'."}
+    if tag_scope == "verse":
+        return {"status": "error", "reason": "verse_tags_unavailable", "tag_scope": "verse",
+                "message": "This Toolbelt build cannot inspect VerseTagMarkup tags. Use the native Details panel or Verse FindCreativeObjectsWithTag. Actor.tags are not Verse tags."}
 
     actor_sub = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     all_actors = actor_sub.get_all_level_actors()
@@ -132,21 +138,20 @@ def run_select_by_verse_tag(tag_name: str = "", **kwargs) -> dict:
     to_select = []
     for actor in all_actors:
         try:
-            # actor.tags is a string array in UEFN; some actor types may not
-            # expose it — guard to avoid AttributeError on non-standard actors.
-            if tag_name in actor.tags:
+            if tag_name in (str(tag) for tag in actor.tags):
                 to_select.append(actor)
         except Exception:
-            continue
+            return {"status": "error", "reason": "actor_tags_unavailable", "tag_scope": "actor",
+                    "message": "An actor's metadata tags could not be inspected; selection was preserved."}
 
     if to_select:
         actor_sub.set_selected_level_actors(to_select)
         labels = [a.get_actor_label() for a in to_select]
         log_info(f"Selected {len(to_select)} actors with tag '{tag_name}'.")
-        return {"status": "ok", "count": len(to_select), "labels": labels}
+        return {"status": "ok", "tag_scope": "actor", "count": len(to_select), "labels": labels}
 
     log_info(f"No actors found with tag '{tag_name}'.")
-    return {"status": "ok", "count": 0, "labels": []}
+    return {"status": "ok", "tag_scope": "actor", "count": 0, "labels": []}
 
 
 # ── Named selection sets ───────────────────────────────────────────────────────
