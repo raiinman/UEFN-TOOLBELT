@@ -17,10 +17,13 @@ After running:
 """
 
 import argparse
+import json
 import os
 import shutil
 import subprocess
 import sys
+import tempfile
+from datetime import UTC, datetime
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 
@@ -48,7 +51,7 @@ for _name in sorted(_os.listdir(_PYTHON_DIR)):
                 _mod.register()
         except Exception as _e:
             __import__("unreal").log_error(f"[LOADER] Failed to load '{_name}': {_e}")
-del _sys, _os, _importlib, _PYTHON_DIR, _name, _pkg, _mod
+del _sys, _os, _importlib, _PYTHON_DIR
 # [/UEFN_TOOLBELT_LOADER]
 """
 
@@ -235,10 +238,21 @@ def _install_toolbelt(project_path: str):
 
     # ── Step 1: Copy the Toolbelt package ─────────────────────────────────────
     try:
-        if os.path.exists(dest_tb):
-            print("  Updating existing installation...")
-            shutil.rmtree(dest_tb)
-        shutil.copytree(TOOLBELT_SRC, dest_tb)
+        with tempfile.TemporaryDirectory(prefix=".toolbelt-install-", dir=dest_python) as staging:
+            if os.path.commonpath([os.path.realpath(staging), os.path.realpath(dest_python)]) != os.path.realpath(dest_python):
+                raise ValueError("Installer staging escaped the project Python directory")
+            staged_package = os.path.join(staging, "package")
+            backup = os.path.join(staging, "previous")
+            shutil.copytree(TOOLBELT_SRC, staged_package)
+            if os.path.exists(dest_tb):
+                print("  Updating existing installation...")
+                os.replace(dest_tb, backup)
+            try:
+                os.replace(staged_package, dest_tb)
+            except OSError:
+                if os.path.exists(backup):
+                    os.replace(backup, dest_tb)
+                raise
         print(f"  ✓ Copied UEFN_Toolbelt → {dest_tb}")
     except Exception as e:
         print(f"  ✗ Failed to copy Toolbelt: {e}")
@@ -254,7 +268,11 @@ def _install_toolbelt(project_path: str):
         with open(dest_init, encoding="utf-8") as f:
             existing = f.read()
 
-        if _LOADER_MARKER in existing:
+        with open(INIT_SRC, encoding="utf-8") as f:
+            template = f.read()
+        if "# [CODEX_TOOLBELT_AUTOSTART]" in existing or existing == template:
+            print("  ✓ Preserved existing managed/default startup script")
+        elif _LOADER_MARKER in existing:
             # Marker present — replace the old block with the current one so
             # future installs always update the loader (e.g. after a bug fix).
             import re as _re
@@ -284,6 +302,25 @@ def _install_toolbelt(project_path: str):
             except Exception as e:
                 print(f"  ✗ Failed to patch init_unreal.py: {e}")
                 sys.exit(1)
+
+    # Stamp every installation, not just deploy.bat copies.
+    commit = "unknown"
+    try:
+        commit = subprocess.run(
+            ["git", "-C", REPO_ROOT, "rev-parse", "--short", "HEAD"],
+            check=True, capture_output=True, text=True,
+        ).stdout.strip()
+        dirty = subprocess.run(
+            ["git", "-C", REPO_ROOT, "status", "--porcelain"],
+            check=True, capture_output=True, text=True,
+        ).stdout.strip()
+        if dirty:
+            commit += "+dirty"
+    except (OSError, subprocess.CalledProcessError):
+        pass
+    with open(os.path.join(dest_tb, "_build_stamp.json"), "w", encoding="utf-8") as f:
+        json.dump({"commit": commit, "deployed_at": datetime.now(UTC).isoformat(),
+                   "project": os.path.basename(os.path.abspath(project_path))}, f, indent=2)
 
 
 def _print_next_steps(project_path: str):
@@ -322,6 +359,10 @@ def main():
         metavar="PATH",
         help="Path to your UEFN project folder (optional — installer will prompt if omitted)",
     )
+    parser.add_argument(
+        "--skip-dependencies", action="store_true",
+        help="Update the project package while preserving existing PySide6 dependencies.",
+    )
     args = parser.parse_args()
 
     print("\nUEFN Toolbelt Installer")
@@ -329,7 +370,10 @@ def main():
 
     # Step 0: PySide6 (dashboard UI dependency)
     print("\n[1/3] Checking PySide6...")
-    _ensure_pyside6()
+    if args.skip_dependencies:
+        print("  Existing PySide6 dependencies left unchanged.")
+    else:
+        _ensure_pyside6()
 
     # Step 1-2: Install into project
     print("\n[2/3] Selecting UEFN project...")

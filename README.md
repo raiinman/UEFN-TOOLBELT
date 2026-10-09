@@ -3,7 +3,7 @@
 
 > Built by **Ocean Bennett** — 2026
 
-[![CI](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/workflows/ci.yml/badge.svg)](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/workflows/ci.yml)
+[![CI](https://github.com/raiinman/UEFN-TOOLBELT/actions/workflows/ci.yml/badge.svg)](https://github.com/raiinman/UEFN-TOOLBELT/actions/workflows/ci.yml)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-2.5.0-green.svg)](docs/CHANGELOG.md)
 [![Discussions](https://img.shields.io/badge/community-discussions-blueviolet)](https://github.com/undergroundrap/UEFN-TOOLBELT/discussions)
@@ -1150,7 +1150,7 @@ Output: `Saved/UEFN_Toolbelt/screenshots/{name}_{YYYYMMDD_HHMMSS}_{W}x{H}.png`
 | Tool | Description |
 |---|---|
 | `select_by_property` | Select actors where a property matches a specific value. |
-| `select_by_verse_tag` | Select actors that have a specific Verse tag. |
+| `select_by_verse_tag` | Reports unsupported Verse-tag inspection. Explicit `tag_scope='actor'` selects ordinary actor metadata tags. |
 | `select_in_radius` | Select all actors of a class within a radius of the current selection. |
 
 ---
@@ -1392,11 +1392,33 @@ python install.py --project "C:\Users\YOURNAME\Documents\Fortnite Projects\YOURP
 `deploy.bat` is the dev workflow tool. Double-click it or run it from a terminal. In addition to copying files it will:
 - Check and install PySide6 automatically if it's missing
 - Copy the `verse-book/` reference without its Python lexer helpers
-- Print the hot-reload command to paste into UEFN so you don't need a full restart
+- Preserve an existing `init_unreal.py` and write the deployed build stamp
+- Print guarded reload commands and identify changes requiring a full restart
 
 ```bat
 deploy.bat
 ```
+
+For a project outside the default Fortnite Projects folder:
+
+```bat
+deploy.bat "C:\path\to\project" /nopause
+```
+
+To use the installer while retaining existing dashboard dependencies:
+
+```bat
+python install.py --project "C:\path\to\project" --skip-dependencies
+```
+
+Installer updates stage the complete package before replacement and restore the
+previous package if replacement fails. Managed startup hooks are preserved, and
+every installation writes its deployed build stamp.
+
+The target must contain a `.uefnproject` descriptor. `/nopause` skips prompts and
+optional PySide6 installation; keep the existing dashboard dependencies installed.
+Existing startup scripts are preserved byte-for-byte; inspect their loader/hooks
+separately and verify automatic startup after a full editor restart.
 
 > **Before Launch Session, Push Changes, or publishing:** UEFN 42.00 rejects
 > every `.py` under the project for the standard `VKCreateUGC` role.
@@ -1405,9 +1427,9 @@ deploy.bat
 > helper stashes every project `.py` outside the project and verifies zero remain;
 > restore refuses to overwrite any file created while the stash was active.
 
-> **Hot-reload after any code change** (no UEFN restart needed):
+> **Guarded reload for existing-module edits** (startup, new modules and persistent windows require a full restart):
 > ```python
-> import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.launch_qt()
+> import UEFN_Toolbelt as tb; tb.hard_reload(); tb.launch_qt()
 > ```
 
 ---
@@ -1492,7 +1514,7 @@ A dark-themed floating window opens with a left sidebar nav and 362 tools across
 
 > **If the dashboard doesn't open after installing PySide6:** The module may be cached from before PySide6 was installed. Paste this single line to clear and reload:
 > ```python
-> import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.launch_qt()
+> import UEFN_Toolbelt as tb; tb.hard_reload(); tb.launch_qt()
 > ```
 
 ---
@@ -1515,7 +1537,7 @@ This lets Claude Code directly control UEFN — spawn actors, run any tool, gene
 
 **1. Install the MCP Python package** (regular terminal, not UEFN):
 ```bat
-pip install mcp
+python -m pip install -r requirements-mcp.txt
 ```
 
 **2. Create your own `.mcp.json`:** a fresh clone has none. The file is
@@ -1595,13 +1617,13 @@ Snippets also auto-copy to the Windows clipboard when generated, so you can past
 
 ---
 
-### **The "Nuclear Reload" Command**
-If you have modified the Toolbelt source code, run this in the UEFN console to refresh everything without a restart:
+### Guarded reload
+For existing pure tool-module edits, close windows and rebuild the registry with:
 ```python
-import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.launch_qt()
+import UEFN_Toolbelt as tb; tb.hard_reload(); tb.launch_qt()
 ```
 > [!IMPORTANT]
-> Always include `tb.register_all_tools()` after a pop, otherwise the tool registry will be empty!
+> Fully restart UEFN for startup, new modules and persistent-window changes.
 
 ### REPL Usage
 
@@ -1617,7 +1639,7 @@ import UEFN_Toolbelt as tb; tb.run("toolbelt_smoke_test")
 
 **Force reload (after git pull or update):**
 ```python
-import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.launch_qt()
+import UEFN_Toolbelt as tb; tb.hard_reload(); tb.launch_qt()
 ```
 
 **Materials & Bulk Ops:**
@@ -2240,7 +2262,7 @@ See `docs/UEFN_QUIRKS.md` Quirks #26 and #27 and the test matrix in `CLAUDE.md`.
 3. **Paste** the right command from the table below into the UEFN Python console.
 
 > [!WARNING]
-> Always include `tb.register_all_tools()` after the module pop. If you skip it the registry will be empty and every tool call will fail with "Unknown Tool".
+> Use `tb.hard_reload()` to close live windows before reloading. Directly clearing `sys.modules` can crash UEFN (Quirk #38). Startup, new modules and persistent window changes require a full restart.
 
 ### Quick-Reference Command Table
 
@@ -2248,12 +2270,12 @@ Copy the command that matches what you're doing right now:
 
 | What you're working on | Command to paste in UEFN console |
 |---|---|
-| **Standard dev — open dashboard** | `import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.launch_qt()` |
-| **Verse Device Graph window** | `import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("verse_graph_open")` |
-| **Run integration tests** | `import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("toolbelt_integration_test")` |
-| **Quick smoke test only** | `import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("toolbelt_smoke_test")` |
-| **Sync docs + Verse IQ** | `import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("api_sync_master")` |
-| **Headless reload (no UI)** | `import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools()` |
+| **Standard dev — open dashboard** | `import UEFN_Toolbelt as tb; tb.hard_reload(); tb.launch_qt()` |
+| **Verse Device Graph window** | `import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("verse_graph_open")` |
+| **Run integration tests** | `import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_integration_test")` |
+| **Quick smoke test only** | `import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_smoke_test")` |
+| **Sync docs + Verse IQ** | `import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("api_sync_master")` |
+| **Headless reload (no UI)** | `import UEFN_Toolbelt as tb; tb.hard_reload()` |
 
 All of these also appear in `deploy.bat` output — after deploying, just copy from the terminal.
 
@@ -2273,7 +2295,7 @@ All of these also appear in `deploy.bat` output — after deploying, just copy f
 | Property set fails on Verse device | Property may be read-only in-editor or the name differs. Check the Details panel spelling. |
 | FBX import produces no assets | Check Output Log for FBX parse errors. Use forward slashes in file paths. |
 | Scatter actors not visible | Check the mesh path is valid — tool falls back to `/Engine/BasicShapes/Cube` if it can't find the mesh. |
-| Something isn't loading after an update | Module may be cached. Paste: `import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.launch_qt()` |
+| Something isn't loading after an update | Module may be cached. Paste: `import UEFN_Toolbelt as tb; tb.hard_reload(); tb.launch_qt()` |
 | LOD generation fails | `StaticMeshEditorSubsystem.set_lods_with_notification` requires the mesh to be fully loaded. Run `load_asset()` first. |
 | Menu bar entry missing (UEFN ≤ 40.10) | `init_unreal.py` failed silently — check Output Log for `[TOOLBELT]` error lines on startup. |
 | Menu bar entry missing (UEFN 40.20+, including 42.00) | Epic sandboxes `ToolMenus` extensions for third-party Python. Every registration call succeeds and the log says so, but nothing renders in the top bar. **Confirmed still absent on 42.00** (2026-08-21, screenshot of the top bar: File / Edit / Window / Tools / Verse / Build / Select / Help, no Toolbelt). Toolbelt now checks `is_menu_registered` and says which happened instead of always claiming success. Use `tb.launch_qt()` or the dashboard; all 362 tools work normally. |
@@ -2312,7 +2334,7 @@ Your AI  ←── MCP stdio ──→  mcp_server.py  ←── authenticated l
 
 **One-time setup:**
 ```bat
-pip install mcp
+python -m pip install -r requirements-mcp.txt
 ```
 
 **Start the listener in UEFN:**
@@ -2516,11 +2538,11 @@ tb.run("toolbelt_integration_test")
 
 ### Hot-Reloading (No UEFN Restart Required)
 
-Use the Nuclear Reload command — it completely wipes the Toolbelt from Python's module cache and re-imports everything fresh. See the **Quick-Reference Command Table** above for the full set of variants (dashboard, graph window, tests, etc.).
+Use `tb.hard_reload()` for existing pure tool-module edits. It closes live windows before reloading and rebuilds the registry. Fully restart for startup, new modules or persistent-window changes; see the Quick-Reference Command Table above.
 
 ```python
 # Standard — reload everything and open the dashboard
-import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.launch_qt()
+import UEFN_Toolbelt as tb; tb.hard_reload(); tb.launch_qt()
 ```
 
 > [!TIP]
@@ -2858,7 +2880,7 @@ Contributions are welcome and encouraged. This project follows a simple rule: **
 2. **Follow the tool structure** — see [Adding a New Tool](#adding-a-new-tool) for the exact pattern
 3. **Test in a live UEFN editor — this is mandatory.** Syntax checks don't catch UEFN runtime failures. Run the hard-refresh bundle in the UEFN Python console and confirm your tool works:
    ```python
-   import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("your_tool_name")
+   import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("your_tool_name")
    ```
    Then run the smoke test to confirm no regressions: `tb.run("toolbelt_smoke_test")`
 4. **Open a Pull Request** with a clear description of what the tool does and why it belongs here

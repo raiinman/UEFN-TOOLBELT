@@ -15,7 +15,9 @@ Epic's official UEFN MCP server, which Toolbelt is not reachable through.
 ## Non-negotiable rules
 
 1. **Never commit without a live UEFN test.** Syntax passing ≠ working in the editor.
-2. **Always run `deploy.bat` before testing.** Repo and UEFN project are separate directories.
+2. **Always run `deploy.bat` before testing.** Repo and UEFN project are separate directories. For nonstandard locations use `deploy.bat "C:\path\to\project" /nopause`; unattended mode skips optional dependency installation and preserves existing `init_unreal.py` byte-for-byte. Inspect the startup hook separately; a preserved hook does not prove startup works.
+   `install.py` stages package updates before replacement and restores the prior package if replacement fails. It preserves managed startup hooks and an unchanged default loader, and writes a destination build stamp.
+   Use `--skip-dependencies` when retaining existing dashboard libraries. External adapter dependencies are declared separately in `requirements-mcp.txt`; editor installs do not consume that file.
 3. **Run `python scripts/drift_check.py` before every commit.** Must return PASS.
 4. **Bump `__tool_count__` and `__category_count__`** in `Content/Python/UEFN_Toolbelt/__init__.py` when adding tools.
 5. **Full UEFN restart required** when adding a new module to `tools/__init__.py`. Nuclear reload crashes. See `docs/UEFN_QUIRKS.md` Quirk #26.
@@ -97,7 +99,7 @@ python -c "import ast; ast.parse(open('Content/Python/UEFN_Toolbelt/tools/your_t
 
 ```
 deploy.bat                          → sync repo → UEFN project
-[nuclear reload in UEFN console]    → hot-reload modules
+[full restart for startup/window changes; tb.hard_reload() otherwise] → reload safely
 tb.run("tool_name")                 → test live
 [user confirms output]              → leave the complete change uncommitted
 [independent review accepts]         → owner may authorize the exact commit
