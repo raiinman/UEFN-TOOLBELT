@@ -1,0 +1,383 @@
+{
+  "provenance": "Derived manifest: identical source and deployed Python hashes following native startup/read-only acceptance",
+  "source_commit": "2a22aefce53db281b1f613429aee8441801e7e27",
+  "dirty": true,
+  "files": [
+    {
+      "path": "__init__.py",
+      "sha256": "2A7301CC2DDC7FCDE672D3BB86B2320FB3A0FF66AF2E7C77DEFCA44EDDA1D064"
+    },
+    {
+      "path": "dashboard_pyside6.py",
+      "sha256": "7D15F450C05735E96B1016A39AFE78B71D32085BE132474C017CC24EE20F300E"
+    },
+    {
+      "path": "diagnostics.py",
+      "sha256": "EB577F24E042C41E1A837FC30E37071F9489166C08E577C1F6C8A6613063AB7F"
+    },
+    {
+      "path": "epic_toolset.py",
+      "sha256": "0AE88997C355AFD65C7791E8C29B1EF18E653E1B4EE1BC619E18458C360270AD"
+    },
+    {
+      "path": "list_untested.py",
+      "sha256": "8D10BF7F8B341E0B10391C3DABFE276244C09721C7D8A8EDB1B51163EDCDE75D"
+    },
+    {
+      "path": "menu.py",
+      "sha256": "1141274F722A26983EF7E092A881BBC678BB789292A3C4D9045D335C1F83CA81"
+    },
+    {
+      "path": "registry.py",
+      "sha256": "A65360F496B107605E69C2A452C03EE528C9AB0F27F94EC2D8D12E00D4DEF59B"
+    },
+    {
+      "path": "schema_utils.py",
+      "sha256": "7BA8BD6FED7E55BA08F2693130BA21DDC0F205FB5CF0F23524A06E68DC18DE9D"
+    },
+    {
+      "path": "smoke_test.py",
+      "sha256": "8816BA454B627A24FC563131F282CE66FFBCD24CFADDC29154E5E43A678C72CF"
+    },
+    {
+      "path": "core/__init__.py",
+      "sha256": "974E8130DEE3F36B68E37D2A12B8BACA94432C51ED40E0D392845DE54B045348"
+    },
+    {
+      "path": "core/activity_log.py",
+      "sha256": "965CE0FEB4C206FE17F82BFCA4F1472D15C2F8E637398FC584D1D027B0631641"
+    },
+    {
+      "path": "core/base_window.py",
+      "sha256": "6A96C7C4A599FAFD3B0D9061A64AAB0CD841712FD80F62DCB02F71F66CB94519"
+    },
+    {
+      "path": "core/config.py",
+      "sha256": "2653CD92BC623C93A662CC2124DA582B08C1307BF2134A7526F9F63735E376FD"
+    },
+    {
+      "path": "core/safety_gate.py",
+      "sha256": "0CDDB778A5B95EDBFF8226218D141CEA842B527FBA53B6E76792F8997491F792"
+    },
+    {
+      "path": "core/theme.py",
+      "sha256": "BD018F52D7A2EF06D1CC72F668A763449B6D1ADC60B312BB10A4256E78672687"
+    },
+    {
+      "path": "tools/__init__.py",
+      "sha256": "8B66312D004E2B02DB7B733989FAAD97B2A287A6615DA2FD4D52FE64C81B5D41"
+    },
+    {
+      "path": "tools/activity_log_tools.py",
+      "sha256": "6661908BD574A04FEB0004A811983E7D92504E37E9E719A7374A46B5DA8199F8"
+    },
+    {
+      "path": "tools/actor_org_tools.py",
+      "sha256": "99F59ECD79882EBECF0051809FD5E89F19E1EC3D27C1E7404391C33ECD419A9C"
+    },
+    {
+      "path": "tools/actor_visibility.py",
+      "sha256": "0FCF6EE16567C4965338CA18DFF741B7066392BFE3AFAC4A5753BC9E5353311F"
+    },
+    {
+      "path": "tools/advanced_alignment.py",
+      "sha256": "D52E25ACAA1A246E2BF655778921B838B97CB0128C1047DA3F51CDFD864AE1A0"
+    },
+    {
+      "path": "tools/animation_tools.py",
+      "sha256": "7ADC8F213654E193E21B07D3EB822F3D83804AD30D8552E984439ACE75044D80"
+    },
+    {
+      "path": "tools/api_capability_crawler.py",
+      "sha256": "5C9EB84D7D8A169A3FDD0AE9E791506FD3C16938B7C2DDE154C798772B123BD4"
+    },
+    {
+      "path": "tools/api_explorer.py",
+      "sha256": "FF8D38967AF402934C76C8AC85CD91436F5BC2F83DA94B85D529721841F1FE5B"
+    },
+    {
+      "path": "tools/arena_generator.py",
+      "sha256": "E5112168E67C2E44D4A9A60050E0E350D5E9491C504B2B63E52DA107C1EF3ECF"
+    },
+    {
+      "path": "tools/asset_importer.py",
+      "sha256": "E3452AF2442A35F2933FAF16B5EE9BC39DE7E48E17ED31DA0B904EFE024A5A78"
+    },
+    {
+      "path": "tools/asset_renamer.py",
+      "sha256": "40DFEC4918811F13E7CFFF19CB02BC4DA3289C99DBB3F5E6C9E95CAF59FCD5DE"
+    },
+    {
+      "path": "tools/asset_tagger.py",
+      "sha256": "767D4AC2C5F4F5305F8036D0ECD238C3D7C2FED60C8ECE6C67FE87A541647C4F"
+    },
+    {
+      "path": "tools/audio_design_tools.py",
+      "sha256": "6EF3FC7CE4BF862DB725414150C95BBF6A0536F20F047289C841247DEA1BC97C"
+    },
+    {
+      "path": "tools/audio_tools.py",
+      "sha256": "18A5D04D051C027E44FA097FD312321E5E2F3FAC2488E22A1286A6A9D035430B"
+    },
+    {
+      "path": "tools/blueprint_tools.py",
+      "sha256": "9329068BA34F2240E9F05DFC8611B7328EDE4137E116059454791EF10BD8783A"
+    },
+    {
+      "path": "tools/bulk_operations.py",
+      "sha256": "3DD383843345931D9C6697A6BB6E46CA3ADBEE4A9A5C3C1941F56CE8FBE2FBA7"
+    },
+    {
+      "path": "tools/config_tools.py",
+      "sha256": "78EA8750A1F7753CBFC51D49847345F118F2B247FD398123260775D23501C56A"
+    },
+    {
+      "path": "tools/cooker_optimizer.py",
+      "sha256": "F01AE98756D5DD0FC7E80F5CE1D3C998F8F20BD22A2FF9646D142F310A6D470E"
+    },
+    {
+      "path": "tools/curve_tools.py",
+      "sha256": "81CBB63FF12467DF861697FF286938216D3B93EF44BC8CFB4B632EB266357F5C"
+    },
+    {
+      "path": "tools/datatable_tools.py",
+      "sha256": "6B0F870BC7D839C05141E6533DECF8A3ECA43D6A938F8256EF86FDF8A3D6180E"
+    },
+    {
+      "path": "tools/enhanced_input_tools.py",
+      "sha256": "C22F43E228EB0ED12442D301E01ABFAD96828789A06D201864247862C7672AC1"
+    },
+    {
+      "path": "tools/entity_kits.py",
+      "sha256": "8AE063D61C3000D67C1422B17FC8D159CD9F7C9FAE415BB0E62B3475B75F5990"
+    },
+    {
+      "path": "tools/epic_mcp_tools.py",
+      "sha256": "8A0A1B18989D92C6B5617060E4DE695E67CC0B7968E040786C1C40D2777104A8"
+    },
+    {
+      "path": "tools/foliage_converter.py",
+      "sha256": "DF0BF997F717E8577BC10084CE102B006D397750946B4BFDAAAF3EEFD96A8CDA"
+    },
+    {
+      "path": "tools/foliage_tools.py",
+      "sha256": "17EAC1945A1D06AB60FC9B8E081442D6656FFC7B2A31025D062E4DC791DD883A"
+    },
+    {
+      "path": "tools/geometry_tools.py",
+      "sha256": "6E4D8212A5DC93560D602EFEC9DABE56E3406F25C3BDA7CBE8100F52EB8CDDD9"
+    },
+    {
+      "path": "tools/integration_test.py",
+      "sha256": "F92854E3AAC6D3E1487F58A7CA08C8E8540C677B1FCB01F3772E4AAC95DAF8EE"
+    },
+    {
+      "path": "tools/landscape_tools.py",
+      "sha256": "A1B85701BF6AAA4A1F9D49D391CC81DD93C53445C6E361373B4547F0BBE417E4"
+    },
+    {
+      "path": "tools/level_health.py",
+      "sha256": "B01811C9ED92E427DC8B8AA3809FE3119E2DFB5D5B5D1F7C89F4038298F9A643"
+    },
+    {
+      "path": "tools/level_snapshot.py",
+      "sha256": "2378F7848351167A4FF5B35C13F5356DAD2469C6CFBCC77FE50178FF803BF040"
+    },
+    {
+      "path": "tools/lighting_mastery.py",
+      "sha256": "706EE76DB8318B7964F28D26E6770852DB34950E0746EA34484F14FBD9EE4C2D"
+    },
+    {
+      "path": "tools/localization_tools.py",
+      "sha256": "A969B36422F93AA337F1E6170A4BC152FD2A54D7DCF026FB7AC396B7B9C62205"
+    },
+    {
+      "path": "tools/lod_tools.py",
+      "sha256": "CEF4F2AF6289BE0F2B8E3F01E2C9AE7E083793F9CE2797695BC110D621E3E253"
+    },
+    {
+      "path": "tools/material_master.py",
+      "sha256": "39643E17B99D1412F48F6BD6AB0E0D0408CFE1D561EF7CA86F0FA906DB0CECB5"
+    },
+    {
+      "path": "tools/mcp_bridge.py",
+      "sha256": "DFD881309D54DDC5CE76DD84D3FC619EB1405349D446EEE17EB70480702E30F0"
+    },
+    {
+      "path": "tools/measurement_tools.py",
+      "sha256": "861AAF0B00ABEF568B2219A73F72901D95887E1C722D93044A09FF3C74E6BA4B"
+    },
+    {
+      "path": "tools/memory_profiler.py",
+      "sha256": "9BEF1E61B94A92D7B64B9A1D6FE81D9837116B5550A420AD6C5D4B44F8622F44"
+    },
+    {
+      "path": "tools/movie_render_tools.py",
+      "sha256": "BE0634E38F2FD5645634C136F3E58B6A098F0FFD4CDDC65320AC6D930C0914E4"
+    },
+    {
+      "path": "tools/niagara_tools.py",
+      "sha256": "27D4EC0B233F5CAF6AB1FB733C491D82286A24E9340DBB123298FD0074C9BFBC"
+    },
+    {
+      "path": "tools/optimization_tools.py",
+      "sha256": "F91F484E05C7F6B029C503DACEC8BC46C3B30A2C5943368ACB934E2CD3830F72"
+    },
+    {
+      "path": "tools/pcg_tools.py",
+      "sha256": "40D3C643F34622FCA36FBDB7562BCE661534BBD49E8F55FF75C24B6CF024238D"
+    },
+    {
+      "path": "tools/physics_tools.py",
+      "sha256": "B2B4741AC137FF2357703AF34E46530D97FE9D1F479A5697860F8A0CC5B77F91"
+    },
+    {
+      "path": "tools/plugin_manager.py",
+      "sha256": "1BC861E5BEDE525D0C9ECB05E17E8ADC632B36F3C73C280BC35CF3029C97A3B3"
+    },
+    {
+      "path": "tools/postprocess_tools.py",
+      "sha256": "ADB62E38116EF220AE8A0D837F1E70AFA29782D3A0E18ABEEDC84E38D4559137"
+    },
+    {
+      "path": "tools/prefab_migrator.py",
+      "sha256": "1E32167FAC6EB049EA99A31A10024484DE22B8539E234F2C7066E3A71EAA952F"
+    },
+    {
+      "path": "tools/prefab_stamp.py",
+      "sha256": "4D5A08EAFDCC95D3B9E620383F57C3AAEFAB4F21CF9F6CA34470463287E995CF"
+    },
+    {
+      "path": "tools/procedural_geometry.py",
+      "sha256": "ECAA578277E0157077559F13B58476D528F1F0959BB41FFDE36D3498E13536CE"
+    },
+    {
+      "path": "tools/project_admin.py",
+      "sha256": "D618E610C7B47A7C945B174464AEC1DE9A3460ABEB6DA6C371515E7FED9B06EB"
+    },
+    {
+      "path": "tools/project_scaffold.py",
+      "sha256": "1FD99E0971DBFFCA7141CE0DF29E91D337239D8DD9CF9AEE1115499B72AFB2B4"
+    },
+    {
+      "path": "tools/project_setup.py",
+      "sha256": "76A665E5D7F523C2D2D31ECA736BE62571C9A1E39DD0C5B5B41E95260F35FB4D"
+    },
+    {
+      "path": "tools/prop_patterns.py",
+      "sha256": "1ED32BE7C3CBAACEEF8C3E4C8C48F0446239373DD0249CC21AF943BC96F093C6"
+    },
+    {
+      "path": "tools/proximity_tools.py",
+      "sha256": "40CC4106953D729642FD1EE1569939C8B453D313B8912E4F3F2285686073A4CA"
+    },
+    {
+      "path": "tools/publish_audit.py",
+      "sha256": "D8FD789CC2F854EBE15B290E24FAD59608F5DA2E3B7981D594659571F496AA74"
+    },
+    {
+      "path": "tools/reference_auditor.py",
+      "sha256": "A3A1EDCE46F84A0DBEA51FE0661AAC913F11DBCEA7CD088A99CF1A0662DC4F9D"
+    },
+    {
+      "path": "tools/screenshot_tools.py",
+      "sha256": "394CA5FB59D599CB3803048F5A892344EF2B14172DF62D53BDDF8262EE3D65B9"
+    },
+    {
+      "path": "tools/selection_utils.py",
+      "sha256": "2A4478DF38390179D4B60270C3158499466983B5D5D37B776F85550366D43755"
+    },
+    {
+      "path": "tools/sequencer_tools.py",
+      "sha256": "D0E9ED2DC10911C6C9435D727897D64A04EE89D8A0BDFA5053B5E7B7EFE0A236"
+    },
+    {
+      "path": "tools/sign_tools.py",
+      "sha256": "A41EC5C3EC37B936BDFE583AB5AF283D0191C48E87C9D3A0B4141B61DD9FD91D"
+    },
+    {
+      "path": "tools/sim_device_proxy.py",
+      "sha256": "A4523EF2BE866C72B7D26830FA2E7B8CED799CF461E3110FAA094C6CE0F491A7"
+    },
+    {
+      "path": "tools/skeletal_mesh_tools.py",
+      "sha256": "CE54A15F48D8C22A0E8592A895DCB17A5D321065AA7991F40DFBC6F54C0CD018"
+    },
+    {
+      "path": "tools/smart_importer.py",
+      "sha256": "D0D2FF57621715D279F4A04F66E598EEABDAC0A9B5C31FF76FF601F33AA07989"
+    },
+    {
+      "path": "tools/smart_organizer.py",
+      "sha256": "019AA2139FDAB9B653A8B2B8549F80A50055418C2441D092113F176D3E817FD7"
+    },
+    {
+      "path": "tools/sound_asset_tools.py",
+      "sha256": "00E3744429B7892FD49292508B9C80A3E9FC358F93919A9E1F067A2D56A6598A"
+    },
+    {
+      "path": "tools/spline_prop_placer.py",
+      "sha256": "E9E207F1AB3D935AD2768EAD3E806C8E2516A10BBB7BAC3A0FBC72EDCD5AAA0C"
+    },
+    {
+      "path": "tools/spline_to_verse.py",
+      "sha256": "85C81021D9689B71FB5E9EB1FEAD013BC27C94FB292976C18313A565B5B935D3"
+    },
+    {
+      "path": "tools/system_build.py",
+      "sha256": "8CAEEADC709735F9F1F7D4C66C9609753E1870B83E75CC09B7BF581121EBCF6E"
+    },
+    {
+      "path": "tools/system_perf.py",
+      "sha256": "0CD4E746271F99A7F4EFD22611F5CB23FA58ACCFB34B5DFCC2A1E1B3944C7AFB"
+    },
+    {
+      "path": "tools/text_painter.py",
+      "sha256": "8ACBD58E190BEA8EFEEF58C4F19B010CB98DB636279223F742F539737F279E08"
+    },
+    {
+      "path": "tools/text_voxelizer.py",
+      "sha256": "4A95C9CAEFFD09E594D644A7098DF84052F86D12041FD97DF23234C143199332"
+    },
+    {
+      "path": "tools/texture_tools.py",
+      "sha256": "F64E9F5CED86E1CD70C5B8467942364A19B9DC0EF0DFDAF7B3C80D9D42CAD3DD"
+    },
+    {
+      "path": "tools/ui_icon_import.py",
+      "sha256": "7637FFCF6D4B5554173586AED9A987AB291EC596047707C54216F3F5ED06CFD0"
+    },
+    {
+      "path": "tools/verse_device_editor.py",
+      "sha256": "1881CD820A61326B08842A0BB33BB04CF179ECE284378DC18B3DB31928DD6DA5"
+    },
+    {
+      "path": "tools/verse_device_graph.py",
+      "sha256": "04A981332ADA9921311ABA2D48F3A09C28AAB6005C93DFB97846CF205F4F4201"
+    },
+    {
+      "path": "tools/verse_schema.py",
+      "sha256": "FEF8914F62BD8F5279C43E434B8FA8F60F8705A6C977C97CBFD658656EE9C186"
+    },
+    {
+      "path": "tools/verse_snippet_generator.py",
+      "sha256": "A203C83C58F5BA66C16AB4763EE319ECC8B39499DD1B4ED5A9839BBBCD9995D6"
+    },
+    {
+      "path": "tools/verse_templates.py",
+      "sha256": "2E1783402DFE0C543C859BE5B6303E1E49356A507315BC6047FE9BF59DFD3050"
+    },
+    {
+      "path": "tools/viewport_tools.py",
+      "sha256": "DF2AB02C78DEE1256EBC61BB0F844B49C88826CA8670D35A0D4C3AE1D3DE9CC2"
+    },
+    {
+      "path": "tools/world_partition_tools.py",
+      "sha256": "DBC4B17C938AAD0F1A08FE9E497134A5557F5232C5195D1F7B673D253462E166"
+    },
+    {
+      "path": "tools/zone_tools.py",
+      "sha256": "DC28968CF83E208A041D8000CF70CA037A5C8DF664BB9CA0588A1AB4454C7677"
+    }
+  ]
+}

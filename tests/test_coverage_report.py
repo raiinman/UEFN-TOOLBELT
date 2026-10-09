@@ -363,7 +363,7 @@ def test_registration_only_tools_carry_their_reason(tmp_path):
 def test_run_evidence_matches_the_mandate_and_promotes_nothing(tmp_path):
     evidence = json.loads((REPO / cr.EVIDENCE_REL).read_text(encoding="utf-8"))
     runs = {r["scope"]: r for r in evidence["run_evidence"]}
-    assert set(runs) == {"integration", "other"}
+    assert set(runs) == {"integration", "other", "smoke"}
     integration = runs["integration"]
     assert integration["date"] == "2026-08-23"
     assert "112671c" in integration["build"]
@@ -379,7 +379,13 @@ def test_run_evidence_matches_the_mandate_and_promotes_nothing(tmp_path):
     assert "One machine and one boot" in other["limitation"]
     assert "never promoted" in other["limitation"]
     report = cr.build_report(REPO)
-    assert report["run_scopes_without_records"] == ["smoke"]
+    assert report["run_scopes_without_records"] == []
+    smoke = runs["smoke"]
+    assert smoke["date"] == "2026-10-09"
+    assert "89/89" in smoke["result"]
+    assert "Environment health only" in smoke["limitation"]
+    artifact = REPO / smoke["source"].split(";")[0]
+    assert "Passed:  89/89" in artifact.read_text(encoding="utf-8")
     # No source fact is run evidence.
     for run in evidence["run_evidence"]:
         assert run["source"] not in cr.CHECK_SOURCES.values()
@@ -511,7 +517,7 @@ def test_the_cli_modes_report_the_same_data():
     code, out, err = _cli(REPO)
     assert code == 0, err
     for needle in ("Registered: 362", "Source coverage", "Availability flags",
-                   "Run evidence", "[smoke] no preserved run record"):
+                   "Run evidence", "89/89"):
         assert needle in out
     code, out, _err = _cli(REPO, "--json")
     data = json.loads(out)

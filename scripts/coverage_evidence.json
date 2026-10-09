@@ -2098,6 +2098,14 @@
       "result": "After a deploy and full restart the editor log reported a registry count of 362, and the registered tools mcp_start and mcp_stop were run from the console",
       "source": "docs/audits/2026-09-28-wo004-session-c-live-acceptance.md",
       "limitation": "One machine and one boot, not a general result. Not an integration or smoke run; never promoted into integration coverage or per-tool outcome verification."
+    },
+    {
+      "scope": "smoke",
+      "build": "UEFN 42.30 / UE 6.0.0-58813929, fork 2a22aef with local maintenance repairs",
+      "date": "2026-10-09",
+      "result": "Packaged six-layer environment health check passed 89/89 after deploy and full editor restart",
+      "source": "docs/audits/evidence/2026-10-09-toolbelt-maintenance/native-smoke.txt; companion deployed-python.json and SHA256SUMS.txt",
+      "limitation": "One Windows PC and one Riftbloom boot. Environment health only, not individual tool mutation/gameplay verification or WO-008 client acceptance. Runtime source hashes are preserved in the companion manifest."
     }
   ]
 }

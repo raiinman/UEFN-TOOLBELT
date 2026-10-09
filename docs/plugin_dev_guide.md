@@ -416,7 +416,7 @@ SafetyGate.enforce_safety(target_asset_path)
 1. Drop your `.py` file into `Saved/UEFN_Toolbelt/Custom_Plugins/`
 2. Reload the Toolbelt in the UEFN Python console:
    ```python
-   import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.launch_qt()
+   import UEFN_Toolbelt as tb; tb.hard_reload(); tb.launch_qt()
    ```
 3. Confirm your tool appears in the Plugin Hub tab and in the sidebar search
 4. Run your tool — verify it does what it's supposed to, with and without a selection

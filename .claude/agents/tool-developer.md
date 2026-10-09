@@ -60,9 +60,9 @@ python -c "import ast; ast.parse(open('Content/Python/UEFN_Toolbelt/tools/<file>
 End with the exact UEFN console commands the user needs to run:
 ```
 1. Run deploy.bat
-2. If new module added to tools/__init__.py → full UEFN restart (not nuclear reload)
-   Otherwise → nuclear reload:
-   import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools()
+2. If new module added to tools/__init__.py → full UEFN restart (not guarded reload)
+   Otherwise → guarded reload:
+   import UEFN_Toolbelt as tb; tb.hard_reload()
 3. tb.run("your_new_tool")
 4. Confirm output matches expected return dict
 5. Leave the complete worktree uncommitted with an empty index for independent review
@@ -74,6 +74,6 @@ End with the exact UEFN console commands the user needs to run:
 - Never return None from a tool function
 - Never use `load_asset()` in a scan loop — crashes UEFN on pak-heavy projects (Quirk #32)
 - Never add a topbar with only a title label — see ui_style_guide.md
-- Full UEFN restart required for new modules, not nuclear reload (Quirk #26)
+- Full UEFN restart required for new modules, not guarded reload (Quirk #26)
 - Never commit, push, tag, create a Release, or post socially without the
   separate owner authorization for that exact action

@@ -1,0 +1,117 @@
+UEFN TOOLBELT — Smoke Test Results
+======================================================
+Date:    2026-10-09T14:40:03.846600
+Toolbelt: v2.5.0
+Engine:  6.0.0-58813929+++Fortnite+Release-42.30
+Python:  3.11.8 (tags/v3.11.8:db85d51, Feb  6 2024, 22:03:32) [MSC v.1937 64 bit (AMD64)]
+Passed:  89/89
+Elapsed: 0.34s
+======================================================
+
+
+Layer 1
+----------------------------------------
+  PASS  Python 3.11+  (Python 3.11)
+  PASS  import socket
+  PASS  import threading
+  PASS  import queue
+  PASS  import json
+  PASS  import io
+  PASS  import http.server
+  PASS  import urllib.request
+  PASS  import traceback
+  PASS  TCP socket bind  (127.0.0.1:8765)
+  PASS  threading.Thread available
+  PASS  HTTPServer instantiable
+  PASS  File write (temp dir)
+
+Layer 2
+----------------------------------------
+  PASS  import unreal  (41581 attrs)
+  PASS  register_slate_post_tick_callback
+  PASS  EditorActorSubsystem
+  PASS  EditorAssetSubsystem
+  PASS  LevelEditorSubsystem
+  PASS  StaticMeshEditorSubsystem
+  PASS  EditorAssetLibrary
+  PASS  EditorLevelLibrary
+  PASS  EditorUtilityLibrary
+  PASS  MaterialEditingLibrary
+  PASS  AutomationLibrary
+  PASS  AutomationLibrary.take_high_res_screenshot
+  PASS  API dependency manifest  (171 symbols declared)
+  PASS  All required unreal.* symbols present  (OK)
+  PASS  All required unreal.* methods present  (OK)
+  PASS  Optional unreal.* APIs absent (handled)  (19 absent — tools using them refuse cleanly)
+  PASS  Paths.project_saved_dir()  (C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt)
+
+Layer 3
+----------------------------------------
+  PASS  import UEFN_Toolbelt
+  PASS  init_unreal.py auto-start  (OK)
+  PASS  register_all_tools()
+  PASS  Tool count ≥ 179  (362 registered)
+  PASS  tools.material_master
+  PASS  tools.arena_generator
+  PASS  tools.spline_prop_placer
+  PASS  tools.bulk_operations
+  PASS  tools.verse_device_editor
+  PASS  tools.smart_importer
+  PASS  tools.verse_snippet_generator
+  PASS  tools.text_painter
+  PASS  tools.asset_renamer
+  PASS  tools.foliage_tools
+  PASS  tools.lod_tools
+  PASS  tools.spline_to_verse
+  PASS  tools.project_scaffold
+  PASS  tools.memory_profiler
+  PASS  tools.api_explorer
+  PASS  tools.prop_patterns
+  PASS  tools.reference_auditor
+  PASS  tools.level_snapshot
+  PASS  tools.asset_tagger
+  PASS  tools.screenshot_tools
+  PASS  tools.mcp_bridge
+  PASS  tools.integration_test
+  PASS  tools.plugin_manager
+  PASS  tools.api_capability_crawler
+  PASS  tools.measurement_tools
+  PASS  tools.localization_tools
+  PASS  tools.foliage_converter
+  PASS  tools.entity_kits
+  PASS  tools.selection_utils
+  PASS  tools.project_admin
+  PASS  tools.lighting_mastery
+  PASS  tb.run() returns values
+  PASS  tool: verse_gen_custom
+  PASS  tool: snapshot_save
+  PASS  tool: material_apply_preset
+  PASS  tool: mcp_start
+  PASS  tool: scatter_hism
+  PASS  tool: tag_add
+
+Layer 4
+----------------------------------------
+  PASS  import mcp_bridge
+  PASS  get_status()  (running=True, port=8765)
+  PASS  Commands registered  (31 handlers)
+  PASS  Authenticated queued listener  (port 8765)
+
+Layer 5
+----------------------------------------
+  PASS  import PySide6  (6.12.0)
+  PASS  QApplication accessible  (running)
+  PASS  ToolbeltDashboard importable
+
+Layer 6
+----------------------------------------
+  PASS  verse-book/ clone present  (C:\Users\mikea\OneDrive\Documents\ChatGPT\Couples Isle\native\Riftbloom\verse-book)
+  PASS  verse-book is git repo  (re-clone if False — zip extract won't pull)
+  PASS  verse-book/docs/ present
+  PASS  Chapter count >= 18  (23 .md files)
+  PASS  readable: 00_overview.md  (21056 bytes)
+  PASS  readable: 13_effects.md  (32573 bytes)
+  PASS  readable: 14_concurrency.md  (64223 bytes)
+  PASS  readable: 10_classes_interfaces.md  (95872 bytes)
+  PASS  'suspends' found in spec  (10 chapters contain it)
+  PASS  github.com reachable (git pull works)

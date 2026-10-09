@@ -34,8 +34,8 @@ Build a new UEFN Toolbelt tool named "$ARGUMENTS". Follow the tool-developer age
 
 8. **Give exact UEFN test instructions**:
    - Run `deploy.bat`
-   - If new module: full UEFN restart (not nuclear reload — Quirk #26)
-   - Otherwise: nuclear reload then `tb.run("your_new_tool")`
+   - If new module: full UEFN restart (not guarded reload — Quirk #26)
+   - Otherwise: guarded reload then `tb.run("your_new_tool")`
    - Confirm output matches expected return dict
    - Leave the complete worktree uncommitted with an empty index for independent review
 

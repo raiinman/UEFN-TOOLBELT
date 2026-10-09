@@ -15,7 +15,7 @@ grep -rh 'name="' Content/Python/UEFN_Toolbelt/tools/ --include="*.py" \
 ```
 
 ## 2. Consult the High-Fidelity Schema
-Before writing logic, consult `docs/api_level_classes_schema.json` to find the exact property names and methods for your target UEFN classes (e.g., `BuildingProp`). This is the **Source of Truth** for the project.
+Use `docs/api_level_classes_schema.json` as a reference snapshot for candidate properties and methods. Confirm the installed API with current official docs and a native inspection; a saved schema can describe removed APIs.
 
 ## 3. Create the Tool Logic
 Create or edit a `.py` file in `Content/Python/UEFN_Toolbelt/tools/`.
@@ -94,10 +94,10 @@ def _test_my_new_tool() -> None:
 
 1. Run `deploy.bat` to sync files.
 2. If this is a new module added to `tools/__init__.py`, fully restart UEFN,
-   import Toolbelt fresh, and register all tools. Do not nuclear reload.
+   import Toolbelt fresh, and register all tools. Do not guarded reload.
 3. If this extends an existing pure tool module, paste this into the UEFN Python console:
 ```python
-import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("toolbelt_integration_test")
+import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_integration_test")
 ```
 4. Run the new tool directly and verify its returned data or editor state, not
    merely that it raised no exception.

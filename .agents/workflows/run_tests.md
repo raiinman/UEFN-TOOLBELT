@@ -15,15 +15,15 @@ Ensure your latest code is synced to the UEFN project's `Content/Python` directo
 2. In the menu bar, go to **Window -> Output Log**.
 3. At the bottom of the Output Log, change the command type from "Cmd" to **Python**.
 
-## 3. Run the "Nuclear Reload"
-For changes to existing pure tool modules, this command clears the
-`sys.modules` cache and re-registers all tools:
+## 3. Run the "Guarded Reload"
+For changes to existing pure tool modules, this command closes live windows
+before reloading and rebuilding the registry:
 ```python
-import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools()
+import UEFN_Toolbelt as tb; tb.hard_reload()
 ```
 
 If the change added a new module to `tools/__init__.py`, or touched a PySide6
-window with persistent callbacks, do a full UEFN restart instead. Nuclear reload
+window with persistent callbacks, do a full UEFN restart instead. Guarded reload
 is unsafe for those cases; see Quirks #26 and #38.
 
 ## 4. Execute the Smoke Test (Layer 1-6)
