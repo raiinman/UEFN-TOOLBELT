@@ -20,6 +20,10 @@ never authorizes implementation.
 - WO-008 Session A preparation CI workflow: `37698808630`
 - WO-008 Session A preparation CI job: `113057020206` — Lint, types, tests
 - WO-008 Session A live baseline instruction SHA-256: `671d1dfe2c84922709366cf189c2576c8fc3ea96ddd2bc45e1346b9ce22925a9`
+- WO-008 Session A live baseline commit: `ce04d17ab5fd548adaddb95775e23b97f418829f`
+- WO-008 Session A live baseline CI workflow: `37874506631`
+- WO-008 Session A live baseline CI job: `113639869831` — Lint, types, tests
+- WO-008 Session A replacement attempt instruction SHA-256: `420d59ff3fb1f4bcbd1169ef5a3fce3c63187aa7ab99bc4faa628864274f44e2`
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
@@ -556,3 +560,32 @@ installations or configuration changes that instruction does not name,
 commits and pushes remain unauthorized. Session B and Session C remain
 unauthorized, results are recorded only by a separate transition, and this
 record grants no further authority.
+
+WO-008 Session A replacement attempt record: the live baseline transition was
+committed as `ce04d17ab5fd548adaddb95775e23b97f418829f`; [CI workflow
+`37874506631`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37874506631)
+completed successfully on that commit, including required job
+[`113639869831` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37874506631/job/113639869831).
+The single attempt that the live baseline record allowed, run
+`wo008-a-live-2026-10-09-1`, stopped at setup step 2, before step 0, because
+a setup method was supplied at a path the operator's environment could not
+resolve. Nothing was deployed, no editor or client was launched, no tool call
+was made and no project file was read; that attempt produced no live result.
+The accepted plan for this transition is identified by SHA256SUMS
+`5806aeef223c80a10f9b540728b574af4600852727b0f231bae1082dd7ec7440`, and its instruction by SHA-256
+`420d59ff3fb1f4bcbd1169ef5a3fce3c63187aa7ab99bc4faa628864274f44e2`. That attempt is used, and this record alone governs the
+next one. Session A may make one replacement attempt: one attempt of the
+accepted call plan, as amended by the accepted execution addendum and this
+transition's accepted plan, through Claude Code with the owner decisions
+that instruction records, deployed from the clean, synchronized commit that
+carries this record once that commit's own CI has succeeded, with every
+setup method verified at its pinned path before setup begins. Independent
+review, the commit, the push and that CI are preconditions only; none of
+them authorizes or starts the run. Any stop after its setup begins ends the
+attempt. A further attempt needs a new reviewed transition recorded here,
+and recovery needs a separately bounded owner instruction. A choice or setup
+item that instruction omits follows the accepted addendum's missing-choice
+rule. Product corrections, installations or configuration changes that
+instruction does not name, commits and pushes remain unauthorized. Session B
+and Session C remain unauthorized, results are recorded only by a separate
+transition, and this record grants no further authority.

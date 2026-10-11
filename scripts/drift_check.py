@@ -5288,7 +5288,115 @@ _WO008_A_LIVE_TRACES = (
     _ISSUED_SESSION_A_LIVE_AUTH,
     _WO008_A_LIVE_HEADING,
 )
-# Three literal entries, not a policy engine. Each phase names its own current
+# Session A replacement attempt (A_LIVE_2): one replacement attempt after the
+# A_LIVE attempt stopped before step 0. The gate, marker, opening,
+# prerequisites, NEXT GATE and every A_LIVE record stay exactly as committed
+# and required; one record is added on each surface, with four pointer bullets.
+_WO008_A_LIVE_2_COMMIT = "ce04d17ab5fd548adaddb95775e23b97f418829f"
+_WO008_A_LIVE_2_WORKFLOW = "37874506631"
+_WO008_A_LIVE_2_JOB = "113639869831"
+_WO008_A_LIVE_2_INSTRUCTION_SHA256 = (
+    "420d59ff3fb1f4bcbd1169ef5a3fce3c63187aa7ab99bc4faa628864274f44e2"
+)
+_WO008_A_LIVE_2_PLAN_SHA256SUMS = (
+    "5806aeef223c80a10f9b540728b574af4600852727b0f231bae1082dd7ec7440"
+)
+_WO008_A_LIVE_2_POINTER_SEQUENCE = _WO008_A_LIVE_POINTER_SEQUENCE + (
+    "- WO-008 Session A live baseline commit: `" + _WO008_A_LIVE_2_COMMIT + "`",
+    "- WO-008 Session A live baseline CI workflow: `" + _WO008_A_LIVE_2_WORKFLOW + "`",
+    "- WO-008 Session A live baseline CI job: `" + _WO008_A_LIVE_2_JOB
+    + "` — Lint, types, tests",
+    "- WO-008 Session A replacement attempt instruction SHA-256: `"
+    + _WO008_A_LIVE_2_INSTRUCTION_SHA256 + "`",
+)
+_WO008_A_LIVE_2_POINTER_RECORD = (
+    "WO-008 Session A replacement attempt record: the live baseline transition was\n"
+    "committed as `" + _WO008_A_LIVE_2_COMMIT + "`; [CI workflow\n"
+    "`" + _WO008_A_LIVE_2_WORKFLOW + "`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/" + _WO008_A_LIVE_2_WORKFLOW + ")\n"
+    "completed successfully on that commit, including required job\n"
+    "[`" + _WO008_A_LIVE_2_JOB + "` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/" + _WO008_A_LIVE_2_WORKFLOW + "/job/" + _WO008_A_LIVE_2_JOB + ").\n"
+    "The single attempt that the live baseline record allowed, run\n"
+    "`wo008-a-live-2026-10-09-1`, stopped at setup step 2, before step 0, because\n"
+    "a setup method was supplied at a path the operator's environment could not\n"
+    "resolve. Nothing was deployed, no editor or client was launched, no tool call\n"
+    "was made and no project file was read; that attempt produced no live result.\n"
+    "The accepted plan for this transition is identified by SHA256SUMS\n"
+    "`" + _WO008_A_LIVE_2_PLAN_SHA256SUMS + "`, and its instruction by SHA-256\n"
+    "`" + _WO008_A_LIVE_2_INSTRUCTION_SHA256 + "`. That attempt is used, and this record alone governs the\n"
+    "next one. Session A may make one replacement attempt: one attempt of the\n"
+    "accepted call plan, as amended by the accepted execution addendum and this\n"
+    "transition's accepted plan, through Claude Code with the owner decisions\n"
+    "that instruction records, deployed from the clean, synchronized commit that\n"
+    "carries this record once that commit's own CI has succeeded, with every\n"
+    "setup method verified at its pinned path before setup begins. Independent\n"
+    "review, the commit, the push and that CI are preconditions only; none of\n"
+    "them authorizes or starts the run. Any stop after its setup begins ends the\n"
+    "attempt. A further attempt needs a new reviewed transition recorded here,\n"
+    "and recovery needs a separately bounded owner instruction. A choice or setup\n"
+    "item that instruction omits follows the accepted addendum's missing-choice\n"
+    "rule. Product corrections, installations or configuration changes that\n"
+    "instruction does not name, commits and pushes remain unauthorized. Session B\n"
+    "and Session C remain unauthorized, results are recorded only by a separate\n"
+    "transition, and this record grants no further authority."
+)
+_WO008_A_LIVE_2_HEADING = "## Session A replacement attempt record"
+_WO008_A_LIVE_2_RECORD = (
+    "Session A live baseline commit: `" + _WO008_A_LIVE_2_COMMIT + "`\n"
+    "Session A live baseline commit CI workflow: `" + _WO008_A_LIVE_2_WORKFLOW + "`\n"
+    "Session A live baseline commit CI job: `" + _WO008_A_LIVE_2_JOB + "` — Lint, types, tests\n"
+    "Stopped attempt run ID: `wo008-a-live-2026-10-09-1`\n"
+    "Accepted replacement attempt plan SHA256SUMS: `" + _WO008_A_LIVE_2_PLAN_SHA256SUMS + "`\n"
+    "Owner Session A replacement attempt instruction SHA-256: `" + _WO008_A_LIVE_2_INSTRUCTION_SHA256 + "`\n"
+    "\n"
+    "The single attempt that the live baseline record allowed stopped at setup\n"
+    "step 2, before step 0, because a setup method was supplied at a path the\n"
+    "operator's environment could not resolve. Nothing was deployed, no editor or\n"
+    "client was launched, no tool call was made and no project file was read. It\n"
+    "produced no live result, and this section records only why it stopped.\n"
+    "\n"
+    "That attempt is used, and this section alone governs the next one. The owner\n"
+    "authorized one replacement attempt for Session A: one run of the accepted\n"
+    "call plan, as amended by the accepted execution addendum and the accepted\n"
+    "replacement attempt plan, through Claude Code against an owner-approved\n"
+    "disposable project, with the owner decisions that the replacement attempt\n"
+    "instruction records. CI succeeded on the live baseline commit, not on this\n"
+    "transition or any live result; it demonstrates neither an MCP host nor a\n"
+    "live UEFN build.\n"
+    "\n"
+    "Within that one run, Session A uses as its deploy source the clean,\n"
+    "synchronized commit that carries this record, after that commit's own CI\n"
+    "has succeeded and its runtime and deployment sources are shown unchanged\n"
+    "from `" + _WO008_A_LIVE_BASE + "`, and every setup method is\n"
+    "verified at its pinned path before setup begins. For Session A the owner\n"
+    "performs the deploy, editor start, fixture preparation and local bridge\n"
+    "start, and stops the bridge only as the cleanup decision that instruction\n"
+    "records allows; Session A's client issues only the nine planned tool calls,\n"
+    "each approved individually, with no retry. Any stop after its setup begins\n"
+    "ends the attempt. Session A recovery, a further attempt, installations or\n"
+    "configuration changes that instruction does not name, product corrections,\n"
+    "Session B, Session C, commits and pushes remain unauthorized. Results are\n"
+    "recorded only by a separate transition.\n"
+    "\n"
+    "Independent review, the commit, the push and successful CI are\n"
+    "preconditions only; none of them authorizes or starts the run. A choice\n"
+    "or setup item that instruction omits follows the accepted addendum's\n"
+    "missing-choice rule.\n"
+    "\n"
+    "The owner accepted a narrow offline-verification exemption for this\n"
+    "transition's four governance paths only. The replacement attempt is\n"
+    "Session A evidence, not verification of this transition."
+)
+_WO008_A_LIVE_2_SECTION_HEADINGS = (
+    _WO008_A_LIVE_SECTION_HEADINGS[:5] + (_WO008_A_LIVE_2_HEADING,)
+    + _WO008_A_LIVE_SECTION_HEADINGS[5:])
+# None of these occurs in any committed state through the A_LIVE commit.
+_WO008_A_LIVE_2_TRACES = (
+    "- WO-008 Session A live baseline commit:",
+    "- WO-008 Session A replacement attempt instruction SHA-256:",
+    "WO-008 Session A replacement attempt record:",
+    _WO008_A_LIVE_2_HEADING,
+)
+# Four literal entries, not a policy engine. Each phase names its own current
 # texts and the prior-state texts that must not survive the change.
 _WO008_PHASES: dict[str, dict] = {
     "ISSUED_CLOSED": {
@@ -5359,19 +5467,51 @@ _WO008_PHASES: dict[str, dict] = {
         "record": "WO-008 Session A live baseline record",
         "session": "A",
     },
+    "A_LIVE_2": {
+        "pointer_sequence": _WO008_A_LIVE_2_POINTER_SEQUENCE,
+        "issued_sequence": _WO008_A_LIVE_ISSUED_SEQUENCE,
+        "marker": _ISSUED_SESSION_A_LIVE_AUTH,
+        "gate": _WO008_A_LIVE_GATE,
+        "pointer_records": (_WO008_CLOSED_HISTORY_RECORD,
+                            _WO008_A_PREP_HISTORY_POINTER_RECORD,
+                            _WO008_A_LIVE_POINTER_RECORD,
+                            _WO008_A_LIVE_2_POINTER_RECORD),
+        "opening": _WO008_A_LIVE_OPENING,
+        "prerequisites": _WO008_A_LIVE_PREREQUISITES,
+        "sections": (("## Issuance basis", _WO008_ISSUANCE_RECORD),
+                     (_WO008_A_PREP_HEADING, _WO008_A_PREP_HISTORY_RECORD),
+                     (_WO008_A_LIVE_HEADING, _WO008_A_LIVE_RECORD),
+                     (_WO008_A_LIVE_2_HEADING, _WO008_A_LIVE_2_RECORD)),
+        "next_gate": _WO008_A_LIVE_NEXT_GATE,
+        "headings": _WO008_A_LIVE_2_SECTION_HEADINGS,
+        "forbidden_pointer": (_WO008_POINTER_RECORD, _WO008_GATE,
+                              _WO008_A_PREP_POINTER_RECORD, _WO008_A_PREP_GATE),
+        "forbidden_document": (_WO008_OPENING, _WO008_NEXT_GATE,
+                               _WO008_CLOSED_PREREQUISITES_HEAD,
+                               _ISSUED_NO_SESSION_AUTH,
+                               _WO008_A_PREP_OPENING, _WO008_A_PREP_NEXT_GATE,
+                               _WO008_A_PREP_PREREQUISITES_HEAD,
+                               _ISSUED_SESSION_A_PREP_AUTH,
+                               _WO008_A_PREP_RECORD),
+        "label": "WO-008 Session A replacement attempt",
+        "record": "WO-008 Session A replacement attempt record",
+        "session": "A",
+    },
 }
 
 
 def _wo008_phase(pointer: str, text: str) -> str:
     """Any trace on either surface selects that phase's full shape.
 
-    A_LIVE is checked first, because the A_LIVE state legitimately keeps
-    A_PREP traces in its history. A partial install is then validated against
-    the selected shape and fails on what is missing; it can never fall back to
-    an earlier clean shape. The session line counts only while the pointer
-    names WO-008: an earlier order's Session A, such as WO-007's in its
-    historical states, is not a trace.
+    A_LIVE_2 is checked first and A_LIVE next, because each of those states
+    legitimately keeps the earlier states' traces in its history. A partial
+    install is then validated against the selected shape and fails on what is
+    missing; it can never fall back to an earlier clean shape. The session line
+    counts only while the pointer names WO-008: an earlier order's Session A,
+    such as WO-007's in its historical states, is not a trace.
     """
+    if any(trace in pointer or trace in text for trace in _WO008_A_LIVE_2_TRACES):
+        return "A_LIVE_2"
     if any(trace in pointer or trace in text for trace in _WO008_A_LIVE_TRACES):
         return "A_LIVE"
     lines = pointer.splitlines()
@@ -5491,7 +5631,8 @@ def _wo008_issuance_findings(
 def _wo008_phase_findings(
     pointer: str, text: str, rel: str, surface: str, phase: str | None = None,
 ) -> tuple[list[tuple[str, str, str, str]], str]:
-    """ISSUED_CLOSED, A_PREP or A_LIVE only; later phases need separate transitions."""
+    """ISSUED_CLOSED, A_PREP, A_LIVE or A_LIVE_2 only; later phases need separate
+    transitions."""
     spec = _WO008_PHASES[phase or _wo008_phase(pointer, text)]
     source = pointer if surface == "pointer" else text
     out = _wo008_issuance_findings(pointer, text, rel, surface, phase)
@@ -6472,7 +6613,7 @@ def check_work_order_contract() -> list[dict]:
         current == _WO008_ID or bool(wo008_text)
         or "WO-008 closed issuance record:" in pointer
         or "- WO-008 admission basis commit:" in pointer
-        or wo008_phase in ("A_PREP", "A_LIVE"))
+        or wo008_phase in ("A_PREP", "A_LIVE", "A_LIVE_2"))
     wo008_pointer_residual = pointer
     wo008_history_findings = []
     if wo008_trace:
@@ -6488,6 +6629,12 @@ def check_work_order_contract() -> list[dict]:
             add("WORKORDER.md", "WO-008 Session A live baseline state",
                 "the Session A live baseline records were removed",
                 "WO-008 Session A live baseline records")
+        # One-way: once the replacement attempt is installed, a coherent
+        # rollback to the live baseline trips exactly this lock.
+        if wo008_phase == "A_LIVE":
+            add("WORKORDER.md", "WO-008 Session A replacement attempt state",
+                "the Session A replacement attempt records were removed",
+                "WO-008 Session A replacement attempt records")
         # Old NONE fields retire, not their canonical history or terminal locks.
         wo008_history_findings = _wo007_completed_findings(
             pointer, wo007_completed_text,
@@ -6940,8 +7087,8 @@ def check_work_order_contract() -> list[dict]:
                     add(rel, "planning-only proposal placement",
                         "issuance record missing or malformed",
                         "canonical issued WO-008 with validated closed records")
-                # In A_PREP and A_LIVE the other-session scan exempts only Session A;
-                # any Session A grant beyond the records is widening below.
+                # In A_PREP, A_LIVE and A_LIVE_2 the other-session scan exempts only
+                # Session A; any Session A grant beyond the records is widening below.
                 for where, residual in (
                     ("WORKORDER.md", wo008_pointer_residual),
                     (rel, body_residual),

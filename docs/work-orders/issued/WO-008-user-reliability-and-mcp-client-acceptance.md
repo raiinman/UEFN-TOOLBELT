@@ -135,6 +135,53 @@ The owner accepted a narrow offline-verification exemption for this
 transition's five governance paths only. The live run is Session A
 evidence, not verification of this transition.
 
+## Session A replacement attempt record
+
+Session A live baseline commit: `ce04d17ab5fd548adaddb95775e23b97f418829f`
+Session A live baseline commit CI workflow: `37874506631`
+Session A live baseline commit CI job: `113639869831` — Lint, types, tests
+Stopped attempt run ID: `wo008-a-live-2026-10-09-1`
+Accepted replacement attempt plan SHA256SUMS: `5806aeef223c80a10f9b540728b574af4600852727b0f231bae1082dd7ec7440`
+Owner Session A replacement attempt instruction SHA-256: `420d59ff3fb1f4bcbd1169ef5a3fce3c63187aa7ab99bc4faa628864274f44e2`
+
+The single attempt that the live baseline record allowed stopped at setup
+step 2, before step 0, because a setup method was supplied at a path the
+operator's environment could not resolve. Nothing was deployed, no editor or
+client was launched, no tool call was made and no project file was read. It
+produced no live result, and this section records only why it stopped.
+
+That attempt is used, and this section alone governs the next one. The owner
+authorized one replacement attempt for Session A: one run of the accepted
+call plan, as amended by the accepted execution addendum and the accepted
+replacement attempt plan, through Claude Code against an owner-approved
+disposable project, with the owner decisions that the replacement attempt
+instruction records. CI succeeded on the live baseline commit, not on this
+transition or any live result; it demonstrates neither an MCP host nor a
+live UEFN build.
+
+Within that one run, Session A uses as its deploy source the clean,
+synchronized commit that carries this record, after that commit's own CI
+has succeeded and its runtime and deployment sources are shown unchanged
+from `075ba2948444e40da9fb975f1cda4c29006b0169`, and every setup method is
+verified at its pinned path before setup begins. For Session A the owner
+performs the deploy, editor start, fixture preparation and local bridge
+start, and stops the bridge only as the cleanup decision that instruction
+records allows; Session A's client issues only the nine planned tool calls,
+each approved individually, with no retry. Any stop after its setup begins
+ends the attempt. Session A recovery, a further attempt, installations or
+configuration changes that instruction does not name, product corrections,
+Session B, Session C, commits and pushes remain unauthorized. Results are
+recorded only by a separate transition.
+
+Independent review, the commit, the push and successful CI are
+preconditions only; none of them authorizes or starts the run. A choice
+or setup item that instruction omits follows the accepted addendum's
+missing-choice rule.
+
+The owner accepted a narrow offline-verification exemption for this
+transition's four governance paths only. The replacement attempt is
+Session A evidence, not verification of this transition.
+
 ## Session A Real client baseline
 
 The owner selected **Claude Code** as the first MCP client. This selects a test
