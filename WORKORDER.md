@@ -5,9 +5,9 @@ state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
 - Current issued Work Order: WO-008
-- Authorized session: A
-- Base commit: `075ba2948444e40da9fb975f1cda4c29006b0169`
-- Current gate: WO-008 SESSION A LIVE BASELINE ONLY — PRODUCT CORRECTIONS NOT AUTHORIZED
+- Authorized session: NONE
+- Base commit: `ca86bc0f641591e830fd882ea05607d62ca11c6b`
+- Current gate: WO-008 SESSION A RECORDED — SESSION B NOT AUTHORIZED
 - WO-008 admission basis commit: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`
 - WO-008 admission CI workflow: `37246398757`
 - WO-008 admission CI job: `111565059168` — Lint, types, tests
@@ -24,6 +24,10 @@ never authorizes implementation.
 - WO-008 Session A live baseline CI workflow: `37874506631`
 - WO-008 Session A live baseline CI job: `113639869831` — Lint, types, tests
 - WO-008 Session A replacement attempt instruction SHA-256: `420d59ff3fb1f4bcbd1169ef5a3fce3c63187aa7ab99bc4faa628864274f44e2`
+- WO-008 Session A replacement attempt commit: `ca86bc0f641591e830fd882ea05607d62ca11c6b`
+- WO-008 Session A replacement attempt CI workflow: `38164234607`
+- WO-008 Session A replacement attempt CI job: `114543334362` — Lint, types, tests
+- WO-008 Session A diagnostic result instruction SHA-256: `dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14`
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
@@ -589,3 +593,34 @@ rule. Product corrections, installations or configuration changes that
 instruction does not name, commits and pushes remain unauthorized. Session B
 and Session C remain unauthorized, results are recorded only by a separate
 transition, and this record grants no further authority.
+
+WO-008 Session A diagnostic result record: the replacement attempt transition
+was committed as `ca86bc0f641591e830fd882ea05607d62ca11c6b`; [CI workflow
+`38164234607`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/38164234607)
+completed successfully on that commit, including required job
+[`114543334362` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/38164234607/job/114543334362).
+That CI tested the replacement attempt enforcement, not a live result, an MCP
+host or a live build. The replacement attempt, run
+`wo008-a-live-2026-10-11-2`, is consumed. As the accepted handoff reports,
+under the accepted protocol its first evidenced definite stop came before
+step 0, at a client first-run prompt that its instruction did not name, and
+further stop and hold conditions followed. As the client displayed, the
+planned calls were then made under owner direction, outside the retry gate.
+None of Session A's call stages is met as an attempt step, and no
+compatibility, exactly-once execution or persistent rollback is established.
+The owner accepted the redacted evidence handoff r2 and its independent delta
+review as a limited diagnostic result only. They are identified by SHA256SUMS
+`67d3728dafbda53955fe31ea40de281dc9c0f51d18d003c53548fbe346c94486` and
+`9722d9d75eee4d33f2a2b90b9092f92293f7096a0fc99e0acec69652e3fa0f4d`, and the
+first independent review by SHA256SUMS
+`38a160706f8700fae7f915211ee498a9eb3bfec279196f1ca3efe109780651c6`. The accepted
+plan for this transition is identified by SHA256SUMS
+`c39081f3aacf38c0dbdf2ec459a6743c78e43d6429e0cda296c7848ecf2e7971`, and its instruction by SHA-256
+`dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14`. That attempt is consumed, and this
+record governs over the earlier Session A records, including the replacement
+attempt record. No session is authorized. A further Session A attempt,
+Session B, Session C, product corrections, installations and configuration
+changes each need a separate reviewed transition recorded here; recovery and
+cleanup of retained client or project state need a separately bounded owner
+instruction; and commits and pushes remain separate owner decisions. This
+record grants no authority.

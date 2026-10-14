@@ -5396,7 +5396,205 @@ _WO008_A_LIVE_2_TRACES = (
     "WO-008 Session A replacement attempt record:",
     _WO008_A_LIVE_2_HEADING,
 )
-# Four literal entries, not a policy engine. Each phase names its own current
+# Session A result recorded (A_RECORDED, enforcement plan r2's phase): the
+# replacement attempt is consumed and its accepted evidence handoff is recorded
+# as a limited diagnostic result only, not as Session A acceptance. Execution
+# authority closes: session NONE, plan r2's exact gate and marker, a new
+# opening, prerequisites head and NEXT GATE. Every earlier record stays exactly
+# as committed and required; one record is added on each surface, with four
+# pointer bullets.
+_WO008_A_RECORDED_COMMIT = "ca86bc0f641591e830fd882ea05607d62ca11c6b"
+_WO008_A_RECORDED_WORKFLOW = "38164234607"
+_WO008_A_RECORDED_JOB = "114543334362"
+_WO008_A_RECORDED_RUN_ID = "wo008-a-live-2026-10-11-2"
+_WO008_A_RECORDED_HANDOFF_SHA256SUMS = (
+    "67d3728dafbda53955fe31ea40de281dc9c0f51d18d003c53548fbe346c94486"
+)
+_WO008_A_RECORDED_DELTA_REVIEW_SHA256SUMS = (
+    "9722d9d75eee4d33f2a2b90b9092f92293f7096a0fc99e0acec69652e3fa0f4d"
+)
+_WO008_A_RECORDED_REVIEW_SHA256SUMS = (
+    "38a160706f8700fae7f915211ee498a9eb3bfec279196f1ca3efe109780651c6"
+)
+_WO008_A_RECORDED_PLAN_SHA256SUMS = (
+    "c39081f3aacf38c0dbdf2ec459a6743c78e43d6429e0cda296c7848ecf2e7971"
+)
+_WO008_A_RECORDED_INSTRUCTION_SHA256 = (
+    "dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14"
+)
+# Enforcement plan r2's phase table, A_RECORDED row, exactly.
+_WO008_A_RECORDED_GATE = "WO-008 SESSION A RECORDED — SESSION B NOT AUTHORIZED"
+_ISSUED_SESSION_A_RECORDED_AUTH = (
+    "AUTHORIZATION: ISSUED — SESSION A RECORDED; NO SESSION AUTHORIZED"
+)
+_WO008_A_RECORDED_POINTER_SEQUENCE = (
+    "- Current issued Work Order: WO-008",
+    "- Authorized session: NONE",
+    "- Base commit: `" + _WO008_A_RECORDED_COMMIT + "`",
+    "- Current gate: " + _WO008_A_RECORDED_GATE,
+) + _WO008_A_LIVE_2_POINTER_SEQUENCE[4:] + (
+    "- WO-008 Session A replacement attempt commit: `" + _WO008_A_RECORDED_COMMIT + "`",
+    "- WO-008 Session A replacement attempt CI workflow: `" + _WO008_A_RECORDED_WORKFLOW + "`",
+    "- WO-008 Session A replacement attempt CI job: `" + _WO008_A_RECORDED_JOB
+    + "` — Lint, types, tests",
+    "- WO-008 Session A diagnostic result instruction SHA-256: `"
+    + _WO008_A_RECORDED_INSTRUCTION_SHA256 + "`",
+)
+_WO008_A_RECORDED_POINTER_RECORD = (
+    "WO-008 Session A diagnostic result record: the replacement attempt transition\n"
+    "was committed as `" + _WO008_A_RECORDED_COMMIT + "`; [CI workflow\n"
+    "`" + _WO008_A_RECORDED_WORKFLOW + "`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/" + _WO008_A_RECORDED_WORKFLOW + ")\n"
+    "completed successfully on that commit, including required job\n"
+    "[`" + _WO008_A_RECORDED_JOB + "` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/" + _WO008_A_RECORDED_WORKFLOW + "/job/" + _WO008_A_RECORDED_JOB + ").\n"
+    "That CI tested the replacement attempt enforcement, not a live result, an MCP\n"
+    "host or a live build. The replacement attempt, run\n"
+    "`" + _WO008_A_RECORDED_RUN_ID + "`, is consumed. As the accepted handoff reports,\n"
+    "under the accepted protocol its first evidenced definite stop came before\n"
+    "step 0, at a client first-run prompt that its instruction did not name, and\n"
+    "further stop and hold conditions followed. As the client displayed, the\n"
+    "planned calls were then made under owner direction, outside the retry gate.\n"
+    "None of Session A's call stages is met as an attempt step, and no\n"
+    "compatibility, exactly-once execution or persistent rollback is established.\n"
+    "The owner accepted the redacted evidence handoff r2 and its independent delta\n"
+    "review as a limited diagnostic result only. They are identified by SHA256SUMS\n"
+    "`" + _WO008_A_RECORDED_HANDOFF_SHA256SUMS + "` and\n"
+    "`" + _WO008_A_RECORDED_DELTA_REVIEW_SHA256SUMS + "`, and the\n"
+    "first independent review by SHA256SUMS\n"
+    "`" + _WO008_A_RECORDED_REVIEW_SHA256SUMS + "`. The accepted\n"
+    "plan for this transition is identified by SHA256SUMS\n"
+    "`" + _WO008_A_RECORDED_PLAN_SHA256SUMS + "`, and its instruction by SHA-256\n"
+    "`" + _WO008_A_RECORDED_INSTRUCTION_SHA256 + "`. That attempt is consumed, and this\n"
+    "record governs over the earlier Session A records, including the replacement\n"
+    "attempt record. No session is authorized. A further Session A attempt,\n"
+    "Session B, Session C, product corrections, installations and configuration\n"
+    "changes each need a separate reviewed transition recorded here; recovery and\n"
+    "cleanup of retained client or project state need a separately bounded owner\n"
+    "instruction; and commits and pushes remain separate owner decisions. This\n"
+    "record grants no authority."
+)
+_WO008_A_RECORDED_OPENING = (
+    "This is an issued following-train Work Order, outside the frozen\n"
+    "WO-001 through WO-007 train. The root pointer identifies WO-008 with\n"
+    "session NONE. The Session A result is recorded as diagnostic only: the\n"
+    "replacement attempt is consumed, and Session B and Session C remain\n"
+    "unauthorized."
+)
+_WO008_A_LIVE_PREREQUISITES_HEAD = (
+    "The separately adopted issuance/session-enforcement plan r2 supported the\n"
+    "closed issuance and Session A offline preparation, and a separate transition\n"
+    "installs the pinned Session A live baseline only. Recording the result,\n"
+    "product corrections and live acceptance still need separately reviewed\n"
+    "enforcement transitions and explicit owner decisions. No later phase is\n"
+    "installed here."
+)
+_WO008_A_RECORDED_PREREQUISITES = _replaced_once(_WO008_A_LIVE_PREREQUISITES, ((
+    _WO008_A_LIVE_PREREQUISITES_HEAD,
+    "The separately adopted issuance/session-enforcement plan r2 supported the\n"
+    "closed issuance and Session A offline preparation. Separate transitions\n"
+    "installed the pinned Session A live baseline and its replacement attempt,\n"
+    "and a separate transition records that attempt's result as diagnostic only.\n"
+    "Session A acceptance, product corrections and live acceptance still need\n"
+    "separately reviewed enforcement transitions and explicit owner decisions. No\n"
+    "later phase is installed here.",
+),))
+_WO008_A_RECORDED_HEADING = "## Session A diagnostic result record"
+_WO008_A_RECORDED_RECORD = (
+    "Session A replacement attempt commit: `" + _WO008_A_RECORDED_COMMIT + "`\n"
+    "Session A replacement attempt CI workflow: `" + _WO008_A_RECORDED_WORKFLOW + "`\n"
+    "Session A replacement attempt CI job: `" + _WO008_A_RECORDED_JOB + "` — Lint, types, tests\n"
+    "Replacement attempt run ID: `" + _WO008_A_RECORDED_RUN_ID + "`\n"
+    "Accepted evidence handoff r2 SHA256SUMS: `" + _WO008_A_RECORDED_HANDOFF_SHA256SUMS + "`\n"
+    "Accepted evidence delta review SHA256SUMS: `" + _WO008_A_RECORDED_DELTA_REVIEW_SHA256SUMS + "`\n"
+    "First evidence review SHA256SUMS: `" + _WO008_A_RECORDED_REVIEW_SHA256SUMS + "`\n"
+    "Accepted diagnostic result plan SHA256SUMS: `" + _WO008_A_RECORDED_PLAN_SHA256SUMS + "`\n"
+    "Owner Session A diagnostic result instruction SHA-256: `" + _WO008_A_RECORDED_INSTRUCTION_SHA256 + "`\n"
+    "\n"
+    "The replacement attempt is consumed. As the accepted handoff reports, under\n"
+    "the accepted protocol its first evidenced definite stop came before step 0,\n"
+    "when the client showed a first-run prompt that the instruction did not name.\n"
+    "Further stop and hold conditions followed: a second MCP server was connected,\n"
+    "an auto-accept permission mode was active, no per-call approval prompt was\n"
+    "shown, and the client replaced four oversized replies with notices. These\n"
+    "observations rest on owner screenshots and reports that the run's evidence\n"
+    "folder does not preserve. As the client displayed, the nine planned calls were\n"
+    "then made under owner direction, outside the retry gate; that no other call\n"
+    "was made is not established. None of Session A's call stages is met as an\n"
+    "attempt step, and this record is not Session A acceptance or compatibility\n"
+    "evidence. Other disclosed protocol departures are recorded in the accepted\n"
+    "handoff.\n"
+    "\n"
+    "The owner accepted the redacted evidence handoff r2 and its independent delta\n"
+    "review as a limited diagnostic result only. Preserved records show that the\n"
+    "deployed runtime matched the source commit, and that the project footprint\n"
+    "gained one saved actor and lost no file. A preserved narrative record, without\n"
+    "a command transcript, reports that after the run no listener remained. The\n"
+    "absence of the bridge handoff file at both default locations rests on unsaved\n"
+    "session output and on an owner-reported editor-side check, and its record has\n"
+    "no command transcript. Owner reports, screenshots read by the implementer and\n"
+    "unsaved session output, none of them preserved in the run's evidence folder,\n"
+    "indicate that the client's tool list had 34 entries, that it reported\n"
+    "authenticated queued transport with remote Python disabled, and that one actor\n"
+    "was moved 100 cm and restored in memory within tolerance. These are credible\n"
+    "but unverified.\n"
+    "\n"
+    "Required records were not made for the UEFN About build, the external Python\n"
+    "version or the engine install to be started, and the evidence-location rule\n"
+    "was not met for the owner-operated and live steps. The required repeat of the\n"
+    "launch-window environment check is not evidenced. Simulate Physics was not\n"
+    "observed as a setting, an unresolved block before live start with no recorded\n"
+    "owner decision. The cleanup ran under owner direction, outside the\n"
+    "normal-cleanup rule, and its save-prompt answer was not recorded. Persistent\n"
+    "rollback is not established: one actor was saved during editor use, and its\n"
+    "saved transform is unknown. Client configuration changes, a client\n"
+    "auto-update and approval writes occurred during the run, and retained client\n"
+    "and project state was not removed. Per-call approval, conformance beyond the\n"
+    "client's own display, exactly-once execution and the completeness of any\n"
+    "oversized reply are not established.\n"
+    "\n"
+    "As the client displayed and unsaved session output recorded, at the client's\n"
+    "default MCP output limit the `list_toolbelt_tools` reply, which lists every\n"
+    "registered tool (about 235,000 characters), and each `get_all_actors` reply on\n"
+    "the 176-actor test level (about 580 characters per actor) were replaced by\n"
+    "notices, so on that level those steps cannot be met in the client as planned.\n"
+    "A correction is product work. It needs a separately authorized bounded\n"
+    "amendment and plan, and this record installs none.\n"
+    "\n"
+    "That attempt is consumed, and this section governs over the earlier Session A\n"
+    "sections, including the replacement attempt section. No session is authorized.\n"
+    "A further Session A attempt, Session B, Session C, product corrections,\n"
+    "installations and configuration changes each need a separate reviewed\n"
+    "transition recorded in the root pointer; recovery and cleanup of retained\n"
+    "client or project state need a separately bounded owner instruction; and\n"
+    "commits and pushes remain separate owner decisions.\n"
+    "\n"
+    "The owner accepted a narrow offline-verification exemption for this\n"
+    "transition's five governance paths only. This transition records evidence; it\n"
+    "is not live verification."
+)
+_WO008_A_RECORDED_NEXT_GATE = (
+    "NEXT GATE: separate owner decision on WO-008's direction. No session is\n"
+    "authorized. Session B, Session C, product corrections, recovery, cleanup,\n"
+    "exact commits and pushes remain separate decisions. This mandate grants no\n"
+    "review, implementation, commit or push authority."
+)
+_WO008_A_RECORDED_ISSUED_SEQUENCE = tuple(
+    _ISSUED_SESSION_A_RECORDED_AUTH if line == _ISSUED_SESSION_A_LIVE_AUTH else line
+    for line in _WO008_A_LIVE_ISSUED_SEQUENCE)
+_WO008_A_RECORDED_SECTION_HEADINGS = (
+    _WO008_A_LIVE_2_SECTION_HEADINGS[:6] + (_WO008_A_RECORDED_HEADING,)
+    + _WO008_A_LIVE_2_SECTION_HEADINGS[6:])
+# None of these occurs in any committed state through the A_LIVE_2 commit. The
+# gate and marker are the A_RECORDED probe texts that the earlier "later phases
+# are not installed" tests insert, so those probes now select this shape.
+_WO008_A_RECORDED_TRACES = (
+    _WO008_A_RECORDED_GATE,
+    _ISSUED_SESSION_A_RECORDED_AUTH,
+    "- WO-008 Session A replacement attempt commit:",
+    "- WO-008 Session A diagnostic result instruction SHA-256:",
+    "WO-008 Session A diagnostic result record:",
+    _WO008_A_RECORDED_HEADING,
+)
+# Five literal entries, not a policy engine. Each phase names its own current
 # texts and the prior-state texts that must not survive the change.
 _WO008_PHASES: dict[str, dict] = {
     "ISSUED_CLOSED": {
@@ -5497,19 +5695,60 @@ _WO008_PHASES: dict[str, dict] = {
         "record": "WO-008 Session A replacement attempt record",
         "session": "A",
     },
+    "A_RECORDED": {
+        "pointer_sequence": _WO008_A_RECORDED_POINTER_SEQUENCE,
+        "issued_sequence": _WO008_A_RECORDED_ISSUED_SEQUENCE,
+        "marker": _ISSUED_SESSION_A_RECORDED_AUTH,
+        "gate": _WO008_A_RECORDED_GATE,
+        "pointer_records": (_WO008_CLOSED_HISTORY_RECORD,
+                            _WO008_A_PREP_HISTORY_POINTER_RECORD,
+                            _WO008_A_LIVE_POINTER_RECORD,
+                            _WO008_A_LIVE_2_POINTER_RECORD,
+                            _WO008_A_RECORDED_POINTER_RECORD),
+        "opening": _WO008_A_RECORDED_OPENING,
+        "prerequisites": _WO008_A_RECORDED_PREREQUISITES,
+        "sections": (("## Issuance basis", _WO008_ISSUANCE_RECORD),
+                     (_WO008_A_PREP_HEADING, _WO008_A_PREP_HISTORY_RECORD),
+                     (_WO008_A_LIVE_HEADING, _WO008_A_LIVE_RECORD),
+                     (_WO008_A_LIVE_2_HEADING, _WO008_A_LIVE_2_RECORD),
+                     (_WO008_A_RECORDED_HEADING, _WO008_A_RECORDED_RECORD)),
+        "next_gate": _WO008_A_RECORDED_NEXT_GATE,
+        "headings": _WO008_A_RECORDED_SECTION_HEADINGS,
+        # The live-baseline gate, marker, opening, prerequisites head and NEXT
+        # GATE are the replaced current texts; restored beside the new records
+        # they would read as a reopened Session A.
+        "forbidden_pointer": (_WO008_POINTER_RECORD, _WO008_GATE,
+                              _WO008_A_PREP_POINTER_RECORD, _WO008_A_PREP_GATE,
+                              _WO008_A_LIVE_GATE),
+        "forbidden_document": (_WO008_OPENING, _WO008_NEXT_GATE,
+                               _WO008_CLOSED_PREREQUISITES_HEAD,
+                               _ISSUED_NO_SESSION_AUTH,
+                               _WO008_A_PREP_OPENING, _WO008_A_PREP_NEXT_GATE,
+                               _WO008_A_PREP_PREREQUISITES_HEAD,
+                               _ISSUED_SESSION_A_PREP_AUTH,
+                               _WO008_A_PREP_RECORD,
+                               _WO008_A_LIVE_OPENING, _WO008_A_LIVE_NEXT_GATE,
+                               _WO008_A_LIVE_PREREQUISITES_HEAD,
+                               _ISSUED_SESSION_A_LIVE_AUTH),
+        "label": "WO-008 Session A diagnostic result",
+        "record": "WO-008 Session A diagnostic result record",
+        "session": "",
+    },
 }
 
 
 def _wo008_phase(pointer: str, text: str) -> str:
     """Any trace on either surface selects that phase's full shape.
 
-    A_LIVE_2 is checked first and A_LIVE next, because each of those states
+    A_RECORDED is checked first, then A_LIVE_2 and A_LIVE, because these states
     legitimately keeps the earlier states' traces in its history. A partial
     install is then validated against the selected shape and fails on what is
     missing; it can never fall back to an earlier clean shape. The session line
     counts only while the pointer names WO-008: an earlier order's Session A,
     such as WO-007's in its historical states, is not a trace.
     """
+    if any(trace in pointer or trace in text for trace in _WO008_A_RECORDED_TRACES):
+        return "A_RECORDED"
     if any(trace in pointer or trace in text for trace in _WO008_A_LIVE_2_TRACES):
         return "A_LIVE_2"
     if any(trace in pointer or trace in text for trace in _WO008_A_LIVE_TRACES):
@@ -5631,7 +5870,7 @@ def _wo008_issuance_findings(
 def _wo008_phase_findings(
     pointer: str, text: str, rel: str, surface: str, phase: str | None = None,
 ) -> tuple[list[tuple[str, str, str, str]], str]:
-    """ISSUED_CLOSED, A_PREP, A_LIVE or A_LIVE_2 only; later phases need separate
+    """ISSUED_CLOSED, A_PREP, A_LIVE, A_LIVE_2 or A_RECORDED only; later phases need separate
     transitions."""
     spec = _WO008_PHASES[phase or _wo008_phase(pointer, text)]
     source = pointer if surface == "pointer" else text
@@ -6613,7 +6852,7 @@ def check_work_order_contract() -> list[dict]:
         current == _WO008_ID or bool(wo008_text)
         or "WO-008 closed issuance record:" in pointer
         or "- WO-008 admission basis commit:" in pointer
-        or wo008_phase in ("A_PREP", "A_LIVE", "A_LIVE_2"))
+        or wo008_phase in ("A_PREP", "A_LIVE", "A_LIVE_2", "A_RECORDED"))
     wo008_pointer_residual = pointer
     wo008_history_findings = []
     if wo008_trace:
@@ -6635,6 +6874,12 @@ def check_work_order_contract() -> list[dict]:
             add("WORKORDER.md", "WO-008 Session A replacement attempt state",
                 "the Session A replacement attempt records were removed",
                 "WO-008 Session A replacement attempt records")
+        # One-way: once the Session A result is recorded, a coherent
+        # rollback to the replacement attempt trips exactly this lock.
+        if wo008_phase == "A_LIVE_2":
+            add("WORKORDER.md", "WO-008 Session A diagnostic result state",
+                "the Session A diagnostic result records were removed",
+                "WO-008 Session A diagnostic result records")
         # Old NONE fields retire, not their canonical history or terminal locks.
         wo008_history_findings = _wo007_completed_findings(
             pointer, wo007_completed_text,
@@ -7088,7 +7333,8 @@ def check_work_order_contract() -> list[dict]:
                         "issuance record missing or malformed",
                         "canonical issued WO-008 with validated closed records")
                 # In A_PREP, A_LIVE and A_LIVE_2 the other-session scan exempts only
-                # Session A; any Session A grant beyond the records is widening below.
+                # Session A; in A_RECORDED it exempts no session. Any Session A
+                # grant beyond the records is widening below.
                 for where, residual in (
                     ("WORKORDER.md", wo008_pointer_residual),
                     (rel, body_residual),

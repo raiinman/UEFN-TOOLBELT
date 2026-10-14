@@ -224,7 +224,8 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
     assert [path.name for path in issued] == [_WO008_PROPOSAL_NAME]
     issued_text = issued[0].read_text(encoding="utf-8")
     assert issued_text.splitlines().count("STATUS: ISSUED") == 1
-    assert issued_text.splitlines().count(_WO008_A_LIVE_MARKER) == 1
+    assert issued_text.splitlines().count(_WO008_A_RECORDED_MARKER) == 1
+    assert issued_text.splitlines().count(_WO008_A_LIVE_MARKER) == 0
     assert issued_text.splitlines().count(_WO008_A_PREP_MARKER) == 0
     assert issued_text.splitlines().count(
         "AUTHORIZATION: ISSUED — SESSION NOT AUTHORIZED") == 0
@@ -259,14 +260,15 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         work_orders / "issued" / "WO-006-official-vs-toolbelt-benchmark.md"
     ).exists()
     assert current == "WO-008"
-    # Session A is open for the pinned live baseline only. The base is the
-    # offline-preparation commit, and the gate still denies product corrections.
-    assert session == "A"
+    # The Session A result is recorded as diagnostic only, and no session is
+    # authorized. The base is the replacement attempt commit, and the gate is
+    # enforcement plan r2's A_RECORDED gate.
+    assert session == "NONE"
     assert base_lines == [
-        "- Base commit: `075ba2948444e40da9fb975f1cda4c29006b0169`"
+        "- Base commit: `ca86bc0f641591e830fd882ea05607d62ca11c6b`"
     ]
     assert gate_lines == [
-        "- Current gate: WO-008 SESSION A LIVE BASELINE ONLY — PRODUCT CORRECTIONS NOT AUTHORIZED"
+        "- Current gate: WO-008 SESSION A RECORDED — SESSION B NOT AUTHORIZED"
     ]
     for line in (
         "- WO-008 closed issuance commit: `0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`",
@@ -284,6 +286,7 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "- WO-008 Session A live baseline CI job: `113639869831` — Lint, types, tests",
         "- WO-008 Session A replacement attempt instruction SHA-256: "
         "`420d59ff3fb1f4bcbd1169ef5a3fce3c63187aa7ab99bc4faa628864274f44e2`",
+        *_WO008_A_RECORDED_BULLETS.splitlines(),
     ):
         assert pointer_lines.count(line) == 1, line
     for line in (
@@ -406,8 +409,8 @@ def test_work_order_repository_memory_cannot_self_authorize(repo_root):
         "authorizations, v2.5.0 was then tagged and published as a GitHub "
         "Release. Social publication, private-draft publication, and scratch "
         "cleanup remain separately gated. WO-008 is issued outside the frozen "
-        "train; Session A is authorized for the pinned live baseline only, and "
-        "product corrections are not authorized."
+        "train; the Session A result is recorded as diagnostic only, the "
+        "replacement attempt is consumed, and no session is authorized."
         in normalized_roadmap
     )
     assert "its recheck is not authorized" not in normalized_roadmap
@@ -4289,8 +4292,8 @@ def _historical_contract_findings(drift_check):
         _before_wo008_session_a_live(drift_check.check_work_order_contract())))
 
 
-def _make_wo008_a_live_2_case(repo_root, tmp_path, name):
-    """An untouched copy of the live A_LIVE_2 pointer, Work Order documents and ROADMAP."""
+def _make_wo008_a_recorded_case(repo_root, tmp_path, name):
+    """An untouched copy of the live A_RECORDED pointer, Work Order documents and ROADMAP."""
     case = tmp_path / name
     case.mkdir(parents=True)
     shutil.copy2(repo_root / "WORKORDER.md", case / "WORKORDER.md")
@@ -4298,6 +4301,119 @@ def _make_wo008_a_live_2_case(repo_root, tmp_path, name):
                     case / "docs" / "work-orders")
     shutil.copy2(repo_root / "ROADMAP.md", case / "ROADMAP.md")
     return case
+
+
+# --- WO-008 Session A result recorded (A_RECORDED): exact live texts -----
+# Generated from the implemented checker constants (Appendix D of plan r2,
+# with the two digests substituted) and checked against the live worktree.
+# The A_LIVE_2 state is reconstructed by undoing exactly these additions.
+_WO008_A_RECORDED_FINDING = 'WO-008 Session A diagnostic result state'
+_WO008_A_RECORDED_GATE = 'WO-008 SESSION A RECORDED — SESSION B NOT AUTHORIZED'
+_WO008_A_RECORDED_MARKER = 'AUTHORIZATION: ISSUED — SESSION A RECORDED; NO SESSION AUTHORIZED'
+_WO008_A_LIVE_2_HEAD = '- Current issued Work Order: WO-008\n- Authorized session: A\n- Base commit: `075ba2948444e40da9fb975f1cda4c29006b0169`\n- Current gate: WO-008 SESSION A LIVE BASELINE ONLY — PRODUCT CORRECTIONS NOT AUTHORIZED'
+_WO008_A_RECORDED_HEAD = '- Current issued Work Order: WO-008\n- Authorized session: NONE\n- Base commit: `ca86bc0f641591e830fd882ea05607d62ca11c6b`\n- Current gate: WO-008 SESSION A RECORDED — SESSION B NOT AUTHORIZED'
+_WO008_A_RECORDED_BULLETS = '- WO-008 Session A replacement attempt commit: `ca86bc0f641591e830fd882ea05607d62ca11c6b`\n- WO-008 Session A replacement attempt CI workflow: `38164234607`\n- WO-008 Session A replacement attempt CI job: `114543334362` — Lint, types, tests\n- WO-008 Session A diagnostic result instruction SHA-256: `dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14`'
+_WO008_A_RECORDED_POINTER_RECORD = "WO-008 Session A diagnostic result record: the replacement attempt transition\nwas committed as `ca86bc0f641591e830fd882ea05607d62ca11c6b`; [CI workflow\n`38164234607`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/38164234607)\ncompleted successfully on that commit, including required job\n[`114543334362` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/38164234607/job/114543334362).\nThat CI tested the replacement attempt enforcement, not a live result, an MCP\nhost or a live build. The replacement attempt, run\n`wo008-a-live-2026-10-11-2`, is consumed. As the accepted handoff reports,\nunder the accepted protocol its first evidenced definite stop came before\nstep 0, at a client first-run prompt that its instruction did not name, and\nfurther stop and hold conditions followed. As the client displayed, the\nplanned calls were then made under owner direction, outside the retry gate.\nNone of Session A's call stages is met as an attempt step, and no\ncompatibility, exactly-once execution or persistent rollback is established.\nThe owner accepted the redacted evidence handoff r2 and its independent delta\nreview as a limited diagnostic result only. They are identified by SHA256SUMS\n`67d3728dafbda53955fe31ea40de281dc9c0f51d18d003c53548fbe346c94486` and\n`9722d9d75eee4d33f2a2b90b9092f92293f7096a0fc99e0acec69652e3fa0f4d`, and the\nfirst independent review by SHA256SUMS\n`38a160706f8700fae7f915211ee498a9eb3bfec279196f1ca3efe109780651c6`. The accepted\nplan for this transition is identified by SHA256SUMS\n`c39081f3aacf38c0dbdf2ec459a6743c78e43d6429e0cda296c7848ecf2e7971`, and its instruction by SHA-256\n`dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14`. That attempt is consumed, and this\nrecord governs over the earlier Session A records, including the replacement\nattempt record. No session is authorized. A further Session A attempt,\nSession B, Session C, product corrections, installations and configuration\nchanges each need a separate reviewed transition recorded here; recovery and\ncleanup of retained client or project state need a separately bounded owner\ninstruction; and commits and pushes remain separate owner decisions. This\nrecord grants no authority."
+_WO008_A_RECORDED_HEADING = '## Session A diagnostic result record'
+_WO008_A_RECORDED_SECTION = "## Session A diagnostic result record\n\nSession A replacement attempt commit: `ca86bc0f641591e830fd882ea05607d62ca11c6b`\nSession A replacement attempt CI workflow: `38164234607`\nSession A replacement attempt CI job: `114543334362` — Lint, types, tests\nReplacement attempt run ID: `wo008-a-live-2026-10-11-2`\nAccepted evidence handoff r2 SHA256SUMS: `67d3728dafbda53955fe31ea40de281dc9c0f51d18d003c53548fbe346c94486`\nAccepted evidence delta review SHA256SUMS: `9722d9d75eee4d33f2a2b90b9092f92293f7096a0fc99e0acec69652e3fa0f4d`\nFirst evidence review SHA256SUMS: `38a160706f8700fae7f915211ee498a9eb3bfec279196f1ca3efe109780651c6`\nAccepted diagnostic result plan SHA256SUMS: `c39081f3aacf38c0dbdf2ec459a6743c78e43d6429e0cda296c7848ecf2e7971`\nOwner Session A diagnostic result instruction SHA-256: `dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14`\n\nThe replacement attempt is consumed. As the accepted handoff reports, under\nthe accepted protocol its first evidenced definite stop came before step 0,\nwhen the client showed a first-run prompt that the instruction did not name.\nFurther stop and hold conditions followed: a second MCP server was connected,\nan auto-accept permission mode was active, no per-call approval prompt was\nshown, and the client replaced four oversized replies with notices. These\nobservations rest on owner screenshots and reports that the run's evidence\nfolder does not preserve. As the client displayed, the nine planned calls were\nthen made under owner direction, outside the retry gate; that no other call\nwas made is not established. None of Session A's call stages is met as an\nattempt step, and this record is not Session A acceptance or compatibility\nevidence. Other disclosed protocol departures are recorded in the accepted\nhandoff.\n\nThe owner accepted the redacted evidence handoff r2 and its independent delta\nreview as a limited diagnostic result only. Preserved records show that the\ndeployed runtime matched the source commit, and that the project footprint\ngained one saved actor and lost no file. A preserved narrative record, without\na command transcript, reports that after the run no listener remained. The\nabsence of the bridge handoff file at both default locations rests on unsaved\nsession output and on an owner-reported editor-side check, and its record has\nno command transcript. Owner reports, screenshots read by the implementer and\nunsaved session output, none of them preserved in the run's evidence folder,\nindicate that the client's tool list had 34 entries, that it reported\nauthenticated queued transport with remote Python disabled, and that one actor\nwas moved 100 cm and restored in memory within tolerance. These are credible\nbut unverified.\n\nRequired records were not made for the UEFN About build, the external Python\nversion or the engine install to be started, and the evidence-location rule\nwas not met for the owner-operated and live steps. The required repeat of the\nlaunch-window environment check is not evidenced. Simulate Physics was not\nobserved as a setting, an unresolved block before live start with no recorded\nowner decision. The cleanup ran under owner direction, outside the\nnormal-cleanup rule, and its save-prompt answer was not recorded. Persistent\nrollback is not established: one actor was saved during editor use, and its\nsaved transform is unknown. Client configuration changes, a client\nauto-update and approval writes occurred during the run, and retained client\nand project state was not removed. Per-call approval, conformance beyond the\nclient's own display, exactly-once execution and the completeness of any\noversized reply are not established.\n\nAs the client displayed and unsaved session output recorded, at the client's\ndefault MCP output limit the `list_toolbelt_tools` reply, which lists every\nregistered tool (about 235,000 characters), and each `get_all_actors` reply on\nthe 176-actor test level (about 580 characters per actor) were replaced by\nnotices, so on that level those steps cannot be met in the client as planned.\nA correction is product work. It needs a separately authorized bounded\namendment and plan, and this record installs none.\n\nThat attempt is consumed, and this section governs over the earlier Session A\nsections, including the replacement attempt section. No session is authorized.\nA further Session A attempt, Session B, Session C, product corrections,\ninstallations and configuration changes each need a separate reviewed\ntransition recorded in the root pointer; recovery and cleanup of retained\nclient or project state need a separately bounded owner instruction; and\ncommits and pushes remain separate owner decisions.\n\nThe owner accepted a narrow offline-verification exemption for this\ntransition's five governance paths only. This transition records evidence; it\nis not live verification."
+_WO008_A_RECORDED_OPENING = 'This is an issued following-train Work Order, outside the frozen\nWO-001 through WO-007 train. The root pointer identifies WO-008 with\nsession NONE. The Session A result is recorded as diagnostic only: the\nreplacement attempt is consumed, and Session B and Session C remain\nunauthorized.'
+_WO008_A_RECORDED_PREREQ_HEAD = "The separately adopted issuance/session-enforcement plan r2 supported the\nclosed issuance and Session A offline preparation. Separate transitions\ninstalled the pinned Session A live baseline and its replacement attempt,\nand a separate transition records that attempt's result as diagnostic only.\nSession A acceptance, product corrections and live acceptance still need\nseparately reviewed enforcement transitions and explicit owner decisions. No\nlater phase is installed here."
+_WO008_A_RECORDED_NEXT = "NEXT GATE: separate owner decision on WO-008's direction. No session is\nauthorized. Session B, Session C, product corrections, recovery, cleanup,\nexact commits and pushes remain separate decisions. This mandate grants no\nreview, implementation, commit or push authority."
+_WO008_A_RECORDED_ROADMAP_BLOCK = '> cleanup remain separately gated. WO-008 is issued outside the frozen train;\n> the Session A result is recorded as diagnostic only, the replacement attempt\n> is consumed, and no session is authorized.\n'
+_WO008_A_RECORDED_ROADMAP = 'cleanup remain separately gated. WO-008 is issued outside the frozen train; the Session A result is recorded as diagnostic only, the replacement attempt is consumed, and no session is authorized.'
+_WO008_A_RECORDED_TRACES = ('WO-008 SESSION A RECORDED — SESSION B NOT AUTHORIZED', 'AUTHORIZATION: ISSUED — SESSION A RECORDED; NO SESSION AUTHORIZED', '- WO-008 Session A replacement attempt commit:', '- WO-008 Session A diagnostic result instruction SHA-256:', 'WO-008 Session A diagnostic result record:', '## Session A diagnostic result record')
+
+def _wo008_a_recorded_reverse_contract(case):
+    """Undo the A_RECORDED contract texts on both surfaces, exact-once only."""
+    path = case / "WORKORDER.md"
+    text = path.read_text(encoding="utf-8")
+    text = _replace_once(text, _NL + _NL + _WO008_A_RECORDED_POINTER_RECORD, "",
+                         "WO-008 A_RECORDED record reversal")
+    text = _replace_once(text, _NL + _WO008_A_RECORDED_BULLETS, "",
+                         "WO-008 A_RECORDED bullet reversal")
+    text = _replace_once(text, _WO008_A_RECORDED_HEAD, _WO008_A_LIVE_2_HEAD,
+                         "WO-008 A_RECORDED header reversal")
+    path.write_text(text, encoding="utf-8")
+    path = case / _WO008_ISSUED_REL
+    text = path.read_text(encoding="utf-8")
+    text = _replace_once(text, _NL + _NL + _WO008_A_RECORDED_SECTION, "",
+                         "WO-008 A_RECORDED mandate section reversal")
+    for old, new in (
+        (_WO008_A_RECORDED_MARKER, _WO008_A_LIVE_MARKER),
+        (_WO008_A_RECORDED_OPENING, _WO008_A_LIVE_OPENING),
+        (_WO008_A_RECORDED_PREREQ_HEAD, _WO008_A_LIVE_PREREQ_HEAD),
+        (_WO008_A_RECORDED_NEXT, _WO008_A_LIVE_NEXT),
+    ):
+        text = _replace_once(text, old, new, "WO-008 A_RECORDED mandate reversal")
+    path.write_text(text, encoding="utf-8")
+
+
+def _wo008_a_recorded_reverse_roadmap(case):
+    """The contract never reads ROADMAP.md, but every reconstruction below
+    A_RECORDED needs the A_LIVE_2 sentence, so a missing file fails here."""
+    path = case / "ROADMAP.md"
+    assert path.exists(), (
+        "WO-008 A_RECORDED reversal: ROADMAP.md is required and missing")
+    path.write_text(_replace_once(
+        path.read_text(encoding="utf-8"), _WO008_A_RECORDED_ROADMAP_BLOCK,
+        _WO008_A_LIVE_ROADMAP_BLOCK, "WO-008 A_RECORDED ROADMAP reversal"),
+        encoding="utf-8")
+
+
+_WO008_A_RECORDED_REVERSAL = (
+    ("contract", _wo008_a_recorded_reverse_contract),
+    ("roadmap", _wo008_a_recorded_reverse_roadmap),
+)
+
+
+def _has_wo008_a_recorded_trace(case):
+    pointer = (case / "WORKORDER.md").read_text(encoding="utf-8")
+    issued = case / _WO008_ISSUED_REL
+    mandate = issued.read_text(encoding="utf-8") if issued.exists() else ""
+    return any(trace in pointer or trace in mandate
+               for trace in _WO008_A_RECORDED_TRACES)
+
+
+def _wo008_reverse_a_recorded(case):
+    """Exactly undo A_RECORDED, ROADMAP included, when present; an A_LIVE_2 or
+    older input, including an already reconstructed one, stays so."""
+    if not _has_wo008_a_recorded_trace(case):
+        return
+    for _label, undo in _WO008_A_RECORDED_REVERSAL:
+        undo(case)
+    # Asserted only when the reversal ran (the P2-J guard pattern).
+    pointer = (case / "WORKORDER.md").read_text(encoding="utf-8")
+    mandate = (case / _WO008_ISSUED_REL).read_text(encoding="utf-8")
+    roadmap = (case / "ROADMAP.md").read_text(encoding="utf-8")
+    _assert_reconstructed(
+        "WO-008 Session A replacement attempt", pointer + _NL + mandate,
+        (_WO008_A_LIVE_2_HEADER, _WO008_A_LIVE_2_POINTER_RECORD, _WO008_A_LIVE_2_SECTION,
+         _WO008_A_LIVE_MARKER, _WO008_A_LIVE_OPENING, _WO008_A_LIVE_NEXT),
+        (*_WO008_A_RECORDED_TRACES, _WO008_A_RECORDED_POINTER_RECORD,
+         _WO008_A_RECORDED_SECTION))
+    for rel, text, digest in (
+        ("WORKORDER.md", pointer,
+         "7e744d2f29b2779115cfee4d1e96dd93319f24bc0621f1f81d673b564fbba605"),
+        (_WO008_ISSUED_REL, mandate,
+         "801b283afee711d880f14b7af800240a73963d456ba023cac50ed54875737fb6"),
+        ("ROADMAP.md", roadmap,
+         "bc809805f78865dc39659929cff9ab7443b100041a8f93c3056fc504e73fe54d"),
+    ):
+        assert hashlib.sha256(text.encode()).hexdigest() == digest, (
+            "WO-008 A_RECORDED reversal: " + rel + " is not the A_LIVE_2 commit's LF text")
+
+
+def _make_wo008_a_live_2_case(repo_root, tmp_path, name):
+    """The A_LIVE_2 state: a copy of the live pointer, Work Order documents and
+    ROADMAP with A_RECORDED exactly undone when present."""
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, name)
+    _wo008_reverse_a_recorded(case)
+    return case
+
+
+def _before_wo008_session_a_recorded(findings):
+    """Set aside only the one-way A_RECORDED lock after reconstructing A_LIVE_2."""
+    return [f for f in findings if f["type"] != _WO008_A_RECORDED_FINDING]
 
 
 def _wo008_a_live_2_reverse_header(case):
@@ -4446,6 +4562,7 @@ def _make_wo008_a_prep_case(repo_root, tmp_path, name):
                     case / "docs" / "work-orders")
     if (repo_root / "ROADMAP.md").exists():
         shutil.copy2(repo_root / "ROADMAP.md", case / "ROADMAP.md")
+    _wo008_reverse_a_recorded(case)
     _wo008_reverse_a_live_2(case)
     if _has_wo008_a_live_trace(case):
         for _label, undo in _WO008_A_LIVE_REVERSAL:
@@ -21874,6 +21991,12 @@ def test_wo008_a_prep_later_phases_are_not_installed(
         # lock shares the label prefix and is not counted.
         assert any(kind.startswith("WO-008 Session A live baseline")
                    and kind != _WO008_A_LIVE_FINDING for kind in kinds), repr(sorted(found))
+    if trace in ("a-recorded-gate", "a-recorded-marker"):
+        recorded_kinds = {kind for kind, rel in found if rel == surface}
+        assert any(kind.startswith("WO-008 Session A diagnostic result")
+                   and kind != _WO008_A_RECORDED_FINDING
+                   for kind in recorded_kinds), repr(sorted(found))
+        assert _WO008_A_RECORDED_FINDING not in recorded_kinds
 
 
 @pytest.mark.parametrize(("marker", "replacement", "kind"), (
@@ -22369,6 +22492,12 @@ def test_wo008_a_live_later_phases_are_not_installed(
         _wo008_append(case, surface, "## Session A result record" + _NL + _NL + "Open.")
     found = _wo008_a_live_findings(repo_root, case, monkeypatch, "later")
     assert {kind for kind, rel in found if rel == surface}, repr(sorted(found))
+    if trace in ("a-recorded-gate", "a-recorded-marker"):
+        recorded_kinds = {kind for kind, rel in found if rel == surface}
+        assert any(kind.startswith("WO-008 Session A diagnostic result")
+                   and kind != _WO008_A_RECORDED_FINDING
+                   for kind in recorded_kinds), repr(sorted(found))
+        assert _WO008_A_RECORDED_FINDING not in recorded_kinds
 
 
 @pytest.mark.parametrize(("marker", "replacement", "kind"), (
@@ -22448,7 +22577,7 @@ def test_wo008_a_live_widening_damage_kills_dispatch_mutant(repo_root, tmp_path,
 def _wo008_a_live_2_raw(repo_root, case, monkeypatch, label):
     drift_check = _load_drift_check(repo_root, "wo008_a_live_2_" + label)
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    return drift_check.check_work_order_contract()
+    return _before_wo008_session_a_recorded(drift_check.check_work_order_contract())
 
 
 def _wo008_a_live_2_findings(repo_root, case, monkeypatch, label):
@@ -22473,9 +22602,10 @@ def test_wo008_a_live_2_state_is_clean(repo_root, tmp_path, monkeypatch, newline
     assert _wo008_a_live_2_raw(repo_root, case, monkeypatch, "clean") == []
 
 
-def test_wo008_a_live_2_live_pins(repo_root):
-    pointer = (repo_root / "WORKORDER.md").read_text(encoding="utf-8")
-    mandate = (repo_root / _WO008_ISSUED_REL).read_text(encoding="utf-8")
+def test_wo008_a_live_2_live_pins(repo_root, tmp_path):
+    case = _make_wo008_a_live_2_case(repo_root, tmp_path, "a-live-2-pins")
+    pointer = (case / "WORKORDER.md").read_text(encoding="utf-8")
+    mandate = (case / _WO008_ISSUED_REL).read_text(encoding="utf-8")
     lines = pointer.splitlines()
     header = _WO008_A_LIVE_2_HEADER.splitlines()
     start = lines.index(header[0])
@@ -22500,7 +22630,7 @@ def test_wo008_a_live_2_live_pins(repo_root):
     for value in (_WO008_A_LIVE_OPENING, _WO008_A_LIVE_PREREQ_HEAD, _WO008_A_LIVE_NEXT):
         assert mandate.count(value) == 1, value[:60]
     assert sum(line.startswith("NEXT GATE:") for line in mandate_lines) == 1
-    roadmap = " ".join((repo_root / "ROADMAP.md").read_text(
+    roadmap = " ".join((case / "ROADMAP.md").read_text(
         encoding="utf-8").replace(">", " ").split())
     assert roadmap.count(_WO008_A_LIVE_ROADMAP) == 1
 
@@ -22706,7 +22836,11 @@ def test_wo008_a_live_2_reversal_reproduces_a_live_bytes(repo_root, tmp_path):
     ):
         text = (case / rel).read_text(encoding="utf-8")
         assert hashlib.sha256(text.encode()).hexdigest() == digest, rel
-    assert (case / "ROADMAP.md").read_bytes() == (repo_root / "ROADMAP.md").read_bytes()
+    # A_LIVE_2 left ROADMAP.md as committed at the A_LIVE commit. Compare with
+    # the reconstructed A_LIVE_2 state; the live file is now A_RECORDED's.
+    a_live_2 = _make_wo008_a_live_2_case(repo_root, tmp_path, "a-live-2-exact-roadmap")
+    assert (case / "ROADMAP.md").read_bytes() == (a_live_2 / "ROADMAP.md").read_bytes()
+    assert (repo_root / "ROADMAP.md").read_bytes() != (a_live_2 / "ROADMAP.md").read_bytes()
 
 
 _WO008_A_LIVE_2_ANCHORS = {
@@ -22866,6 +23000,12 @@ def test_wo008_a_live_2_later_phases_are_not_installed(
         _wo008_append(case, surface, "## Session A result record" + _NL + _NL + "Open.")
     found = _wo008_a_live_2_findings(repo_root, case, monkeypatch, "later")
     assert {kind for kind, rel in found if rel == surface}, repr(sorted(found))
+    if trace in ("a-recorded-gate", "a-recorded-marker"):
+        recorded_kinds = {kind for kind, rel in found if rel == surface}
+        assert any(kind.startswith("WO-008 Session A diagnostic result")
+                   and kind != _WO008_A_RECORDED_FINDING
+                   for kind in recorded_kinds), repr(sorted(found))
+        assert _WO008_A_RECORDED_FINDING not in recorded_kinds
 
 
 def test_wo008_a_live_2_widening_damage_kills_dispatch_mutant(repo_root, tmp_path, monkeypatch):
@@ -22873,10 +23013,12 @@ def test_wo008_a_live_2_widening_damage_kills_dispatch_mutant(repo_root, tmp_pat
     case = _make_wo008_a_live_2_case(repo_root, tmp_path, "a-live-2-widening")
     _wo008_append(case, "WORKORDER.md", "Session A may connect to UEFN.")
     monkeypatch.setattr(drift_check, "ROOT", str(case))
-    control = {(f["type"], f["file"]) for f in drift_check.check_work_order_contract()}
+    control = {(f["type"], f["file"]) for f in _before_wo008_session_a_recorded(
+        drift_check.check_work_order_contract())}
     assert control == {("session scope widening", "WORKORDER.md")}
     monkeypatch.setattr(drift_check, "_current_session_widening", lambda *_args: [])
-    mutant = {(f["type"], f["file"]) for f in drift_check.check_work_order_contract()}
+    mutant = {(f["type"], f["file"]) for f in _before_wo008_session_a_recorded(
+        drift_check.check_work_order_contract())}
     # The test 12 assertion for this payload fails against the mutant.
     with pytest.raises(AssertionError):
         assert mutant == {("session scope widening", "WORKORDER.md")}
@@ -22907,6 +23049,615 @@ def test_wo008_closed_grant_sets_are_exact(repo_root, tmp_path, monkeypatch, sur
     names = on_pointer if surface == "WORKORDER.md" else on_mandate
     assert found == {(_WO008_A_PREP_TYPES[name], surface) for name in names}, (
         repr(sorted(found)))
+
+
+# --- WO-008 Session A diagnostic result (A_RECORDED): raw contract --------
+
+def _wo008_a_recorded_raw(repo_root, case, monkeypatch, label):
+    drift_check = _load_drift_check(repo_root, "wo008_a_recorded_" + label)
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    return drift_check.check_work_order_contract()
+
+
+def _wo008_a_recorded_findings(repo_root, case, monkeypatch, label):
+    return {(f["type"], f["file"])
+            for f in _wo008_a_recorded_raw(repo_root, case, monkeypatch, label)}
+
+
+def _wo008_a_recorded_labeled(found, surface):
+    return {kind for kind, rel in found if rel == surface
+            and kind.startswith("WO-008 Session A diagnostic result")
+            and kind != _WO008_A_RECORDED_FINDING}
+
+
+# Frozen below from the final checker's damage probes, independently constrained
+# by each test's structural and damaged-surface assertions. No runtime oracle.
+_WO008_A_RECORDED_DAMAGE_GROUPS = (
+    (('WO-008 Session A diagnostic result', 'WORKORDER.md'), ('WO-008 Session A diagnostic result (WORKORDER.md)', 'WORKORDER.md'), ('implicit session authorization', 'WORKORDER.md'), ('later session authorization', 'WORKORDER.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md')),
+    (('WO-008 Session A diagnostic result record', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('implicit session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('later session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session scope widening', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md')),
+    (('WO-008 Session A diagnostic result', 'WORKORDER.md'), ('WO-008 Session A diagnostic result (WORKORDER.md)', 'WORKORDER.md'), ('current work order gate', 'WORKORDER.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session authorization reopening', 'WORKORDER.md')),
+    (('WO-008 Session A diagnostic result', 'WORKORDER.md'), ('WO-008 Session A diagnostic result (WORKORDER.md)', 'WORKORDER.md'), ('authorized session gate', 'WORKORDER.md'), ('implicit session authorization', 'WORKORDER.md'), ('later session authorization', 'WORKORDER.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md')),
+    (('WO-008 Session A diagnostic result', 'WORKORDER.md'), ('WO-008 Session A diagnostic result (WORKORDER.md)', 'WORKORDER.md'), ('base commit', 'WORKORDER.md'), ('implicit session authorization', 'WORKORDER.md'), ('later session authorization', 'WORKORDER.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md')),
+    (('WO-008 Session A diagnostic result', 'WORKORDER.md'), ('WO-008 Session A diagnostic result (WORKORDER.md)', 'WORKORDER.md'), ('current gate', 'WORKORDER.md'), ('implicit session authorization', 'WORKORDER.md'), ('later session authorization', 'WORKORDER.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md')),
+    (('WO-008 Session A diagnostic result (WORKORDER.md)', 'WORKORDER.md'), ('closed session gate', 'WORKORDER.md'), ('current issued work order mismatch', 'WORKORDER.md'), ('implicit session authorization', 'WORKORDER.md'), ('issued session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('issued work order identity', 'docs/work-orders/issued'), ('later session authorization', 'WORKORDER.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session authorization reopening', 'WORKORDER.md')),
+    (('WO-008 Session A diagnostic result (WORKORDER.md)', 'WORKORDER.md'), ('implicit session authorization', 'WORKORDER.md'), ('later session authorization', 'WORKORDER.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md')),
+    (('WO-008 Session A diagnostic result record', 'WORKORDER.md'), ('WO-008 conditional context', 'WORKORDER.md'), ('implicit session authorization', 'WORKORDER.md'), ('later session authorization', 'WORKORDER.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md')),
+    (('WO-008 Session A diagnostic result record', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 unsupported phase', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('implicit session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('later session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session scope widening', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md')),
+    (('WO-008 unsupported phase', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('implicit session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('later session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session scope widening', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md')),
+    (('WO-008 Session A diagnostic result', 'WORKORDER.md'), ('WO-008 Session A diagnostic result', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 Session A diagnostic result (WORKORDER.md)', 'WORKORDER.md'), ('WO-008 Session A diagnostic result (docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md)', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 Session A diagnostic result record', 'WORKORDER.md'), ('WO-008 Session A diagnostic result record', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 conditional context', 'WORKORDER.md'), ('WO-008 conditional context', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 issued state', 'docs/work-orders'), ('WO-008 unsupported phase', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('implicit session authorization', 'WORKORDER.md'), ('implicit session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('later session authorization', 'WORKORDER.md'), ('later session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md'), ('session scope widening', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md')),
+    (('WO-008 Session A diagnostic result', 'WORKORDER.md'), ('WO-008 Session A diagnostic result (WORKORDER.md)', 'WORKORDER.md'), ('WO-008 Session A diagnostic result (docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md)', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 Session A diagnostic result record', 'WORKORDER.md'), ('WO-008 Session A diagnostic result record', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 conditional context', 'WORKORDER.md'), ('WO-008 conditional context', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 issued state', 'docs/work-orders'), ('WO-008 unsupported phase', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('implicit session authorization', 'WORKORDER.md'), ('implicit session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('issued authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('later session authorization', 'WORKORDER.md'), ('later session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md'), ('session scope widening', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md')),
+    (('WO-008 Session A diagnostic result', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 Session A diagnostic result (docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md)', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 Session A diagnostic result record', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 conditional context', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 issued state', 'docs/work-orders'), ('WO-008 unsupported phase', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('implicit session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('later session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session scope widening', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md')),
+    (('WO-008 Session A diagnostic result', 'WORKORDER.md'), ('WO-008 Session A diagnostic result (WORKORDER.md)', 'WORKORDER.md'), ('WO-008 Session A diagnostic result record', 'WORKORDER.md'), ('WO-008 conditional context', 'WORKORDER.md'), ('implicit session authorization', 'WORKORDER.md'), ('later session authorization', 'WORKORDER.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md')),
+    (('WO-008 Session A diagnostic result', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 Session A diagnostic result (docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md)', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 Session A diagnostic result record', 'WORKORDER.md'), ('WO-008 Session A diagnostic result record', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 conditional context', 'WORKORDER.md'), ('WO-008 conditional context', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 issued state', 'docs/work-orders'), ('WO-008 unsupported phase', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('implicit session authorization', 'WORKORDER.md'), ('implicit session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('later session authorization', 'WORKORDER.md'), ('later session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md'), ('session scope widening', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md')),
+    (('WO-008 Session A diagnostic result', 'WORKORDER.md'), ('WO-008 Session A diagnostic result', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 Session A diagnostic result (WORKORDER.md)', 'WORKORDER.md'), ('WO-008 Session A diagnostic result (docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md)', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 Session A diagnostic result record', 'WORKORDER.md'), ('WO-008 Session A diagnostic result record', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 conditional context', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 issued state', 'docs/work-orders'), ('WO-008 unsupported phase', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('implicit session authorization', 'WORKORDER.md'), ('implicit session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('later session authorization', 'WORKORDER.md'), ('later session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md'), ('session scope widening', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md')),
+    (('WO-008 Session A diagnostic result', 'WORKORDER.md'), ('WO-008 Session A diagnostic result (WORKORDER.md)', 'WORKORDER.md'), ('WO-008 Session A diagnostic result record', 'WORKORDER.md'), ('WO-008 Session A diagnostic result record', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 conditional context', 'WORKORDER.md'), ('WO-008 conditional context', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 unsupported phase', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('implicit session authorization', 'WORKORDER.md'), ('implicit session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('later session authorization', 'WORKORDER.md'), ('later session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md'), ('session scope widening', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md')),
+    (('WO-008 Session A diagnostic result record', 'WORKORDER.md'), ('implicit session authorization', 'WORKORDER.md'), ('later session authorization', 'WORKORDER.md'), ('session authorization reopening', 'WORKORDER.md'), ('session scope widening', 'WORKORDER.md')),
+    (('WO-008 Session A diagnostic result record', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 issued state', 'docs/work-orders'), ('implicit session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('issued authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('later session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session scope widening', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md')),
+    (('WO-008 Session A diagnostic result record', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('WO-008 next gate', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('implicit session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('later session authorization', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('planning-only proposal placement', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'), ('session scope widening', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md')),
+)
+_WO008_A_RECORDED_DAMAGE_INDEX = {
+    ('evidence', 'WORKORDER.md', '- WO-008 Session A replacement attempt commit: `ca86bc0f641591e830fd882ea05607d62ca11c6b`'): 0,
+    ('evidence', 'WORKORDER.md', '- WO-008 Session A replacement attempt CI workflow: `38164234607`'): 0,
+    ('evidence', 'WORKORDER.md', '- WO-008 Session A replacement attempt CI job: `114543334362` — Lint, types, tests'): 0,
+    ('evidence', 'WORKORDER.md', '- WO-008 Session A diagnostic result instruction SHA-256: `dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14`'): 0,
+    ('evidence', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'Session A replacement attempt commit: `ca86bc0f641591e830fd882ea05607d62ca11c6b`'): 1,
+    ('evidence', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'Session A replacement attempt CI workflow: `38164234607`'): 1,
+    ('evidence', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'Session A replacement attempt CI job: `114543334362` — Lint, types, tests'): 1,
+    ('evidence', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'Replacement attempt run ID: `wo008-a-live-2026-10-11-2`'): 1,
+    ('evidence', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'Accepted evidence handoff r2 SHA256SUMS: `67d3728dafbda53955fe31ea40de281dc9c0f51d18d003c53548fbe346c94486`'): 1,
+    ('evidence', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'Accepted evidence delta review SHA256SUMS: `9722d9d75eee4d33f2a2b90b9092f92293f7096a0fc99e0acec69652e3fa0f4d`'): 1,
+    ('evidence', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'First evidence review SHA256SUMS: `38a160706f8700fae7f915211ee498a9eb3bfec279196f1ca3efe109780651c6`'): 1,
+    ('evidence', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'Accepted diagnostic result plan SHA256SUMS: `c39081f3aacf38c0dbdf2ec459a6743c78e43d6429e0cda296c7848ecf2e7971`'): 1,
+    ('evidence', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'Owner Session A diagnostic result instruction SHA-256: `dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14`'): 1,
+    ('field', 0, 'missing'): 2,
+    ('field', 1, 'missing'): 3,
+    ('field', 2, 'missing'): 4,
+    ('field', 3, 'missing'): 5,
+    ('field', 4, 'missing'): 0,
+    ('field', 5, 'missing'): 0,
+    ('field', 6, 'missing'): 0,
+    ('field', 7, 'missing'): 0,
+    ('field', 8, 'missing'): 0,
+    ('field', 9, 'missing'): 0,
+    ('field', 10, 'missing'): 0,
+    ('field', 11, 'missing'): 0,
+    ('field', 12, 'missing'): 0,
+    ('field', 13, 'missing'): 0,
+    ('field', 14, 'missing'): 0,
+    ('field', 15, 'missing'): 0,
+    ('field', 16, 'missing'): 0,
+    ('field', 17, 'missing'): 0,
+    ('field', 18, 'missing'): 0,
+    ('field', 19, 'missing'): 0,
+    ('field', 20, 'missing'): 0,
+    ('field', 21, 'missing'): 0,
+    ('field', 22, 'missing'): 0,
+    ('field', 23, 'missing'): 0,
+    ('field', 0, 'duplicate'): 2,
+    ('field', 1, 'duplicate'): 3,
+    ('field', 2, 'duplicate'): 4,
+    ('field', 3, 'duplicate'): 5,
+    ('field', 4, 'duplicate'): 0,
+    ('field', 5, 'duplicate'): 0,
+    ('field', 6, 'duplicate'): 0,
+    ('field', 7, 'duplicate'): 0,
+    ('field', 8, 'duplicate'): 0,
+    ('field', 9, 'duplicate'): 0,
+    ('field', 10, 'duplicate'): 0,
+    ('field', 11, 'duplicate'): 0,
+    ('field', 12, 'duplicate'): 0,
+    ('field', 13, 'duplicate'): 0,
+    ('field', 14, 'duplicate'): 0,
+    ('field', 15, 'duplicate'): 0,
+    ('field', 16, 'duplicate'): 0,
+    ('field', 17, 'duplicate'): 0,
+    ('field', 18, 'duplicate'): 0,
+    ('field', 19, 'duplicate'): 0,
+    ('field', 20, 'duplicate'): 0,
+    ('field', 21, 'duplicate'): 0,
+    ('field', 22, 'duplicate'): 0,
+    ('field', 23, 'duplicate'): 0,
+    ('field', 0, 'corrupt'): 6,
+    ('field', 1, 'corrupt'): 7,
+    ('field', 2, 'corrupt'): 7,
+    ('field', 3, 'corrupt'): 7,
+    ('field', 4, 'corrupt'): 7,
+    ('field', 5, 'corrupt'): 7,
+    ('field', 6, 'corrupt'): 7,
+    ('field', 7, 'corrupt'): 7,
+    ('field', 8, 'corrupt'): 7,
+    ('field', 9, 'corrupt'): 7,
+    ('field', 10, 'corrupt'): 7,
+    ('field', 11, 'corrupt'): 7,
+    ('field', 12, 'corrupt'): 7,
+    ('field', 13, 'corrupt'): 7,
+    ('field', 14, 'corrupt'): 7,
+    ('field', 15, 'corrupt'): 7,
+    ('field', 16, 'corrupt'): 7,
+    ('field', 17, 'corrupt'): 7,
+    ('field', 18, 'corrupt'): 7,
+    ('field', 19, 'corrupt'): 7,
+    ('field', 20, 'corrupt'): 7,
+    ('field', 21, 'corrupt'): 7,
+    ('field', 22, 'corrupt'): 7,
+    ('field', 23, 'corrupt'): 7,
+    ('record', 'a-live-2-pointer', 'missing'): 8,
+    ('record', 'a-live-2-section', 'missing'): 9,
+    ('record', 'a-recorded-pointer', 'missing'): 8,
+    ('record', 'a-recorded-section', 'missing'): 9,
+    ('record', 'a-live-2-pointer', 'duplicated'): 8,
+    ('record', 'a-live-2-section', 'duplicated'): 9,
+    ('record', 'a-recorded-pointer', 'duplicated'): 8,
+    ('record', 'a-recorded-section', 'duplicated'): 9,
+    ('record', 'a-live-2-pointer', 'corrupted'): 8,
+    ('record', 'a-live-2-section', 'corrupted'): 1,
+    ('record', 'a-recorded-pointer', 'corrupted'): 8,
+    ('record', 'a-recorded-section', 'corrupted'): 1,
+    ('record', 'a-live-2-pointer', 'displaced'): 8,
+    ('record', 'a-live-2-section', 'displaced'): 10,
+    ('record', 'a-recorded-pointer', 'displaced'): 8,
+    ('record', 'a-recorded-section', 'displaced'): 10,
+    ('record', 'a-live-2-pointer', 'fused'): 8,
+    ('record', 'a-live-2-section', 'fused'): 1,
+    ('record', 'a-recorded-pointer', 'fused'): 8,
+    ('record', 'a-recorded-section', 'fused'): 1,
+    ('trace', 0, 'WORKORDER.md'): 11,
+    ('trace', 1, 'WORKORDER.md'): 11,
+    ('trace', 2, 'WORKORDER.md'): 11,
+    ('trace', 3, 'WORKORDER.md'): 11,
+    ('trace', 4, 'WORKORDER.md'): 11,
+    ('trace', 5, 'WORKORDER.md'): 11,
+    ('trace', 0, 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'): 11,
+    ('trace', 1, 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'): 12,
+    ('trace', 2, 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'): 11,
+    ('trace', 3, 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'): 11,
+    ('trace', 4, 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'): 11,
+    ('trace', 5, 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md'): 11,
+    ('install', 'pointer-only'): 13,
+    ('install', 'mandate-only'): 14,
+    ('install', 'header-only'): 15,
+    ('install', 'record-only'): 16,
+    ('install', 'section-only'): 11,
+    ('install', 'marker-only'): 17,
+    ('history', 'live-2-pointer', 'missing'): 8,
+    ('history', 'live-2-section', 'missing'): 9,
+    ('history', 'live-pointer', 'missing'): 8,
+    ('history', 'live-section', 'missing'): 9,
+    ('history', 'prep-pointer', 'missing'): 8,
+    ('history', 'closed-pointer', 'missing'): 8,
+    ('history', 'live-2-pointer', 'corrupt'): 8,
+    ('history', 'live-2-section', 'corrupt'): 1,
+    ('history', 'live-pointer', 'corrupt'): 8,
+    ('history', 'live-section', 'corrupt'): 1,
+    ('history', 'prep-pointer', 'corrupt'): 8,
+    ('history', 'closed-pointer', 'corrupt'): 8,
+    ('later', 'stopped-gate'): 0,
+    ('later', 'b-corrections-gate'): 0,
+    ('later', 'session-b'): 0,
+    ('later', 'session-c'): 0,
+    ('later', 'result-heading'): 10,
+    ('restore-a',): 0,
+    ('old-current', 'WORKORDER.md', 'WO-008 SESSION A LIVE BASELINE ONLY — PRODUCT CORRECTIONS NOT AUTHORIZED'): 18,
+    ('old-current', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR THE PINNED LIVE BASELINE ONLY'): 19,
+    ('old-current', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'This is an issued following-train Work Order, outside the frozen\nWO-001 through WO-007 train. The root pointer identifies WO-008 with\nSession A authorized for the pinned live baseline only. Product\ncorrections, Session B and Session C remain unauthorized.'): 1,
+    ('old-current', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'The separately adopted issuance/session-enforcement plan r2 supported the\nclosed issuance and Session A offline preparation, and a separate transition\ninstalls the pinned Session A live baseline only. Recording the result,\nproduct corrections and live acceptance still need separately reviewed\nenforcement transitions and explicit owner decisions. No later phase is\ninstalled here.'): 1,
+    ('old-current', 'docs/work-orders/issued/WO-008-user-reliability-and-mcp-client-acceptance.md', 'NEXT GATE: separate owner decisions on an independent review of the redacted\nSession A live evidence, and then on a transition recording its result.\nProduct corrections, Session B, Session C, recovery, a repeat run, exact\ncommits and pushes remain separate decisions. This mandate grants no review,\nimplementation, commit or push authority.'): 20,
+}
+_WO008_A_RECORDED_DAMAGE_SETS = {
+    key: _WO008_A_RECORDED_DAMAGE_GROUPS[value]
+    for key, value in _WO008_A_RECORDED_DAMAGE_INDEX.items()
+}
+
+
+def _wo008_a_recorded_assert_exact(found, key):
+    assert found == set(_WO008_A_RECORDED_DAMAGE_SETS[key]), repr(sorted(found))
+
+
+@pytest.mark.parametrize("newline", ("\n", "\r\n"), ids=("lf", "crlf"))
+def test_wo008_a_recorded_state_is_clean(repo_root, tmp_path, monkeypatch, newline):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-control")
+    for rel in ("WORKORDER.md", _WO008_ISSUED_REL):
+        path = case / rel
+        path.write_bytes(path.read_text(encoding="utf-8").replace("\n", newline).encode())
+    assert _wo008_a_recorded_raw(repo_root, case, monkeypatch, "clean") == []
+
+
+def test_wo008_a_recorded_live_pins(repo_root):
+    pointer = (repo_root / "WORKORDER.md").read_text(encoding="utf-8")
+    mandate = (repo_root / _WO008_ISSUED_REL).read_text(encoding="utf-8")
+    header = (_WO008_A_RECORDED_HEAD.splitlines() + _WO008_A_LIVE_2_HEADER.splitlines()[4:]
+              + _WO008_A_RECORDED_BULLETS.splitlines())
+    assert len(header) == 24
+    lines = pointer.splitlines()
+    start = lines.index(header[0])
+    assert lines[start:start + 24] == header
+    assert lines[start + 24].startswith("- Issuance commit:")
+    assert pointer.count(_NL.join(header)) == 1
+    assert pointer.endswith(_WO008_A_LIVE_2_POINTER_RECORD + _NL + _NL
+                            + _WO008_A_RECORDED_POINTER_RECORD + _NL)
+    assert pointer.count(_WO008_A_RECORDED_POINTER_RECORD) == 1
+    assert mandate.count(_WO008_A_LIVE_2_SECTION + _NL + _NL
+                         + _WO008_A_RECORDED_SECTION + _NL + _NL
+                         + "## Session A Real client baseline" + _NL) == 1
+    assert mandate.splitlines().count(_WO008_A_RECORDED_MARKER) == 1
+    for value in (_WO008_A_RECORDED_OPENING, _WO008_A_RECORDED_PREREQ_HEAD,
+                  _WO008_A_RECORDED_NEXT, _WO008_A_RECORDED_SECTION):
+        assert mandate.count(value) == 1, value[:60]
+    assert sum(line.startswith("NEXT GATE:") for line in mandate.splitlines()) == 1
+    roadmap = " ".join((repo_root / "ROADMAP.md").read_text(
+        encoding="utf-8").replace(">", " ").split())
+    assert roadmap.count(_WO008_A_RECORDED_ROADMAP) == 1
+    assert _WO008_A_LIVE_ROADMAP not in roadmap
+
+
+@pytest.mark.parametrize(("surface", "value"), [
+    ("WORKORDER.md", line) for line in _WO008_A_RECORDED_BULLETS.splitlines()
+] + [
+    (_WO008_ISSUED_REL, line)
+    for line in _WO008_A_RECORDED_SECTION.split(_NL + _NL)[1].splitlines()
+])
+def test_wo008_a_recorded_evidence_is_pinned(repo_root, tmp_path, monkeypatch, surface, value):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-evidence")
+    end = value.index("`", value.index("`") + 1)
+    corrupt = value[:end - 1] + ("0" if value[end - 1] != "0" else "1") + value[end:]
+    _edit(case, surface, value, corrupt)
+    found = _wo008_a_recorded_findings(repo_root, case, monkeypatch, "evidence")
+    assert _wo008_a_recorded_labeled(found, surface), repr(sorted(found))
+    assert {rel for _kind, rel in found} <= {surface, "docs/work-orders"}
+    _wo008_a_recorded_assert_exact(found, ("evidence", surface, value))
+
+
+@pytest.mark.parametrize("index", range(24))
+@pytest.mark.parametrize("damage", ("missing", "duplicate", "corrupt"))
+def test_wo008_a_recorded_fields_are_exact_and_single(
+    repo_root, tmp_path, monkeypatch, index, damage
+):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-field")
+    drift_check = _load_drift_check(repo_root, "wo008_a_recorded_field_values")
+    old = drift_check._WO008_A_RECORDED_POINTER_SEQUENCE[index]
+    new = "" if damage == "missing" else old + _NL + old if damage == "duplicate" else (
+        old + " altered")
+    _edit(case, "WORKORDER.md", old, new)
+    found = _wo008_a_recorded_findings(repo_root, case, monkeypatch, "field")
+    # Identity corruption can select the unknown-order path, never clean input.
+    if index:
+        assert _wo008_a_recorded_labeled(found, "WORKORDER.md"), repr(sorted(found))
+    assert found
+    _wo008_a_recorded_assert_exact(found, ("field", index, damage))
+
+
+_WO008_A_RECORDED_RECORD_CASES = {
+    "a-recorded-pointer": ("WORKORDER.md", _WO008_A_RECORDED_POINTER_RECORD),
+    "a-live-2-pointer": ("WORKORDER.md", _WO008_A_LIVE_2_POINTER_RECORD),
+    "a-recorded-section": (_WO008_ISSUED_REL, _WO008_A_RECORDED_SECTION),
+    "a-live-2-section": (_WO008_ISSUED_REL, _WO008_A_LIVE_2_SECTION),
+}
+
+
+@pytest.mark.parametrize("record", sorted(_WO008_A_RECORDED_RECORD_CASES))
+@pytest.mark.parametrize("damage", ("missing", "duplicated", "corrupted", "displaced", "fused"))
+def test_wo008_a_recorded_records_are_validated_before_removal(
+    repo_root, tmp_path, monkeypatch, record, damage
+):
+    surface, old = _WO008_A_RECORDED_RECORD_CASES[record]
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-record")
+    text = (case / surface).read_text(encoding="utf-8")
+    if damage == "missing":
+        text = _replace_once(text, old, "", "record damage")
+    elif damage == "duplicated":
+        text += _NL + old + _NL
+    elif damage == "corrupted":
+        text = _replace_once(text, old, old[:-1] + "!", "record damage")
+    elif damage == "fused":
+        text = _replace_once(text, old, old + " Session B may start.", "record damage")
+    else:
+        text = _replace_once(text, old, "", "record damage")
+        text += _NL + "## Decoy" + _NL + _NL + old + _NL
+    (case / surface).write_text(text, encoding="utf-8")
+    found = _wo008_a_recorded_findings(repo_root, case, monkeypatch, "record")
+    assert any(kind.startswith(("WO-008 Session A diagnostic result", "WO-008 conditional context",
+                                "WO-008 next gate", "WO-008 unsupported phase"))
+               and kind != _WO008_A_RECORDED_FINDING
+               for kind, rel in found if rel == surface), repr(sorted(found))
+    _wo008_a_recorded_assert_exact(found, ("record", record, damage))
+    drift_check = _load_drift_check(repo_root, "wo008_a_recorded_failed_removal")
+    pointer = (case / "WORKORDER.md").read_text(encoding="utf-8")
+    mandate = (case / _WO008_ISSUED_REL).read_text(encoding="utf-8")
+    findings, residual = drift_check._wo008_phase_findings(
+        pointer, mandate, _WO008_ISSUED_REL,
+        "pointer" if surface == "WORKORDER.md" else "document")
+    assert findings and residual == (pointer if surface == "WORKORDER.md" else mandate)
+    if damage == "fused":
+        assert ("later session authorization", surface) in found
+
+
+@pytest.mark.parametrize("trace", range(6))
+@pytest.mark.parametrize("surface", ("WORKORDER.md", _WO008_ISSUED_REL))
+def test_wo008_a_recorded_shape_is_selected_by_any_trace(
+    repo_root, tmp_path, monkeypatch, trace, surface
+):
+    case = _make_wo008_a_live_2_case(repo_root, tmp_path, "a-recorded-trace")
+    _wo008_append(case, surface, _WO008_A_RECORDED_TRACES[trace] + " pending")
+    found = _wo008_a_recorded_findings(repo_root, case, monkeypatch, "trace")
+    drift_check = _load_drift_check(repo_root, "wo008_a_recorded_selected_phase")
+    assert drift_check._wo008_phase(
+        (case / "WORKORDER.md").read_text(encoding="utf-8"),
+        (case / _WO008_ISSUED_REL).read_text(encoding="utf-8")) == "A_RECORDED"
+    assert _wo008_a_recorded_labeled(found, surface), repr(sorted(found))
+    assert not any(kind == _WO008_A_RECORDED_FINDING for kind, _rel in found)
+    _wo008_a_recorded_assert_exact(found, ("trace", trace, surface))
+
+
+@pytest.mark.parametrize("part", ("pointer-only", "mandate-only", "header-only",
+                                  "record-only", "section-only", "marker-only"))
+def test_wo008_a_recorded_partial_installs_are_rejected(repo_root, tmp_path, monkeypatch, part):
+    case = _make_wo008_a_live_2_case(repo_root, tmp_path, "a-recorded-install")
+    if part in ("pointer-only", "mandate-only"):
+        surface = "WORKORDER.md" if part == "pointer-only" else _WO008_ISSUED_REL
+        (case / surface).write_bytes((repo_root / surface).read_bytes())
+    elif part == "header-only":
+        _edit(case, "WORKORDER.md", _WO008_A_LIVE_2_HEAD, _WO008_A_RECORDED_HEAD)
+        old = _WO008_A_LIVE_2_HEADER.splitlines()[-1]
+        _edit(case, "WORKORDER.md", old, old + _NL + _WO008_A_RECORDED_BULLETS)
+    elif part == "record-only":
+        _wo008_append(case, "WORKORDER.md", _WO008_A_RECORDED_POINTER_RECORD)
+    elif part == "section-only":
+        _wo008_append(case, _WO008_ISSUED_REL, _WO008_A_RECORDED_SECTION)
+    else:
+        _edit(case, _WO008_ISSUED_REL, _WO008_A_LIVE_MARKER, _WO008_A_RECORDED_MARKER)
+    found = _wo008_a_recorded_findings(repo_root, case, monkeypatch, "install")
+    assert any(_wo008_a_recorded_labeled(found, rel)
+               for rel in ("WORKORDER.md", _WO008_ISSUED_REL))
+    assert (_WO008_A_RECORDED_FINDING, "WORKORDER.md") not in found
+    _wo008_a_recorded_assert_exact(found, ("install", part))
+
+
+@pytest.mark.parametrize("subset", ((0,), (1,), (0, 1)), ids=("contract", "roadmap", "full"))
+def test_wo008_a_recorded_each_partial_reversal_is_detected(
+    repo_root, tmp_path, monkeypatch, subset
+):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-partial")
+    for index in subset:
+        _WO008_A_RECORDED_REVERSAL[index][1](case)
+    found = _wo008_a_recorded_findings(repo_root, case, monkeypatch, "partial")
+    if subset == (0, 1):
+        assert found == {(_WO008_A_RECORDED_FINDING, "WORKORDER.md")}
+    else:
+        # ROADMAP is deliberately outside the contract; the live pin supplies
+        # its detection. A contract-only rollback is already caught by the lock.
+        assert found == ({(_WO008_A_RECORDED_FINDING, "WORKORDER.md")}
+                         if subset == (0,) else set())
+        with pytest.raises(AssertionError):
+            test_wo008_a_recorded_live_pins(case)
+
+
+def test_wo008_a_recorded_coherent_reversal_trips_only_its_new_lock(
+    repo_root, tmp_path, monkeypatch
+):
+    case = _make_wo008_a_live_2_case(repo_root, tmp_path, "a-recorded-rollback")
+    drift_check = _load_drift_check(repo_root, "wo008_a_recorded_rollback")
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    assert {(f["type"], f["file"]) for f in drift_check.check_work_order_contract()} == {
+        (_WO008_A_RECORDED_FINDING, "WORKORDER.md")}
+    assert _before_wo008_session_a_recorded(drift_check.check_work_order_contract()) == []
+    superseded = case / _WO006_SUP_REL
+    saved = superseded.read_bytes()
+    superseded.unlink()
+    assert any(f["type"] == "superseded WO-006 state" for f in
+               _before_wo008_session_a_recorded(drift_check.check_work_order_contract()))
+    superseded.write_bytes(saved)
+    _edit(case, "WORKORDER.md", _WO008_A_LIVE_2_BULLETS.splitlines()[-1],
+          _WO008_A_LIVE_2_BULLETS.splitlines()[-1] + " altered")
+    assert any(f["type"].startswith("WO-008 Session A replacement attempt")
+               and f["type"] != _WO008_A_LIVE_2_FINDING and f["file"] == "WORKORDER.md"
+               for f in _before_wo008_session_a_recorded(drift_check.check_work_order_contract()))
+
+
+def test_wo008_a_recorded_reversal_reproduces_a_live_2_bytes(repo_root, tmp_path):
+    case = _make_wo008_a_live_2_case(repo_root, tmp_path, "a-recorded-exact")
+    for rel, digest in (
+        ("WORKORDER.md", "7e744d2f29b2779115cfee4d1e96dd93319f24bc0621f1f81d673b564fbba605"),
+        (_WO008_ISSUED_REL, "801b283afee711d880f14b7af800240a73963d456ba023cac50ed54875737fb6"),
+        ("ROADMAP.md", "bc809805f78865dc39659929cff9ab7443b100041a8f93c3056fc504e73fe54d"),
+    ):
+        text = (case / rel).read_text(encoding="utf-8")
+        assert hashlib.sha256(text.encode()).hexdigest() == digest, rel
+        assert text != (repo_root / rel).read_text(encoding="utf-8")
+
+
+_WO008_A_RECORDED_ANCHORS = {
+    "pointer-record": ("WORKORDER.md", _NL + _NL + _WO008_A_RECORDED_POINTER_RECORD,
+                       "WO-008 A_RECORDED record reversal"),
+    "pointer-bullets": ("WORKORDER.md", _NL + _WO008_A_RECORDED_BULLETS,
+                        "WO-008 A_RECORDED bullet reversal"),
+    "pointer-head": ("WORKORDER.md", _WO008_A_RECORDED_HEAD, "WO-008 A_RECORDED header reversal"),
+    "section": (_WO008_ISSUED_REL, _NL + _NL + _WO008_A_RECORDED_SECTION,
+                "WO-008 A_RECORDED mandate section reversal"),
+    "marker": (_WO008_ISSUED_REL, _WO008_A_RECORDED_MARKER, "WO-008 A_RECORDED mandate reversal"),
+    "opening": (_WO008_ISSUED_REL, _WO008_A_RECORDED_OPENING, "WO-008 A_RECORDED mandate reversal"),
+    "prerequisites": (_WO008_ISSUED_REL, _WO008_A_RECORDED_PREREQ_HEAD,
+                      "WO-008 A_RECORDED mandate reversal"),
+    "next": (_WO008_ISSUED_REL, _WO008_A_RECORDED_NEXT, "WO-008 A_RECORDED mandate reversal"),
+    "roadmap": ("ROADMAP.md", _WO008_A_RECORDED_ROADMAP_BLOCK, "WO-008 A_RECORDED ROADMAP reversal"),
+}
+
+
+@pytest.mark.parametrize("step", tuple(_WO008_A_RECORDED_ANCHORS))
+@pytest.mark.parametrize("damage", ("missing", "duplicated"))
+def test_wo008_a_recorded_reconstruction_rejects_bad_anchors(repo_root, tmp_path, step, damage):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-anchor")
+    surface, anchor, where = _WO008_A_RECORDED_ANCHORS[step]
+    _edit(case, surface, anchor, "" if damage == "missing" else anchor + anchor)
+    with pytest.raises(AssertionError, match=re.escape(where + ": expected exactly 1 occurrence")):
+        _wo008_reverse_a_recorded(case)
+
+
+def test_wo008_a_recorded_reconstruction_requires_roadmap(repo_root, tmp_path):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-no-roadmap")
+    (case / "ROADMAP.md").unlink()
+    with pytest.raises(AssertionError, match="ROADMAP.md is required and missing"):
+        _wo008_reverse_a_recorded(case)
+    # The untouched copy builder still fails closed at its earlier copy step.
+    with pytest.raises(FileNotFoundError):
+        _make_wo008_a_live_2_case(case, tmp_path, "a-recorded-copy-no-roadmap")
+    older = _make_wo008_a_live_2_case(repo_root, tmp_path, "a-recorded-older-no-roadmap")
+    (older / "ROADMAP.md").unlink()
+    before = {p.relative_to(older): p.read_bytes() for p in older.rglob("*.md")}
+    _wo008_reverse_a_recorded(older)
+    assert before == {p.relative_to(older): p.read_bytes() for p in older.rglob("*.md")}
+
+
+_WO008_A_RECORDED_GRANTS = {
+    "Session A may make another replacement attempt.": (("widening",), ("widening",)),
+    "Session A is authorized for a further attempt.":
+        (("implicit", "later", "reopening", "widening"), ("implicit", "later", "widening")),
+    "Session B is authorized.": (("implicit", "later", "reopening"), ("implicit", "later")),
+    "Session A may apply product corrections.": (("widening",), ("widening",)),
+    "Work may now begin.": (("implicit",), ("implicit",)),
+    "The owner has authorized Session C.":
+        (("implicit", "later", "reopening"), ("implicit", "later")),
+}
+
+
+@pytest.mark.parametrize("surface", ("WORKORDER.md", _WO008_ISSUED_REL))
+@pytest.mark.parametrize("payload", sorted(_WO008_A_RECORDED_GRANTS))
+def test_wo008_a_recorded_rejects_grants(repo_root, tmp_path, monkeypatch, surface, payload):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-grant")
+    _wo008_append(case, surface, payload)
+    found = _wo008_a_recorded_findings(repo_root, case, monkeypatch, "grant")
+    on_pointer, on_mandate = _WO008_A_RECORDED_GRANTS[payload]
+    names = on_pointer if surface == "WORKORDER.md" else on_mandate
+    assert found == {(_WO008_A_PREP_TYPES[name], surface) for name in names}, repr(sorted(found))
+
+
+@pytest.mark.parametrize("surface", ("WORKORDER.md", _WO008_ISSUED_REL))
+@pytest.mark.parametrize("payload", ("No session is authorized.",
+                                   "A further Session A attempt is not authorized.",
+                                   "Session B remains unauthorized."))
+def test_wo008_a_recorded_denials_stay_clean(repo_root, tmp_path, monkeypatch, surface, payload):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-denial")
+    _wo008_append(case, surface, payload)
+    assert _wo008_a_recorded_findings(repo_root, case, monkeypatch, "denial") == set()
+
+
+@pytest.mark.parametrize(("surface", "paragraph"), [
+    (_WO008_ISSUED_REL, _WO008_A_RECORDED_POINTER_RECORD),
+] + [
+    ("WORKORDER.md", paragraph)
+    for paragraph in _WO008_A_RECORDED_SECTION.split(_NL + _NL)[2:]
+] + [("WORKORDER.md", _WO008_A_RECORDED_OPENING),
+     ("WORKORDER.md", _WO008_A_RECORDED_NEXT)])
+def test_wo008_a_recorded_context_is_not_a_pointer_exemption(
+    repo_root, tmp_path, monkeypatch, surface, paragraph
+):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-offsurface")
+    _wo008_append(case, surface, paragraph)
+    assert _wo008_a_recorded_findings(repo_root, case, monkeypatch, "offsurface") == set()
+
+
+@pytest.mark.parametrize(("surface", "text"), (
+    ("WORKORDER.md", _WO008_A_LIVE_GATE),
+    (_WO008_ISSUED_REL, _WO008_A_LIVE_MARKER),
+    (_WO008_ISSUED_REL, _WO008_A_LIVE_OPENING),
+    (_WO008_ISSUED_REL, _WO008_A_LIVE_PREREQ_HEAD),
+    (_WO008_ISSUED_REL, _WO008_A_LIVE_NEXT),
+))
+def test_wo008_a_recorded_prior_current_texts_are_forbidden(
+    repo_root, tmp_path, monkeypatch, surface, text
+):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-old-current")
+    _wo008_append(case, surface, text)
+    found = _wo008_a_recorded_findings(repo_root, case, monkeypatch, "old-current")
+    assert ("WO-008 Session A diagnostic result record", surface) in found, repr(sorted(found))
+    _wo008_a_recorded_assert_exact(found, ("old-current", surface, text))
+
+
+@pytest.mark.parametrize("history", ("live-2-pointer", "live-2-section", "live-pointer",
+                                     "live-section", "prep-pointer", "closed-pointer"))
+@pytest.mark.parametrize("damage", ("missing", "corrupt"))
+def test_wo008_a_recorded_history_is_required(repo_root, tmp_path, monkeypatch, history, damage):
+    drift_check = _load_drift_check(repo_root, "wo008_a_recorded_history_values")
+    records = {
+        "live-2-pointer": ("WORKORDER.md", _WO008_A_LIVE_2_POINTER_RECORD),
+        "live-2-section": (_WO008_ISSUED_REL, _WO008_A_LIVE_2_SECTION),
+        "live-pointer": ("WORKORDER.md", _WO008_A_LIVE_POINTER_RECORD),
+        "live-section": (_WO008_ISSUED_REL, _WO008_A_LIVE_SECTION),
+        "prep-pointer": ("WORKORDER.md", drift_check._WO008_A_PREP_HISTORY_POINTER_RECORD),
+        "closed-pointer": ("WORKORDER.md", drift_check._WO008_CLOSED_HISTORY_RECORD),
+    }
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-history")
+    surface, old = records[history]
+    _edit(case, surface, old, "" if damage == "missing" else old[:-1] + "!")
+    found = _wo008_a_recorded_findings(repo_root, case, monkeypatch, "history")
+    assert _wo008_a_recorded_labeled(found, surface), repr(sorted(found))
+    _wo008_a_recorded_assert_exact(found, ("history", history, damage))
+
+
+@pytest.mark.parametrize("trace", ("stopped-gate", "b-corrections-gate", "session-b",
+                                   "session-c", "result-heading"))
+def test_wo008_a_recorded_later_phases_are_not_installed(repo_root, tmp_path, monkeypatch, trace):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-later")
+    surface = "WORKORDER.md"
+    if trace in ("session-b", "session-c"):
+        _edit(case, surface, "- Authorized session: NONE",
+              "- Authorized session: " + trace[-1].upper())
+    elif trace == "result-heading":
+        surface = _WO008_ISSUED_REL
+        _wo008_append(case, surface, "## Session A result record" + _NL + _NL + "Pending.")
+    else:
+        gate = ("WO-008 WORK STOPPED — A SEPARATE OWNER DECISION IS REQUIRED"
+                if trace == "stopped-gate" else
+                "WO-008 SESSION B PINNED CORRECTIONS ONLY — SESSION C LIVE START NOT AUTHORIZED")
+        _edit(case, surface, "- Current gate: " + _WO008_A_RECORDED_GATE, "- Current gate: " + gate)
+    found = _wo008_a_recorded_findings(repo_root, case, monkeypatch, "later")
+    assert {kind for kind, rel in found if rel == surface}, repr(sorted(found))
+    _wo008_a_recorded_assert_exact(found, ("later", trace))
+
+
+def test_wo008_a_recorded_session_a_restore_is_rejected(repo_root, tmp_path, monkeypatch):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-restore-a")
+    _edit(case, "WORKORDER.md", "- Authorized session: NONE", "- Authorized session: A")
+    found = _wo008_a_recorded_findings(repo_root, case, monkeypatch, "restore-a")
+    assert _wo008_a_recorded_labeled(found, "WORKORDER.md")
+    _wo008_a_recorded_assert_exact(found, ("restore-a",))
+
+
+def test_wo008_a_recorded_widening_damage_kills_dispatch_mutant(repo_root, tmp_path, monkeypatch):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-widening")
+    drift_check = _load_drift_check(repo_root, "wo008_a_recorded_widening_mutant")
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    _wo008_append(case, "WORKORDER.md", "Session A is authorized for a further attempt.")
+    want = {(_WO008_A_PREP_TYPES[name], "WORKORDER.md")
+            for name in ("implicit", "later", "reopening", "widening")}
+    assert {(f["type"], f["file"]) for f in drift_check.check_work_order_contract()} == want
+    phases = dict(drift_check._WO008_PHASES)
+    phases["A_RECORDED"] = dict(phases["A_RECORDED"], session="A")
+    monkeypatch.setattr(drift_check, "_WO008_PHASES", phases)
+    mutant = {(f["type"], f["file"]) for f in drift_check.check_work_order_contract()}
+    with pytest.raises(AssertionError):
+        assert mutant == want
+
+
+def test_wo008_a_recorded_completed_wo003_caller_still_scans(repo_root, tmp_path, monkeypatch):
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-wo003")
+    assert (case / _WO003_COMPLETED_REL).exists()
+    surface = "WORKORDER.md"
+    _wo008_append(case, surface, "Social publication is authorized.")
+    found = _wo008_a_recorded_findings(repo_root, case, monkeypatch, "wo003")
+    assert found == {("external-action boundary", surface), ("WO-003 external-action boundary", surface)}
+
+
+def test_wo008_a_recorded_drift_scan_has_no_count_phrase(repo_root, tmp_path, monkeypatch):
+    drift_check = _load_drift_check(repo_root, "wo008_a_recorded_count")
+    # Actual live registry identity, not a pinned number in permanent prose.
+    version, count, categories = drift_check.VERSION, drift_check.TOOL_COUNT, drift_check.CATEGORY_COUNT
+    for surface in ("WORKORDER.md", _WO008_ISSUED_REL):
+        assert drift_check.scan_file(surface, version, count, categories) == []
+    case = _make_wo008_a_recorded_case(repo_root, tmp_path, "a-recorded-count")
+    _wo008_append(case, _WO008_ISSUED_REL, "The client listed " + str(34) + " " + "tools.")
+    monkeypatch.setattr(drift_check, "ROOT", str(case))
+    found = drift_check.scan_file(_WO008_ISSUED_REL, version, count, categories)
+    assert any(f["type"] == "tool count" and f["file"] == _WO008_ISSUED_REL for f in found)
 
 
 # --- Release publication record: the live state --------------------------
