@@ -4401,6 +4401,9 @@ Built for the 2026 UEFN Python wave. First. Most complete. Spec-accurate.
 
 ## Patch Notes
 
+For the official MCP comparison and its evidence limits, see
+[docs/OFFICIAL_MCP_AND_TOOLBELT.md](docs/OFFICIAL_MCP_AND_TOOLBELT.md).
+
 Full history for every release lives in [docs/CHANGELOG.md](docs/CHANGELOG.md).
 The entries below stopped being maintained after v1.5.3 and are kept as-is;
 for anything between v1.6.0 and v2.3.9, read the changelog rather than this
@@ -4418,21 +4421,33 @@ replaces coverage and compatibility claims with what the records support.
 **⚠️ Not backward-compatible — read before upgrading if you script the
 bridge:**
 
-<table align="center"><tbody><tr><td align="center"><strong><code>execute_python</code> is gone.</strong> The bridge command and the MCP tool are
-removed; <code>ToolbeltClient.execute_python()</code> raises. Use a registered command,
-or UEFN's local Python console.</td></tr><tr><td align="center"><strong>Every request needs the session secret.</strong> <code>client.py</code> and <code>mcp_server.py</code>
+**`execute_python` is gone.** The bridge command and the MCP tool are
+removed; `ToolbeltClient.execute_python()` raises. Use a registered command,
+or UEFN's local Python console.
+
+**Every request needs the session secret.** `client.py` and `mcp_server.py`
 read the rotating same-user handoff automatically; raw HTTP, browser
-origins, and remote hosts are rejected. <code>mcp_start</code>, <code>mcp_stop</code>,
-<code>mcp_restart</code>, and the integration suite are local-only.</td></tr><tr><td align="center"><strong>Client exceptions changed.</strong> A bridge <code>504</code> or a wrapped timeout is
-<code>CommandTimeout</code> / <code>TimeoutError</code>; a reply that does not prove whether the
-command ran is <code>OutcomeUnknown</code>. Both new classes subclass <code>ToolbeltError</code>,
-so <code>except ToolbeltError</code> around bridge calls still catches them, but
-<code>except RuntimeError</code> no longer catches an <code>mcp_server.py</code> timeout.</td></tr><tr><td align="center"><strong>No proxies, no redirects, no retries</strong> for bridge requests.</td></tr><tr><td align="center"><strong><code>ToolbeltClient</code> accepts only <code>127.0.0.1</code>.</strong> Any other host raises
-<code>ValueError</code> when the client is constructed, which is not a <code>ToolbeltError</code>.
-Its default port, like <code>connect()</code>'s, now comes from the session handoff
-(it was <code>8765</code>), and <code>.mcp.json.template</code> no longer pins <code>UEFN_MCP_PORT</code>.</td></tr><tr><td align="center"><strong><code>list_untested.py</code> exits with status 3.</strong> Run
-<code>py -3 scripts/coverage_report.py</code> from a repository checkout instead.</td></tr><tr><td align="center"><strong>Shared Claude Code settings are narrower:</strong> no
-<code>enableAllProjectMcpServers</code>, and no pre-approved <code>python -c</code> or <code>find</code>.</td></tr></tbody></table>
+origins, and remote hosts are rejected. `mcp_start`, `mcp_stop`,
+`mcp_restart`, and the integration suite are local-only.
+
+**Client exceptions changed.** A bridge `504` or a wrapped timeout is
+`CommandTimeout` / `TimeoutError`; a reply that does not prove whether the
+command ran is `OutcomeUnknown`. Both new classes subclass `ToolbeltError`,
+so `except ToolbeltError` around bridge calls still catches them, but
+`except RuntimeError` no longer catches an `mcp_server.py` timeout.
+
+**No proxies, no redirects, no retries** for bridge requests.
+
+**`ToolbeltClient` accepts only `127.0.0.1`.** Any other host raises
+`ValueError` when the client is constructed, which is not a `ToolbeltError`.
+Its default port, like `connect()`'s, now comes from the session handoff
+(it was `8765`), and `.mcp.json.template` no longer pins `UEFN_MCP_PORT`.
+
+**`list_untested.py` exits with status 3.** Run
+`py -3 scripts/coverage_report.py` from a repository checkout instead.
+
+**Shared Claude Code settings are narrower:** no
+`enableAllProjectMcpServers`, and no pre-approved `python -c` or `find`.
 
 
 **Security:**
