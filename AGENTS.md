@@ -217,3 +217,7 @@ presentation instructions do not apply to this project.
 - [scripts/AGENTS.md](scripts/AGENTS.md) — Consistency checks, registry-derived coverage, API manifests, editor-session staging, and agent hooks.
 - [tests/AGENTS.md](tests/AGENTS.md) — Off-editor contract/regression tests and the separate live smoke-test entry point.
 - [tools/AGENTS.md](tools/AGENTS.md) — Auxiliary inspection scripts outside the registered Toolbelt tool package.
+
+## README presentation
+
+The root owns `README.md`, original decorative artwork in `readme-banner.png`, and its brief in `readme-banner-prompt.txt`. Keep the README centered with compact Shields.io `label-message-color` logo badges, a linked section index, and verified project-file shortcuts. Center tables and code containers while preserving exact code spacing, source attribution, project status, and evidence limits. Public repository metrics may use live Shields.io or Badgen badges. Decorative art and badges do not establish implementation or acceptance.
