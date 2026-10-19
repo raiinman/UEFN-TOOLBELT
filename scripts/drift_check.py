@@ -5487,15 +5487,19 @@ _WO008_A_LIVE_PREREQUISITES_HEAD = (
     "enforcement transitions and explicit owner decisions. No later phase is\n"
     "installed here."
 )
-_WO008_A_RECORDED_PREREQUISITES = _replaced_once(_WO008_A_LIVE_PREREQUISITES, ((
-    _WO008_A_LIVE_PREREQUISITES_HEAD,
+# The source-exact head that A_RECORDED put in place of the A_LIVE head; the
+# admission paragraph before it and the frozen-train tail after it stay.
+_WO008_A_RECORDED_PREREQUISITES_HEAD = (
     "The separately adopted issuance/session-enforcement plan r2 supported the\n"
     "closed issuance and Session A offline preparation. Separate transitions\n"
     "installed the pinned Session A live baseline and its replacement attempt,\n"
     "and a separate transition records that attempt's result as diagnostic only.\n"
     "Session A acceptance, product corrections and live acceptance still need\n"
     "separately reviewed enforcement transitions and explicit owner decisions. No\n"
-    "later phase is installed here.",
+    "later phase is installed here."
+)
+_WO008_A_RECORDED_PREREQUISITES = _replaced_once(_WO008_A_LIVE_PREREQUISITES, ((
+    _WO008_A_LIVE_PREREQUISITES_HEAD, _WO008_A_RECORDED_PREREQUISITES_HEAD,
 ),))
 _WO008_A_RECORDED_HEADING = "## Session A diagnostic result record"
 _WO008_A_RECORDED_RECORD = (
@@ -5594,7 +5598,182 @@ _WO008_A_RECORDED_TRACES = (
     "WO-008 Session A diagnostic result record:",
     _WO008_A_RECORDED_HEADING,
 )
-# Five literal entries, not a policy engine. Each phase names its own current
+# WO-008 Session B oversized-reply amendment (OR_CORRECTION): owner amendment
+# OR-1 adds three literal phases beside enforcement plan r2's table, and this
+# is the first. Session B is authorized for one bounded correction only, and
+# Session A acceptance is not met. Every earlier record stays exactly as
+# committed and required; one record is added on each surface, with four
+# pointer bullets. OR_PROOF and OR_RECORDED are not installed here.
+_WO008_OR_CORRECTION_BASE = "f551b7fa161464ecca0aa0a0ea959d873430fc4e"
+_WO008_OR_CORRECTION_WORKFLOW = "38521809934"
+_WO008_OR_CORRECTION_JOB = "115712995226"
+_WO008_OR_AMENDMENT_SHA256 = (
+    "7e2282fc3d8578c32a9d7469708306cd621dff699ec15bfba1ab0f125e4b2538"
+)
+_WO008_OR_PRODUCT_PLAN_SHA256SUMS = (
+    "fe528f8e9a872defd4beab4441495ff4f43282c3a1f66a94c2e10d2a527eeca9"
+)
+_WO008_OR_CHECK_SHA256SUMS = (
+    "aac9238481763371008575780ce867e1daa3fcb3a8f7d838534438d52f8c2c88"
+)
+_WO008_OR_ADOPTION_INSTRUCTION_SHA256 = (
+    "ab0f1b3854203fad6ea8845f7c29515fbf83475042b2605e605402c352baea9c"
+)
+_WO008_OR_CORRECTION_PLAN_SHA256SUMS = "00bda882993a9f32c94d468015d5e745ffb7b646c624707f81a22b49fafe9e6f"
+_WO008_OR_CORRECTION_INSTRUCTION_SHA256 = "198897bb226ca5ed290dfd073e41ca2bc43892d667a8089216553420975d7b11"
+# Owner amendment OR-1's phase table, OR_CORRECTION row, exactly.
+_WO008_OR_CORRECTION_GATE = (
+    "WO-008 SESSION B OVERSIZED-REPLY AMENDMENT ONLY — SESSION A NOT ACCEPTED; "
+    "LIVE PROOF NOT AUTHORIZED"
+)
+_ISSUED_SESSION_B_OR_CORRECTION_AUTH = (
+    "AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR THE OVERSIZED-REPLY "
+    "AMENDMENT ONLY; SESSION A NOT ACCEPTED"
+)
+_WO008_OR_CORRECTION_POINTER_SEQUENCE = (
+    "- Current issued Work Order: WO-008",
+    "- Authorized session: B",
+    "- Base commit: `" + _WO008_OR_CORRECTION_BASE + "`",
+    "- Current gate: " + _WO008_OR_CORRECTION_GATE,
+) + _WO008_A_RECORDED_POINTER_SEQUENCE[4:] + (
+    "- WO-008 Session A diagnostic result commit: `" + _WO008_OR_CORRECTION_BASE + "`",
+    "- WO-008 Session A diagnostic result CI workflow: `" + _WO008_OR_CORRECTION_WORKFLOW + "`",
+    "- WO-008 Session A diagnostic result CI job: `" + _WO008_OR_CORRECTION_JOB
+    + "` — Lint, types, tests",
+    "- WO-008 oversized-reply amendment instruction SHA-256: `"
+    + _WO008_OR_CORRECTION_INSTRUCTION_SHA256 + "`",
+)
+_WO008_OR_CORRECTION_POINTER_RECORD = (
+    "WO-008 Session B oversized-reply amendment record: the Session A diagnostic\n"
+    "result transition was committed as `" + _WO008_OR_CORRECTION_BASE + "`;\n"
+    "[CI workflow `" + _WO008_OR_CORRECTION_WORKFLOW + "`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/" + _WO008_OR_CORRECTION_WORKFLOW + ")\n"
+    "completed successfully on that commit, including required job\n"
+    "[`" + _WO008_OR_CORRECTION_JOB + "` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/" + _WO008_OR_CORRECTION_WORKFLOW + "/job/" + _WO008_OR_CORRECTION_JOB + ").\n"
+    "That CI tested the diagnostic result enforcement, not a live result, an MCP\n"
+    "host or a live build. The Session A result stays recorded as diagnostic only,\n"
+    "and Session A acceptance is not met; this record does not treat it as met.\n"
+    "The owner adopted owner amendment OR-1, identified by SHA-256\n"
+    "`" + _WO008_OR_AMENDMENT_SHA256 + "`, with the\n"
+    "oversized-reply correction plan identified by SHA256SUMS\n"
+    "`" + _WO008_OR_PRODUCT_PLAN_SHA256SUMS + "` and its\n"
+    "accepting check identified by SHA256SUMS\n"
+    "`" + _WO008_OR_CHECK_SHA256SUMS + "`, by an\n"
+    "instruction identified by SHA-256\n"
+    "`" + _WO008_OR_ADOPTION_INSTRUCTION_SHA256 + "`. As the\n"
+    "bounded amendment the mandate requires for an unexpected integration defect,\n"
+    "Session B is limited to one correction: bounded, paged replies for the MCP\n"
+    "tools `list_toolbelt_tools` and `get_all_actors`, within `mcp_server.py`,\n"
+    "`tests/test_mcp_security.py`, `.claude/mcp_reference.md` and a new unreleased\n"
+    "entry in `docs/CHANGELOG.md`, left uncommitted for independent review. This\n"
+    "transition's independent review, commit, push and successful CI are\n"
+    "preconditions only and are not permission for the correction's\n"
+    "implementation, which needs a separate owner implementation instruction. The\n"
+    "accepted plan for this transition is identified by SHA256SUMS\n"
+    "`" + _WO008_OR_CORRECTION_PLAN_SHA256SUMS + "`, and its instruction by SHA-256\n"
+    "`" + _WO008_OR_CORRECTION_INSTRUCTION_SHA256 + "`. This record is the separate\n"
+    "reviewed transition that the Session A diagnostic result record requires for\n"
+    "Session B, for this one correction only; it governs over that record's\n"
+    "statement that no session is authorized, and over nothing else. Every other\n"
+    "Session B item still requires accepted Session A evidence. The oversized-reply\n"
+    "live proof, Session C, a further Session A attempt, other product corrections,\n"
+    "installations, configuration changes and deployment each need a separate\n"
+    "reviewed transition recorded here; recovery and cleanup need a separately\n"
+    "bounded owner instruction; and commits and pushes remain separate owner\n"
+    "decisions. This record grants no other authority."
+)
+_WO008_OR_CORRECTION_OPENING = (
+    "This is an issued following-train Work Order, outside the frozen\n"
+    "WO-001 through WO-007 train. The root pointer identifies WO-008 with\n"
+    "session B for the oversized-reply amendment only. The Session A result stays\n"
+    "recorded as diagnostic only, Session A acceptance is not met, and Session C\n"
+    "remains unauthorized."
+)
+# The replacement for the source-exact A_RECORDED head only; the admission
+# paragraph and the frozen-train tail sentence stay.
+_WO008_OR_CORRECTION_PREREQUISITES_HEAD = (
+    "The separately adopted issuance/session-enforcement plan r2 supported the\n"
+    "closed issuance and Session A offline preparation. Separate transitions\n"
+    "installed the pinned Session A live baseline and its replacement attempt and\n"
+    "recorded that attempt's result as diagnostic only. Owner amendment OR-1 adds\n"
+    "three literal oversized-reply phases beside plan r2's phase table, and a\n"
+    "separate transition installs the first of them, OR_CORRECTION. Session A\n"
+    "acceptance, other product corrections, the oversized-reply live proof and live\n"
+    "acceptance still need separately reviewed enforcement transitions and explicit\n"
+    "owner decisions. No later phase is installed here."
+)
+_WO008_OR_CORRECTION_PREREQUISITES = _replaced_once(_WO008_A_RECORDED_PREREQUISITES, ((
+    _WO008_A_RECORDED_PREREQUISITES_HEAD, _WO008_OR_CORRECTION_PREREQUISITES_HEAD,
+),))
+_WO008_OR_CORRECTION_HEADING = "## Session B oversized-reply amendment record"
+_WO008_OR_CORRECTION_RECORD = (
+    "Session A diagnostic result commit: `" + _WO008_OR_CORRECTION_BASE + "`\n"
+    "Session A diagnostic result CI workflow: `" + _WO008_OR_CORRECTION_WORKFLOW + "`\n"
+    "Session A diagnostic result CI job: `" + _WO008_OR_CORRECTION_JOB + "` — Lint, types, tests\n"
+    "Owner amendment OR-1 SHA-256: `" + _WO008_OR_AMENDMENT_SHA256 + "`\n"
+    "Oversized-reply correction plan SHA256SUMS: `" + _WO008_OR_PRODUCT_PLAN_SHA256SUMS + "`\n"
+    "Accepting correction plan check SHA256SUMS: `" + _WO008_OR_CHECK_SHA256SUMS + "`\n"
+    "Owner adoption instruction SHA-256: `" + _WO008_OR_ADOPTION_INSTRUCTION_SHA256 + "`\n"
+    "Accepted amendment transition plan SHA256SUMS: `" + _WO008_OR_CORRECTION_PLAN_SHA256SUMS + "`\n"
+    "Owner amendment transition instruction SHA-256: `" + _WO008_OR_CORRECTION_INSTRUCTION_SHA256 + "`\n"
+    "\n"
+    "The Session A replacement attempt is consumed and recorded with a limited\n"
+    "diagnostic result only; Session A acceptance is not met, and this record does\n"
+    "not treat it as met. As the bounded amendment this mandate requires for an\n"
+    "unexpected integration defect, the owner allowed one correction on the basis\n"
+    "of the accepted diagnostic finding alone: bounded, paged replies for the MCP\n"
+    "tools `list_toolbelt_tools` and `get_all_actors`, under the reviewed\n"
+    "correction plan identified above. Its ceiling is `mcp_server.py`,\n"
+    "`tests/test_mcp_security.py`, `.claude/mcp_reference.md` and a new unreleased\n"
+    "entry in `docs/CHANGELOG.md`. Every other Session B item still requires\n"
+    "accepted Session A evidence. The implementation authority is single-pass. It\n"
+    "covers the implementation and any fixes the independent review requires,\n"
+    "within those four paths and under a bounded owner instruction with a delta\n"
+    "review, and it ends at the reviewed snapshot that the live-proof record pins.\n"
+    "The correction stays uncommitted for independent review and its separately\n"
+    "authorized live proof. It is not Session C and records no Session A, Session\n"
+    "C or compatibility acceptance. Commits, pushes and publication remain separate\n"
+    "owner decisions, and this section grants no further authority.\n"
+    "\n"
+    "This section is the separate reviewed transition that the diagnostic result\n"
+    "section requires for Session B, for this one correction only. It governs over\n"
+    "that section's statement that no session is authorized, and over nothing else;\n"
+    "the Session A diagnostic result stays as recorded. This transition's\n"
+    "independent review, commit, push and successful CI are preconditions only and\n"
+    "are not permission for the correction's implementation, which needs a separate\n"
+    "owner implementation instruction. The oversized-reply live proof and\n"
+    "its later record each need their own reviewed transition recorded in the root\n"
+    "pointer, and neither is installed here.\n"
+    "\n"
+    "The owner accepted a narrow offline-verification exemption for this\n"
+    "transition's five governance paths only. This transition records authority; it\n"
+    "is not live verification."
+)
+_WO008_OR_CORRECTION_NEXT_GATE = (
+    "NEXT GATE: a separate owner implementation instruction for the oversized-reply\n"
+    "correction only, under which Session B implements it uncommitted for\n"
+    "independent review. The oversized-reply live proof, Session C, Session A\n"
+    "acceptance, other product corrections, recovery, cleanup, exact commits and\n"
+    "pushes remain separate decisions. By itself, this mandate grants no\n"
+    "implementation, review, live, commit or push authority."
+)
+_WO008_OR_CORRECTION_ISSUED_SEQUENCE = tuple(
+    _ISSUED_SESSION_B_OR_CORRECTION_AUTH if line == _ISSUED_SESSION_A_RECORDED_AUTH else line
+    for line in _WO008_A_RECORDED_ISSUED_SEQUENCE)
+_WO008_OR_CORRECTION_SECTION_HEADINGS = tuple(
+    heading for old in _WO008_A_RECORDED_SECTION_HEADINGS
+    for heading in ((old, _WO008_OR_CORRECTION_HEADING)
+                    if old == _WO008_A_RECORDED_HEADING else (old,)))
+# None of these occurs in any committed state through the A_RECORDED commit.
+# OR states keep the A_RECORDED records as history, so these are selected first.
+_WO008_OR_CORRECTION_TRACES = (
+    _WO008_OR_CORRECTION_GATE,
+    _ISSUED_SESSION_B_OR_CORRECTION_AUTH,
+    "- WO-008 Session A diagnostic result commit:",
+    "- WO-008 oversized-reply amendment instruction SHA-256:",
+    "WO-008 Session B oversized-reply amendment record:",
+    _WO008_OR_CORRECTION_HEADING,
+)
+# Six literal entries, not a policy engine. Each phase names its own current
 # texts and the prior-state texts that must not survive the change.
 _WO008_PHASES: dict[str, dict] = {
     "ISSUED_CLOSED": {
@@ -5734,19 +5913,70 @@ _WO008_PHASES: dict[str, dict] = {
         "record": "WO-008 Session A diagnostic result record",
         "session": "",
     },
+    "OR_CORRECTION": {
+        "pointer_sequence": _WO008_OR_CORRECTION_POINTER_SEQUENCE,
+        "issued_sequence": _WO008_OR_CORRECTION_ISSUED_SEQUENCE,
+        "marker": _ISSUED_SESSION_B_OR_CORRECTION_AUTH,
+        "gate": _WO008_OR_CORRECTION_GATE,
+        "pointer_records": (_WO008_CLOSED_HISTORY_RECORD,
+                            _WO008_A_PREP_HISTORY_POINTER_RECORD,
+                            _WO008_A_LIVE_POINTER_RECORD,
+                            _WO008_A_LIVE_2_POINTER_RECORD,
+                            _WO008_A_RECORDED_POINTER_RECORD,
+                            _WO008_OR_CORRECTION_POINTER_RECORD),
+        "opening": _WO008_OR_CORRECTION_OPENING,
+        "prerequisites": _WO008_OR_CORRECTION_PREREQUISITES,
+        "sections": (("## Issuance basis", _WO008_ISSUANCE_RECORD),
+                     (_WO008_A_PREP_HEADING, _WO008_A_PREP_HISTORY_RECORD),
+                     (_WO008_A_LIVE_HEADING, _WO008_A_LIVE_RECORD),
+                     (_WO008_A_LIVE_2_HEADING, _WO008_A_LIVE_2_RECORD),
+                     (_WO008_A_RECORDED_HEADING, _WO008_A_RECORDED_RECORD),
+                     (_WO008_OR_CORRECTION_HEADING, _WO008_OR_CORRECTION_RECORD)),
+        "next_gate": _WO008_OR_CORRECTION_NEXT_GATE,
+        "headings": _WO008_OR_CORRECTION_SECTION_HEADINGS,
+        # Cumulative (owner amendment OR-1, plan r5 section 9.3): everything
+        # A_RECORDED forbids, on the same surface and in the same order, then
+        # A_RECORDED's own replaced gate, marker, opening, source-exact
+        # prerequisites head and NEXT GATE.
+        "forbidden_pointer": (_WO008_POINTER_RECORD, _WO008_GATE,
+                              _WO008_A_PREP_POINTER_RECORD, _WO008_A_PREP_GATE,
+                              _WO008_A_LIVE_GATE,
+                              _WO008_A_RECORDED_GATE),
+        "forbidden_document": (_WO008_OPENING, _WO008_NEXT_GATE,
+                               _WO008_CLOSED_PREREQUISITES_HEAD,
+                               _ISSUED_NO_SESSION_AUTH,
+                               _WO008_A_PREP_OPENING, _WO008_A_PREP_NEXT_GATE,
+                               _WO008_A_PREP_PREREQUISITES_HEAD,
+                               _ISSUED_SESSION_A_PREP_AUTH,
+                               _WO008_A_PREP_RECORD,
+                               _WO008_A_LIVE_OPENING, _WO008_A_LIVE_NEXT_GATE,
+                               _WO008_A_LIVE_PREREQUISITES_HEAD,
+                               _ISSUED_SESSION_A_LIVE_AUTH,
+                               _WO008_A_RECORDED_OPENING, _WO008_A_RECORDED_NEXT_GATE,
+                               _WO008_A_RECORDED_PREREQUISITES_HEAD,
+                               _ISSUED_SESSION_A_RECORDED_AUTH),
+        "label": "WO-008 Session B oversized-reply amendment",
+        "record": "WO-008 Session B oversized-reply amendment record",
+        # Session B is the current session: the other-session scan exempts only
+        # Session B statements, and the own-session widening scan then rejects
+        # any Session B grant beyond these pinned records.
+        "session": "B",
+    },
 }
 
 
 def _wo008_phase(pointer: str, text: str) -> str:
     """Any trace on either surface selects that phase's full shape.
 
-    A_RECORDED is checked first, then A_LIVE_2 and A_LIVE, because these states
+    OR_CORRECTION is checked first, then A_RECORDED, A_LIVE_2 and A_LIVE, because these states
     legitimately keeps the earlier states' traces in its history. A partial
     install is then validated against the selected shape and fails on what is
     missing; it can never fall back to an earlier clean shape. The session line
     counts only while the pointer names WO-008: an earlier order's Session A,
     such as WO-007's in its historical states, is not a trace.
     """
+    if any(trace in pointer or trace in text for trace in _WO008_OR_CORRECTION_TRACES):
+        return "OR_CORRECTION"
     if any(trace in pointer or trace in text for trace in _WO008_A_RECORDED_TRACES):
         return "A_RECORDED"
     if any(trace in pointer or trace in text for trace in _WO008_A_LIVE_2_TRACES):
@@ -5870,7 +6100,7 @@ def _wo008_issuance_findings(
 def _wo008_phase_findings(
     pointer: str, text: str, rel: str, surface: str, phase: str | None = None,
 ) -> tuple[list[tuple[str, str, str, str]], str]:
-    """ISSUED_CLOSED, A_PREP, A_LIVE, A_LIVE_2 or A_RECORDED only; later phases need separate
+    """ISSUED_CLOSED, A_PREP, A_LIVE, A_LIVE_2, A_RECORDED or OR_CORRECTION only; later phases need separate
     transitions."""
     spec = _WO008_PHASES[phase or _wo008_phase(pointer, text)]
     source = pointer if surface == "pointer" else text
@@ -6852,7 +7082,7 @@ def check_work_order_contract() -> list[dict]:
         current == _WO008_ID or bool(wo008_text)
         or "WO-008 closed issuance record:" in pointer
         or "- WO-008 admission basis commit:" in pointer
-        or wo008_phase in ("A_PREP", "A_LIVE", "A_LIVE_2", "A_RECORDED"))
+        or wo008_phase in ("A_PREP", "A_LIVE", "A_LIVE_2", "A_RECORDED", "OR_CORRECTION"))
     wo008_pointer_residual = pointer
     wo008_history_findings = []
     if wo008_trace:
@@ -6880,6 +7110,13 @@ def check_work_order_contract() -> list[dict]:
             add("WORKORDER.md", "WO-008 Session A diagnostic result state",
                 "the Session A diagnostic result records were removed",
                 "WO-008 Session A diagnostic result records")
+        # One-way: once the oversized-reply amendment is installed, a
+        # coherent rollback to the Session A diagnostic result trips
+        # exactly this lock.
+        if wo008_phase == "A_RECORDED":
+            add("WORKORDER.md", "WO-008 Session B oversized-reply amendment state",
+                "the oversized-reply amendment records were removed",
+                "WO-008 oversized-reply amendment records")
         # Old NONE fields retire, not their canonical history or terminal locks.
         wo008_history_findings = _wo007_completed_findings(
             pointer, wo007_completed_text,
@@ -7333,8 +7570,9 @@ def check_work_order_contract() -> list[dict]:
                         "issuance record missing or malformed",
                         "canonical issued WO-008 with validated closed records")
                 # In A_PREP, A_LIVE and A_LIVE_2 the other-session scan exempts only
-                # Session A; in A_RECORDED it exempts no session. Any Session A
-                # grant beyond the records is widening below.
+                # Session A; in A_RECORDED it exempts no session; in OR_CORRECTION it
+                # exempts only Session B, whose grants beyond the records are widening.
+                # Any Session A grant beyond the records is widening below.
                 for where, residual in (
                     ("WORKORDER.md", wo008_pointer_residual),
                     (rel, body_residual),
@@ -7350,6 +7588,13 @@ def check_work_order_contract() -> list[dict]:
                     if _current_session_widening(residual, "A", ()):
                         add(where, "session scope widening",
                             "positive Session A permission", "no session authorized")
+                    # The current session of a phase other than A also
+                    # gets its own widening scan.
+                    if (spec["session"] not in ("", "A")
+                            and _current_session_widening(residual, spec["session"], ())):
+                        add(where, "session scope widening",
+                            "positive Session " + spec["session"] + " permission",
+                            "no grant beyond the pinned records")
                 # Release/external scans always see the original surfaces.
                 if _has_release_authorization(pointer):
                     add("WORKORDER.md", "release authorization", "positive permission",

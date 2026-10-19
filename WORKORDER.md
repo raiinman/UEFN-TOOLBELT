@@ -5,9 +5,9 @@ state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
 - Current issued Work Order: WO-008
-- Authorized session: NONE
-- Base commit: `ca86bc0f641591e830fd882ea05607d62ca11c6b`
-- Current gate: WO-008 SESSION A RECORDED — SESSION B NOT AUTHORIZED
+- Authorized session: B
+- Base commit: `f551b7fa161464ecca0aa0a0ea959d873430fc4e`
+- Current gate: WO-008 SESSION B OVERSIZED-REPLY AMENDMENT ONLY — SESSION A NOT ACCEPTED; LIVE PROOF NOT AUTHORIZED
 - WO-008 admission basis commit: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`
 - WO-008 admission CI workflow: `37246398757`
 - WO-008 admission CI job: `111565059168` — Lint, types, tests
@@ -28,6 +28,10 @@ never authorizes implementation.
 - WO-008 Session A replacement attempt CI workflow: `38164234607`
 - WO-008 Session A replacement attempt CI job: `114543334362` — Lint, types, tests
 - WO-008 Session A diagnostic result instruction SHA-256: `dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14`
+- WO-008 Session A diagnostic result commit: `f551b7fa161464ecca0aa0a0ea959d873430fc4e`
+- WO-008 Session A diagnostic result CI workflow: `38521809934`
+- WO-008 Session A diagnostic result CI job: `115712995226` — Lint, types, tests
+- WO-008 oversized-reply amendment instruction SHA-256: `198897bb226ca5ed290dfd073e41ca2bc43892d667a8089216553420975d7b11`
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
@@ -624,3 +628,40 @@ changes each need a separate reviewed transition recorded here; recovery and
 cleanup of retained client or project state need a separately bounded owner
 instruction; and commits and pushes remain separate owner decisions. This
 record grants no authority.
+
+WO-008 Session B oversized-reply amendment record: the Session A diagnostic
+result transition was committed as `f551b7fa161464ecca0aa0a0ea959d873430fc4e`;
+[CI workflow `38521809934`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/38521809934)
+completed successfully on that commit, including required job
+[`115712995226` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/38521809934/job/115712995226).
+That CI tested the diagnostic result enforcement, not a live result, an MCP
+host or a live build. The Session A result stays recorded as diagnostic only,
+and Session A acceptance is not met; this record does not treat it as met.
+The owner adopted owner amendment OR-1, identified by SHA-256
+`7e2282fc3d8578c32a9d7469708306cd621dff699ec15bfba1ab0f125e4b2538`, with the
+oversized-reply correction plan identified by SHA256SUMS
+`fe528f8e9a872defd4beab4441495ff4f43282c3a1f66a94c2e10d2a527eeca9` and its
+accepting check identified by SHA256SUMS
+`aac9238481763371008575780ce867e1daa3fcb3a8f7d838534438d52f8c2c88`, by an
+instruction identified by SHA-256
+`ab0f1b3854203fad6ea8845f7c29515fbf83475042b2605e605402c352baea9c`. As the
+bounded amendment the mandate requires for an unexpected integration defect,
+Session B is limited to one correction: bounded, paged replies for the MCP
+tools `list_toolbelt_tools` and `get_all_actors`, within `mcp_server.py`,
+`tests/test_mcp_security.py`, `.claude/mcp_reference.md` and a new unreleased
+entry in `docs/CHANGELOG.md`, left uncommitted for independent review. This
+transition's independent review, commit, push and successful CI are
+preconditions only and are not permission for the correction's
+implementation, which needs a separate owner implementation instruction. The
+accepted plan for this transition is identified by SHA256SUMS
+`00bda882993a9f32c94d468015d5e745ffb7b646c624707f81a22b49fafe9e6f`, and its instruction by SHA-256
+`198897bb226ca5ed290dfd073e41ca2bc43892d667a8089216553420975d7b11`. This record is the separate
+reviewed transition that the Session A diagnostic result record requires for
+Session B, for this one correction only; it governs over that record's
+statement that no session is authorized, and over nothing else. Every other
+Session B item still requires accepted Session A evidence. The oversized-reply
+live proof, Session C, a further Session A attempt, other product corrections,
+installations, configuration changes and deployment each need a separate
+reviewed transition recorded here; recovery and cleanup need a separately
+bounded owner instruction; and commits and pushes remain separate owner
+decisions. This record grants no other authority.

@@ -1,7 +1,7 @@
 # WO-008 User reliability and MCP client acceptance
 
 STATUS: ISSUED
-AUTHORIZATION: ISSUED — SESSION A RECORDED; NO SESSION AUTHORIZED
+AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR THE OVERSIZED-REPLY AMENDMENT ONLY; SESSION A NOT ACCEPTED
 Owner: Ocean Bennett
 Priority: user-facing reliability and missing integration evidence
 Draft date: 2026-10-04
@@ -10,9 +10,9 @@ Planning baseline: `9879d39fbdb58083a0f7229a9c9c90c7d6fb375f`
 
 This is an issued following-train Work Order, outside the frozen
 WO-001 through WO-007 train. The root pointer identifies WO-008 with
-session NONE. The Session A result is recorded as diagnostic only: the
-replacement attempt is consumed, and Session B and Session C remain
-unauthorized.
+session B for the oversized-reply amendment only. The Session A result stays
+recorded as diagnostic only, Session A acceptance is not met, and Session C
+remains unauthorized.
 
 ## Purpose and evidence
 
@@ -50,11 +50,13 @@ to the frozen WO-001 through WO-007 train.
 
 The separately adopted issuance/session-enforcement plan r2 supported the
 closed issuance and Session A offline preparation. Separate transitions
-installed the pinned Session A live baseline and its replacement attempt,
-and a separate transition records that attempt's result as diagnostic only.
-Session A acceptance, product corrections and live acceptance still need
-separately reviewed enforcement transitions and explicit owner decisions. No
-later phase is installed here.
+installed the pinned Session A live baseline and its replacement attempt and
+recorded that attempt's result as diagnostic only. Owner amendment OR-1 adds
+three literal oversized-reply phases beside plan r2's phase table, and a
+separate transition installs the first of them, OR_CORRECTION. Session A
+acceptance, other product corrections, the oversized-reply live proof and live
+acceptance still need separately reviewed enforcement transitions and explicit
+owner decisions. No later phase is installed here.
 Frozen-train missing, duplicate and misplaced-order protections, publication
 history and earlier terminal records remain in force. Unknown issued orders
 remain invalid; there is no blanket scanner exemption.
@@ -258,6 +260,50 @@ The owner accepted a narrow offline-verification exemption for this
 transition's five governance paths only. This transition records evidence; it
 is not live verification.
 
+## Session B oversized-reply amendment record
+
+Session A diagnostic result commit: `f551b7fa161464ecca0aa0a0ea959d873430fc4e`
+Session A diagnostic result CI workflow: `38521809934`
+Session A diagnostic result CI job: `115712995226` — Lint, types, tests
+Owner amendment OR-1 SHA-256: `7e2282fc3d8578c32a9d7469708306cd621dff699ec15bfba1ab0f125e4b2538`
+Oversized-reply correction plan SHA256SUMS: `fe528f8e9a872defd4beab4441495ff4f43282c3a1f66a94c2e10d2a527eeca9`
+Accepting correction plan check SHA256SUMS: `aac9238481763371008575780ce867e1daa3fcb3a8f7d838534438d52f8c2c88`
+Owner adoption instruction SHA-256: `ab0f1b3854203fad6ea8845f7c29515fbf83475042b2605e605402c352baea9c`
+Accepted amendment transition plan SHA256SUMS: `00bda882993a9f32c94d468015d5e745ffb7b646c624707f81a22b49fafe9e6f`
+Owner amendment transition instruction SHA-256: `198897bb226ca5ed290dfd073e41ca2bc43892d667a8089216553420975d7b11`
+
+The Session A replacement attempt is consumed and recorded with a limited
+diagnostic result only; Session A acceptance is not met, and this record does
+not treat it as met. As the bounded amendment this mandate requires for an
+unexpected integration defect, the owner allowed one correction on the basis
+of the accepted diagnostic finding alone: bounded, paged replies for the MCP
+tools `list_toolbelt_tools` and `get_all_actors`, under the reviewed
+correction plan identified above. Its ceiling is `mcp_server.py`,
+`tests/test_mcp_security.py`, `.claude/mcp_reference.md` and a new unreleased
+entry in `docs/CHANGELOG.md`. Every other Session B item still requires
+accepted Session A evidence. The implementation authority is single-pass. It
+covers the implementation and any fixes the independent review requires,
+within those four paths and under a bounded owner instruction with a delta
+review, and it ends at the reviewed snapshot that the live-proof record pins.
+The correction stays uncommitted for independent review and its separately
+authorized live proof. It is not Session C and records no Session A, Session
+C or compatibility acceptance. Commits, pushes and publication remain separate
+owner decisions, and this section grants no further authority.
+
+This section is the separate reviewed transition that the diagnostic result
+section requires for Session B, for this one correction only. It governs over
+that section's statement that no session is authorized, and over nothing else;
+the Session A diagnostic result stays as recorded. This transition's
+independent review, commit, push and successful CI are preconditions only and
+are not permission for the correction's implementation, which needs a separate
+owner implementation instruction. The oversized-reply live proof and
+its later record each need their own reviewed transition recorded in the root
+pointer, and neither is installed here.
+
+The owner accepted a narrow offline-verification exemption for this
+transition's five governance paths only. This transition records authority; it
+is not live verification.
+
 ## Session A Real client baseline
 
 The owner selected **Claude Code** as the first MCP client. This selects a test
@@ -427,7 +473,9 @@ the client/project/fixture/target choices, live start, any unexpected repair,
 recovery, exact commits, pushes, completion, and any later release decision.
 Review acceptance never substitutes for these decisions.
 
-NEXT GATE: separate owner decision on WO-008's direction. No session is
-authorized. Session B, Session C, product corrections, recovery, cleanup,
-exact commits and pushes remain separate decisions. This mandate grants no
-review, implementation, commit or push authority.
+NEXT GATE: a separate owner implementation instruction for the oversized-reply
+correction only, under which Session B implements it uncommitted for
+independent review. The oversized-reply live proof, Session C, Session A
+acceptance, other product corrections, recovery, cleanup, exact commits and
+pushes remain separate decisions. By itself, this mandate grants no
+implementation, review, live, commit or push authority.
