@@ -5,9 +5,9 @@ state. Detailed mandates live under `docs/work-orders/`; their presence alone
 never authorizes implementation.
 
 - Current issued Work Order: WO-008
-- Authorized session: A
-- Base commit: `0d1de9e6a1f49ea422cd7911d1c40d67787ddde4`
-- Current gate: WO-008 SESSION A OFFLINE PREPARATION ONLY — LIVE START NOT AUTHORIZED
+- Authorized session: B
+- Base commit: `f551b7fa161464ecca0aa0a0ea959d873430fc4e`
+- Current gate: WO-008 SESSION B OVERSIZED-REPLY AMENDMENT ONLY — SESSION A NOT ACCEPTED; LIVE PROOF NOT AUTHORIZED
 - WO-008 admission basis commit: `4ff86e8d1c9c89ebda597570ad4f757605ccd81e`
 - WO-008 admission CI workflow: `37246398757`
 - WO-008 admission CI job: `111565059168` — Lint, types, tests
@@ -16,6 +16,22 @@ never authorizes implementation.
 - WO-008 closed issuance CI workflow: `37359992194`
 - WO-008 closed issuance CI job: `111931901481` — Lint, types, tests
 - WO-008 Session A preparation decision SHA-256: `3f2218b675dc2257fffe3ea4e4ceb4e351a23bc651cfd53177fe7ef62882c9ed`
+- WO-008 Session A preparation commit: `075ba2948444e40da9fb975f1cda4c29006b0169`
+- WO-008 Session A preparation CI workflow: `37698808630`
+- WO-008 Session A preparation CI job: `113057020206` — Lint, types, tests
+- WO-008 Session A live baseline instruction SHA-256: `671d1dfe2c84922709366cf189c2576c8fc3ea96ddd2bc45e1346b9ce22925a9`
+- WO-008 Session A live baseline commit: `ce04d17ab5fd548adaddb95775e23b97f418829f`
+- WO-008 Session A live baseline CI workflow: `37874506631`
+- WO-008 Session A live baseline CI job: `113639869831` — Lint, types, tests
+- WO-008 Session A replacement attempt instruction SHA-256: `420d59ff3fb1f4bcbd1169ef5a3fce3c63187aa7ab99bc4faa628864274f44e2`
+- WO-008 Session A replacement attempt commit: `ca86bc0f641591e830fd882ea05607d62ca11c6b`
+- WO-008 Session A replacement attempt CI workflow: `38164234607`
+- WO-008 Session A replacement attempt CI job: `114543334362` — Lint, types, tests
+- WO-008 Session A diagnostic result instruction SHA-256: `dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14`
+- WO-008 Session A diagnostic result commit: `f551b7fa161464ecca0aa0a0ea959d873430fc4e`
+- WO-008 Session A diagnostic result CI workflow: `38521809934`
+- WO-008 Session A diagnostic result CI job: `115712995226` — Lint, types, tests
+- WO-008 oversized-reply amendment instruction SHA-256: `198897bb226ca5ed290dfd073e41ca2bc43892d667a8089216553420975d7b11`
 - Issuance commit: `c04e4a794f1e7d0c607c7ad712cbd28e86a55914`
 - Issuance CI workflow: `37050236355`
 - Issuance CI job: `110981533635` — Lint, types, tests
@@ -516,11 +532,136 @@ completed successfully on that commit, including required job
 That CI tested the closed issuance enforcement, not this transition, a
 Session A output, an MCP host or a live build. The instruction is identified
 by SHA-256 `3f2218b675dc2257fffe3ea4e4ceb4e351a23bc651cfd53177fe7ef62882c9ed`.
-Preparation produces only a redacted exact call plan and a fixture/setup
-checklist, outside the checkout, for independent review, and changes no
-repository file. Client launch, configuration reads or changes, dependency
+Preparation produced only a redacted exact call plan and a fixture/setup
+checklist, outside the checkout, for independent review, and changed no
+repository file. At that gate, client launch, configuration reads or changes, dependency
 installation, deploy, editor contact, bridge lifecycle, endpoint calls,
-fixture mutation, product changes, recovery, commits and pushes remain
-unauthorized. Live start needs an accepted call plan and a separate owner
+fixture mutation, product changes, recovery, commits and pushes remained
+unauthorized. Live start needed an accepted call plan and a separate owner
 live-start instruction recorded here. Session B and Session C remain
 unauthorized, and this record grants no further authority.
+
+WO-008 Session A live baseline record: the owner authorized Session A for the
+pinned live baseline only, on the basis of the offline preparation committed
+as `075ba2948444e40da9fb975f1cda4c29006b0169`; [CI workflow
+`37698808630`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37698808630)
+completed successfully on that commit, including required job
+[`113057020206` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37698808630/job/113057020206).
+That CI tested the offline-preparation enforcement, not this transition, a
+live result, an MCP host or a live build. The accepted preparation package
+is identified by SHA256SUMS `8df8abdb4d70882f4ee0d1129907b166fa44f1ffbf87361ca3586d565d261ed1`,
+its review by SHA256SUMS `517b9c15744ee26e4c5967ff00eb9a4476330b723e878eb11902fc9d84e0351a`,
+and the accepted plan for this transition by SHA256SUMS
+`8e2d7481e4b245ed5e5afb132b9545d3754108907b1c16beb8c64fe3ad8a9add`. The instruction is
+identified by SHA-256 `671d1dfe2c84922709366cf189c2576c8fc3ea96ddd2bc45e1346b9ce22925a9`.
+Session A may run at most once: one attempt of the accepted call plan, as
+amended by the accepted execution addendum, through Claude Code with the
+owner decisions that instruction records, deployed from the clean,
+synchronized commit that carries this record once that commit's own CI has
+succeeded. Independent review, the commit, the push and that CI are
+preconditions only; none of them authorizes or starts the run. Any stop
+after live-run setup begins ends the attempt. A retry or repeat run needs a
+new reviewed transition recorded here, and recovery needs a separately
+bounded owner instruction. A choice or setup item that instruction omits
+follows the accepted addendum's missing-choice rule. Product corrections,
+installations or configuration changes that instruction does not name,
+commits and pushes remain unauthorized. Session B and Session C remain
+unauthorized, results are recorded only by a separate transition, and this
+record grants no further authority.
+
+WO-008 Session A replacement attempt record: the live baseline transition was
+committed as `ce04d17ab5fd548adaddb95775e23b97f418829f`; [CI workflow
+`37874506631`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37874506631)
+completed successfully on that commit, including required job
+[`113639869831` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/37874506631/job/113639869831).
+The single attempt that the live baseline record allowed, run
+`wo008-a-live-2026-10-09-1`, stopped at setup step 2, before step 0, because
+a setup method was supplied at a path the operator's environment could not
+resolve. Nothing was deployed, no editor or client was launched, no tool call
+was made and no project file was read; that attempt produced no live result.
+The accepted plan for this transition is identified by SHA256SUMS
+`5806aeef223c80a10f9b540728b574af4600852727b0f231bae1082dd7ec7440`, and its instruction by SHA-256
+`420d59ff3fb1f4bcbd1169ef5a3fce3c63187aa7ab99bc4faa628864274f44e2`. That attempt is used, and this record alone governs the
+next one. Session A may make one replacement attempt: one attempt of the
+accepted call plan, as amended by the accepted execution addendum and this
+transition's accepted plan, through Claude Code with the owner decisions
+that instruction records, deployed from the clean, synchronized commit that
+carries this record once that commit's own CI has succeeded, with every
+setup method verified at its pinned path before setup begins. Independent
+review, the commit, the push and that CI are preconditions only; none of
+them authorizes or starts the run. Any stop after its setup begins ends the
+attempt. A further attempt needs a new reviewed transition recorded here,
+and recovery needs a separately bounded owner instruction. A choice or setup
+item that instruction omits follows the accepted addendum's missing-choice
+rule. Product corrections, installations or configuration changes that
+instruction does not name, commits and pushes remain unauthorized. Session B
+and Session C remain unauthorized, results are recorded only by a separate
+transition, and this record grants no further authority.
+
+WO-008 Session A diagnostic result record: the replacement attempt transition
+was committed as `ca86bc0f641591e830fd882ea05607d62ca11c6b`; [CI workflow
+`38164234607`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/38164234607)
+completed successfully on that commit, including required job
+[`114543334362` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/38164234607/job/114543334362).
+That CI tested the replacement attempt enforcement, not a live result, an MCP
+host or a live build. The replacement attempt, run
+`wo008-a-live-2026-10-11-2`, is consumed. As the accepted handoff reports,
+under the accepted protocol its first evidenced definite stop came before
+step 0, at a client first-run prompt that its instruction did not name, and
+further stop and hold conditions followed. As the client displayed, the
+planned calls were then made under owner direction, outside the retry gate.
+None of Session A's call stages is met as an attempt step, and no
+compatibility, exactly-once execution or persistent rollback is established.
+The owner accepted the redacted evidence handoff r2 and its independent delta
+review as a limited diagnostic result only. They are identified by SHA256SUMS
+`67d3728dafbda53955fe31ea40de281dc9c0f51d18d003c53548fbe346c94486` and
+`9722d9d75eee4d33f2a2b90b9092f92293f7096a0fc99e0acec69652e3fa0f4d`, and the
+first independent review by SHA256SUMS
+`38a160706f8700fae7f915211ee498a9eb3bfec279196f1ca3efe109780651c6`. The accepted
+plan for this transition is identified by SHA256SUMS
+`c39081f3aacf38c0dbdf2ec459a6743c78e43d6429e0cda296c7848ecf2e7971`, and its instruction by SHA-256
+`dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14`. That attempt is consumed, and this
+record governs over the earlier Session A records, including the replacement
+attempt record. No session is authorized. A further Session A attempt,
+Session B, Session C, product corrections, installations and configuration
+changes each need a separate reviewed transition recorded here; recovery and
+cleanup of retained client or project state need a separately bounded owner
+instruction; and commits and pushes remain separate owner decisions. This
+record grants no authority.
+
+WO-008 Session B oversized-reply amendment record: the Session A diagnostic
+result transition was committed as `f551b7fa161464ecca0aa0a0ea959d873430fc4e`;
+[CI workflow `38521809934`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/38521809934)
+completed successfully on that commit, including required job
+[`115712995226` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/38521809934/job/115712995226).
+That CI tested the diagnostic result enforcement, not a live result, an MCP
+host or a live build. The Session A result stays recorded as diagnostic only,
+and Session A acceptance is not met; this record does not treat it as met.
+The owner adopted owner amendment OR-1, identified by SHA-256
+`7e2282fc3d8578c32a9d7469708306cd621dff699ec15bfba1ab0f125e4b2538`, with the
+oversized-reply correction plan identified by SHA256SUMS
+`fe528f8e9a872defd4beab4441495ff4f43282c3a1f66a94c2e10d2a527eeca9` and its
+accepting check identified by SHA256SUMS
+`aac9238481763371008575780ce867e1daa3fcb3a8f7d838534438d52f8c2c88`, by an
+instruction identified by SHA-256
+`ab0f1b3854203fad6ea8845f7c29515fbf83475042b2605e605402c352baea9c`. As the
+bounded amendment the mandate requires for an unexpected integration defect,
+Session B is limited to one correction: bounded, paged replies for the MCP
+tools `list_toolbelt_tools` and `get_all_actors`, within `mcp_server.py`,
+`tests/test_mcp_security.py`, `.claude/mcp_reference.md` and a new unreleased
+entry in `docs/CHANGELOG.md`, left uncommitted for independent review. This
+transition's independent review, commit, push and successful CI are
+preconditions only and are not permission for the correction's
+implementation, which needs a separate owner implementation instruction. The
+accepted plan for this transition is identified by SHA256SUMS
+`00bda882993a9f32c94d468015d5e745ffb7b646c624707f81a22b49fafe9e6f`, and its instruction by SHA-256
+`198897bb226ca5ed290dfd073e41ca2bc43892d667a8089216553420975d7b11`. This record is the separate
+reviewed transition that the Session A diagnostic result record requires for
+Session B, for this one correction only; it governs over that record's
+statement that no session is authorized, and over nothing else. Every other
+Session B item still requires accepted Session A evidence. The oversized-reply
+live proof, Session C, a further Session A attempt, other product corrections,
+installations, configuration changes and deployment each need a separate
+reviewed transition recorded here; recovery and cleanup need a separately
+bounded owner instruction; and commits and pushes remain separate owner
+decisions. This record grants no other authority.

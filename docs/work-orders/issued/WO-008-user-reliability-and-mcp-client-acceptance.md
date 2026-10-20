@@ -1,7 +1,7 @@
 # WO-008 User reliability and MCP client acceptance
 
 STATUS: ISSUED
-AUTHORIZATION: ISSUED — SESSION A AUTHORIZED FOR OFFLINE PREPARATION ONLY
+AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR THE OVERSIZED-REPLY AMENDMENT ONLY; SESSION A NOT ACCEPTED
 Owner: Ocean Bennett
 Priority: user-facing reliability and missing integration evidence
 Draft date: 2026-10-04
@@ -10,8 +10,9 @@ Planning baseline: `9879d39fbdb58083a0f7229a9c9c90c7d6fb375f`
 
 This is an issued following-train Work Order, outside the frozen
 WO-001 through WO-007 train. The root pointer identifies WO-008 with
-Session A authorized for offline preparation only. Live start, Session B
-and Session C remain unauthorized.
+session B for the oversized-reply amendment only. The Session A result stays
+recorded as diagnostic only, Session A acceptance is not met, and Session C
+remains unauthorized.
 
 ## Purpose and evidence
 
@@ -48,10 +49,14 @@ following-train proposal only and retained NONE/NONE. WO-008 is not added
 to the frozen WO-001 through WO-007 train.
 
 The separately adopted issuance/session-enforcement plan r2 supported the
-closed issuance, and a separate transition installs Session A offline
-preparation only. Live start, product corrections and live acceptance still
-need separately reviewed enforcement transitions and explicit owner
-decisions. No later phase is installed here.
+closed issuance and Session A offline preparation. Separate transitions
+installed the pinned Session A live baseline and its replacement attempt and
+recorded that attempt's result as diagnostic only. Owner amendment OR-1 adds
+three literal oversized-reply phases beside plan r2's phase table, and a
+separate transition installs the first of them, OR_CORRECTION. Session A
+acceptance, other product corrections, the oversized-reply live proof and live
+acceptance still need separately reviewed enforcement transitions and explicit
+owner decisions. No later phase is installed here.
 Frozen-train missing, duplicate and misplaced-order protections, publication
 history and earlier terminal records remain in force. Unknown issued orders
 remain invalid; there is no blanket scanner exemption.
@@ -84,16 +89,220 @@ The owner authorized Session A for offline preparation only. CI succeeded on
 the closed issuance commit, not on this transition or any Session A output;
 it demonstrates neither an MCP host nor a live UEFN build.
 
-Preparation produces, outside the checkout, a redacted exact call plan and a
-fixture/setup checklist for independent review. It reads no owner
-`.mcp.json`, credential, session handoff or private editor log, and changes
-no repository file. Client launch, configuration reads or changes, dependency
+Preparation produced, outside the checkout, a redacted exact call plan and a
+fixture/setup checklist for independent review. It read no owner
+`.mcp.json`, credential, session handoff or private editor log, and changed
+no repository file. At that gate, client launch, configuration reads or changes, dependency
 installation, deploy, editor contact, bridge lifecycle, endpoint calls,
-fixture mutation, product changes, recovery, commits and pushes remain
-unauthorized. Planned values are not recorded as observed results.
+fixture mutation, product changes, recovery, commits and pushes remained
+unauthorized. Planned values were not recorded as observed results.
 
 The owner accepted a narrow offline-verification exemption for this
-transition's five governance paths only. Runtime or live need stops the work.
+transition's five governance paths only. Runtime or live need stopped that work.
+
+## Session A live baseline record
+
+Session A live baseline basis commit: `075ba2948444e40da9fb975f1cda4c29006b0169`
+Session A live baseline CI workflow: `37698808630`
+Session A live baseline CI job: `113057020206` — Lint, types, tests
+Accepted preparation package SHA256SUMS: `8df8abdb4d70882f4ee0d1129907b166fa44f1ffbf87361ca3586d565d261ed1`
+Accepted preparation review SHA256SUMS: `517b9c15744ee26e4c5967ff00eb9a4476330b723e878eb11902fc9d84e0351a`
+Accepted A_LIVE plan SHA256SUMS: `8e2d7481e4b245ed5e5afb132b9545d3754108907b1c16beb8c64fe3ad8a9add`
+Owner Session A live baseline instruction SHA-256: `671d1dfe2c84922709366cf189c2576c8fc3ea96ddd2bc45e1346b9ce22925a9`
+
+The owner authorized Session A for the pinned live baseline only: one run
+of the accepted call plan, as amended by the accepted execution addendum,
+through Claude Code against an owner-approved disposable project, with the
+owner decisions that instruction records. CI succeeded on the preparation
+commit, not on this transition or any live result; it demonstrates neither
+an MCP host nor a live UEFN build.
+
+Within that one run, Session A uses as its deploy source the clean,
+synchronized commit that carries this record, after that commit's own CI
+has succeeded and its runtime and deployment sources are shown unchanged
+from the basis commit. For Session A the owner performs the deploy, editor
+start, fixture preparation and local bridge start, and stops the bridge only
+as the cleanup decision that instruction records allows; Session A's client
+issues only the nine planned tool calls, each approved individually, with no
+retry. Any stop after live-run setup begins ends the attempt. Session A
+recovery, a repeat run, installations or configuration changes that
+instruction does not name, product corrections, Session B, Session C,
+commits and pushes remain unauthorized. Results are recorded only by a
+separate transition.
+
+Independent review, the commit, the push and successful CI are
+preconditions only; none of them authorizes or starts the run. A choice
+or setup item that instruction omits follows the accepted addendum's
+missing-choice rule.
+
+The owner accepted a narrow offline-verification exemption for this
+transition's five governance paths only. The live run is Session A
+evidence, not verification of this transition.
+
+## Session A replacement attempt record
+
+Session A live baseline commit: `ce04d17ab5fd548adaddb95775e23b97f418829f`
+Session A live baseline commit CI workflow: `37874506631`
+Session A live baseline commit CI job: `113639869831` — Lint, types, tests
+Stopped attempt run ID: `wo008-a-live-2026-10-09-1`
+Accepted replacement attempt plan SHA256SUMS: `5806aeef223c80a10f9b540728b574af4600852727b0f231bae1082dd7ec7440`
+Owner Session A replacement attempt instruction SHA-256: `420d59ff3fb1f4bcbd1169ef5a3fce3c63187aa7ab99bc4faa628864274f44e2`
+
+The single attempt that the live baseline record allowed stopped at setup
+step 2, before step 0, because a setup method was supplied at a path the
+operator's environment could not resolve. Nothing was deployed, no editor or
+client was launched, no tool call was made and no project file was read. It
+produced no live result, and this section records only why it stopped.
+
+That attempt is used, and this section alone governs the next one. The owner
+authorized one replacement attempt for Session A: one run of the accepted
+call plan, as amended by the accepted execution addendum and the accepted
+replacement attempt plan, through Claude Code against an owner-approved
+disposable project, with the owner decisions that the replacement attempt
+instruction records. CI succeeded on the live baseline commit, not on this
+transition or any live result; it demonstrates neither an MCP host nor a
+live UEFN build.
+
+Within that one run, Session A uses as its deploy source the clean,
+synchronized commit that carries this record, after that commit's own CI
+has succeeded and its runtime and deployment sources are shown unchanged
+from `075ba2948444e40da9fb975f1cda4c29006b0169`, and every setup method is
+verified at its pinned path before setup begins. For Session A the owner
+performs the deploy, editor start, fixture preparation and local bridge
+start, and stops the bridge only as the cleanup decision that instruction
+records allows; Session A's client issues only the nine planned tool calls,
+each approved individually, with no retry. Any stop after its setup begins
+ends the attempt. Session A recovery, a further attempt, installations or
+configuration changes that instruction does not name, product corrections,
+Session B, Session C, commits and pushes remain unauthorized. Results are
+recorded only by a separate transition.
+
+Independent review, the commit, the push and successful CI are
+preconditions only; none of them authorizes or starts the run. A choice
+or setup item that instruction omits follows the accepted addendum's
+missing-choice rule.
+
+The owner accepted a narrow offline-verification exemption for this
+transition's four governance paths only. The replacement attempt is
+Session A evidence, not verification of this transition.
+
+## Session A diagnostic result record
+
+Session A replacement attempt commit: `ca86bc0f641591e830fd882ea05607d62ca11c6b`
+Session A replacement attempt CI workflow: `38164234607`
+Session A replacement attempt CI job: `114543334362` — Lint, types, tests
+Replacement attempt run ID: `wo008-a-live-2026-10-11-2`
+Accepted evidence handoff r2 SHA256SUMS: `67d3728dafbda53955fe31ea40de281dc9c0f51d18d003c53548fbe346c94486`
+Accepted evidence delta review SHA256SUMS: `9722d9d75eee4d33f2a2b90b9092f92293f7096a0fc99e0acec69652e3fa0f4d`
+First evidence review SHA256SUMS: `38a160706f8700fae7f915211ee498a9eb3bfec279196f1ca3efe109780651c6`
+Accepted diagnostic result plan SHA256SUMS: `c39081f3aacf38c0dbdf2ec459a6743c78e43d6429e0cda296c7848ecf2e7971`
+Owner Session A diagnostic result instruction SHA-256: `dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14`
+
+The replacement attempt is consumed. As the accepted handoff reports, under
+the accepted protocol its first evidenced definite stop came before step 0,
+when the client showed a first-run prompt that the instruction did not name.
+Further stop and hold conditions followed: a second MCP server was connected,
+an auto-accept permission mode was active, no per-call approval prompt was
+shown, and the client replaced four oversized replies with notices. These
+observations rest on owner screenshots and reports that the run's evidence
+folder does not preserve. As the client displayed, the nine planned calls were
+then made under owner direction, outside the retry gate; that no other call
+was made is not established. None of Session A's call stages is met as an
+attempt step, and this record is not Session A acceptance or compatibility
+evidence. Other disclosed protocol departures are recorded in the accepted
+handoff.
+
+The owner accepted the redacted evidence handoff r2 and its independent delta
+review as a limited diagnostic result only. Preserved records show that the
+deployed runtime matched the source commit, and that the project footprint
+gained one saved actor and lost no file. A preserved narrative record, without
+a command transcript, reports that after the run no listener remained. The
+absence of the bridge handoff file at both default locations rests on unsaved
+session output and on an owner-reported editor-side check, and its record has
+no command transcript. Owner reports, screenshots read by the implementer and
+unsaved session output, none of them preserved in the run's evidence folder,
+indicate that the client's tool list had 34 entries, that it reported
+authenticated queued transport with remote Python disabled, and that one actor
+was moved 100 cm and restored in memory within tolerance. These are credible
+but unverified.
+
+Required records were not made for the UEFN About build, the external Python
+version or the engine install to be started, and the evidence-location rule
+was not met for the owner-operated and live steps. The required repeat of the
+launch-window environment check is not evidenced. Simulate Physics was not
+observed as a setting, an unresolved block before live start with no recorded
+owner decision. The cleanup ran under owner direction, outside the
+normal-cleanup rule, and its save-prompt answer was not recorded. Persistent
+rollback is not established: one actor was saved during editor use, and its
+saved transform is unknown. Client configuration changes, a client
+auto-update and approval writes occurred during the run, and retained client
+and project state was not removed. Per-call approval, conformance beyond the
+client's own display, exactly-once execution and the completeness of any
+oversized reply are not established.
+
+As the client displayed and unsaved session output recorded, at the client's
+default MCP output limit the `list_toolbelt_tools` reply, which lists every
+registered tool (about 235,000 characters), and each `get_all_actors` reply on
+the 176-actor test level (about 580 characters per actor) were replaced by
+notices, so on that level those steps cannot be met in the client as planned.
+A correction is product work. It needs a separately authorized bounded
+amendment and plan, and this record installs none.
+
+That attempt is consumed, and this section governs over the earlier Session A
+sections, including the replacement attempt section. No session is authorized.
+A further Session A attempt, Session B, Session C, product corrections,
+installations and configuration changes each need a separate reviewed
+transition recorded in the root pointer; recovery and cleanup of retained
+client or project state need a separately bounded owner instruction; and
+commits and pushes remain separate owner decisions.
+
+The owner accepted a narrow offline-verification exemption for this
+transition's five governance paths only. This transition records evidence; it
+is not live verification.
+
+## Session B oversized-reply amendment record
+
+Session A diagnostic result commit: `f551b7fa161464ecca0aa0a0ea959d873430fc4e`
+Session A diagnostic result CI workflow: `38521809934`
+Session A diagnostic result CI job: `115712995226` — Lint, types, tests
+Owner amendment OR-1 SHA-256: `7e2282fc3d8578c32a9d7469708306cd621dff699ec15bfba1ab0f125e4b2538`
+Oversized-reply correction plan SHA256SUMS: `fe528f8e9a872defd4beab4441495ff4f43282c3a1f66a94c2e10d2a527eeca9`
+Accepting correction plan check SHA256SUMS: `aac9238481763371008575780ce867e1daa3fcb3a8f7d838534438d52f8c2c88`
+Owner adoption instruction SHA-256: `ab0f1b3854203fad6ea8845f7c29515fbf83475042b2605e605402c352baea9c`
+Accepted amendment transition plan SHA256SUMS: `00bda882993a9f32c94d468015d5e745ffb7b646c624707f81a22b49fafe9e6f`
+Owner amendment transition instruction SHA-256: `198897bb226ca5ed290dfd073e41ca2bc43892d667a8089216553420975d7b11`
+
+The Session A replacement attempt is consumed and recorded with a limited
+diagnostic result only; Session A acceptance is not met, and this record does
+not treat it as met. As the bounded amendment this mandate requires for an
+unexpected integration defect, the owner allowed one correction on the basis
+of the accepted diagnostic finding alone: bounded, paged replies for the MCP
+tools `list_toolbelt_tools` and `get_all_actors`, under the reviewed
+correction plan identified above. Its ceiling is `mcp_server.py`,
+`tests/test_mcp_security.py`, `.claude/mcp_reference.md` and a new unreleased
+entry in `docs/CHANGELOG.md`. Every other Session B item still requires
+accepted Session A evidence. The implementation authority is single-pass. It
+covers the implementation and any fixes the independent review requires,
+within those four paths and under a bounded owner instruction with a delta
+review, and it ends at the reviewed snapshot that the live-proof record pins.
+The correction stays uncommitted for independent review and its separately
+authorized live proof. It is not Session C and records no Session A, Session
+C or compatibility acceptance. Commits, pushes and publication remain separate
+owner decisions, and this section grants no further authority.
+
+This section is the separate reviewed transition that the diagnostic result
+section requires for Session B, for this one correction only. It governs over
+that section's statement that no session is authorized, and over nothing else;
+the Session A diagnostic result stays as recorded. This transition's
+independent review, commit, push and successful CI are preconditions only and
+are not permission for the correction's implementation, which needs a separate
+owner implementation instruction. The oversized-reply live proof and
+its later record each need their own reviewed transition recorded in the root
+pointer, and neither is installed here.
+
+The owner accepted a narrow offline-verification exemption for this
+transition's five governance paths only. This transition records authority; it
+is not live verification.
 
 ## Session A Real client baseline
 
@@ -264,8 +473,9 @@ the client/project/fixture/target choices, live start, any unexpected repair,
 recovery, exact commits, pushes, completion, and any later release decision.
 Review acceptance never substitutes for these decisions.
 
-NEXT GATE: separate owner decisions on an independent review of the Session A
-offline call plan and fixture/setup checklist, and then on live start.
-Live start, Session B, Session C, product corrections, recovery, exact
-commits and pushes remain separate decisions. This mandate grants no review,
-implementation, commit or push authority.
+NEXT GATE: a separate owner implementation instruction for the oversized-reply
+correction only, under which Session B implements it uncommitted for
+independent review. The oversized-reply live proof, Session C, Session A
+acceptance, other product corrections, recovery, cleanup, exact commits and
+pushes remain separate decisions. By itself, this mandate grants no
+implementation, review, live, commit or push authority.
