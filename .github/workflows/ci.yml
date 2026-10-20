@@ -63,7 +63,9 @@ jobs:
       - name: Pytest
         # Covers the pure-Python contract layer (registry, config, repo
         # integrity) using the fake `unreal` module in tests/conftest.py.
-        run: python -m pytest -v
+        # Distribute individual cases: historical governance fixtures dominate
+        # one large file, so file-based distribution would remain serial.
+        run: python -m pytest -n 4 --dist load -v
 
       - name: Repository drift
         run: python scripts/drift_check.py

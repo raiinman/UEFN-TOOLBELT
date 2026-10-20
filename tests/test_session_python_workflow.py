@@ -35,7 +35,10 @@ def test_workflow_source_keeps_stash_outside_project_and_refuses_collisions():
 def test_deploy_does_not_copy_python_bearing_dev_folders():
     source = DEPLOY.read_text(encoding="utf-8", errors="replace").lower()
     assert '"%~dp0tests"' not in source
-    assert "/xf *.py *.pyc" in source
+    # The batch wrapper delegates copying/reference filtering to the canonical
+    # installer; its reference behavior is exercised in test_installer_workflow.
+    assert '"%~dp0install.py" --project "!dest!" --skip-dependencies --preserve-startup --install-reference' in source
+    assert "robocopy" not in source
     assert "prepare_launch.bat" in source
     assert "*.uefnproject" in source
     assert "setlocal disabledelayedexpansion" in source

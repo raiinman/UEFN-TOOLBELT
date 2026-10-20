@@ -81,6 +81,7 @@ def _scan_build_snapshot(lines) -> tuple[str, int]:
     status = "UNKNOWN"
     count = 0
     pending = set()
+    finished = False
     for line in lines:
         error = None
         if ".verse(" in line:
@@ -88,15 +89,23 @@ def _scan_build_snapshot(lines) -> tuple[str, int]:
             diagnostic = re.sub(r"^\s*Error:\s*", "", diagnostic, flags=re.IGNORECASE)
             error = _BUILD_ERROR_LOCATION_PAT.match(diagnostic.lstrip())
         if error:
+            if finished:
+                pending.clear()
+                finished = False
             pending.add((error["file"].strip(), re.sub(r"\s+", "", error["location"]), error["code"]))
             status, count = "FAILED", len(pending)
         elif _BUILD_SUCCESS_PAT.search(line):
             status, count = "SUCCESS", 0
             pending.clear()
+            finished = True
         elif _BUILD_FAILED_PAT.search(line):
-            status, count = "FAILED", len(pending)
+            status = "FAILED"
+            if not finished:
+                count = len(pending)
             if _BUILD_FINISHED_PAT.search(line):
-                pending.clear()
+                # Compiler and VerseBuild may both summarize the same failure.
+                # Keep its count until a new diagnostic batch begins.
+                finished = True
     return status, count
 
 

@@ -1,6 +1,6 @@
 import unreal
 
-from ..core import PLUGIN_MOUNTS, log_error, log_info, log_warning
+from ..core import PLUGIN_MOUNTS, log_error, log_info, log_warning, project_content_dir
 from ..registry import register_tool
 
 # Engine / plugin mounts that must never be written to.
@@ -58,12 +58,8 @@ class SafetyGate:
     @staticmethod
     def get_project_content_dir():
         """Returns the absolute path to the project's Content directory on disk."""
-        # project_content_dir() returns the FortniteGame engine path in UEFN.
-        # Use project_dir() + /Content instead. See UEFN_QUIRKS.md Quirk #23.
-        root = unreal.Paths.convert_relative_path_to_full(
-            unreal.Paths.project_dir()
-        ).rstrip("/\\")
-        return root + "/Content"
+        return project_content_dir()
+
 
 @register_tool(name="core_safety_audit", category="System")
 def core_safety_audit():

@@ -1,0 +1,12 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"world_name\": \"Riftbloom\",\n  \"actor_count\": 122\n}"
+    }
+  ],
+  "structuredContent": {
+    "result": "{\n  \"world_name\": \"Riftbloom\",\n  \"actor_count\": 122\n}"
+  },
+  "isError": false
+}

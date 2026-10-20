@@ -1,0 +1,14 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:36.468573
+Passed:  3/3
+Verified: 3 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 4.32s
+============================================================
+
+
+[Curves]
+----------------------------------------
+  PASS  curve_create reports whether it saved  (status=ok saved=True (missing key = save is unchecked again))
+  PASS  returned path exists on disk  (path='/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Curves/CM_IntegrationCurve' exists=True)
+  PASS  ok is not claimed for an unsaved asset  (status=ok saved=True)

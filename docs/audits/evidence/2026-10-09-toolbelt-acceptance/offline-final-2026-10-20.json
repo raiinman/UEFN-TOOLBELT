@@ -1,0 +1,24 @@
+{
+  "scope": "Off-editor contracts, not native all-tool acceptance",
+  "pytest": {
+    "passed": 4142,
+    "tests": 4164,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 22,
+    "workers": 4,
+    "seconds": 1130.43,
+    "version": "9.1.1",
+    "xdist": "3.8.0"
+  },
+  "checks": {
+    "ruff": "PASS",
+    "mypy": "PASS, 13 files",
+    "drift": "PASS",
+    "coverage": "PASS",
+    "api_manifest": "PASS, 172 symbols",
+    "pip_check": "PASS"
+  },
+  "partial_runs": "Earlier interrupted serial runs are not complete passes.",
+  "review": "Scoped same-model review accepted; no cross-model review claimed."
+}

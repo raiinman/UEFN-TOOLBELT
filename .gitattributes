@@ -1,1 +1,3 @@
 *.bat text eol=crlf
+docs/audits/evidence/2026-10-09-toolbelt-maintenance/** -text -whitespace
+docs/audits/evidence/2026-10-09-toolbelt-acceptance/** -text -whitespace

@@ -1,0 +1,13 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:38.201293
+Passed:  2/2
+Verified: 2 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.09s
+============================================================
+
+
+[Selection]
+----------------------------------------
+  PASS  Select in Radius  (in-radius fixtures selected=True, out-of-radius fixture excluded=True (6 actors selected in total))
+  PASS  Select by Property

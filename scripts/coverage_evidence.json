@@ -5,7 +5,7 @@
       "source": "integration",
       "section": "Materials",
       "label": "Apply Preset",
-      "line": 233,
+      "line": 245,
       "tools": [
         "material_apply_preset"
       ],
@@ -16,7 +16,7 @@
       "source": "integration",
       "section": "Bulk Ops",
       "label": "Align X (First Actor)",
-      "line": 258,
+      "line": 270,
       "tools": [
         "bulk_align"
       ],
@@ -27,7 +27,7 @@
       "source": "integration",
       "section": "Bulk Ops",
       "label": "Distribute X",
-      "line": 276,
+      "line": 288,
       "tools": [
         "bulk_distribute"
       ],
@@ -38,7 +38,7 @@
       "source": "integration",
       "section": "Bulk Ops",
       "label": "Snap to 100",
-      "line": 288,
+      "line": 300,
       "tools": [
         "bulk_snap_to_grid"
       ],
@@ -49,7 +49,7 @@
       "source": "integration",
       "section": "Bulk Ops",
       "label": "Randomize (Rot)",
-      "line": 305,
+      "line": 317,
       "tools": [
         "bulk_randomize"
       ],
@@ -60,7 +60,7 @@
       "source": "integration",
       "section": "Bulk Ops",
       "label": "Stack Z",
-      "line": 323,
+      "line": 335,
       "tools": [
         "bulk_stack"
       ],
@@ -71,7 +71,7 @@
       "source": "integration",
       "section": "Bulk Ops",
       "label": "Reset Transforms",
-      "line": 337,
+      "line": 349,
       "tools": [
         "bulk_reset"
       ],
@@ -82,7 +82,7 @@
       "source": "integration",
       "section": "Bulk Ops",
       "label": "Mirror X",
-      "line": 365,
+      "line": 377,
       "tools": [
         "bulk_mirror"
       ],
@@ -93,7 +93,7 @@
       "source": "integration",
       "section": "Bulk Ops",
       "label": "Normalize Scale",
-      "line": 377,
+      "line": 389,
       "tools": [
         "bulk_normalize_scale"
       ],
@@ -104,7 +104,7 @@
       "source": "integration",
       "section": "Bulk Ops",
       "label": "Face Camera",
-      "line": 387,
+      "line": 399,
       "tools": [
         "bulk_face_camera"
       ],
@@ -116,7 +116,7 @@
       "source": "integration",
       "section": "Patterns",
       "label": "Grid Spawn (2x2)",
-      "line": 403,
+      "line": 415,
       "tools": [
         "pattern_grid"
       ],
@@ -127,7 +127,7 @@
       "source": "integration",
       "section": "Patterns",
       "label": "Clear All",
-      "line": 409,
+      "line": 421,
       "tools": [
         "pattern_clear"
       ],
@@ -138,7 +138,7 @@
       "source": "integration",
       "section": "Patterns",
       "label": "Circle (Radius/Count)",
-      "line": 438,
+      "line": 450,
       "tools": [
         "pattern_circle"
       ],
@@ -149,7 +149,7 @@
       "source": "integration",
       "section": "Patterns",
       "label": "Helix Spawn (Count=24)",
-      "line": 492,
+      "line": 504,
       "tools": [
         "pattern_helix"
       ],
@@ -160,7 +160,7 @@
       "source": "integration",
       "section": "Snapshots",
       "label": "Save JSON",
-      "line": 534,
+      "line": 546,
       "tools": [
         "snapshot_save"
       ],
@@ -171,7 +171,7 @@
       "source": "integration",
       "section": "Snapshots",
       "label": "Export JSON",
-      "line": 539,
+      "line": 551,
       "tools": [
         "snapshot_export"
       ],
@@ -182,7 +182,7 @@
       "source": "integration",
       "section": "Snapshots",
       "label": "Import JSON",
-      "line": 544,
+      "line": 556,
       "tools": [
         "snapshot_import"
       ],
@@ -193,7 +193,7 @@
       "source": "integration",
       "section": "Snapshots",
       "label": "Compare Live",
-      "line": 551,
+      "line": 563,
       "tools": [
         "snapshot_compare_live"
       ],
@@ -205,7 +205,7 @@
       "source": "integration",
       "section": "Snapshots",
       "label": "Restore Transforms",
-      "line": 563,
+      "line": 575,
       "tools": [
         "snapshot_restore"
       ],
@@ -216,7 +216,7 @@
       "source": "integration",
       "section": "Snapshots",
       "label": "Delete JSON",
-      "line": 573,
+      "line": 585,
       "tools": [
         "snapshot_delete"
       ],
@@ -227,7 +227,7 @@
       "source": "integration",
       "section": "Crawler",
       "label": "Level Crawl JSON",
-      "line": 590,
+      "line": 602,
       "tools": [
         "api_crawl_level_classes"
       ],
@@ -238,7 +238,7 @@
       "source": "integration",
       "section": "Crawler",
       "label": "Selection Crawl JSON",
-      "line": 599,
+      "line": 611,
       "tools": [
         "api_crawl_selection"
       ],
@@ -249,7 +249,7 @@
       "source": "integration",
       "section": "Asset Tagger",
       "label": "Add Tag",
-      "line": 633,
+      "line": 645,
       "tools": [
         "tag_add"
       ],
@@ -260,7 +260,7 @@
       "source": "integration",
       "section": "Asset Tagger",
       "label": "Show Tags",
-      "line": 645,
+      "line": 657,
       "tools": [
         "tag_show"
       ],
@@ -271,7 +271,7 @@
       "source": "integration",
       "section": "Asset Tagger",
       "label": "Search finds the tag it just wrote",
-      "line": 653,
+      "line": 665,
       "tools": [
         "tag_search"
       ],
@@ -282,7 +282,7 @@
       "source": "integration",
       "section": "Asset Tagger",
       "label": "List All",
-      "line": 658,
+      "line": 670,
       "tools": [
         "tag_list_all"
       ],
@@ -293,7 +293,7 @@
       "source": "integration",
       "section": "Asset Tagger",
       "label": "Export Tags",
-      "line": 664,
+      "line": 676,
       "tools": [
         "tag_export"
       ],
@@ -304,7 +304,7 @@
       "source": "integration",
       "section": "Asset Tagger",
       "label": "Remove Tag",
-      "line": 667,
+      "line": 679,
       "tools": [
         "tag_remove"
       ],
@@ -315,7 +315,7 @@
       "source": "integration",
       "section": "Asset Tagger",
       "label": "Search no longer finds it after removal",
-      "line": 675,
+      "line": 687,
       "tools": [
         "tag_search"
       ],
@@ -326,7 +326,7 @@
       "source": "integration",
       "section": "Verse",
       "label": "List Snippets",
-      "line": 690,
+      "line": 702,
       "tools": [
         "verse_list_snippets"
       ],
@@ -338,7 +338,7 @@
       "source": "integration",
       "section": "Verse",
       "label": "Gen Device Declarations",
-      "line": 696,
+      "line": 708,
       "tools": [
         "verse_gen_device_declarations"
       ],
@@ -350,7 +350,7 @@
       "source": "integration",
       "section": "Screenshots",
       "label": "Timed Series",
-      "line": 755,
+      "line": 767,
       "tools": [
         "screenshot_timed_series"
       ],
@@ -362,7 +362,7 @@
       "source": "integration",
       "section": "Scatter",
       "label": "HISM Instances",
-      "line": 794,
+      "line": 806,
       "tools": [
         "scatter_hism"
       ],
@@ -373,7 +373,7 @@
       "source": "integration",
       "section": "Scatter",
       "label": "Clear",
-      "line": 800,
+      "line": 812,
       "tools": [
         "scatter_clear"
       ],
@@ -384,7 +384,7 @@
       "source": "integration",
       "section": "Spline",
       "label": "Export JSON",
-      "line": 838,
+      "line": 850,
       "tools": [
         "spline_export_json"
       ],
@@ -395,7 +395,7 @@
       "source": "integration",
       "section": "Spline",
       "label": "Clear Props",
-      "line": 845,
+      "line": 857,
       "tools": [
         "spline_clear_props"
       ],
@@ -406,7 +406,7 @@
       "source": "integration",
       "section": "Assets",
       "label": "Rename Dry Run",
-      "line": 860,
+      "line": 872,
       "tools": [
         "rename_dry_run"
       ],
@@ -417,7 +417,7 @@
       "source": "integration",
       "section": "Assets",
       "label": "Enforce Conventions",
-      "line": 885,
+      "line": 897,
       "tools": [
         "rename_enforce_conventions"
       ],
@@ -428,7 +428,7 @@
       "source": "integration",
       "section": "Assets",
       "label": "Strip Prefix",
-      "line": 897,
+      "line": 909,
       "tools": [
         "rename_strip_prefix"
       ],
@@ -439,7 +439,7 @@
       "source": "integration",
       "section": "Optimization",
       "label": "Memory Scan JSON",
-      "line": 917,
+      "line": 929,
       "tools": [
         "memory_scan"
       ],
@@ -450,7 +450,7 @@
       "source": "integration",
       "section": "Optimization",
       "label": "Scan Textures",
-      "line": 921,
+      "line": 933,
       "tools": [
         "memory_scan_textures"
       ],
@@ -462,7 +462,7 @@
       "source": "integration",
       "section": "Optimization",
       "label": "Scan Meshes",
-      "line": 924,
+      "line": 936,
       "tools": [
         "memory_scan_meshes"
       ],
@@ -474,7 +474,7 @@
       "source": "integration",
       "section": "Optimization",
       "label": "Top Offenders",
-      "line": 927,
+      "line": 939,
       "tools": [
         "memory_top_offenders"
       ],
@@ -486,7 +486,7 @@
       "source": "integration",
       "section": "Optimization",
       "label": "Auto-Fix LODs",
-      "line": 937,
+      "line": 949,
       "tools": [
         "memory_autofix_lods"
       ],
@@ -498,7 +498,7 @@
       "source": "integration",
       "section": "Assets",
       "label": "Audit Orphans",
-      "line": 953,
+      "line": 965,
       "tools": [
         "ref_audit_orphans"
       ],
@@ -510,7 +510,7 @@
       "source": "integration",
       "section": "Assets",
       "label": "Audit Redirectors",
-      "line": 956,
+      "line": 968,
       "tools": [
         "ref_audit_redirectors"
       ],
@@ -522,7 +522,7 @@
       "source": "integration",
       "section": "Assets",
       "label": "Audit Duplicates",
-      "line": 959,
+      "line": 971,
       "tools": [
         "ref_audit_duplicates"
       ],
@@ -534,7 +534,7 @@
       "source": "integration",
       "section": "Assets",
       "label": "Audit Unused Textures",
-      "line": 962,
+      "line": 974,
       "tools": [
         "ref_audit_unused_textures"
       ],
@@ -546,7 +546,7 @@
       "source": "integration",
       "section": "Assets",
       "label": "Ref Aud Full Report",
-      "line": 967,
+      "line": 979,
       "tools": [
         "ref_full_report"
       ],
@@ -557,7 +557,7 @@
       "source": "integration",
       "section": "Project",
       "label": "Scaffold Preview",
-      "line": 984,
+      "line": 996,
       "tools": [
         "scaffold_preview"
       ],
@@ -569,7 +569,7 @@
       "source": "integration",
       "section": "Project",
       "label": "Scaffold Generate",
-      "line": 990,
+      "line": 1002,
       "tools": [
         "scaffold_generate"
       ],
@@ -580,7 +580,7 @@
       "source": "integration",
       "section": "Procedural",
       "label": "Text Place",
-      "line": 1020,
+      "line": 1032,
       "tools": [
         "text_place"
       ],
@@ -592,7 +592,7 @@
       "source": "integration",
       "section": "Procedural",
       "label": "Text Paint Grid",
-      "line": 1030,
+      "line": 1042,
       "tools": [
         "text_paint_grid"
       ],
@@ -603,7 +603,7 @@
       "source": "integration",
       "section": "Procedural",
       "label": "Text Save Style",
-      "line": 1034,
+      "line": 1046,
       "tools": [
         "text_save_style"
       ],
@@ -615,7 +615,7 @@
       "source": "integration",
       "section": "Procedural",
       "label": "Text Label Selection",
-      "line": 1044,
+      "line": 1056,
       "tools": [
         "text_label_selection"
       ],
@@ -627,7 +627,7 @@
       "source": "integration",
       "section": "Procedural",
       "label": "Text Clear",
-      "line": 1057,
+      "line": 1069,
       "tools": [
         "text_clear_folder"
       ],
@@ -638,7 +638,7 @@
       "source": "integration",
       "section": "Materials",
       "label": "Randomize Colors",
-      "line": 1077,
+      "line": 1089,
       "tools": [
         "material_randomize_colors"
       ],
@@ -649,7 +649,7 @@
       "source": "integration",
       "section": "Materials",
       "label": "Gradient Painter",
-      "line": 1083,
+      "line": 1095,
       "tools": [
         "material_gradient_painter"
       ],
@@ -660,7 +660,7 @@
       "source": "integration",
       "section": "Materials",
       "label": "Team Color Split",
-      "line": 1092,
+      "line": 1104,
       "tools": [
         "material_team_color_split"
       ],
@@ -671,7 +671,7 @@
       "source": "integration",
       "section": "Materials",
       "label": "Pattern Painter",
-      "line": 1098,
+      "line": 1110,
       "tools": [
         "material_pattern_painter"
       ],
@@ -682,7 +682,7 @@
       "source": "integration",
       "section": "Materials",
       "label": "Glow Pulse Preview",
-      "line": 1104,
+      "line": 1116,
       "tools": [
         "material_glow_pulse_preview"
       ],
@@ -693,7 +693,7 @@
       "source": "integration",
       "section": "Materials",
       "label": "Color Harmony",
-      "line": 1110,
+      "line": 1122,
       "tools": [
         "material_color_harmony"
       ],
@@ -704,7 +704,7 @@
       "source": "integration",
       "section": "Materials",
       "label": "Bulk Swap",
-      "line": 1136,
+      "line": 1148,
       "tools": [
         "material_bulk_swap"
       ],
@@ -715,7 +715,7 @@
       "source": "integration",
       "section": "Materials",
       "label": "Bulk Swap reports a miss as error",
-      "line": 1150,
+      "line": 1162,
       "tools": [
         "material_bulk_swap"
       ],
@@ -726,7 +726,7 @@
       "source": "integration",
       "section": "LODs",
       "label": "Audit Folder",
-      "line": 1302,
+      "line": 1283,
       "tools": [
         "lod_audit_folder"
       ],
@@ -738,7 +738,7 @@
       "source": "integration",
       "section": "Arena",
       "label": "Generate",
-      "line": 1331,
+      "line": 1312,
       "tools": [
         "arena_generate"
       ],
@@ -749,7 +749,7 @@
       "source": "integration",
       "section": "Scatter",
       "label": "Along Path",
-      "line": 1358,
+      "line": 1339,
       "tools": [
         "scatter_along_path"
       ],
@@ -760,7 +760,7 @@
       "source": "integration",
       "section": "Scatter",
       "label": "Cleanup",
-      "line": 1365,
+      "line": 1346,
       "tools": [
         "scatter_clear"
       ],
@@ -771,7 +771,7 @@
       "source": "integration",
       "section": "Assets",
       "label": "Enforce Conventions",
-      "line": 1388,
+      "line": 1369,
       "tools": [
         "rename_enforce_conventions"
       ],
@@ -782,7 +782,7 @@
       "source": "integration",
       "section": "Assets",
       "label": "Organize Assets",
-      "line": 1399,
+      "line": 1380,
       "tools": [
         "organize_assets"
       ],
@@ -793,7 +793,7 @@
       "source": "integration",
       "section": "Cooker",
       "label": "mark_selection status matches the count",
-      "line": 1455,
+      "line": 1441,
       "tools": [
         "cooker_mark_selection"
       ],
@@ -805,7 +805,7 @@
       "source": "integration",
       "section": "Cooker",
       "label": "mark_selection(False) status matches the count",
-      "line": 1474,
+      "line": 1460,
       "tools": [
         "cooker_mark_selection"
       ],
@@ -817,7 +817,7 @@
       "source": "integration",
       "section": "Curves",
       "label": "returned path exists on disk",
-      "line": 1509,
+      "line": 1495,
       "tools": [
         "curve_create"
       ],
@@ -829,7 +829,7 @@
       "source": "integration",
       "section": "Measurement",
       "label": "Measure Distance",
-      "line": 1539,
+      "line": 1525,
       "tools": [
         "measure_distance"
       ],
@@ -840,7 +840,7 @@
       "source": "integration",
       "section": "Measurement",
       "label": "Travel Time (Run)",
-      "line": 1544,
+      "line": 1530,
       "tools": [
         "measure_travel_time"
       ],
@@ -851,7 +851,7 @@
       "source": "integration",
       "section": "Localization",
       "label": "Export Manifest",
-      "line": 1566,
+      "line": 1552,
       "tools": [
         "text_export_manifest"
       ],
@@ -862,7 +862,7 @@
       "source": "integration",
       "section": "Localization",
       "label": "Apply Translation",
-      "line": 1589,
+      "line": 1575,
       "tools": [
         "text_apply_translation"
       ],
@@ -873,7 +873,7 @@
       "source": "integration",
       "section": "Environmental",
       "label": "Audit Brushes",
-      "line": 1607,
+      "line": 1593,
       "tools": [
         "foliage_audit_brushes"
       ],
@@ -885,7 +885,7 @@
       "source": "integration",
       "section": "Environmental",
       "label": "Convert Props",
-      "line": 1615,
+      "line": 1601,
       "tools": [
         "foliage_convert_selected_to_actor"
       ],
@@ -896,7 +896,7 @@
       "source": "integration",
       "section": "Entities",
       "label": "List Kits",
-      "line": 1625,
+      "line": 1611,
       "tools": [
         "entity_list_kits"
       ],
@@ -907,7 +907,7 @@
       "source": "integration",
       "section": "Entities",
       "label": "Spawn Kit",
-      "line": 1634,
+      "line": 1620,
       "tools": [
         "entity_spawn_kit"
       ],
@@ -919,7 +919,7 @@
       "source": "integration",
       "section": "Selection",
       "label": "Select in Radius",
-      "line": 1666,
+      "line": 1652,
       "tools": [
         "select_in_radius"
       ],
@@ -930,7 +930,7 @@
       "source": "integration",
       "section": "Selection",
       "label": "Select by Property",
-      "line": 1678,
+      "line": 1664,
       "tools": [
         "select_by_property"
       ],
@@ -941,7 +941,7 @@
       "source": "integration",
       "section": "Lighting",
       "label": "Apply Preset (Cyberpunk)",
-      "line": 1691,
+      "line": 1677,
       "tools": [
         "light_cinematic_preset"
       ],
@@ -953,7 +953,7 @@
       "source": "integration",
       "section": "Lighting",
       "label": "Randomize Sky",
-      "line": 1693,
+      "line": 1679,
       "tools": [
         "light_randomize_sky"
       ],
@@ -965,7 +965,7 @@
       "source": "integration",
       "section": "Project Admin",
       "label": "Perf Audit",
-      "line": 1703,
+      "line": 1689,
       "tools": [
         "system_perf_audit"
       ],
@@ -977,7 +977,7 @@
       "source": "integration",
       "section": "Zone",
       "label": "zone_spawn",
-      "line": 1718,
+      "line": 1704,
       "tools": [
         "zone_spawn"
       ],
@@ -989,7 +989,7 @@
       "source": "integration",
       "section": "Zone",
       "label": "zone_list",
-      "line": 1723,
+      "line": 1709,
       "tools": [
         "zone_list"
       ],
@@ -1001,7 +1001,7 @@
       "source": "integration",
       "section": "Zone",
       "label": "zone_select_contents",
-      "line": 1735,
+      "line": 1721,
       "tools": [
         "zone_select_contents"
       ],
@@ -1013,7 +1013,7 @@
       "source": "integration",
       "section": "Zone",
       "label": "zone_snap_to_selection",
-      "line": 1740,
+      "line": 1726,
       "tools": [
         "zone_snap_to_selection"
       ],
@@ -1025,7 +1025,7 @@
       "source": "integration",
       "section": "Zone",
       "label": "zone_fill_scatter",
-      "line": 1748,
+      "line": 1734,
       "tools": [
         "zone_fill_scatter"
       ],
@@ -1037,7 +1037,7 @@
       "source": "integration",
       "section": "Stamps",
       "label": "stamp_save",
-      "line": 1778,
+      "line": 1764,
       "tools": [
         "stamp_save"
       ],
@@ -1048,7 +1048,7 @@
       "source": "integration",
       "section": "Stamps",
       "label": "stamp_list",
-      "line": 1784,
+      "line": 1770,
       "tools": [
         "stamp_list"
       ],
@@ -1059,7 +1059,7 @@
       "source": "integration",
       "section": "Stamps",
       "label": "stamp_info",
-      "line": 1790,
+      "line": 1776,
       "tools": [
         "stamp_info"
       ],
@@ -1070,7 +1070,7 @@
       "source": "integration",
       "section": "Stamps",
       "label": "stamp_place",
-      "line": 1798,
+      "line": 1784,
       "tools": [
         "stamp_place"
       ],
@@ -1081,7 +1081,7 @@
       "source": "integration",
       "section": "Stamps",
       "label": "stamp_import",
-      "line": 1815,
+      "line": 1801,
       "tools": [
         "stamp_import"
       ],
@@ -1093,7 +1093,7 @@
       "source": "integration",
       "section": "Stamps",
       "label": "stamp_delete",
-      "line": 1822,
+      "line": 1808,
       "tools": [
         "stamp_delete"
       ],
@@ -1105,7 +1105,7 @@
       "source": "integration",
       "section": "ActorOrg",
       "label": "actor_move_to_folder",
-      "line": 1847,
+      "line": 1833,
       "tools": [
         "actor_move_to_folder"
       ],
@@ -1117,7 +1117,7 @@
       "source": "integration",
       "section": "ActorOrg",
       "label": "actor_folder_list",
-      "line": 1854,
+      "line": 1840,
       "tools": [
         "actor_folder_list"
       ],
@@ -1128,7 +1128,7 @@
       "source": "integration",
       "section": "ActorOrg",
       "label": "actor_select_by_folder",
-      "line": 1860,
+      "line": 1846,
       "tools": [
         "actor_select_by_folder"
       ],
@@ -1140,7 +1140,7 @@
       "source": "integration",
       "section": "ActorOrg",
       "label": "actor_select_by_class",
-      "line": 1865,
+      "line": 1851,
       "tools": [
         "actor_select_by_class"
       ],
@@ -1152,7 +1152,7 @@
       "source": "integration",
       "section": "ActorOrg",
       "label": "actor_match_transform",
-      "line": 1872,
+      "line": 1858,
       "tools": [
         "actor_match_transform"
       ],
@@ -1164,7 +1164,7 @@
       "source": "integration",
       "section": "ActorOrg",
       "label": "actor_move_to_root",
-      "line": 1878,
+      "line": 1864,
       "tools": [
         "actor_move_to_root"
       ],
@@ -1176,7 +1176,7 @@
       "source": "integration",
       "section": "ActorOrg",
       "label": "actor_attach_to_parent",
-      "line": 1884,
+      "line": 1870,
       "tools": [
         "actor_attach_to_parent"
       ],
@@ -1188,7 +1188,7 @@
       "source": "integration",
       "section": "ActorOrg",
       "label": "actor_detach",
-      "line": 1889,
+      "line": 1875,
       "tools": [
         "actor_detach"
       ],
@@ -1200,7 +1200,7 @@
       "source": "integration",
       "section": "Proximity",
       "label": "actor_place_next_to",
-      "line": 1910,
+      "line": 1896,
       "tools": [
         "actor_place_next_to"
       ],
@@ -1212,7 +1212,7 @@
       "source": "integration",
       "section": "Proximity",
       "label": "actor_chain_place",
-      "line": 1916,
+      "line": 1902,
       "tools": [
         "actor_chain_place"
       ],
@@ -1224,7 +1224,7 @@
       "source": "integration",
       "section": "Proximity",
       "label": "actor_duplicate_offset",
-      "line": 1925,
+      "line": 1911,
       "tools": [
         "actor_duplicate_offset"
       ],
@@ -1235,7 +1235,7 @@
       "source": "integration",
       "section": "Proximity",
       "label": "actor_copy_to_positions",
-      "line": 1936,
+      "line": 1922,
       "tools": [
         "actor_copy_to_positions"
       ],
@@ -1246,7 +1246,7 @@
       "source": "integration",
       "section": "Proximity",
       "label": "actor_cluster_to_folder",
-      "line": 1945,
+      "line": 1931,
       "tools": [
         "actor_cluster_to_folder"
       ],
@@ -1258,7 +1258,7 @@
       "source": "integration",
       "section": "Proximity",
       "label": "actor_replace_class (dry_run)",
-      "line": 1951,
+      "line": 1937,
       "tools": [
         "actor_replace_class"
       ],
@@ -1270,7 +1270,7 @@
       "source": "integration",
       "section": "AdvAlign",
       "label": "align_to_reference",
-      "line": 1977,
+      "line": 1963,
       "tools": [
         "align_to_reference"
       ],
@@ -1282,7 +1282,7 @@
       "source": "integration",
       "section": "AdvAlign",
       "label": "distribute_with_gap",
-      "line": 1982,
+      "line": 1968,
       "tools": [
         "distribute_with_gap"
       ],
@@ -1294,7 +1294,7 @@
       "source": "integration",
       "section": "AdvAlign",
       "label": "rotate_around_pivot",
-      "line": 1987,
+      "line": 1973,
       "tools": [
         "rotate_around_pivot"
       ],
@@ -1306,7 +1306,7 @@
       "source": "integration",
       "section": "AdvAlign",
       "label": "match_spacing",
-      "line": 1992,
+      "line": 1978,
       "tools": [
         "match_spacing"
       ],
@@ -1318,7 +1318,7 @@
       "source": "integration",
       "section": "AdvAlign",
       "label": "align_to_surface",
-      "line": 2007,
+      "line": 1993,
       "tools": [
         "align_to_surface"
       ],
@@ -1330,7 +1330,7 @@
       "source": "integration",
       "section": "AdvAlign",
       "label": "align_to_grid_two_points",
-      "line": 2012,
+      "line": 1998,
       "tools": [
         "align_to_grid_two_points"
       ],
@@ -1342,7 +1342,7 @@
       "source": "integration",
       "section": "Signs",
       "label": "sign_spawn_bulk",
-      "line": 2028,
+      "line": 2014,
       "tools": [
         "sign_spawn_bulk"
       ],
@@ -1354,7 +1354,7 @@
       "source": "integration",
       "section": "Signs",
       "label": "sign_list",
-      "line": 2032,
+      "line": 2018,
       "tools": [
         "sign_list"
       ],
@@ -1366,7 +1366,7 @@
       "source": "integration",
       "section": "Signs",
       "label": "sign_batch_edit",
-      "line": 2041,
+      "line": 2027,
       "tools": [
         "sign_batch_edit"
       ],
@@ -1378,7 +1378,7 @@
       "source": "integration",
       "section": "Signs",
       "label": "sign_batch_rename",
-      "line": 2047,
+      "line": 2033,
       "tools": [
         "sign_batch_rename"
       ],
@@ -1390,7 +1390,7 @@
       "source": "integration",
       "section": "Signs",
       "label": "sign_batch_set_text",
-      "line": 2053,
+      "line": 2039,
       "tools": [
         "sign_batch_set_text"
       ],
@@ -1402,7 +1402,7 @@
       "source": "integration",
       "section": "Signs",
       "label": "label_attach",
-      "line": 2062,
+      "line": 2048,
       "tools": [
         "label_attach"
       ],
@@ -1414,7 +1414,7 @@
       "source": "integration",
       "section": "Signs",
       "label": "sign_clear (publish-safe cleanup)",
-      "line": 2071,
+      "line": 2057,
       "tools": [
         "sign_clear"
       ],
@@ -1425,7 +1425,7 @@
       "source": "integration",
       "section": "PostProcess",
       "label": "postprocess_spawn",
-      "line": 2089,
+      "line": 2075,
       "tools": [
         "postprocess_spawn"
       ],
@@ -1437,7 +1437,7 @@
       "source": "integration",
       "section": "PostProcess",
       "label": "postprocess_set",
-      "line": 2094,
+      "line": 2080,
       "tools": [
         "postprocess_set"
       ],
@@ -1449,7 +1449,7 @@
       "source": "integration",
       "section": "PostProcess",
       "label": "postprocess_preset (cinematic)",
-      "line": 2099,
+      "line": 2085,
       "tools": [
         "postprocess_preset"
       ],
@@ -1461,7 +1461,7 @@
       "source": "integration",
       "section": "PostProcess",
       "label": "postprocess_preset (reset)",
-      "line": 2103,
+      "line": 2089,
       "tools": [
         "postprocess_preset"
       ],
@@ -1473,7 +1473,7 @@
       "source": "integration",
       "section": "PostProcess",
       "label": "world_settings_set (gravity)",
-      "line": 2122,
+      "line": 2108,
       "tools": [
         "world_settings_set"
       ],
@@ -1485,7 +1485,7 @@
       "source": "integration",
       "section": "Audio",
       "label": "audio_place",
-      "line": 2139,
+      "line": 2125,
       "tools": [
         "audio_place"
       ],
@@ -1497,7 +1497,7 @@
       "source": "integration",
       "section": "Audio",
       "label": "audio_list",
-      "line": 2144,
+      "line": 2130,
       "tools": [
         "audio_list"
       ],
@@ -1509,7 +1509,7 @@
       "source": "integration",
       "section": "Audio",
       "label": "audio_set_volume",
-      "line": 2153,
+      "line": 2139,
       "tools": [
         "audio_set_volume"
       ],
@@ -1521,7 +1521,7 @@
       "source": "integration",
       "section": "Audio",
       "label": "audio_set_radius",
-      "line": 2158,
+      "line": 2144,
       "tools": [
         "audio_set_radius"
       ],
@@ -1533,7 +1533,7 @@
       "source": "integration",
       "section": "LevelHealth",
       "label": "level_health_report",
-      "line": 2176,
+      "line": 2162,
       "tools": [
         "level_health_report"
       ],
@@ -1544,7 +1544,7 @@
       "source": "integration",
       "section": "LevelHealth",
       "label": "rogue_actor_scan",
-      "line": 2183,
+      "line": 2169,
       "tools": [
         "rogue_actor_scan"
       ],
@@ -1556,7 +1556,7 @@
       "source": "integration",
       "section": "Config",
       "label": "config_list",
-      "line": 2196,
+      "line": 2182,
       "tools": [
         "config_list"
       ],
@@ -1568,7 +1568,7 @@
       "source": "integration",
       "section": "Config",
       "label": "config_set",
-      "line": 2201,
+      "line": 2187,
       "tools": [
         "config_set"
       ],
@@ -1580,7 +1580,7 @@
       "source": "integration",
       "section": "Config",
       "label": "config_get",
-      "line": 2206,
+      "line": 2192,
       "tools": [
         "config_get"
       ],
@@ -1591,7 +1591,7 @@
       "source": "integration",
       "section": "Config",
       "label": "config_reset",
-      "line": 2210,
+      "line": 2196,
       "tools": [
         "config_reset"
       ],
@@ -1603,7 +1603,7 @@
       "source": "integration",
       "section": "Lighting",
       "label": "light_place (point)",
-      "line": 2224,
+      "line": 2210,
       "tools": [
         "light_place"
       ],
@@ -1615,7 +1615,7 @@
       "source": "integration",
       "section": "Lighting",
       "label": "light_list",
-      "line": 2228,
+      "line": 2214,
       "tools": [
         "light_list"
       ],
@@ -1627,7 +1627,7 @@
       "source": "integration",
       "section": "Lighting",
       "label": "light_set",
-      "line": 2236,
+      "line": 2222,
       "tools": [
         "light_set"
       ],
@@ -1639,19 +1639,19 @@
       "source": "integration",
       "section": "Lighting",
       "label": "sky_set_time",
-      "line": 2242,
+      "line": 2230,
       "tools": [
         "sky_set_time"
       ],
       "category": "defined-execution",
-      "assertion": "isinstance(result, dict)",
-      "basis": "self-reported status or type only"
+      "assertion": "isinstance(result, dict) and result.get(\"status\") == \"ok\"",
+      "basis": "verified=False; no dedicated DirectionalLight fixture/readback; refusal fails"
     },
     {
       "source": "integration",
       "section": "WorldState",
       "label": "world_state_export",
-      "line": 2260,
+      "line": 2247,
       "tools": [
         "world_state_export"
       ],
@@ -1662,7 +1662,7 @@
       "source": "integration",
       "section": "WorldState",
       "label": "device_catalog_scan",
-      "line": 2265,
+      "line": 2252,
       "tools": [
         "device_catalog_scan"
       ],
@@ -1674,7 +1674,7 @@
       "source": "integration",
       "section": "Visibility",
       "label": "actor_hide",
-      "line": 2285,
+      "line": 2272,
       "tools": [
         "actor_hide"
       ],
@@ -1685,7 +1685,7 @@
       "source": "integration",
       "section": "Visibility",
       "label": "actor_show",
-      "line": 2289,
+      "line": 2276,
       "tools": [
         "actor_show"
       ],
@@ -1696,7 +1696,7 @@
       "source": "integration",
       "section": "Visibility",
       "label": "actor_isolate",
-      "line": 2294,
+      "line": 2281,
       "tools": [
         "actor_isolate"
       ],
@@ -1707,7 +1707,7 @@
       "source": "integration",
       "section": "Visibility",
       "label": "actor_show_all",
-      "line": 2299,
+      "line": 2286,
       "tools": [
         "actor_show_all"
       ],
@@ -1718,31 +1718,31 @@
       "source": "integration",
       "section": "Visibility",
       "label": "actor_lock (runs ok)",
-      "line": 2304,
+      "line": 2292,
       "tools": [
         "actor_lock"
       ],
       "category": "defined-execution",
-      "assertion": "result.get(\"status\") == \"ok\"",
-      "basis": "self-reported status or type only"
+      "assertion": "_lock_check(a1, result, True)",
+      "basis": "Conservative source category; only fixture readback can accept the operator; unsupported refusal fails"
     },
     {
       "source": "integration",
       "section": "Visibility",
       "label": "actor_unlock (runs ok)",
-      "line": 2306,
+      "line": 2295,
       "tools": [
         "actor_unlock"
       ],
       "category": "defined-execution",
-      "assertion": "result.get(\"status\") == \"ok\"",
-      "basis": "self-reported status or type only"
+      "assertion": "_lock_check(a1, result, False)",
+      "basis": "Conservative source category; only fixture readback can accept the operator; unsupported refusal fails"
     },
     {
       "source": "integration",
       "section": "Viewport",
       "label": "viewport_showflag (clean)",
-      "line": 2321,
+      "line": 2310,
       "tools": [
         "viewport_showflag"
       ],
@@ -1754,7 +1754,7 @@
       "source": "integration",
       "section": "Viewport",
       "label": "viewport_showflag (reset)",
-      "line": 2324,
+      "line": 2313,
       "tools": [
         "viewport_showflag"
       ],
@@ -1766,7 +1766,7 @@
       "source": "integration",
       "section": "Viewport",
       "label": "viewport_bookmark_save",
-      "line": 2329,
+      "line": 2318,
       "tools": [
         "viewport_bookmark_save"
       ],
@@ -1777,7 +1777,7 @@
       "source": "integration",
       "section": "Viewport",
       "label": "viewport_bookmark_list",
-      "line": 2333,
+      "line": 2322,
       "tools": [
         "viewport_bookmark_list"
       ],
@@ -1788,7 +1788,7 @@
       "source": "integration",
       "section": "Viewport",
       "label": "viewport_bookmark_jump",
-      "line": 2336,
+      "line": 2325,
       "tools": [
         "viewport_bookmark_jump"
       ],
@@ -1800,7 +1800,7 @@
       "source": "integration",
       "section": "Viewport",
       "label": "viewport_showflag (unknown preset = error)",
-      "line": 2340,
+      "line": 2329,
       "tools": [
         "viewport_showflag"
       ],
@@ -1812,7 +1812,7 @@
       "source": "integration",
       "section": "SelectionSets",
       "label": "selection_save",
-      "line": 2357,
+      "line": 2346,
       "tools": [
         "selection_save"
       ],
@@ -1823,7 +1823,7 @@
       "source": "integration",
       "section": "SelectionSets",
       "label": "selection_list",
-      "line": 2361,
+      "line": 2350,
       "tools": [
         "selection_list"
       ],
@@ -1834,7 +1834,7 @@
       "source": "integration",
       "section": "SelectionSets",
       "label": "selection_restore",
-      "line": 2367,
+      "line": 2356,
       "tools": [
         "selection_restore"
       ],
@@ -1845,7 +1845,7 @@
       "source": "integration",
       "section": "SelectionSets",
       "label": "selection_restore (unknown = error)",
-      "line": 2372,
+      "line": 2361,
       "tools": [
         "selection_restore"
       ],
@@ -1857,7 +1857,7 @@
       "source": "integration",
       "section": "ProjectAdmin",
       "label": "save_all_dirty",
-      "line": 2387,
+      "line": 2376,
       "tools": [
         "save_all_dirty"
       ],
@@ -2105,7 +2105,69 @@
       "date": "2026-10-09",
       "result": "Packaged six-layer environment health check passed 89/89 after deploy and full editor restart",
       "source": "docs/audits/evidence/2026-10-09-toolbelt-maintenance/native-smoke.txt; companion deployed-python.json and SHA256SUMS.txt",
-      "limitation": "One Windows PC and one Riftbloom boot. Environment health only, not individual tool mutation/gameplay verification or WO-008 client acceptance. Runtime source hashes are preserved in the companion manifest."
+      "limitation": "One Windows PC and one Riftbloom boot. Environment health only, not individual tool mutation/gameplay verification or WO-008 client acceptance. Runtime source hashes are preserved in the companion manifest.",
+      "artifacts": [
+        {
+          "path": "docs/audits/evidence/2026-10-09-toolbelt-maintenance/native-smoke.txt",
+          "sha256": "fa6dce003229e6346d9efe092754f7ee986f126c2e9ce8ac41782e9ae097c9b0"
+        }
+      ]
+    },
+    {
+      "scope": "smoke",
+      "build": "UEFN 42.40 / UE 6.0.0-59247843, maintained working tree based on 47ff89a",
+      "date": "2026-10-20",
+      "result": "Cold-start ToolbeltAcceptance and Riftbloom environment checks each passed 89/89; both dashboards showed five setup checks passing and 94 deployed Python files matched source",
+      "source": "docs/audits/2026-10-09-native-tool-acceptance.md",
+      "limitation": "One Windows PC, two named projects. Environment health and source attribution only; no all-tool, gameplay or WO-008 client acceptance.",
+      "artifacts": [
+        {
+          "path": "docs/audits/evidence/2026-10-09-toolbelt-acceptance/smoke-2026-10-20.txt",
+          "sha256": "0b8f4264d8dc9a8572e13be381fbaaf6062a52073ecf5bc96cb9a05d10f36286"
+        },
+        {
+          "path": "docs/audits/evidence/2026-10-09-toolbelt-acceptance/riftbloom-smoke-2026-10-20.txt",
+          "sha256": "e92b38671d02566c7ae437a5c7f5e9dc700ea77dbfad6f5cc708d9224c4ca6fe"
+        },
+        {
+          "path": "docs/audits/evidence/2026-10-09-toolbelt-acceptance/deployed-python-2026-10-20.json",
+          "sha256": "e8ba60f8954fe63e500896e9a09910559c86dcc5bd5ce9caf4cae224274df721"
+        },
+        {
+          "path": "docs/audits/evidence/2026-10-09-toolbelt-acceptance/riftbloom-startup-2026-10-20.json",
+          "sha256": "0b181a0f4ef8c043bb4af81c04e4c8a3ee0f7c518c1fad33ec817eaa6b31fe0f"
+        }
+      ]
+    },
+    {
+      "scope": "integration",
+      "build": "Disposable ToolbeltAcceptance on UEFN 42.30 and 42.40, source identities in raw runs",
+      "date": "2026-10-20",
+      "result": "Four procedures preserved 342 calls; distinct invoked names: 223 of 362. Unattempted: 139. Latest asset checks 25/25; maintenance 13/15 with unsupported locks and missing-light failures retained",
+      "source": "docs/audits/2026-10-09-native-tool-acceptance.md and runtime-tool-ledger-final.json",
+      "limitation": "Mixed and scoped evidence, not 223 functional passes. Original harness assertions include false greens, empty queries and execution-only calls. Animation and other compatible class fixtures remain unverified.",
+      "artifacts": [
+        {
+          "path": "docs/audits/evidence/2026-10-09-toolbelt-acceptance/native-sections-r2/run.json",
+          "sha256": "ddf5622fff9739b3e7e964ecc90f29946e25038a94778ce359574067e40af59b"
+        },
+        {
+          "path": "docs/audits/evidence/2026-10-09-toolbelt-acceptance/native-assets-r1/run.json",
+          "sha256": "1ce3d91597a6b8a4c39ccd48196a2d9c4331a3aa524471a6ba95d45dff348d94"
+        },
+        {
+          "path": "docs/audits/evidence/2026-10-09-toolbelt-acceptance/native-maintenance-r1/run.json",
+          "sha256": "30c9730b1aeaeee2a32c1eb0c7d55b433100149a85f9461e92ef683d8eb940d1"
+        },
+        {
+          "path": "docs/audits/evidence/2026-10-09-toolbelt-acceptance/native-assets-r2/run.json",
+          "sha256": "b1fcdbbb173f335db2e4564bf257a1d164c86ff5bc5c7277dfc5f51a8b2d5c74"
+        },
+        {
+          "path": "docs/audits/evidence/2026-10-09-toolbelt-acceptance/runtime-tool-ledger-final.json",
+          "sha256": "94d8d63959fcec4ec014ef77d1804cff711ce4ee6397ce418820c1dde5dfdc69"
+        }
+      ]
     }
   ]
 }

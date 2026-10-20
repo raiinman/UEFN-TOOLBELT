@@ -32,9 +32,10 @@ from __future__ import annotations
 
 import argparse
 import ast
+import hashlib
 import json
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Any, NamedTuple
 
 PACKAGE_REL = "Content/Python/UEFN_Toolbelt"
@@ -300,6 +301,50 @@ def _entry_problems(entry: dict[str, Any], checks: dict[tuple, Check],
     return problems, check
 
 
+def _artifact_problems(root: Path, record: dict[str, Any]) -> list[str]:
+    """Optional preserved artifacts strengthen run attribution, never coverage."""
+    if "artifacts" not in record:
+        return []  # Historic six-string records retain their original limits.
+    artifacts = record["artifacts"]
+    if not isinstance(artifacts, list):
+        return ["run-evidence artifacts must be a list"]
+    errors = []
+    repository = root.resolve()
+    for artifact in artifacts:
+        if not isinstance(artifact, dict):
+            errors.append("run-evidence artifact must contain path and sha256")
+            continue
+        path, digest = artifact.get("path"), artifact.get("sha256")
+        if not isinstance(path, str) or not path.strip():
+            errors.append("run-evidence artifact path must be a nonempty relative path")
+            continue
+        if (not isinstance(digest, str) or len(digest) != 64
+                or any(char not in "0123456789abcdefABCDEF" for char in digest)):
+            errors.append(f"run-evidence artifact {path!r} has invalid sha256")
+            continue
+        portable = PurePosixPath(path.replace("\\", "/"))
+        windows = PureWindowsPath(path)
+        if (portable.is_absolute() or windows.anchor or ".." in portable.parts
+                or ":" in path or str(portable) == "."):
+            errors.append(f"run-evidence artifact {path!r} must stay within the repository")
+            continue
+        try:
+            target = (repository / Path(*portable.parts)).resolve(strict=True)
+            if not target.is_relative_to(repository):
+                errors.append(f"run-evidence artifact {path!r} resolves outside the repository")
+                continue
+            if not target.is_file():
+                errors.append(f"run-evidence artifact {path!r} is not a readable file")
+                continue
+            actual = hashlib.sha256(target.read_bytes()).hexdigest()
+        except (OSError, ValueError, RuntimeError) as exc:
+            errors.append(f"run-evidence artifact {path!r} is not readable: {exc}")
+            continue
+        if actual != digest.lower():
+            errors.append(f"run-evidence artifact {path!r} sha256 mismatch")
+    return errors
+
+
 def build_report(root: Path) -> dict[str, Any]:
     """The whole report for the repository at `root`.
 
@@ -392,6 +437,10 @@ def build_report(root: Path) -> dict[str, Any]:
                                "limitation") if not record.get(k)]
         if missing or record.get("scope") not in RUN_SCOPES:
             errors.append(f"run-evidence record {record!r} is incomplete")
+            continue
+        artifact_errors = _artifact_problems(root, record)
+        if artifact_errors:
+            errors.extend(artifact_errors)
             continue
         runs.append(record)
 

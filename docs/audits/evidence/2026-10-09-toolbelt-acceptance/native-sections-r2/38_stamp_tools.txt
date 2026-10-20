@@ -1,0 +1,18 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:39.703338
+Passed:  7/7
+Verified: 7 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.23s
+============================================================
+
+
+[Stamps]
+----------------------------------------
+  PASS  stamp_save  (saved 3 of 3 fixtures)
+  PASS  stamp_list
+  PASS  stamp_info  (3 actors in stamp)
+  PASS  stamp_place  (placed 3/3)
+  PASS  stamp_export  (C:\Users\mikea\AppData\Local\Temp\__tb_test_stamp__.json)
+  PASS  stamp_import  (actor_count=3)
+  PASS  stamp_delete

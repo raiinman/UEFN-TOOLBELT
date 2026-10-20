@@ -20,6 +20,8 @@ API: EditorBlueprintLibrary, AssetRegistry, EditorAssetLibrary
 
 from __future__ import annotations
 
+import re
+
 import unreal
 
 from ..core import (
@@ -147,6 +149,18 @@ def run_blueprint_inspect(asset_path: str = "", **kwargs) -> dict:
         return {"status": "error", "message": str(e)}
 
 
+def _is_blueprint_up_to_date(status) -> bool:
+    enum = getattr(unreal, "BlueprintStatus", None)
+    up_to_date = getattr(enum, "BS_UP_TO_DATE", None)
+    if up_to_date is not None:
+        return (status == up_to_date) is True
+    # Compatibility for builds without the enum export; accept exact known forms.
+    return re.fullmatch(
+        r"(?:BlueprintStatus\.)?BS_UP_TO_DATE|<BlueprintStatus\.BS_UP_TO_DATE:\s*\d+>",
+        str(status).strip(),
+    ) is not None
+
+
 @register_tool(
     name="blueprint_audit",
     category="Blueprints",
@@ -180,14 +194,14 @@ def run_blueprint_audit(scan_path: str = "", max_results: int = 200, **kwargs) -
                     continue
                 status = "unknown"
                 try:
-                    status = str(bp.get_editor_property("status"))
+                    status = bp.get_editor_property("status")
                 except Exception:
                     issues.append({"name": name, "path": path, "issue": "Compile status unavailable; inspect the Blueprint in the editor"})
                     continue
-                if "error" in status.lower():
-                    issues.append({"name": name, "path": path, "issue": f"Compile status: {status}"})
-                else:
+                if _is_blueprint_up_to_date(status):
                     clean.append(name)
+                else:
+                    issues.append({"name": name, "path": path, "issue": f"Compile status requires inspection: {status}"})
             except Exception as ex:
                 issues.append({"name": name, "path": path, "issue": f"Failed to load: {ex}"})
 

@@ -9,24 +9,14 @@ import json
 import os
 from typing import Any
 
-import unreal
+from .core import native_project_dir
 
 _SCHEMA_CACHE: dict[str, Any] = {}
 
 def get_schema_path() -> str:
     """Find the reference schema in the project docs."""
-    curr = os.path.abspath(__file__)
-    project_root = None
-    while curr and os.path.dirname(curr) != curr:
-        curr = os.path.dirname(curr)
-        if os.path.basename(curr) == "Content":
-            project_root = os.path.dirname(curr)
-            break
+    return os.path.join(native_project_dir(), "docs", "uefn_reference_schema.json")
 
-    if not project_root:
-        project_root = unreal.Paths.project_dir()
-
-    return os.path.join(project_root, "docs", "uefn_reference_schema.json")
 
 
 def load_schema() -> dict[str, Any]:
@@ -35,7 +25,10 @@ def load_schema() -> dict[str, Any]:
     if _SCHEMA_CACHE:
         return _SCHEMA_CACHE
 
-    path = get_schema_path()
+    try:
+        path = get_schema_path()
+    except (OSError, ValueError):
+        return {}
     if not os.path.exists(path):
         return {}
 

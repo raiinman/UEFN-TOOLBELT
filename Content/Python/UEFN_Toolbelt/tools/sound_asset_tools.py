@@ -22,6 +22,8 @@ API: AssetRegistry, EditorAssetLibrary, SoundWave, SoundCue, SoundAttenuation, S
 
 from __future__ import annotations
 
+import math
+
 import unreal
 
 from ..core import log_error, log_info, log_warning, resolve_scan_path
@@ -112,37 +114,44 @@ def run_sound_asset_audit(
         assets = _ar().get_assets(filt)[:max_results]
         issues = []
         clean = []
+        unknown = 0
 
         for a in assets:
             name = str(a.asset_name)
             path = str(a.package_name)
             sound_issues = []
+            unavailable = False
 
             # Duration check via AR tag (no load needed)
-            duration_tag = a.get_tag_value("Duration")
             try:
-                if duration_tag and float(duration_tag) > warn_duration_sec:
+                duration = float(a.get_tag_value("Duration"))
+                if not math.isfinite(duration) or duration < 0:
+                    raise ValueError("Invalid duration")
+                if duration > warn_duration_sec:
                     sound_issues.append(
-                        f"Long duration: {float(duration_tag):.1f}s (warn={warn_duration_sec}s)"
+                        f"Long duration: {duration:.1f}s (warn={warn_duration_sec}s)"
                     )
-            except (ValueError, TypeError):
-                pass
+            except Exception as ex:
+                sound_issues.append(f"Duration unavailable: {ex}")
+                unavailable = True
 
             # SoundClass check requires load (only 1 prop read per asset)
             try:
                 sw = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
-                if isinstance(sw, unreal.SoundWave):
-                    try:
-                        sc = sw.get_editor_property("sound_class_object")
-                        if sc is None:
-                            sound_issues.append("No SoundClass assigned")
-                    except Exception:
-                        pass
+                if not isinstance(sw, unreal.SoundWave):
+                    raise ValueError("SoundWave could not be loaded or loaded asset has the wrong class")
+                sc = sw.get_editor_property("sound_class_object")
+                if sc is None:
+                    sound_issues.append("No SoundClass assigned")
             except Exception as ex:
-                log_warning(f"[sound_asset_audit] {name}: could not load — {ex}")
+                sound_issues.append(f"SoundClass inspection unavailable: {ex}")
+                unavailable = True
+                log_warning(f"[sound_asset_audit] {name}: inspection unavailable — {ex}")
 
             if sound_issues:
-                issues.append({"name": name, "path": path, "issues": sound_issues})
+                issues.append({"name": name, "path": path, "issues": sound_issues,
+                               "unknown": unavailable})
+                unknown += int(unavailable)
             else:
                 clean.append(name)
 
@@ -152,6 +161,7 @@ def run_sound_asset_audit(
             "total": len(assets),
             "clean": len(clean),
             "issues": len(issues),
+            "unknown": unknown,
             "issue_list": issues,
         }
     except Exception as e:

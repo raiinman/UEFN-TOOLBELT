@@ -125,4 +125,21 @@ Class-specific animation/audio/texture mutation acceptance still needs native
 assets and a disposable project. The installed editor's unavailable APIs and
 stubbed LOD operations remain explicitly limited. No cross-model independent
 review is claimed; the available Claude CLI is signed out. Commit, push and
-release actions have not occurred.
+release actions had not occurred at that initial review gate.
+
+## Subsequent maintenance publication and acceptance
+
+The owner subsequently authorized the maintenance commits and push. The four
+commits `41d1af9`, `79564d8`, `c16d6e7` and `47ff89a` were pushed to
+`codex/toolbelt-reliability-update`; the last has full identity
+`47ff89a912257e0bc6f0269db16c3d8b58b7df4a`. GitHub
+[CI run 38002672318](https://github.com/raiinman/UEFN-TOOLBELT/actions/runs/38002672318)
+succeeded on that revision: Linux 3,265 passed/18 skipped and Windows 3,272
+passed/11 skipped. This supersedes the preceding pending-publication statements
+for that revision only. No tag or Release was created.
+
+The owner then authorized closing the remaining evidence gaps. Follow-up repairs
+and disposable native acceptance are recorded separately in
+[native tool acceptance](2026-10-09-native-tool-acceptance.md). The preceding
+source/deployed hashes, five upstream-path equality and native observations
+describe their original baseline; they do not attest later edits or test runs.

@@ -9,6 +9,7 @@ Public API:
     tb.run("tool_name")              # execute any tool by name
     tb.run("toolbelt_smoke_test")    # run the 6-layer health check
     tb.registry               # access the ToolRegistry directly
+    tb.config                 # persistent settings for the current native project
 
 Generic loader contract:
     init_unreal.py calls tb.register() on every package that exposes it.
@@ -22,9 +23,15 @@ from . import core
 from .core.config import get_config
 from .registry import ToolRegistry, get_registry, register_tool
 
-# tb.config — persistent user settings, survives install.py updates
-# Lives at Saved/UEFN_Toolbelt/config.json
-config = get_config()
+# Remove the old eager binding when this module is safely reloaded.
+globals().pop("config", None)
+
+
+def __getattr__(name: str) -> Any:
+    """Resolve public config lazily so project switches cannot retain another island."""
+    if name == "config":
+        return get_config()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 # ── Version ───────────────────────────────────────────────────────────────────
 # Single source of truth — used in audit logs, reload messages, and manifests.
@@ -351,12 +358,6 @@ def _try_open_widget() -> None:
         _print_tool_list()
 
 
-@register_tool(
-    name="toolbelt_smoke_test",
-    category="Utilities",
-    description="Run the full 6-layer smoke test and print results to the Output Log.",
-    tags=["smoke", "test", "health", "debug"],
-)
 def smoke_test(**kwargs) -> bool:
     """
     Run the full Toolbelt smoke test (6 layers: Python env, UEFN API,
@@ -374,6 +375,30 @@ def smoke_test(**kwargs) -> bool:
     mod  = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod.run_smoke_test()
+
+
+@register_tool(
+    name="toolbelt_smoke_test",
+    category="Utilities",
+    description="Run the full 6-layer smoke test and print results to the Output Log.",
+    tags=["smoke", "test", "health", "debug"],
+)
+def _run_smoke_tool(**kwargs) -> dict:
+    """Registered API preserves the health result and raw evidence location."""
+    import os
+
+    import unreal
+    report = ""
+    try:
+        report = os.path.join(unreal.Paths.project_saved_dir(), "UEFN_Toolbelt",
+                              "smoke_test_results.txt")
+        passed = smoke_test(**kwargs)
+        return {"status": "ok" if passed is True else "error",
+                "passed": passed is True, "report": report,
+                "limitation": "Environment health only; not individual tool outcome acceptance."}
+    except Exception as exc:
+        return {"status": "error", "passed": False, "report": report,
+                "reason": "smoke_test_failed", "message": str(exc)}
 
 
 def _print_tool_list() -> None:

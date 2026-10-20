@@ -2,7 +2,7 @@
 description: How to run UEFN Toolbelt smoke and integration tests
 ---
 
-Follow these steps to verify that the UEFN Toolbelt is fully functional inside the Unreal Editor for Fortnite.
+Follow these steps to verify selected Toolbelt behavior in native UEFN. Record the tested scope and actual outcomes.
 
 ## 1. Deploy Changes
 Ensure your latest code is synced to the UEFN project's `Content/Python` directory.
@@ -35,14 +35,15 @@ import UEFN_Toolbelt as tb; tb.run("toolbelt_smoke_test")
 ```
 
 ## 5. Execute the Integration Test (Layer 7)
-**[WARNING: INVASIVE]** Spawns and deletes actors in the live viewport. Best run in a blank "Test Template" level.
+**[WARNING: INVASIVE]** Spawns and deletes actors in the live viewport. Requires the dedicated ToolbeltAcceptance project. It also changes assets, files and persistent settings.
 ```python
-import UEFN_Toolbelt as tb; tb.run("toolbelt_integration_test")
+import UEFN_Toolbelt as tb; tb.run("toolbelt_integration_test", allow_mutation=True, preserve_bridge=True)
 ```
-Check the Output Log for `INTEGRATION TEST COMPLETE — Passed: N/N`. The v2.4.1
-baseline on UEFN 42.00 is 116 sections and 190/190 checks: 163 verify a real
-outcome and 27 are execution-only. Read the split, not only the headline total,
-and see `TOOL_STATUS.md` for the authoritative current evidence.
+Read the returned checks and capture both `.json` and `.txt` report files after
+each run. Preserve failed/incomplete runs. Outcomes, execution-only checks,
+refusals and unavailable capabilities stay separate. Use small sections and
+independent readback; the harness does not cover every registered tool. Preserve
+and restore shared Saved reports/templates/snippets around the disposable run.
 
 ## 6. If remote validation is next
 

@@ -1,0 +1,12 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"tool\": \"toolbelt_smoke_test\",\n  \"kwargs\": {},\n  \"status\": \"executed\",\n  \"result\": {\n    \"status\": \"ok\",\n    \"passed\": true,\n    \"report\": \"C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\\\smoke_test_results.txt\",\n    \"limitation\": \"Environment health only; not individual tool outcome acceptance.\"\n  }\n}"
+    }
+  ],
+  "structuredContent": {
+    "result": "{\n  \"tool\": \"toolbelt_smoke_test\",\n  \"kwargs\": {},\n  \"status\": \"executed\",\n  \"result\": {\n    \"status\": \"ok\",\n    \"passed\": true,\n    \"report\": \"C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\\\smoke_test_results.txt\",\n    \"limitation\": \"Environment health only; not individual tool outcome acceptance.\"\n  }\n}"
+  },
+  "isError": false
+}

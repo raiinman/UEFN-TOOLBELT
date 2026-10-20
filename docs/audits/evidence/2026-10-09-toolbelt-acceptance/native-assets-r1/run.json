@@ -1,0 +1,1802 @@
+{
+  "schema_version": 1,
+  "identity": {
+    "project_dir": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance",
+    "descriptor": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\ToolbeltAcceptance.uefnproject",
+    "mount": "001485b2-9178-47cf-a1a5-e66b92a43825",
+    "world_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/ToolbeltAcceptance.ToolbeltAcceptance"
+  },
+  "started_at_utc": "2026-10-10T00:17:22.395168+00:00",
+  "script_sha256": "e8ab029368a1ea7569837b23381206ea735fbc5d899b32fe1b3123a451565297",
+  "runtime_sources": {
+    "UEFN_Toolbelt": "0c4de1d7be8274ad33614e2af2f8718a90120c160a5fed53acc9174b93b91ce9",
+    "UEFN_Toolbelt.core": "0cc63b35261d39bf6fc5e07227f898c9c333b2de656de1f4d4104b128988c1fa",
+    "UEFN_Toolbelt.tools.integration_test": "f61d4f1a0ae586cfce783123805285bb1339caeb1292dcdcd52ddcc30b8a1c80",
+    "UEFN_Toolbelt.tools.sound_asset_tools": "c23e91a8ebc68276d704d3fc24d98684b9a0a552c8603df5b641c0ca725b8804",
+    "UEFN_Toolbelt.tools.texture_tools": "8f9d47761cb5c8a6187d99ebc41cac28b3dc02aea470ee2150f591b9251ee9b7"
+  },
+  "declared_tools": 362,
+  "registered_tools": 362,
+  "calls": [
+    {
+      "tool": "texture_set_srgb",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "srgb": false
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": true,
+            "to": false
+          }
+        ],
+        "errors": [],
+        "srgb": false
+      }
+    },
+    {
+      "tool": "texture_set_srgb",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "srgb": true
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": false,
+            "to": true
+          }
+        ],
+        "errors": [],
+        "srgb": true
+      }
+    },
+    {
+      "tool": "texture_set_srgb",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "srgb": true
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 0,
+        "skipped": 1,
+        "changes": [],
+        "errors": [],
+        "srgb": true
+      }
+    },
+    {
+      "tool": "texture_set_compression",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "compression": "TC_MASKS",
+        "max_assets": 5
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+            "to": "<TextureCompressionSettings.TC_MASKS: 2>"
+          }
+        ],
+        "errors": [],
+        "compression": "TC_MASKS"
+      }
+    },
+    {
+      "tool": "texture_set_compression",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "compression": "TC_UI",
+        "max_assets": 5
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": "<TextureCompressionSettings.TC_MASKS: 2>",
+            "to": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>"
+          }
+        ],
+        "errors": [],
+        "compression": "TC_EDITOR_ICON"
+      }
+    },
+    {
+      "tool": "texture_set_group",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "group": "ui"
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+            "to": "<TextureGroup.TEXTUREGROUP_UI: 16>"
+          }
+        ],
+        "errors": [],
+        "group": "TEXTUREGROUP_UI"
+      }
+    },
+    {
+      "tool": "texture_set_group",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "group": "world"
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+            "to": "<TextureGroup.TEXTUREGROUP_WORLD: 0>"
+          }
+        ],
+        "errors": [],
+        "group": "TEXTUREGROUP_WORLD"
+      }
+    },
+    {
+      "tool": "texture_apply_preset",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "preset": "game"
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": {
+              "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+              "srgb": false,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+            },
+            "to": {
+              "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+              "srgb": true,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+            }
+          }
+        ],
+        "errors": [],
+        "preset": "game",
+        "settings": {
+          "compression": "TC_DEFAULT",
+          "group": "world",
+          "srgb": true,
+          "mip_gen": "TMGS_FROM_TEXTURE_GROUP"
+        }
+      }
+    },
+    {
+      "tool": "texture_apply_preset",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "preset": "ui"
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": {
+              "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+              "srgb": true,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+            },
+            "to": {
+              "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+              "srgb": true,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>"
+            }
+          }
+        ],
+        "errors": [],
+        "preset": "ui",
+        "settings": {
+          "compression": "TC_EDITOR_ICON",
+          "group": "ui",
+          "srgb": true,
+          "mip_gen": "TMGS_NO_MIPMAPS"
+        }
+      }
+    },
+    {
+      "tool": "texture_apply_preset",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "preset": "normal"
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": {
+              "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+              "srgb": true,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>"
+            },
+            "to": {
+              "compression_settings": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD_NORMAL_MAP: 1>",
+              "srgb": false,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+            }
+          }
+        ],
+        "errors": [],
+        "preset": "normal",
+        "settings": {
+          "compression": "TC_NORMALMAP",
+          "group": "world_normalmap",
+          "srgb": false,
+          "mip_gen": "TMGS_FROM_TEXTURE_GROUP"
+        }
+      }
+    },
+    {
+      "tool": "texture_apply_preset",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "preset": "mask"
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": {
+              "compression_settings": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD_NORMAL_MAP: 1>",
+              "srgb": false,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+            },
+            "to": {
+              "compression_settings": "<TextureCompressionSettings.TC_MASKS: 2>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+              "srgb": false,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+            }
+          }
+        ],
+        "errors": [],
+        "preset": "mask",
+        "settings": {
+          "compression": "TC_MASKS",
+          "group": "world",
+          "srgb": false,
+          "mip_gen": "TMGS_FROM_TEXTURE_GROUP"
+        }
+      }
+    },
+    {
+      "tool": "texture_apply_preset",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "preset": "hdr"
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": {
+              "compression_settings": "<TextureCompressionSettings.TC_MASKS: 2>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+              "srgb": false,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+            },
+            "to": {
+              "compression_settings": "<TextureCompressionSettings.TC_HDR: 6>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+              "srgb": false,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+            }
+          }
+        ],
+        "errors": [],
+        "preset": "hdr",
+        "settings": {
+          "compression": "TC_HDR",
+          "group": "world",
+          "srgb": false,
+          "mip_gen": "TMGS_FROM_TEXTURE_GROUP"
+        }
+      }
+    },
+    {
+      "tool": "texture_apply_preset",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "preset": "icon"
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": {
+              "compression_settings": "<TextureCompressionSettings.TC_HDR: 6>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+              "srgb": false,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+            },
+            "to": {
+              "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+              "srgb": true,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>"
+            }
+          }
+        ],
+        "errors": [],
+        "preset": "icon",
+        "settings": {
+          "compression": "TC_EDITOR_ICON",
+          "group": "ui",
+          "srgb": true,
+          "mip_gen": "TMGS_NO_MIPMAPS"
+        }
+      }
+    },
+    {
+      "tool": "texture_apply_preset",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": false,
+        "preset": "grayscale"
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": false,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": {
+              "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+              "srgb": true,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>"
+            },
+            "to": {
+              "compression_settings": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+              "srgb": false,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+            }
+          }
+        ],
+        "errors": [],
+        "preset": "grayscale",
+        "settings": {
+          "compression": "TC_GRAYSCALE",
+          "group": "world",
+          "srgb": false,
+          "mip_gen": "TMGS_FROM_TEXTURE_GROUP"
+        }
+      }
+    },
+    {
+      "tool": "sound_asset_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio",
+        "sound_type": "wave",
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "sounds": [
+          {
+            "name": "SW_Acceptance",
+            "path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio/SW_Acceptance",
+            "type": "SoundWave",
+            "duration": "0.100000",
+            "channels": "1",
+            "sample_rate": "48000"
+          }
+        ]
+      }
+    },
+    {
+      "tool": "sound_asset_audit",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio",
+        "warn_duration_sec": 1.0,
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "total": 1,
+        "clean": 0,
+        "issues": 1,
+        "unknown": 0,
+        "issue_list": [
+          {
+            "name": "SW_Acceptance",
+            "path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio/SW_Acceptance",
+            "issues": [
+              "No SoundClass assigned"
+            ],
+            "unknown": false
+          }
+        ]
+      }
+    },
+    {
+      "tool": "anim_create_montage",
+      "kwargs": {
+        "sequence_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance",
+        "destination": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Animations",
+        "name": "AM_InvalidTexture"
+      },
+      "result": {
+        "status": "error",
+        "message": "Asset is not an AnimSequence: /001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance"
+      }
+    },
+    {
+      "tool": "anim_create_montage",
+      "kwargs": {
+        "sequence_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Animations/AS_Missing",
+        "destination": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Animations",
+        "name": "AM_MissingSequence"
+      },
+      "result": {
+        "status": "error",
+        "message": "Sequence not found: /001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Animations/AS_Missing"
+      }
+    },
+    {
+      "tool": "api_search",
+      "kwargs": {
+        "query": "Texture2D",
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "query": "Texture2D",
+        "result_count": 20
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "api_inspect",
+      "kwargs": {
+        "name": "Texture2D"
+      },
+      "result": {
+        "status": "ok",
+        "name": "Texture2D",
+        "found": true
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "anim_list_skeletons",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Animations"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "skeletons": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "anim_list_sequences",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Animations"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "sequences": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "anim_list_montages",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Animations"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "montages": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "anim_list_blend_spaces",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Animations"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "blend_spaces": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "audio_list_metasounds",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "metasounds": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "audio_list_sound_classes",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "sound_classes": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "audio_list_sound_cues",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "sound_cues": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "audio_list_sound_mixes",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "sound_mixes": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "audio_list_synesthesia",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "analyzers": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "texture_audit",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "textures": [
+          {
+            "name": "T_Acceptance",
+            "path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance",
+            "compression": "TC_Grayscale",
+            "texture_group": "TEXTUREGROUP_World",
+            "srgb": "False",
+            "size_x": null,
+            "size_y": null
+          }
+        ]
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "texture_set_compression",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": true,
+        "compression": "TC_MASKS",
+        "max_assets": 5
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": true,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+            "to": "<TextureCompressionSettings.TC_MASKS: 2>"
+          }
+        ],
+        "errors": [],
+        "compression": "TC_MASKS"
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "texture_set_group",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": true,
+        "group": "ui"
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": true,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+            "to": "<TextureGroup.TEXTUREGROUP_UI: 16>"
+          }
+        ],
+        "errors": [],
+        "group": "TEXTUREGROUP_UI"
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "texture_set_srgb",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": true,
+        "srgb": false
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": true,
+        "changed": 0,
+        "skipped": 1,
+        "changes": [],
+        "errors": [],
+        "srgb": false
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "texture_apply_preset",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": true,
+        "preset": "ui"
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": true,
+        "changed": 1,
+        "skipped": 0,
+        "changes": [
+          {
+            "name": "T_Acceptance",
+            "from": {
+              "compression_settings": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+              "srgb": false,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+            },
+            "to": {
+              "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+              "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+              "srgb": true,
+              "mip_gen_settings": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>"
+            }
+          }
+        ],
+        "errors": [],
+        "preset": "ui",
+        "settings": {
+          "compression": "TC_EDITOR_ICON",
+          "group": "ui",
+          "srgb": true,
+          "mip_gen": "TMGS_NO_MIPMAPS"
+        }
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "sound_asset_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio",
+        "sound_type": "wave",
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "sounds": [
+          {
+            "name": "SW_Acceptance",
+            "path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio/SW_Acceptance",
+            "type": "SoundWave",
+            "duration": "0.100000",
+            "channels": "1",
+            "sample_rate": "48000"
+          }
+        ]
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "sound_asset_audit",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio",
+        "warn_duration_sec": 1,
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "total": 1,
+        "clean": 0,
+        "issues": 1,
+        "unknown": 0,
+        "issue_list": [
+          {
+            "name": "SW_Acceptance",
+            "path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio/SW_Acceptance",
+            "issues": [
+              "No SoundClass assigned"
+            ],
+            "unknown": false
+          }
+        ]
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "sound_attenuation_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio",
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "attenuation_assets": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "sound_class_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio",
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "sound_classes": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "blueprint_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Blueprints",
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "blueprints": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "blueprint_audit",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Blueprints",
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "total": 0,
+        "clean": 0,
+        "issues": 0,
+        "issue_list": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "blueprint_inspect",
+      "kwargs": {
+        "asset_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Blueprints/BP_Acceptance"
+      },
+      "result": {
+        "status": "error",
+        "reason": "engine_api_unavailable",
+        "missing_apis": [
+          "EditorBlueprintLibrary"
+        ],
+        "message": "blueprint_inspect is unavailable in this engine build: EditorBlueprintLibrary not exposed (removed in UEFN 42.00 (UE 6.0)). The tool is disabled rather than failing part-way through. Run tb.smoke_test() for the full list."
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "curve_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures",
+        "max_results": 5,
+        "curve_type": "all"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "curves": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "datatable_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures",
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "tables": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "skel_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures",
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "meshes": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "skel_audit",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures",
+        "max_results": 5
+      },
+      "result": {
+        "status": "ok",
+        "total": 0,
+        "clean": 0,
+        "issues": 0,
+        "issue_list": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "input_list_actions",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Input"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "actions": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "input_list_contexts",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Input"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "contexts": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "world_partition_status",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "world_name": "ToolbeltAcceptance",
+        "world_partition_enabled": false,
+        "tip": "World Partition is not enabled. Enable it via World Settings \u2192 World Partition."
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    },
+    {
+      "tool": "data_layer_list",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "layers": []
+      },
+      "disposition": "returned_only; interpret fixture prerequisite and independent readback separately"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Texture2D imported dimensions",
+      "passed": true,
+      "detail": {
+        "class": "Texture2D",
+        "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+        "expected": [
+          32,
+          32
+        ],
+        "values": {
+          "x": 32,
+          "y": 32
+        },
+        "unknown": {}
+      }
+    },
+    {
+      "name": "texture_set_srgb native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "srgb": false
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": true,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "texture_set_srgb native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "srgb": true
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": true,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "texture_set_srgb native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "srgb": true
+        },
+        "expected_changed": 0,
+        "reported_changed": 0,
+        "properties_match": true,
+        "kind": "no_op_verified"
+      }
+    },
+    {
+      "name": "texture_set_compression native property readback",
+      "passed": false,
+      "detail": {
+        "requested": {
+          "compression_settings": "<TextureCompressionSettings.TC_MASKS: 2>"
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": false,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "texture_set_compression native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>"
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": true,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "texture_set_group native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>"
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": true,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "texture_set_group native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>"
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": true,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "texture_apply_preset native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+          "srgb": true,
+          "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": true,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "texture_apply_preset native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+          "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+          "srgb": true,
+          "mip_gen_settings": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>"
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": true,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "texture_apply_preset native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "compression_settings": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+          "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD_NORMAL_MAP: 1>",
+          "srgb": false,
+          "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": true,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "texture_apply_preset native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "compression_settings": "<TextureCompressionSettings.TC_MASKS: 2>",
+          "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+          "srgb": false,
+          "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": true,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "texture_apply_preset native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "compression_settings": "<TextureCompressionSettings.TC_HDR: 6>",
+          "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+          "srgb": false,
+          "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": true,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "texture_apply_preset native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+          "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+          "srgb": true,
+          "mip_gen_settings": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>"
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": true,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "texture_apply_preset native property readback",
+      "passed": true,
+      "detail": {
+        "requested": {
+          "compression_settings": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+          "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+          "srgb": false,
+          "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+        },
+        "expected_changed": 1,
+        "reported_changed": 1,
+        "properties_match": true,
+        "kind": "state_delta_verified"
+      }
+    },
+    {
+      "name": "SoundWave duration",
+      "passed": true,
+      "detail": {
+        "duration": 0.10000000149011612,
+        "expected_seconds": 0.1,
+        "unknown": {
+          "sample_rate_override": "SoundWave: Failed to find property 'sample_rate_override' for attribute 'sample_rate_override' on 'SoundWave'"
+        }
+      }
+    },
+    {
+      "name": "SoundWave named list fixture",
+      "passed": true,
+      "detail": "Known fixture required; empty list is not positive acceptance."
+    },
+    {
+      "name": "SoundWave missing SoundClass issue",
+      "passed": true,
+      "detail": "A native None SoundClass is a legitimate known issue, not a failed duration read."
+    },
+    {
+      "name": "Montage negative preflight AM_InvalidTexture",
+      "passed": true,
+      "detail": "Invalid-class/missing-sequence or API-unavailable boundary only; no valid animation fixture/playback proof."
+    },
+    {
+      "name": "Montage negative preflight AM_MissingSequence",
+      "passed": true,
+      "detail": "Invalid-class/missing-sequence or API-unavailable boundary only; no valid animation fixture/playback proof."
+    },
+    {
+      "name": "texture_set_compression preview preserves state",
+      "passed": true,
+      "detail": "Preview alone does not establish a persisted texture mutation."
+    },
+    {
+      "name": "texture_set_group preview preserves state",
+      "passed": true,
+      "detail": "Preview alone does not establish a persisted texture mutation."
+    },
+    {
+      "name": "texture_set_srgb preview preserves state",
+      "passed": true,
+      "detail": "Preview alone does not establish a persisted texture mutation."
+    },
+    {
+      "name": "texture_apply_preset preview preserves state",
+      "passed": true,
+      "detail": "Preview alone does not establish a persisted texture mutation."
+    }
+  ],
+  "native_readbacks": [
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": true,
+        "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "e273f3f72d4f1b3304b3956dba95ac7c3dbeb3df1266e1784e386051603d4684",
+      "saved_file_bytes": 11420
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": true,
+        "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "e273f3f72d4f1b3304b3956dba95ac7c3dbeb3df1266e1784e386051603d4684",
+      "saved_file_bytes": 11420
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "ce80252664be59986c979deff416a507feb88a45dfd9ef48999d48ca8823a11e",
+      "saved_file_bytes": 11554
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "ce80252664be59986c979deff416a507feb88a45dfd9ef48999d48ca8823a11e",
+      "saved_file_bytes": 11554
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": true,
+        "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "ceeeacc3935dc66088cae2714cbd546ffd6ed510468c82dbeffe7f138b9a5ca6",
+      "saved_file_bytes": 11515
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": true,
+        "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "ceeeacc3935dc66088cae2714cbd546ffd6ed510468c82dbeffe7f138b9a5ca6",
+      "saved_file_bytes": 11515
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": true,
+        "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "ceeeacc3935dc66088cae2714cbd546ffd6ed510468c82dbeffe7f138b9a5ca6",
+      "saved_file_bytes": 11515
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": true,
+        "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "ceeeacc3935dc66088cae2714cbd546ffd6ed510468c82dbeffe7f138b9a5ca6",
+      "saved_file_bytes": 11515
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_MASKS: 2>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "ea0d128a63be4b8e7d1634ac274ab9fc94daa2484a098eea91a9c80c990c6790",
+      "saved_file_bytes": 11689
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_MASKS: 2>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "ea0d128a63be4b8e7d1634ac274ab9fc94daa2484a098eea91a9c80c990c6790",
+      "saved_file_bytes": 11689
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "20fd882878dea93f5e5f756eccfc4b98daf7d263a118e050090bd399ebd71178",
+      "saved_file_bytes": 11702
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "20fd882878dea93f5e5f756eccfc4b98daf7d263a118e050090bd399ebd71178",
+      "saved_file_bytes": 11702
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "e2135e5182fc6fd01c1b14000232cd9edae924288d5cb1b6227d89ad6b283f41",
+      "saved_file_bytes": 11818
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "e2135e5182fc6fd01c1b14000232cd9edae924288d5cb1b6227d89ad6b283f41",
+      "saved_file_bytes": 11818
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "096f6a643b8a1caa6683e6a8bf2d4e86e831a15e379cba9b075dfa4cb8f91ba0",
+      "saved_file_bytes": 11702
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "096f6a643b8a1caa6683e6a8bf2d4e86e831a15e379cba9b075dfa4cb8f91ba0",
+      "saved_file_bytes": 11702
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": true,
+        "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "97879744205d6c3f7ba198e6b75f7f750ba694bbd16c28c7ad9b382330885ac4",
+      "saved_file_bytes": 11515
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": true,
+        "compression_settings": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "97879744205d6c3f7ba198e6b75f7f750ba694bbd16c28c7ad9b382330885ac4",
+      "saved_file_bytes": 11515
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": true,
+        "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "d91413a34c7e5e7fb97d89c29bdacb237c5d5c70126faebad2cdfc1ab75d5d41",
+      "saved_file_bytes": 11905
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": true,
+        "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "d91413a34c7e5e7fb97d89c29bdacb237c5d5c70126faebad2cdfc1ab75d5d41",
+      "saved_file_bytes": 11905
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD_NORMAL_MAP: 1>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "592af544dfcb3205ed54f40c32f87bcd8518ff9278656d3a07b1dfb8b92b52e2",
+      "saved_file_bytes": 11836
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD_NORMAL_MAP: 1>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "592af544dfcb3205ed54f40c32f87bcd8518ff9278656d3a07b1dfb8b92b52e2",
+      "saved_file_bytes": 11836
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_MASKS: 2>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "aee472273026b3e952d9f14d641d8c1a395646296ea03a46d4b6a0030df90aba",
+      "saved_file_bytes": 11689
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_MASKS: 2>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "aee472273026b3e952d9f14d641d8c1a395646296ea03a46d4b6a0030df90aba",
+      "saved_file_bytes": 11689
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_HDR: 6>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "21dd84ba023975aa2a8c819aae3e97ecefb3faf29fd99907e8a6d8cb3e49124b",
+      "saved_file_bytes": 11689
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_HDR: 6>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "21dd84ba023975aa2a8c819aae3e97ecefb3faf29fd99907e8a6d8cb3e49124b",
+      "saved_file_bytes": 11689
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": true,
+        "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "c7b3f6b9ee4e8b816983369bfeaff8bf053ad94b54ce7ca1199a330e0f44e8b2",
+      "saved_file_bytes": 11905
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": true,
+        "compression_settings": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "c7b3f6b9ee4e8b816983369bfeaff8bf053ad94b54ce7ca1199a330e0f44e8b2",
+      "saved_file_bytes": 11905
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "f2f2b70b75fab7696500ff45c63c442828ea60673f03f13a7d5d16e16329d0fc",
+      "saved_file_bytes": 11695
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "f2f2b70b75fab7696500ff45c63c442828ea60673f03f13a7d5d16e16329d0fc",
+      "saved_file_bytes": 11695
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "f2f2b70b75fab7696500ff45c63c442828ea60673f03f13a7d5d16e16329d0fc",
+      "saved_file_bytes": 11695
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "f2f2b70b75fab7696500ff45c63c442828ea60673f03f13a7d5d16e16329d0fc",
+      "saved_file_bytes": 11695
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "f2f2b70b75fab7696500ff45c63c442828ea60673f03f13a7d5d16e16329d0fc",
+      "saved_file_bytes": 11695
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "f2f2b70b75fab7696500ff45c63c442828ea60673f03f13a7d5d16e16329d0fc",
+      "saved_file_bytes": 11695
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "f2f2b70b75fab7696500ff45c63c442828ea60673f03f13a7d5d16e16329d0fc",
+      "saved_file_bytes": 11695
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "f2f2b70b75fab7696500ff45c63c442828ea60673f03f13a7d5d16e16329d0fc",
+      "saved_file_bytes": 11695
+    },
+    {
+      "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+      "class": "Texture2D",
+      "properties": {
+        "srgb": false,
+        "compression_settings": "<TextureCompressionSettings.TC_GRAYSCALE: 3>",
+        "lod_group": "<TextureGroup.TEXTUREGROUP_WORLD: 0>",
+        "mip_gen_settings": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>"
+      },
+      "saved_file": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\Content\\AcceptanceFixtures\\Textures\\T_Acceptance.uasset",
+      "saved_file_sha256": "f2f2b70b75fab7696500ff45c63c442828ea60673f03f13a7d5d16e16329d0fc",
+      "saved_file_bytes": 11695
+    }
+  ],
+  "availability": {
+    "Texture2D": true,
+    "SoundWave": true,
+    "AnimSequence": true,
+    "Skeleton": true,
+    "AnimMontage": true,
+    "AnimMontageFactory": true,
+    "InputActionFactory": false
+  },
+  "completed": true,
+  "fatal": "",
+  "limitation": "Exact calls and scoped independent reads only. Empty lists and native-unavailable refusals are boundaries. load_asset may return cached objects; this script does not prove post-restart persistence or animation playback.",
+  "engine_version": "6.0.0-58813929+++Fortnite+Release-42.30",
+  "texture_dimensions": {
+    "class": "Texture2D",
+    "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance",
+    "expected": [
+      32,
+      32
+    ],
+    "values": {
+      "x": 32,
+      "y": 32
+    },
+    "unknown": {}
+  },
+  "current_call": null,
+  "sound_readback": {
+    "object_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio/SW_Acceptance.SW_Acceptance",
+    "properties": {
+      "duration": 0.10000000149011612,
+      "num_channels": 1,
+      "sample_rate": 48000,
+      "sound_class_object": null
+    },
+    "unknown": {
+      "sample_rate_override": "SoundWave: Failed to find property 'sample_rate_override' for attribute 'sample_rate_override' on 'SoundWave'"
+    },
+    "saved_file_exists": true
+  },
+  "additional_plan_sha256": "463bc0d293216a1788eba8af6452203f4ce772e976ce21da2b9af675032a6aef",
+  "finished_at_utc": "2026-10-10T00:17:25.241307+00:00"
+}

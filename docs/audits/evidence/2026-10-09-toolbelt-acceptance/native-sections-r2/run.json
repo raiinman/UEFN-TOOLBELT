@@ -1,0 +1,6367 @@
+{
+  "identity": {
+    "project_dir": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance",
+    "descriptor": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\ToolbeltAcceptance.uefnproject",
+    "mount": "001485b2-9178-47cf-a1a5-e66b92a43825",
+    "world_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/ToolbeltAcceptance.ToolbeltAcceptance"
+  },
+  "sections": [
+    "materials",
+    "bulk_ops",
+    "bulk_ops_advanced",
+    "bulk_ops_extensions",
+    "patterns",
+    "patterns_advanced",
+    "advanced_patterns",
+    "scatter",
+    "splines",
+    "assets",
+    "memory",
+    "reference_auditor",
+    "project_scaffold",
+    "text_painter",
+    "advanced_materials",
+    "snapshots",
+    "crawler",
+    "asset_tagger",
+    "verse",
+    "verse_advanced",
+    "screenshots",
+    "lods_safe",
+    "optimization_safe",
+    "arena_safe",
+    "scatter_advanced_safe",
+    "assets_advanced_safe",
+    "bridge_safe",
+    "cooker_safe",
+    "curve_create_safe",
+    "measurement",
+    "localization",
+    "environmental",
+    "entities",
+    "selection",
+    "lighting_integration",
+    "project_admin_integration",
+    "zone_tools",
+    "stamp_tools",
+    "actor_org_tools",
+    "proximity_tools",
+    "advanced_alignment",
+    "sign_tools",
+    "postprocess_and_world",
+    "audio_tools",
+    "level_health",
+    "config_tools",
+    "lighting_extended",
+    "world_state",
+    "visibility_tools",
+    "viewport_bookmarks",
+    "selection_sets",
+    "project_admin_v196"
+  ],
+  "results": [
+    {
+      "section": "materials",
+      "result": {
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "total": 1,
+        "verified": 1,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "materials"
+        ],
+        "checks": [
+          {
+            "section": "Materials",
+            "name": "Apply Preset",
+            "passed": true,
+            "detail": "Applied 'gold' \u2192 MI_gold_Cube (instance=True, named=True, parent=True)",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "bulk_ops",
+      "result": {
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "total": 1,
+        "verified": 1,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "bulk_ops"
+        ],
+        "checks": [
+          {
+            "section": "Bulk Ops",
+            "name": "Align X (First Actor)",
+            "passed": true,
+            "detail": "X coords: 0.0, 0.0, 0.0",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "bulk_ops_advanced",
+      "result": {
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "verified": 5,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "bulk_ops_advanced"
+        ],
+        "checks": [
+          {
+            "section": "Bulk Ops",
+            "name": "Distribute X",
+            "passed": true,
+            "detail": "Middle actor X: 500.0 (Expected: 500.0)",
+            "verified": true
+          },
+          {
+            "section": "Bulk Ops",
+            "name": "Snap to 100",
+            "passed": true,
+            "detail": "Snapped to: <Struct 'Vector' (0x000000008BE09230) {x: 100.000000, y: 500.000000, z: 800.000000}>",
+            "verified": true
+          },
+          {
+            "section": "Bulk Ops",
+            "name": "Randomize (Rot)",
+            "passed": true,
+            "detail": "yaw=-7.57 pitch=0.00 roll=0.00 (pitch/roll must stay 0 \u2014 a value here means Quirk #41 is back)",
+            "verified": true
+          },
+          {
+            "section": "Bulk Ops",
+            "name": "Stack Z",
+            "passed": true,
+            "detail": "High actor Z: 150.0 (Expected: 150.0)",
+            "verified": true
+          },
+          {
+            "section": "Bulk Ops",
+            "name": "Reset Transforms",
+            "passed": true,
+            "detail": "Loc: <Struct 'Vector' (0x000000008BE08AB0) {x: 1.000000, y: 2.000000, z: 3.000000}>, Rot: <Struct 'Rotator' (0x000000008BE0AD60) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>, Scale: <Struct 'Vector' (0x000000008BE09A50) {x: 1.000000, y: 1.000000, z: 1.000000}>",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "bulk_ops_extensions",
+      "result": {
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "verified": 2,
+        "execution_only": 1,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "bulk_ops_extensions"
+        ],
+        "checks": [
+          {
+            "section": "Bulk Ops",
+            "name": "Mirror X",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Bulk Ops",
+            "name": "Normalize Scale",
+            "passed": true,
+            "detail": "Scale: <Struct 'Vector' (0x000000008BE09AA0) {x: 1.500000, y: 1.500000, z: 1.500000}>",
+            "verified": true
+          },
+          {
+            "section": "Bulk Ops",
+            "name": "Face Camera",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "patterns",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 2,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "patterns"
+        ],
+        "checks": [
+          {
+            "section": "Patterns",
+            "name": "Grid Spawn (2x2)",
+            "passed": true,
+            "detail": "Found 4 actors",
+            "verified": true
+          },
+          {
+            "section": "Patterns",
+            "name": "Clear All",
+            "passed": true,
+            "detail": "Remaining: 0",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "patterns_advanced",
+      "result": {
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "verified": 5,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "patterns_advanced"
+        ],
+        "checks": [
+          {
+            "section": "Patterns",
+            "name": "Circle (Radius/Count)",
+            "passed": true,
+            "detail": "Count: 8, Dist: 1000.0",
+            "verified": true
+          },
+          {
+            "section": "Patterns",
+            "name": "Line Spawn (Count=5)",
+            "passed": true,
+            "detail": "Found 5 actors",
+            "verified": true
+          },
+          {
+            "section": "Patterns",
+            "name": "Arc Spawn (180deg)",
+            "passed": true,
+            "detail": "Found 4 actors",
+            "verified": true
+          },
+          {
+            "section": "Patterns",
+            "name": "Spiral Spawn (Count=12)",
+            "passed": true,
+            "detail": "Found 12 actors",
+            "verified": true
+          },
+          {
+            "section": "Patterns",
+            "name": "Wave Spawn (Count=6)",
+            "passed": true,
+            "detail": "Found 6 actors",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "advanced_patterns",
+      "result": {
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "verified": 3,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "advanced_patterns"
+        ],
+        "checks": [
+          {
+            "section": "Patterns",
+            "name": "Helix Spawn (Count=24)",
+            "passed": true,
+            "detail": "Found 24 actors",
+            "verified": true
+          },
+          {
+            "section": "Patterns",
+            "name": "Radial Rows (Count=37)",
+            "passed": true,
+            "detail": "Found 37 actors",
+            "verified": true
+          },
+          {
+            "section": "Procedural",
+            "name": "Scatter Along Path (Count=6)",
+            "passed": true,
+            "detail": "Found 6",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "scatter",
+      "result": {
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "verified": 3,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "scatter"
+        ],
+        "checks": [
+          {
+            "section": "Scatter",
+            "name": "Props Count",
+            "passed": true,
+            "detail": "Found 10 actors",
+            "verified": true
+          },
+          {
+            "section": "Scatter",
+            "name": "HISM Instances",
+            "passed": true,
+            "detail": "HISM count: 50",
+            "verified": true
+          },
+          {
+            "section": "Scatter",
+            "name": "Clear",
+            "passed": true,
+            "detail": "Remaining: 0",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "splines",
+      "result": {
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "verified": 3,
+        "execution_only": 1,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "splines"
+        ],
+        "checks": [
+          {
+            "section": "Spline",
+            "name": "Place Props",
+            "passed": true,
+            "detail": "Spawned 5 props along spline",
+            "verified": true
+          },
+          {
+            "section": "Spline",
+            "name": "Code Generate Verse",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Spline",
+            "name": "Export JSON",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Spline",
+            "name": "Clear Props",
+            "passed": true,
+            "detail": "5 placed, 0 left after clear",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "assets",
+      "result": {
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "verified": 4,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "assets"
+        ],
+        "checks": [
+          {
+            "section": "Assets",
+            "name": "Rename Dry Run",
+            "passed": true,
+            "detail": "Report generated: True",
+            "verified": true
+          },
+          {
+            "section": "Assets",
+            "name": "Rename Report",
+            "passed": true,
+            "detail": "JSON Report created",
+            "verified": true
+          },
+          {
+            "section": "Assets",
+            "name": "Enforce Conventions",
+            "passed": true,
+            "detail": "renamed=2 status=ok",
+            "verified": true
+          },
+          {
+            "section": "Assets",
+            "name": "Strip Prefix",
+            "passed": true,
+            "detail": "done=1/1 status=ok",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "memory",
+      "result": {
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "verified": 1,
+        "execution_only": 4,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "memory"
+        ],
+        "checks": [
+          {
+            "section": "Optimization",
+            "name": "Memory Scan JSON",
+            "passed": true,
+            "detail": "Report generated: True",
+            "verified": true
+          },
+          {
+            "section": "Optimization",
+            "name": "Scan Textures",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Optimization",
+            "name": "Scan Meshes",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Optimization",
+            "name": "Top Offenders",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Optimization",
+            "name": "Auto-Fix LODs",
+            "passed": true,
+            "detail": "Tool runs safely on Empty Dir",
+            "verified": false
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "reference_auditor",
+      "result": {
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "verified": 1,
+        "execution_only": 4,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "reference_auditor"
+        ],
+        "checks": [
+          {
+            "section": "Assets",
+            "name": "Audit Orphans",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Assets",
+            "name": "Audit Redirectors",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Assets",
+            "name": "Audit Duplicates",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Assets",
+            "name": "Audit Unused Textures",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Assets",
+            "name": "Ref Aud Full Report",
+            "passed": true,
+            "detail": "Report generated: True",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "project_scaffold",
+      "result": {
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "verified": 3,
+        "execution_only": 1,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "project_scaffold"
+        ],
+        "checks": [
+          {
+            "section": "Project",
+            "name": "Scaffold Preview",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Project",
+            "name": "Scaffold Generate",
+            "passed": true,
+            "detail": "Maps folder created: True",
+            "verified": true
+          },
+          {
+            "section": "Project",
+            "name": "Scaffold Save Template",
+            "passed": true,
+            "detail": "listed as {'folder_count': 2, 'source': 'custom'}",
+            "verified": true
+          },
+          {
+            "section": "Project",
+            "name": "Scaffold Delete Template",
+            "passed": true,
+            "detail": "removed from the list",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "text_painter",
+      "result": {
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "verified": 3,
+        "execution_only": 3,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "text_painter"
+        ],
+        "checks": [
+          {
+            "section": "Procedural",
+            "name": "Text Place",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Procedural",
+            "name": "Text Paint Grid",
+            "passed": true,
+            "detail": "Found 4 actors, expected 4",
+            "verified": true
+          },
+          {
+            "section": "Procedural",
+            "name": "Text Save Style",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Procedural",
+            "name": "Text Color Cycle",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Procedural",
+            "name": "Text Label Selection",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Procedural",
+            "name": "Text Clear",
+            "passed": true,
+            "detail": "Remaining actors: 0",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "advanced_materials",
+      "result": {
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "total": 9,
+        "verified": 9,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "advanced_materials"
+        ],
+        "checks": [
+          {
+            "section": "Materials",
+            "name": "Randomize Colors",
+            "passed": true,
+            "detail": "3/3 actor(s) status=ok",
+            "verified": true
+          },
+          {
+            "section": "Materials",
+            "name": "Gradient Painter",
+            "passed": true,
+            "detail": "3/3 actor(s) status=ok",
+            "verified": true
+          },
+          {
+            "section": "Materials",
+            "name": "Team Color Split",
+            "passed": true,
+            "detail": "2 red + 1 blue = 3 of 3",
+            "verified": true
+          },
+          {
+            "section": "Materials",
+            "name": "Pattern Painter",
+            "passed": true,
+            "detail": "3/3 actor(s) status=ok",
+            "verified": true
+          },
+          {
+            "section": "Materials",
+            "name": "Glow Pulse Preview",
+            "passed": true,
+            "detail": "3/3 actor(s) status=ok",
+            "verified": true
+          },
+          {
+            "section": "Materials",
+            "name": "Color Harmony",
+            "passed": true,
+            "detail": "3/3 actor(s) harmony=triadic",
+            "verified": true
+          },
+          {
+            "section": "Materials",
+            "name": "Save & List Presets",
+            "passed": true,
+            "detail": "18 preset(s), saved one present=True",
+            "verified": true
+          },
+          {
+            "section": "Materials",
+            "name": "Bulk Swap",
+            "passed": true,
+            "detail": "status=ok slots=1 actors=1",
+            "verified": true
+          },
+          {
+            "section": "Materials",
+            "name": "Bulk Swap reports a miss as error",
+            "passed": true,
+            "detail": "status=error reason=no_slots_matched",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "snapshots",
+      "result": {
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "verified": 5,
+        "execution_only": 2,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "snapshots"
+        ],
+        "checks": [
+          {
+            "section": "Snapshots",
+            "name": "Save JSON",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Snapshots",
+            "name": "Export JSON",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Snapshots",
+            "name": "Import JSON",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Snapshots",
+            "name": "Compare Live",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Snapshots",
+            "name": "Diff JSON",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Snapshots",
+            "name": "Restore Transforms",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Snapshots",
+            "name": "Delete JSON",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "crawler",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 2,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "crawler"
+        ],
+        "checks": [
+          {
+            "section": "Crawler",
+            "name": "Level Crawl JSON",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Crawler",
+            "name": "Selection Crawl JSON",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "asset_tagger",
+      "result": {
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "verified": 7,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "asset_tagger"
+        ],
+        "checks": [
+          {
+            "section": "Asset Tagger",
+            "name": "Add Tag",
+            "passed": true,
+            "detail": "status=ok tagged=1/1",
+            "verified": true
+          },
+          {
+            "section": "Asset Tagger",
+            "name": "Show Tags",
+            "passed": true,
+            "detail": "status=ok tags={'TEST_INTEGRATION_TAG': 'verified'}",
+            "verified": true
+          },
+          {
+            "section": "Asset Tagger",
+            "name": "Search finds the tag it just wrote",
+            "passed": true,
+            "detail": "1 hit(s) in /001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Tags",
+            "verified": true
+          },
+          {
+            "section": "Asset Tagger",
+            "name": "List All",
+            "passed": true,
+            "detail": "TEST_INTEGRATION_TAG=1 asset(s), keys=['TEST_INTEGRATION_TAG']",
+            "verified": true
+          },
+          {
+            "section": "Asset Tagger",
+            "name": "Export Tags",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Asset Tagger",
+            "name": "Remove Tag",
+            "passed": true,
+            "detail": "status=ok removed=1/1",
+            "verified": true
+          },
+          {
+            "section": "Asset Tagger",
+            "name": "Search no longer finds it after removal",
+            "passed": true,
+            "detail": "0 hit(s) remaining",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "verse",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 0,
+        "execution_only": 2,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "verse"
+        ],
+        "checks": [
+          {
+            "section": "Verse",
+            "name": "List Snippets",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Verse",
+            "name": "Gen Device Declarations",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "verse_advanced",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 1,
+        "execution_only": 1,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "verse_advanced"
+        ],
+        "checks": [
+          {
+            "section": "Verse",
+            "name": "CodeGen Boilerplates",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Verse",
+            "name": "Bulk Set Property",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "screenshots",
+      "result": {
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "verified": 1,
+        "execution_only": 2,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "screenshots"
+        ],
+        "checks": [
+          {
+            "section": "Screenshots",
+            "name": "Focus Selection",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Screenshots",
+            "name": "Timed Series",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Screenshots",
+            "name": "Capture Paths",
+            "passed": true,
+            "detail": "Queued \u2192 {'status': 'ok', 'path': 'C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\\\screenshots\\\\integration_test_shot_20261009_171000_1920x1080.png'}",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "lods_safe",
+      "result": {
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "total": 1,
+        "verified": 0,
+        "execution_only": 1,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "lods_safe"
+        ],
+        "checks": [
+          {
+            "section": "LODs",
+            "name": "Audit Folder",
+            "passed": true,
+            "detail": "Audit executed on test folder",
+            "verified": false
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "optimization_safe",
+      "result": {
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "total": 1,
+        "verified": 0,
+        "execution_only": 1,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "optimization_safe"
+        ],
+        "checks": [
+          {
+            "section": "Optimization",
+            "name": "Safe Scans",
+            "passed": true,
+            "detail": "Scanned: /001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST",
+            "verified": false
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "arena_safe",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 2,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "arena_safe"
+        ],
+        "checks": [
+          {
+            "section": "Arena",
+            "name": "Generate",
+            "passed": true,
+            "detail": "Spawned 236 actors",
+            "verified": true
+          },
+          {
+            "section": "Arena",
+            "name": "Cleanup",
+            "passed": true,
+            "detail": "236 destroyed, 0 still in the Arena folder",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "scatter_advanced_safe",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 2,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "scatter_advanced_safe"
+        ],
+        "checks": [
+          {
+            "section": "Scatter",
+            "name": "Along Path",
+            "passed": true,
+            "detail": "Found 4 actors",
+            "verified": true
+          },
+          {
+            "section": "Scatter",
+            "name": "Cleanup",
+            "passed": true,
+            "detail": "0 actor(s) left in 'TOOLBELT_SCATTER_TEST'",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "assets_advanced_safe",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 2,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "assets_advanced_safe"
+        ],
+        "checks": [
+          {
+            "section": "Assets",
+            "name": "Enforce Conventions",
+            "passed": true,
+            "detail": "renamed=1",
+            "verified": true
+          },
+          {
+            "section": "Assets",
+            "name": "Organize Assets",
+            "passed": true,
+            "detail": "preview would_move=1 moved=1",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "bridge_safe",
+      "result": {
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "total": 1,
+        "verified": 0,
+        "execution_only": 1,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "bridge_safe"
+        ],
+        "checks": [
+          {
+            "section": "Bridge",
+            "name": "Listener preserved",
+            "passed": true,
+            "detail": "running=True; no lifecycle calls",
+            "verified": false
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "cooker_safe",
+      "result": {
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "verified": 3,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "cooker_safe"
+        ],
+        "checks": [
+          {
+            "section": "Cooker",
+            "name": "mark_selection status matches the count",
+            "passed": true,
+            "detail": "status=ok changed=2 failed=0 (ok with 0 changed is the bug)",
+            "verified": true
+          },
+          {
+            "section": "Cooker",
+            "name": "save=False is honoured",
+            "passed": true,
+            "detail": "saved=False (expected False)",
+            "verified": true
+          },
+          {
+            "section": "Cooker",
+            "name": "mark_selection(False) status matches the count",
+            "passed": true,
+            "detail": "status=ok changed=2 failed=0",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "curve_create_safe",
+      "result": {
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "verified": 3,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "curve_create_safe"
+        ],
+        "checks": [
+          {
+            "section": "Curves",
+            "name": "curve_create reports whether it saved",
+            "passed": true,
+            "detail": "status=ok saved=True (missing key = save is unchecked again)",
+            "verified": true
+          },
+          {
+            "section": "Curves",
+            "name": "returned path exists on disk",
+            "passed": true,
+            "detail": "path='/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Curves/CM_IntegrationCurve' exists=True",
+            "verified": true
+          },
+          {
+            "section": "Curves",
+            "name": "ok is not claimed for an unsaved asset",
+            "passed": true,
+            "detail": "status=ok saved=True",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "measurement",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 2,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "measurement"
+        ],
+        "checks": [
+          {
+            "section": "Measurement",
+            "name": "Measure Distance",
+            "passed": true,
+            "detail": "Dist: 1000.0",
+            "verified": true
+          },
+          {
+            "section": "Measurement",
+            "name": "Travel Time (Run)",
+            "passed": true,
+            "detail": "Time: 2.22s",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "localization",
+      "result": {
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "verified": 3,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "localization"
+        ],
+        "checks": [
+          {
+            "section": "Localization",
+            "name": "Export Manifest",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Localization",
+            "name": "Apply Translation",
+            "passed": true,
+            "detail": "Current: Grok_Translated",
+            "verified": true
+          },
+          {
+            "section": "Localization",
+            "name": "Cleanup TextRenderActor",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "environmental",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 2,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "environmental"
+        ],
+        "checks": [
+          {
+            "section": "Environmental",
+            "name": "Audit Brushes",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Environmental",
+            "name": "Convert Props",
+            "passed": true,
+            "detail": "Converted: 1",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "entities",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 2,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "entities"
+        ],
+        "checks": [
+          {
+            "section": "Entities",
+            "name": "List Kits",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Entities",
+            "name": "Spawn Kit",
+            "passed": true,
+            "detail": "status=error count=0/2 (status must match the count - ok with 0 spawned is the bug)",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "selection",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 2,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "selection"
+        ],
+        "checks": [
+          {
+            "section": "Selection",
+            "name": "Select in Radius",
+            "passed": true,
+            "detail": "in-radius fixtures selected=True, out-of-radius fixture excluded=True (6 actors selected in total)",
+            "verified": true
+          },
+          {
+            "section": "Selection",
+            "name": "Select by Property",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "lighting_integration",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 0,
+        "execution_only": 2,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "lighting_integration"
+        ],
+        "checks": [
+          {
+            "section": "Lighting",
+            "name": "Apply Preset (Cyberpunk)",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "Lighting",
+            "name": "Randomize Sky",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "project_admin_integration",
+      "result": {
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "total": 1,
+        "verified": 0,
+        "execution_only": 1,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "project_admin_integration"
+        ],
+        "checks": [
+          {
+            "section": "Project Admin",
+            "name": "Perf Audit",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "zone_tools",
+      "result": {
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "verified": 5,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "zone_tools"
+        ],
+        "checks": [
+          {
+            "section": "Zone",
+            "name": "zone_spawn",
+            "passed": true,
+            "detail": "TestZone",
+            "verified": true
+          },
+          {
+            "section": "Zone",
+            "name": "zone_list",
+            "passed": true,
+            "detail": "1 zones found",
+            "verified": true
+          },
+          {
+            "section": "Zone",
+            "name": "zone_select_contents",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Zone",
+            "name": "zone_snap_to_selection",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Zone",
+            "name": "zone_fill_scatter",
+            "passed": true,
+            "detail": "spawned 3",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "stamp_tools",
+      "result": {
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "verified": 7,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "stamp_tools"
+        ],
+        "checks": [
+          {
+            "section": "Stamps",
+            "name": "stamp_save",
+            "passed": true,
+            "detail": "saved 3 of 3 fixtures",
+            "verified": true
+          },
+          {
+            "section": "Stamps",
+            "name": "stamp_list",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Stamps",
+            "name": "stamp_info",
+            "passed": true,
+            "detail": "3 actors in stamp",
+            "verified": true
+          },
+          {
+            "section": "Stamps",
+            "name": "stamp_place",
+            "passed": 3,
+            "detail": "placed 3/3",
+            "verified": true
+          },
+          {
+            "section": "Stamps",
+            "name": "stamp_export",
+            "passed": true,
+            "detail": "C:\\Users\\mikea\\AppData\\Local\\Temp\\__tb_test_stamp__.json",
+            "verified": true
+          },
+          {
+            "section": "Stamps",
+            "name": "stamp_import",
+            "passed": true,
+            "detail": "actor_count=3",
+            "verified": true
+          },
+          {
+            "section": "Stamps",
+            "name": "stamp_delete",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "actor_org_tools",
+      "result": {
+        "status": "ok",
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "verified": 8,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "actor_org_tools"
+        ],
+        "checks": [
+          {
+            "section": "ActorOrg",
+            "name": "actor_move_to_folder",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "ActorOrg",
+            "name": "actor_folder_list",
+            "passed": true,
+            "detail": "2 folders, test folder present=True",
+            "verified": true
+          },
+          {
+            "section": "ActorOrg",
+            "name": "actor_select_by_folder",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "ActorOrg",
+            "name": "actor_select_by_class",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "ActorOrg",
+            "name": "actor_match_transform",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "ActorOrg",
+            "name": "actor_move_to_root",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "ActorOrg",
+            "name": "actor_attach_to_parent",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "ActorOrg",
+            "name": "actor_detach",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "proximity_tools",
+      "result": {
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "verified": 6,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "proximity_tools"
+        ],
+        "checks": [
+          {
+            "section": "Proximity",
+            "name": "actor_place_next_to",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Proximity",
+            "name": "actor_chain_place",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Proximity",
+            "name": "actor_duplicate_offset",
+            "passed": true,
+            "detail": "spawned 2 (expected 2)",
+            "verified": true
+          },
+          {
+            "section": "Proximity",
+            "name": "actor_copy_to_positions",
+            "passed": true,
+            "detail": "placed 2 (expected 2)",
+            "verified": true
+          },
+          {
+            "section": "Proximity",
+            "name": "actor_cluster_to_folder",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Proximity",
+            "name": "actor_replace_class (dry_run)",
+            "passed": true,
+            "detail": "would replace 11",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "advanced_alignment",
+      "result": {
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "verified": 6,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "advanced_alignment"
+        ],
+        "checks": [
+          {
+            "section": "AdvAlign",
+            "name": "align_to_reference",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "AdvAlign",
+            "name": "distribute_with_gap",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "AdvAlign",
+            "name": "rotate_around_pivot",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "AdvAlign",
+            "name": "match_spacing",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "AdvAlign",
+            "name": "align_to_surface",
+            "passed": true,
+            "detail": "refused cleanly \u2014 API absent on this build",
+            "verified": true
+          },
+          {
+            "section": "AdvAlign",
+            "name": "align_to_grid_two_points",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "sign_tools",
+      "result": {
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "verified": 7,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "sign_tools"
+        ],
+        "checks": [
+          {
+            "section": "Signs",
+            "name": "sign_spawn_bulk",
+            "passed": true,
+            "detail": "spawned 3",
+            "verified": true
+          },
+          {
+            "section": "Signs",
+            "name": "sign_list",
+            "passed": true,
+            "detail": "3 signs found",
+            "verified": true
+          },
+          {
+            "section": "Signs",
+            "name": "sign_batch_edit",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Signs",
+            "name": "sign_batch_rename",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Signs",
+            "name": "sign_batch_set_text",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Signs",
+            "name": "label_attach",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Signs",
+            "name": "sign_clear (publish-safe cleanup)",
+            "passed": true,
+            "detail": "deleted=4, remaining=0",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "postprocess_and_world",
+      "result": {
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "verified": 4,
+        "execution_only": 1,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "postprocess_and_world"
+        ],
+        "checks": [
+          {
+            "section": "PostProcess",
+            "name": "postprocess_spawn",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "PostProcess",
+            "name": "postprocess_set",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "PostProcess",
+            "name": "postprocess_preset (cinematic)",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "PostProcess",
+            "name": "postprocess_preset (reset)",
+            "passed": true,
+            "detail": "",
+            "verified": false
+          },
+          {
+            "section": "PostProcess",
+            "name": "world_settings_set (gravity)",
+            "passed": true,
+            "detail": "status=error applied={} unavailable=['gravity']",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "audio_tools",
+      "result": {
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "verified": 4,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "audio_tools"
+        ],
+        "checks": [
+          {
+            "section": "Audio",
+            "name": "audio_place",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Audio",
+            "name": "audio_list",
+            "passed": true,
+            "detail": "1 sounds",
+            "verified": true
+          },
+          {
+            "section": "Audio",
+            "name": "audio_set_volume",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Audio",
+            "name": "audio_set_radius",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "level_health",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 2,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "level_health"
+        ],
+        "checks": [
+          {
+            "section": "LevelHealth",
+            "name": "level_health_report",
+            "passed": true,
+            "detail": "score=98/100",
+            "verified": true
+          },
+          {
+            "section": "LevelHealth",
+            "name": "rogue_actor_scan",
+            "passed": true,
+            "detail": "11 of 13 actors flagged",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "config_tools",
+      "result": {
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "verified": 4,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "config_tools"
+        ],
+        "checks": [
+          {
+            "section": "Config",
+            "name": "config_list",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Config",
+            "name": "config_set",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Config",
+            "name": "config_get",
+            "passed": true,
+            "detail": "value=TOOLBELT_TEST_Config",
+            "verified": true
+          },
+          {
+            "section": "Config",
+            "name": "config_reset",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "lighting_extended",
+      "result": {
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "verified": 4,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "lighting_extended"
+        ],
+        "checks": [
+          {
+            "section": "Lighting",
+            "name": "light_place (point)",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Lighting",
+            "name": "light_list",
+            "passed": true,
+            "detail": "1 lights",
+            "verified": true
+          },
+          {
+            "section": "Lighting",
+            "name": "light_set",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Lighting",
+            "name": "sky_set_time",
+            "passed": true,
+            "detail": "No DirectionalLight in level.",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "world_state",
+      "result": {
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "total": 2,
+        "verified": 2,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "world_state"
+        ],
+        "checks": [
+          {
+            "section": "WorldState",
+            "name": "world_state_export",
+            "passed": true,
+            "detail": "13 actors captured",
+            "verified": true
+          },
+          {
+            "section": "WorldState",
+            "name": "device_catalog_scan",
+            "passed": true,
+            "detail": "4545 devices found",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "visibility_tools",
+      "result": {
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "verified": 6,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "visibility_tools"
+        ],
+        "checks": [
+          {
+            "section": "Visibility",
+            "name": "actor_hide",
+            "passed": true,
+            "detail": "hidden=2",
+            "verified": true
+          },
+          {
+            "section": "Visibility",
+            "name": "actor_show",
+            "passed": true,
+            "detail": "shown=2",
+            "verified": true
+          },
+          {
+            "section": "Visibility",
+            "name": "actor_isolate",
+            "passed": true,
+            "detail": "visible=2",
+            "verified": true
+          },
+          {
+            "section": "Visibility",
+            "name": "actor_show_all",
+            "passed": true,
+            "detail": "restored=13",
+            "verified": true
+          },
+          {
+            "section": "Visibility",
+            "name": "actor_lock (runs ok)",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Visibility",
+            "name": "actor_unlock (runs ok)",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "viewport_bookmarks",
+      "result": {
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "verified": 6,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "viewport_bookmarks"
+        ],
+        "checks": [
+          {
+            "section": "Viewport",
+            "name": "viewport_showflag (clean)",
+            "passed": true,
+            "detail": "['ShowFlag.TextRenders 0', 'ShowFlag.BillboardSprites 0', 'ShowFlag.Decals 0']",
+            "verified": true
+          },
+          {
+            "section": "Viewport",
+            "name": "viewport_showflag (reset)",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Viewport",
+            "name": "viewport_bookmark_save",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Viewport",
+            "name": "viewport_bookmark_list",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Viewport",
+            "name": "viewport_bookmark_jump",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "Viewport",
+            "name": "viewport_showflag (unknown preset = error)",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "selection_sets",
+      "result": {
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "verified": 4,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "selection_sets"
+        ],
+        "checks": [
+          {
+            "section": "SelectionSets",
+            "name": "selection_save",
+            "passed": true,
+            "detail": "count=2",
+            "verified": true
+          },
+          {
+            "section": "SelectionSets",
+            "name": "selection_list",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          },
+          {
+            "section": "SelectionSets",
+            "name": "selection_restore",
+            "passed": true,
+            "detail": "matched=2, missing=0",
+            "verified": true
+          },
+          {
+            "section": "SelectionSets",
+            "name": "selection_restore (unknown = error)",
+            "passed": true,
+            "detail": "",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    },
+    {
+      "section": "project_admin_v196",
+      "result": {
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "total": 1,
+        "verified": 1,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "project_admin_v196"
+        ],
+        "checks": [
+          {
+            "section": "ProjectAdmin",
+            "name": "save_all_dirty",
+            "passed": true,
+            "detail": "level=True, packages=True",
+            "verified": true
+          }
+        ],
+        "failures": []
+      }
+    }
+  ],
+  "calls": [
+    {
+      "section": "materials",
+      "tool": "material_apply_preset",
+      "kwargs": {
+        "preset": "gold"
+      },
+      "result": {
+        "status": "ok",
+        "preset": "gold",
+        "applied": 1,
+        "failed": 0
+      }
+    },
+    {
+      "section": "bulk_ops",
+      "tool": "bulk_align",
+      "kwargs": {
+        "axis": "X"
+      },
+      "result": {
+        "status": "ok",
+        "count": 2,
+        "axis": "X",
+        "value": 0.0
+      }
+    },
+    {
+      "section": "bulk_ops_advanced",
+      "tool": "bulk_distribute",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 3,
+        "axis": "X",
+        "span": 1000.0,
+        "step": 500.0
+      }
+    },
+    {
+      "section": "bulk_ops_advanced",
+      "tool": "bulk_snap_to_grid",
+      "kwargs": {
+        "grid_size": 100
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "grid": 100.0
+      }
+    },
+    {
+      "section": "bulk_ops_advanced",
+      "tool": "bulk_randomize",
+      "kwargs": {
+        "rot_range": 360.0,
+        "pitch_range": 0.0,
+        "randomize_scale": false
+      },
+      "result": {
+        "status": "ok",
+        "count": 1
+      }
+    },
+    {
+      "section": "bulk_ops_advanced",
+      "tool": "bulk_stack",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 2,
+        "gap": 0.0
+      }
+    },
+    {
+      "section": "bulk_ops_advanced",
+      "tool": "bulk_reset",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 1
+      }
+    },
+    {
+      "section": "bulk_ops_extensions",
+      "tool": "bulk_mirror",
+      "kwargs": {
+        "axis": "X"
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "axis": "X"
+      }
+    },
+    {
+      "section": "bulk_ops_extensions",
+      "tool": "bulk_mirror",
+      "kwargs": {
+        "axis": "X"
+      },
+      "result": {
+        "status": "ok",
+        "count": 2,
+        "axis": "X"
+      }
+    },
+    {
+      "section": "bulk_ops_extensions",
+      "tool": "bulk_normalize_scale",
+      "kwargs": {
+        "target_scale": 1.5
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "target_scale": 1.5
+      }
+    },
+    {
+      "section": "bulk_ops_extensions",
+      "tool": "bulk_face_camera",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 1
+      }
+    },
+    {
+      "section": "patterns",
+      "tool": "pattern_grid",
+      "kwargs": {
+        "cols": 2,
+        "rows": 2,
+        "spacing_x": 500,
+        "spacing_y": 500
+      },
+      "result": {
+        "status": "ok",
+        "spawned": 4,
+        "center": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "section": "patterns",
+      "tool": "pattern_clear",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "deleted": 4,
+        "attempted": 4
+      }
+    },
+    {
+      "section": "patterns_advanced",
+      "tool": "pattern_circle",
+      "kwargs": {
+        "radius": 1000.0,
+        "count": 8
+      },
+      "result": {
+        "status": "ok",
+        "spawned": 8,
+        "center": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "section": "patterns_advanced",
+      "tool": "pattern_clear",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "deleted": 8,
+        "attempted": 8
+      }
+    },
+    {
+      "section": "patterns_advanced",
+      "tool": "pattern_line",
+      "kwargs": {
+        "count": 5,
+        "spacing": 200
+      },
+      "result": {
+        "status": "ok",
+        "spawned": 5,
+        "center": [
+          1000.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "section": "patterns_advanced",
+      "tool": "pattern_clear",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "deleted": 5,
+        "attempted": 5
+      }
+    },
+    {
+      "section": "patterns_advanced",
+      "tool": "pattern_arc",
+      "kwargs": {
+        "radius": 500,
+        "angle": 180,
+        "count": 4
+      },
+      "result": {
+        "status": "ok",
+        "spawned": 4,
+        "center": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "section": "patterns_advanced",
+      "tool": "pattern_clear",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "deleted": 4,
+        "attempted": 4
+      }
+    },
+    {
+      "section": "patterns_advanced",
+      "tool": "pattern_spiral",
+      "kwargs": {
+        "count": 12
+      },
+      "result": {
+        "status": "ok",
+        "spawned": 12,
+        "center": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "section": "patterns_advanced",
+      "tool": "pattern_clear",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "deleted": 12,
+        "attempted": 12
+      }
+    },
+    {
+      "section": "patterns_advanced",
+      "tool": "pattern_wave",
+      "kwargs": {
+        "count": 6
+      },
+      "result": {
+        "status": "ok",
+        "spawned": 6,
+        "center": [
+          1500.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "section": "patterns_advanced",
+      "tool": "pattern_clear",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "deleted": 6,
+        "attempted": 6
+      }
+    },
+    {
+      "section": "advanced_patterns",
+      "tool": "pattern_helix",
+      "kwargs": {
+        "count": 24,
+        "radius": 600,
+        "turns": 2.0
+      },
+      "result": {
+        "status": "ok",
+        "spawned": 24,
+        "center": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "section": "advanced_patterns",
+      "tool": "pattern_clear",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "deleted": 24,
+        "attempted": 24
+      }
+    },
+    {
+      "section": "advanced_patterns",
+      "tool": "pattern_radial_rows",
+      "kwargs": {
+        "rings": 3,
+        "props_per_ring": 6,
+        "include_center": true
+      },
+      "result": {
+        "status": "ok",
+        "spawned": 37,
+        "center": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "section": "advanced_patterns",
+      "tool": "pattern_clear",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "deleted": 37,
+        "attempted": 37
+      }
+    },
+    {
+      "section": "advanced_patterns",
+      "tool": "scatter_along_path",
+      "kwargs": {
+        "path_points": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            1000.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "count_per_point": 3,
+        "folder": "TestScatterPath"
+      },
+      "result": {
+        "status": "ok",
+        "placed": 6
+      }
+    },
+    {
+      "section": "advanced_patterns",
+      "tool": "scatter_clear",
+      "kwargs": {
+        "folder": "TestScatterPath"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": 6,
+        "folder": "TestScatterPath"
+      }
+    },
+    {
+      "section": "scatter",
+      "tool": "scatter_clear",
+      "kwargs": {
+        "folder": "TestScatter"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": 0,
+        "folder": "TestScatter"
+      }
+    },
+    {
+      "section": "scatter",
+      "tool": "scatter_props",
+      "kwargs": {
+        "count": 10,
+        "radius": 500.0,
+        "folder": "TestScatter"
+      },
+      "result": {
+        "status": "ok",
+        "placed": 10,
+        "center": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "folder": "TestScatter"
+      }
+    },
+    {
+      "section": "scatter",
+      "tool": "scatter_hism",
+      "kwargs": {
+        "count": 50,
+        "radius": 500.0,
+        "folder": "TestScatterHISM"
+      },
+      "result": {
+        "status": "ok",
+        "count": 50,
+        "center": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "folder": "TestScatterHISM"
+      }
+    },
+    {
+      "section": "scatter",
+      "tool": "scatter_clear",
+      "kwargs": {
+        "folder": "TestScatter"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": 11,
+        "folder": "TestScatter"
+      }
+    },
+    {
+      "section": "scatter",
+      "tool": "scatter_clear",
+      "kwargs": {
+        "folder": "TestScatterHISM"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": 0,
+        "folder": "TestScatterHISM"
+      }
+    },
+    {
+      "section": "splines",
+      "tool": "spline_clear_props",
+      "kwargs": {
+        "folder_name": "TestSplineProps"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": 0,
+        "folder": "TestSplineProps"
+      }
+    },
+    {
+      "section": "splines",
+      "tool": "spline_place_props",
+      "kwargs": {
+        "count": 5,
+        "folder_name": "TestSplineProps"
+      },
+      "result": {
+        "status": "ok",
+        "placed": 5,
+        "folder": "TestSplineProps"
+      }
+    },
+    {
+      "section": "splines",
+      "tool": "spline_to_verse_points",
+      "kwargs": {
+        "sample_count": 10
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\snippets\\spline_tools\\spline_SplinePath.verse",
+        "point_count": 10
+      }
+    },
+    {
+      "section": "splines",
+      "tool": "spline_to_verse_patrol",
+      "kwargs": {
+        "device_name": "TestSplinePatrol"
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\snippets\\spline_tools\\TestSplinePatrol_patrol.verse",
+        "device_name": "TestSplinePatrol"
+      }
+    },
+    {
+      "section": "splines",
+      "tool": "spline_to_verse_zone_boundary",
+      "kwargs": {
+        "zone_name": "TestSplineZone"
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\snippets\\spline_tools\\TestSplineZone_boundary.verse",
+        "point_count": 20
+      }
+    },
+    {
+      "section": "splines",
+      "tool": "spline_export_json",
+      "kwargs": {
+        "sample_count": 5,
+        "include_tangents": true
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\spline_export.json",
+        "count": 5
+      }
+    },
+    {
+      "section": "splines",
+      "tool": "spline_clear_props",
+      "kwargs": {
+        "folder_name": "TestSplineProps"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": 5,
+        "folder": "TestSplineProps"
+      }
+    },
+    {
+      "section": "assets",
+      "tool": "rename_dry_run",
+      "kwargs": {
+        "scan_path": "/Engine/BasicShapes"
+      },
+      "result": {
+        "status": "ok",
+        "violations": 8,
+        "ok": 0,
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\rename_report.json"
+      }
+    },
+    {
+      "section": "assets",
+      "tool": "rename_report",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST"
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\rename_report.json",
+        "violations": 2,
+        "total": 2
+      }
+    },
+    {
+      "section": "assets",
+      "tool": "rename_enforce_conventions",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST",
+        "dry_run": false
+      },
+      "result": {
+        "status": "ok",
+        "renamed": 2,
+        "failed": 0,
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\rename_report.json"
+      }
+    },
+    {
+      "section": "assets",
+      "tool": "rename_strip_prefix",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST",
+        "prefix": "MI_",
+        "dry_run": false
+      },
+      "result": {
+        "status": "ok",
+        "done": 1,
+        "failed": 0,
+        "total": 1,
+        "dry_run": false
+      }
+    },
+    {
+      "section": "memory",
+      "tool": "memory_scan",
+      "kwargs": {
+        "scan_path": "/Engine/BasicShapes"
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\memory_report.json",
+        "summary": {
+          "total_textures": 0,
+          "texture_warnings": 0,
+          "texture_criticals": 0,
+          "estimated_vram_mb": 0.0,
+          "total_meshes": 6,
+          "mesh_warnings": 6,
+          "mesh_criticals": 0,
+          "meshes_missing_lods": 6,
+          "total_sounds": 0,
+          "sound_warnings": 0,
+          "sound_criticals": 0
+        }
+      }
+    },
+    {
+      "section": "memory",
+      "tool": "memory_scan_textures",
+      "kwargs": {
+        "scan_path": "/Engine/EngineMaterials"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "offenders": []
+      }
+    },
+    {
+      "section": "memory",
+      "tool": "memory_scan_meshes",
+      "kwargs": {
+        "scan_path": "/Engine/BasicShapes"
+      },
+      "result": {
+        "status": "ok",
+        "count": 6,
+        "offenders": [
+          {
+            "path": "/Engine/BasicShapes/Sphere.Sphere",
+            "lod_count": 0,
+            "approx_verts": 559,
+            "missing_lods": true,
+            "severity": "warning"
+          },
+          {
+            "path": "/Engine/BasicShapes/Cylinder.Cylinder",
+            "lod_count": 0,
+            "approx_verts": 334,
+            "missing_lods": true,
+            "severity": "warning"
+          },
+          {
+            "path": "/Engine/BasicShapes/Cone.Cone",
+            "lod_count": 0,
+            "approx_verts": 198,
+            "missing_lods": true,
+            "severity": "warning"
+          },
+          {
+            "path": "/Engine/BasicShapes/Cube.Cube",
+            "lod_count": 0,
+            "approx_verts": 54,
+            "missing_lods": true,
+            "severity": "warning"
+          },
+          {
+            "path": "/Engine/BasicShapes/Cube1.Cube1",
+            "lod_count": 0,
+            "approx_verts": 54,
+            "missing_lods": true,
+            "severity": "warning"
+          },
+          {
+            "path": "/Engine/BasicShapes/Plane.Plane",
+            "lod_count": 0,
+            "approx_verts": 4,
+            "missing_lods": true,
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "section": "memory",
+      "tool": "memory_top_offenders",
+      "kwargs": {
+        "scan_path": "/Engine/BasicShapes",
+        "top_n": 5
+      },
+      "result": {
+        "status": "ok",
+        "textures": [],
+        "meshes": [
+          {
+            "path": "/Engine/BasicShapes/Sphere.Sphere",
+            "lod_count": 0,
+            "approx_verts": 559,
+            "missing_lods": true,
+            "severity": "warning"
+          },
+          {
+            "path": "/Engine/BasicShapes/Cylinder.Cylinder",
+            "lod_count": 0,
+            "approx_verts": 334,
+            "missing_lods": true,
+            "severity": "warning"
+          },
+          {
+            "path": "/Engine/BasicShapes/Cone.Cone",
+            "lod_count": 0,
+            "approx_verts": 198,
+            "missing_lods": true,
+            "severity": "warning"
+          },
+          {
+            "path": "/Engine/BasicShapes/Cube.Cube",
+            "lod_count": 0,
+            "approx_verts": 54,
+            "missing_lods": true,
+            "severity": "warning"
+          },
+          {
+            "path": "/Engine/BasicShapes/Cube1.Cube1",
+            "lod_count": 0,
+            "approx_verts": 54,
+            "missing_lods": true,
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "section": "memory",
+      "tool": "lod_auto_generate_folder",
+      "kwargs": {
+        "folder_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST_MEM",
+        "num_lods": 3,
+        "skip_existing": true
+      },
+      "result": {
+        "status": "ok",
+        "done": 0,
+        "failed": 0
+      }
+    },
+    {
+      "section": "memory",
+      "tool": "memory_autofix_lods",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST_MEM",
+        "num_lods": 3
+      },
+      "result": {
+        "status": "ok",
+        "done": 0,
+        "failed": 0
+      }
+    },
+    {
+      "section": "reference_auditor",
+      "tool": "ref_audit_orphans",
+      "kwargs": {
+        "scan_path": "/Engine/BasicShapes",
+        "excluded_classes": []
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "orphans": []
+      }
+    },
+    {
+      "section": "reference_auditor",
+      "tool": "ref_audit_redirectors",
+      "kwargs": {
+        "scan_path": "/Engine/BasicShapes"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "redirectors": []
+      }
+    },
+    {
+      "section": "reference_auditor",
+      "tool": "ref_audit_duplicates",
+      "kwargs": {
+        "scan_path": "/Engine/BasicShapes"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "duplicates": []
+      }
+    },
+    {
+      "section": "reference_auditor",
+      "tool": "ref_audit_unused_textures",
+      "kwargs": {
+        "scan_path": "/Engine/EngineMaterials"
+      },
+      "result": {
+        "status": "ok",
+        "count": 33,
+        "textures": [
+          {
+            "path": "/Engine/EngineMaterials/DefaultBokeh_Low.DefaultBokeh_Low",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/DefCube_Face.DefCube_Face",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/EnergyConservation/Diffuse_Energy.Diffuse_Energy",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/EnergyConservation/GGX_MaxSpecEnergy.GGX_MaxSpecEnergy",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/EnergyConservation/GGX_ReflectionEnergy.GGX_ReflectionEnergy",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/EnergyConservation/GGX_TransmissionEnergy.GGX_TransmissionEnergy",
+            "class": "VolumeTexture"
+          },
+          {
+            "path": "/Engine/EngineMaterials/EnergyConservation/GGX_TransmissionEnergyArray.GGX_TransmissionEnergyArray",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/EnergyConservation/Sheen_Energy.Sheen_Energy",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/EnergyConservation/SheenLegacy_Energy.SheenLegacy_Energy",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/FastBlueNoise_scalar_128x128x8.FastBlueNoise_scalar_128x128x8",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/FastBlueNoise_vec2_128x128x64.FastBlueNoise_vec2_128x128x64",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq_Low.Good64x64TilingNoiseHighFreq_Low",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/Hair/Hair_Coverage.Hair_Coverage",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/Hair/Hair_DirectionalAlbedo.Hair_DirectionalAlbedo",
+            "class": "VolumeTexture"
+          },
+          {
+            "path": "/Engine/EngineMaterials/Hair/Hair_DualScattering.Hair_DualScattering",
+            "class": "VolumeTexture"
+          },
+          {
+            "path": "/Engine/EngineMaterials/InvalidLightmapSettings_Low.InvalidLightmapSettings_Low",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/LTC/GGX_LTCAmp.GGX_LTCAmp",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/LTC/GGX_LTCMat.GGX_LTCMat",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/LTC/Sheen_LTC.Sheen_LTC",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/PaperDiffuse.PaperDiffuse",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/PaperNormal.PaperNormal",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/PreintegratedSkinBRDF.PreintegratedSkinBRDF",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/PreintegratedSkinBRDF_Low.PreintegratedSkinBRDF_Low",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/RandomMirrorDisc.RandomMirrorDisc",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/SMAAAreaTex.SMAAAreaTex",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/SMAASearchTex.SMAASearchTex",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/SoundCue_SpeakerIcon.SoundCue_SpeakerIcon",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/Substrate/GLints/AGlintTex2dArray.AGlintTex2dArray",
+            "class": "Texture2DArray"
+          },
+          {
+            "path": "/Engine/EngineMaterials/Substrate/Glints2/AGlintTex2dArray2.AGlintTex2dArray2",
+            "class": "Texture2DArray"
+          },
+          {
+            "path": "/Engine/EngineMaterials/Substrate/Volume/SubstrateSimpleVolumeEnvLUT3D.SubstrateSimpleVolumeEnvLUT3D",
+            "class": "VolumeTexture"
+          },
+          {
+            "path": "/Engine/EngineMaterials/Substrate/Volume/SubstrateSimpleVolumeLUT3D.SubstrateSimpleVolumeLUT3D",
+            "class": "VolumeTexture"
+          },
+          {
+            "path": "/Engine/EngineMaterials/T_Default_Normal.T_Default_Normal",
+            "class": "Texture2D"
+          },
+          {
+            "path": "/Engine/EngineMaterials/T_DefaultTexture2_D.T_DefaultTexture2_D",
+            "class": "Texture2D"
+          }
+        ]
+      }
+    },
+    {
+      "section": "reference_auditor",
+      "tool": "ref_full_report",
+      "kwargs": {
+        "scan_path": "/Engine/BasicShapes",
+        "excluded_classes": []
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\ref_audit_report.json",
+        "summary": {
+          "orphaned_assets": 0,
+          "redirectors": 0,
+          "duplicate_names": 0,
+          "unused_textures": 0
+        }
+      }
+    },
+    {
+      "section": "project_scaffold",
+      "tool": "scaffold_preview",
+      "kwargs": {
+        "template": "solo_dev",
+        "project_name": "ScaffoldTest",
+        "base": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST"
+      },
+      "result": {
+        "status": "ok",
+        "paths": [
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/ScaffoldTest/_WIP",
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/ScaffoldTest/Maps",
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/ScaffoldTest/Materials",
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/ScaffoldTest/Materials/Instances",
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/ScaffoldTest/Meshes",
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/ScaffoldTest/Meshes/Props",
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/ScaffoldTest/Blueprints",
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/ScaffoldTest/Verse",
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/ScaffoldTest/Audio",
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/ScaffoldTest/FX",
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/ScaffoldTest/Textures"
+        ],
+        "new_count": 11,
+        "exists_count": 0
+      }
+    },
+    {
+      "section": "project_scaffold",
+      "tool": "scaffold_generate",
+      "kwargs": {
+        "template": "solo_dev",
+        "project_name": "ScaffoldTest",
+        "base": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST"
+      },
+      "result": {
+        "status": "ok",
+        "created": 11,
+        "skipped": 0,
+        "failed": 0,
+        "log_path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\scaffold_log.json"
+      }
+    },
+    {
+      "section": "project_scaffold",
+      "tool": "scaffold_save_template",
+      "kwargs": {
+        "template_name": "TEST_Tmpl",
+        "folders": [
+          "A",
+          "B/C"
+        ]
+      },
+      "result": {
+        "status": "ok",
+        "name": "TEST_Tmpl",
+        "folder_count": 2
+      }
+    },
+    {
+      "section": "project_scaffold",
+      "tool": "scaffold_list_templates",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 5,
+        "templates": {
+          "uefn_standard": {
+            "folder_count": 56,
+            "source": "built-in"
+          },
+          "competitive_map": {
+            "folder_count": 27,
+            "source": "built-in"
+          },
+          "solo_dev": {
+            "folder_count": 11,
+            "source": "built-in"
+          },
+          "verse_heavy": {
+            "folder_count": 31,
+            "source": "built-in"
+          },
+          "TEST_Tmpl": {
+            "folder_count": 2,
+            "source": "custom"
+          }
+        }
+      }
+    },
+    {
+      "section": "project_scaffold",
+      "tool": "scaffold_delete_template",
+      "kwargs": {
+        "template_name": "TEST_Tmpl"
+      },
+      "result": {
+        "status": "ok",
+        "name": "TEST_Tmpl"
+      }
+    },
+    {
+      "section": "project_scaffold",
+      "tool": "scaffold_list_templates",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 4,
+        "templates": {
+          "uefn_standard": {
+            "folder_count": 56,
+            "source": "built-in"
+          },
+          "competitive_map": {
+            "folder_count": 27,
+            "source": "built-in"
+          },
+          "solo_dev": {
+            "folder_count": 11,
+            "source": "built-in"
+          },
+          "verse_heavy": {
+            "folder_count": 31,
+            "source": "built-in"
+          }
+        }
+      }
+    },
+    {
+      "section": "text_painter",
+      "tool": "text_place",
+      "kwargs": {
+        "text": "UNIT_TEST",
+        "location": [
+          0,
+          0,
+          1000
+        ],
+        "folder": "TestTextProps"
+      },
+      "result": {
+        "status": "ok",
+        "text": "UNIT_TEST",
+        "location": [
+          0,
+          0,
+          1000
+        ],
+        "publish_blocker": "TextRenderActor",
+        "cleanup": "tb.run(\"sign_clear\", all_text_actors=True, dry_run=False)"
+      }
+    },
+    {
+      "section": "text_painter",
+      "tool": "text_paint_grid",
+      "kwargs": {
+        "cols": 2,
+        "rows": 2,
+        "origin": [
+          0,
+          0,
+          2000
+        ],
+        "cell_size": 200,
+        "folder": "TestTextGrid"
+      },
+      "result": {
+        "status": "ok",
+        "placed": 4,
+        "publish_blocker": "TextRenderActor",
+        "cleanup": "tb.run(\"sign_clear\", all_text_actors=True, dry_run=False)"
+      }
+    },
+    {
+      "section": "text_painter",
+      "tool": "text_save_style",
+      "kwargs": {
+        "style_name": "TEST_Style",
+        "color": "#FF0000"
+      },
+      "result": {
+        "status": "ok",
+        "name": "TEST_Style"
+      }
+    },
+    {
+      "section": "text_painter",
+      "tool": "text_list_styles",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "styles": [
+          "TEST_Style"
+        ]
+      }
+    },
+    {
+      "section": "text_painter",
+      "tool": "text_color_cycle",
+      "kwargs": {
+        "start_location": [
+          0,
+          500,
+          1000
+        ],
+        "spacing_x": 200
+      },
+      "result": {
+        "status": "ok",
+        "placed": 8,
+        "publish_blocker": "TextRenderActor",
+        "cleanup": "tb.run(\"sign_clear\", all_text_actors=True, dry_run=False)"
+      }
+    },
+    {
+      "section": "text_painter",
+      "tool": "text_label_selection",
+      "kwargs": {
+        "offset_z": 100.0,
+        "color": "#FF00FF"
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "publish_blocker": "TextRenderActor",
+        "cleanup": "tb.run(\"sign_clear\", all_text_actors=True, dry_run=False)"
+      }
+    },
+    {
+      "section": "text_painter",
+      "tool": "text_clear_folder",
+      "kwargs": {
+        "folder": "TestTextProps"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": 1,
+        "folder": "TestTextProps"
+      }
+    },
+    {
+      "section": "text_painter",
+      "tool": "text_clear_folder",
+      "kwargs": {
+        "folder": "TestTextGrid"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": 4,
+        "folder": "TestTextGrid"
+      }
+    },
+    {
+      "section": "text_painter",
+      "tool": "text_clear_folder",
+      "kwargs": {
+        "folder": "ToolbeltText"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": 9,
+        "folder": "ToolbeltText"
+      }
+    },
+    {
+      "section": "advanced_materials",
+      "tool": "material_randomize_colors",
+      "kwargs": {
+        "saturation": 0.8
+      },
+      "result": {
+        "status": "ok",
+        "count": 3,
+        "attempted": 3
+      }
+    },
+    {
+      "section": "advanced_materials",
+      "tool": "material_gradient_painter",
+      "kwargs": {
+        "color_a": "#0000FF",
+        "color_b": "#FF0000",
+        "axis": "X"
+      },
+      "result": {
+        "status": "ok",
+        "count": 3,
+        "attempted": 3
+      }
+    },
+    {
+      "section": "advanced_materials",
+      "tool": "material_team_color_split",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "red": 2,
+        "blue": 1,
+        "attempted": 3
+      }
+    },
+    {
+      "section": "advanced_materials",
+      "tool": "material_pattern_painter",
+      "kwargs": {
+        "pattern": "checkerboard",
+        "preset_a": "neon",
+        "preset_b": "rubber"
+      },
+      "result": {
+        "status": "ok",
+        "count": 3,
+        "attempted": 3
+      }
+    },
+    {
+      "section": "advanced_materials",
+      "tool": "material_glow_pulse_preview",
+      "kwargs": {
+        "intensity": 10.0
+      },
+      "result": {
+        "status": "ok",
+        "count": 3,
+        "attempted": 3
+      }
+    },
+    {
+      "section": "advanced_materials",
+      "tool": "material_color_harmony",
+      "kwargs": {
+        "harmony": "triadic"
+      },
+      "result": {
+        "status": "ok",
+        "count": 3,
+        "attempted": 3,
+        "harmony": "triadic"
+      }
+    },
+    {
+      "section": "advanced_materials",
+      "tool": "material_apply_preset",
+      "kwargs": {
+        "preset": "chrome"
+      },
+      "result": {
+        "status": "ok",
+        "preset": "chrome",
+        "applied": 1,
+        "failed": 0
+      }
+    },
+    {
+      "section": "advanced_materials",
+      "tool": "material_save_preset",
+      "kwargs": {
+        "preset_name": "TEST_Integration_Preset"
+      },
+      "result": {
+        "status": "ok",
+        "name": "TEST_Integration_Preset"
+      }
+    },
+    {
+      "section": "advanced_materials",
+      "tool": "material_list_presets",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 18,
+        "presets": [
+          "TEST_Integration_Preset",
+          "carbon_fiber",
+          "chrome",
+          "concrete",
+          "gold",
+          "hologram",
+          "ice",
+          "jade",
+          "lava",
+          "mirror",
+          "neon",
+          "obsidian",
+          "plasma",
+          "rubber",
+          "rusty_metal",
+          "team_blue",
+          "team_red",
+          "wood"
+        ]
+      }
+    },
+    {
+      "section": "advanced_materials",
+      "tool": "material_bulk_swap",
+      "kwargs": {
+        "old_material_path": "/Engine/BasicShapes/BasicShapeMaterial",
+        "new_material_path": "/Engine/EngineMaterials/DefaultMaterial",
+        "scope": "selection"
+      },
+      "result": {
+        "status": "ok",
+        "actors_touched": 1,
+        "total_slots": 1
+      }
+    },
+    {
+      "section": "advanced_materials",
+      "tool": "material_bulk_swap",
+      "kwargs": {
+        "old_material_path": "/Engine/BasicShapes/BasicShapeMaterial",
+        "new_material_path": "/Engine/EngineMaterials/DefaultMaterial",
+        "scope": "selection"
+      },
+      "result": {
+        "status": "error",
+        "actors_touched": 0,
+        "total_slots": 0,
+        "reason": "no_slots_matched"
+      }
+    },
+    {
+      "section": "snapshots",
+      "tool": "snapshot_save",
+      "kwargs": {
+        "name": "test_integration_snap_A"
+      },
+      "result": {
+        "status": "ok",
+        "name": "test_integration_snap_A",
+        "actor_count": 12,
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\snapshots\\test_integration_snap_A.json"
+      }
+    },
+    {
+      "section": "snapshots",
+      "tool": "snapshot_export",
+      "kwargs": {
+        "name": "test_integration_snap_A",
+        "export_path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\exported_snap_A.json"
+      },
+      "result": {
+        "status": "ok",
+        "name": "test_integration_snap_A",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\exported_snap_A.json"
+      }
+    },
+    {
+      "section": "snapshots",
+      "tool": "snapshot_import",
+      "kwargs": {
+        "import_path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\exported_snap_A.json",
+        "name": "test_integration_snap_Imported"
+      },
+      "result": {
+        "status": "ok",
+        "name": "test_integration_snap_Imported",
+        "actor_count": 12,
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\snapshots\\test_integration_snap_Imported.json"
+      }
+    },
+    {
+      "section": "snapshots",
+      "tool": "snapshot_compare_live",
+      "kwargs": {
+        "name": "test_integration_snap_A"
+      },
+      "result": {
+        "snapshot_a": "test_integration_snap_A",
+        "snapshot_b": "current level",
+        "added_count": 1,
+        "removed_count": 0,
+        "moved_count": 0,
+        "added": [
+          {
+            "label": "Cube",
+            "class": "FortStaticMeshActor",
+            "location": {
+              "x": 100.0,
+              "y": 200.0,
+              "z": 300.0
+            },
+            "rotation": {
+              "pitch": 0.0,
+              "yaw": 0.0,
+              "roll": 0.0
+            },
+            "scale": {
+              "x": 1.0,
+              "y": 1.0,
+              "z": 1.0
+            },
+            "tags": [
+              "TOOLBELT_TEST_FIXTURE"
+            ],
+            "hidden": false
+          }
+        ],
+        "removed": [],
+        "moved": [],
+        "status": "ok"
+      }
+    },
+    {
+      "section": "snapshots",
+      "tool": "snapshot_save",
+      "kwargs": {
+        "name": "test_integration_snap_B"
+      },
+      "result": {
+        "status": "ok",
+        "name": "test_integration_snap_B",
+        "actor_count": 13,
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\snapshots\\test_integration_snap_B.json"
+      }
+    },
+    {
+      "section": "snapshots",
+      "tool": "snapshot_diff",
+      "kwargs": {
+        "name_a": "test_integration_snap_A",
+        "name_b": "test_integration_snap_B"
+      },
+      "result": {
+        "snapshot_a": "test_integration_snap_A",
+        "snapshot_b": "test_integration_snap_B",
+        "added_count": 1,
+        "removed_count": 0,
+        "moved_count": 0,
+        "added": [
+          {
+            "label": "Cube",
+            "class": "FortStaticMeshActor",
+            "location": {
+              "x": 100.0,
+              "y": 200.0,
+              "z": 300.0
+            },
+            "rotation": {
+              "pitch": 0.0,
+              "yaw": 0.0,
+              "roll": 0.0
+            },
+            "scale": {
+              "x": 1.0,
+              "y": 1.0,
+              "z": 1.0
+            },
+            "tags": [
+              "TOOLBELT_TEST_FIXTURE"
+            ],
+            "hidden": false
+          }
+        ],
+        "removed": [],
+        "moved": [],
+        "status": "ok"
+      }
+    },
+    {
+      "section": "snapshots",
+      "tool": "snapshot_restore",
+      "kwargs": {
+        "name": "test_integration_snap_B"
+      },
+      "result": {
+        "status": "ok",
+        "name": "test_integration_snap_B",
+        "restored": 13,
+        "skipped": 0
+      }
+    },
+    {
+      "section": "snapshots",
+      "tool": "snapshot_delete",
+      "kwargs": {
+        "name": "test_integration_snap_A"
+      },
+      "result": {
+        "status": "ok",
+        "name": "test_integration_snap_A"
+      }
+    },
+    {
+      "section": "snapshots",
+      "tool": "snapshot_delete",
+      "kwargs": {
+        "name": "test_integration_snap_B"
+      },
+      "result": {
+        "status": "ok",
+        "name": "test_integration_snap_B"
+      }
+    },
+    {
+      "section": "snapshots",
+      "tool": "snapshot_delete",
+      "kwargs": {
+        "name": "test_integration_snap_Imported"
+      },
+      "result": {
+        "status": "ok",
+        "name": "test_integration_snap_Imported"
+      }
+    },
+    {
+      "section": "crawler",
+      "tool": "api_crawl_level_classes",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\api_level_classes_schema.json",
+        "unique_classes": 7,
+        "total_actors": 12
+      }
+    },
+    {
+      "section": "crawler",
+      "tool": "api_crawl_selection",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\api_selection_crawl.json",
+        "count": 1
+      }
+    },
+    {
+      "section": "asset_tagger",
+      "tool": "tag_add",
+      "kwargs": {
+        "asset_paths": [
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Tags/MI_TagTarget"
+        ],
+        "tag_name": "TEST_INTEGRATION_TAG",
+        "value": "verified"
+      },
+      "result": {
+        "tag": "TEST_INTEGRATION_TAG",
+        "tagged": 1,
+        "attempted": 1,
+        "value": "verified",
+        "status": "ok"
+      }
+    },
+    {
+      "section": "asset_tagger",
+      "tool": "tag_show",
+      "kwargs": {
+        "asset_paths": [
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Tags/MI_TagTarget"
+        ]
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "assets": {
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Tags/MI_TagTarget": {
+            "TEST_INTEGRATION_TAG": "verified"
+          }
+        }
+      }
+    },
+    {
+      "section": "asset_tagger",
+      "tool": "tag_search",
+      "kwargs": {
+        "tag_name": "TEST_INTEGRATION_TAG",
+        "value": "verified",
+        "folder": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Tags"
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "matches": [
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Tags/MI_TagTarget.MI_TagTarget"
+        ]
+      }
+    },
+    {
+      "section": "asset_tagger",
+      "tool": "tag_list_all",
+      "kwargs": {
+        "folder": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Tags"
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "tags": {
+          "TEST_INTEGRATION_TAG": 1
+        }
+      }
+    },
+    {
+      "section": "asset_tagger",
+      "tool": "tag_export",
+      "kwargs": {
+        "folder": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Tags"
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\tag_export.json",
+        "unique_tags": 1
+      }
+    },
+    {
+      "section": "asset_tagger",
+      "tool": "tag_remove",
+      "kwargs": {
+        "asset_paths": [
+          "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Tags/MI_TagTarget"
+        ],
+        "tag_name": "TEST_INTEGRATION_TAG"
+      },
+      "result": {
+        "tag": "TEST_INTEGRATION_TAG",
+        "removed": 1,
+        "attempted": 1,
+        "status": "ok"
+      }
+    },
+    {
+      "section": "asset_tagger",
+      "tool": "tag_search",
+      "kwargs": {
+        "tag_name": "TEST_INTEGRATION_TAG",
+        "value": "verified",
+        "folder": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Tags"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "matches": []
+      }
+    },
+    {
+      "section": "verse",
+      "tool": "verse_list_snippets",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 3,
+        "snippets": [
+          {
+            "subcat": "spline_tools",
+            "filename": "TestSplinePatrol_patrol.verse",
+            "size_bytes": 2157
+          },
+          {
+            "subcat": "spline_tools",
+            "filename": "TestSplineZone_boundary.verse",
+            "size_bytes": 2091
+          },
+          {
+            "subcat": "spline_tools",
+            "filename": "spline_SplinePath.verse",
+            "size_bytes": 686
+          }
+        ]
+      }
+    },
+    {
+      "section": "verse",
+      "tool": "verse_gen_device_declarations",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\snippets\\device_wiring\\device_declarations.verse",
+        "code": "# Generated by UEFN Toolbelt \u2014 2026-10-09 17:09:48\n# Paste these into your creative_device class body:\n\n    # Actor: 'Cube'  @ (0, 0, 0)\n    @editable  cube                    : creative_device = creative_device{}\n",
+        "device_count": 1
+      }
+    },
+    {
+      "section": "verse_advanced",
+      "tool": "verse_gen_custom",
+      "kwargs": {
+        "code": "# custom test snippet",
+        "description": "pytest"
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\snippets\\custom\\custom_snippet.verse",
+        "bytes": 269
+      }
+    },
+    {
+      "section": "verse_advanced",
+      "tool": "verse_gen_elimination_handler",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\snippets\\game_systems\\elimination_handler.verse"
+      }
+    },
+    {
+      "section": "verse_advanced",
+      "tool": "verse_gen_game_skeleton",
+      "kwargs": {
+        "device_name": "TestIntegrationGameMgr"
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\snippets\\game_systems\\TestIntegrationGameMgr.verse",
+        "device_name": "TestIntegrationGameMgr"
+      }
+    },
+    {
+      "section": "verse_advanced",
+      "tool": "verse_gen_prop_spawner",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\snippets\\device_wiring\\prop_spawner_controller.verse"
+      }
+    },
+    {
+      "section": "verse_advanced",
+      "tool": "verse_gen_scoring_tracker",
+      "kwargs": {
+        "max_score": 50
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\snippets\\game_systems\\scoring_tracker.verse"
+      }
+    },
+    {
+      "section": "verse_advanced",
+      "tool": "verse_list_devices",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "devices": [
+          {
+            "label": "IslandSettings0",
+            "class": "Device_ExperienceSettings_V2_UEFN_C",
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "section": "verse_advanced",
+      "tool": "verse_export_report",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\verse_device_report.json",
+        "count": 1
+      }
+    },
+    {
+      "section": "verse_advanced",
+      "tool": "verse_select_by_name",
+      "kwargs": {
+        "name_filter": "RandomNonExistentString123"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "labels": []
+      }
+    },
+    {
+      "section": "verse_advanced",
+      "tool": "verse_select_by_class",
+      "kwargs": {
+        "class_filter": "RandomNonExistentString123"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "labels": []
+      }
+    },
+    {
+      "section": "verse_advanced",
+      "tool": "verse_bulk_set_property",
+      "kwargs": {
+        "property_name": "bHidden",
+        "value": true,
+        "use_all_devices": false
+      },
+      "result": {
+        "status": "ok",
+        "success": 1,
+        "failed": 0
+      }
+    },
+    {
+      "section": "screenshots",
+      "tool": "screenshot_take",
+      "kwargs": {
+        "name": "integration_test_shot",
+        "width": 1920,
+        "height": 1080
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\screenshots\\integration_test_shot_20261009_171000_1920x1080.png"
+      }
+    },
+    {
+      "section": "screenshots",
+      "tool": "screenshot_focus_selection",
+      "kwargs": {
+        "name": "focus_shot",
+        "width": 1280,
+        "height": 720,
+        "restore_camera": false
+      },
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\screenshots\\focus_shot_20261009_171005_1280x720.png"
+      }
+    },
+    {
+      "section": "screenshots",
+      "tool": "screenshot_timed_series",
+      "kwargs": {
+        "name": "series_shot",
+        "count": 2,
+        "width": 1280,
+        "height": 720,
+        "interval_sec": 0.1
+      },
+      "result": {
+        "status": "ok",
+        "count": 2,
+        "folder": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\screenshots"
+      }
+    },
+    {
+      "section": "screenshots",
+      "tool": "screenshot_open_folder",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\screenshots",
+        "file_count": 0
+      }
+    },
+    {
+      "section": "lods_safe",
+      "tool": "lod_audit_folder",
+      "kwargs": {
+        "folder_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/LODs"
+      },
+      "result": {
+        "status": "ok",
+        "path": "",
+        "no_lod_count": 0,
+        "no_collision_count": 0,
+        "records": []
+      }
+    },
+    {
+      "section": "optimization_safe",
+      "tool": "memory_scan_textures",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "offenders": []
+      }
+    },
+    {
+      "section": "optimization_safe",
+      "tool": "memory_scan_meshes",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST"
+      },
+      "result": {
+        "status": "ok",
+        "count": 0,
+        "offenders": []
+      }
+    },
+    {
+      "section": "arena_safe",
+      "tool": "arena_generate",
+      "kwargs": {
+        "size": "small",
+        "apply_team_colors": false
+      },
+      "result": {
+        "status": "ok",
+        "placed": 236,
+        "red_spawns": 4,
+        "blue_spawns": 4
+      }
+    },
+    {
+      "section": "scatter_advanced_safe",
+      "tool": "scatter_along_path",
+      "kwargs": {
+        "path_points": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1000,
+            0,
+            0
+          ]
+        ],
+        "count_per_point": 2,
+        "folder": "TOOLBELT_SCATTER_TEST"
+      },
+      "result": {
+        "status": "ok",
+        "placed": 4
+      }
+    },
+    {
+      "section": "scatter_advanced_safe",
+      "tool": "scatter_clear",
+      "kwargs": {
+        "folder": "TOOLBELT_SCATTER_TEST"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": 4,
+        "folder": "TOOLBELT_SCATTER_TEST"
+      }
+    },
+    {
+      "section": "assets_advanced_safe",
+      "tool": "rename_enforce_conventions",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/AssetOps",
+        "dry_run": false
+      },
+      "result": {
+        "status": "ok",
+        "renamed": 1,
+        "failed": 0,
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\rename_report.json"
+      }
+    },
+    {
+      "section": "assets_advanced_safe",
+      "tool": "organize_assets",
+      "kwargs": {
+        "source_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/AssetOps",
+        "target_base": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Organized",
+        "dry_run": true
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": true,
+        "moved": 0,
+        "would_move": 1,
+        "planned": [
+          {
+            "from": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/AssetOps/mi_bad_Name.mi_bad_Name",
+            "to": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Organized/Materials/mi_bad_Name.mi_bad_Name"
+          }
+        ],
+        "total": 1,
+        "target": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Organized"
+      }
+    },
+    {
+      "section": "assets_advanced_safe",
+      "tool": "organize_assets",
+      "kwargs": {
+        "source_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/AssetOps",
+        "target_base": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Organized",
+        "dry_run": false
+      },
+      "result": {
+        "status": "ok",
+        "moved": 1,
+        "total": 1,
+        "target": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Organized"
+      }
+    },
+    {
+      "section": "bridge_safe",
+      "tool": "mcp_status",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "running": true,
+        "port": 8765,
+        "url": "http://127.0.0.1:8765",
+        "commands": 31,
+        "transport": "authenticated_queued",
+        "authenticated": true,
+        "execute_python_enabled": false
+      }
+    },
+    {
+      "section": "cooker_safe",
+      "tool": "cooker_mark_selection",
+      "kwargs": {
+        "mark": true,
+        "save": false
+      },
+      "result": {
+        "status": "ok",
+        "action": "mark",
+        "saved": false,
+        "changed": 2,
+        "failed": 0,
+        "failed_labels": []
+      }
+    },
+    {
+      "section": "cooker_safe",
+      "tool": "cooker_mark_selection",
+      "kwargs": {
+        "mark": false,
+        "save": false
+      },
+      "result": {
+        "status": "ok",
+        "action": "clear",
+        "saved": false,
+        "changed": 2,
+        "failed": 0,
+        "failed_labels": []
+      }
+    },
+    {
+      "section": "curve_create_safe",
+      "tool": "curve_create",
+      "kwargs": {
+        "name": "CM_IntegrationCurve",
+        "destination": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Curves"
+      },
+      "result": {
+        "status": "ok",
+        "name": "CM_IntegrationCurve",
+        "path": "/001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Curves/CM_IntegrationCurve",
+        "saved": true,
+        "tip": "Open in Curve Editor to add keys."
+      }
+    },
+    {
+      "section": "measurement",
+      "tool": "measure_distance",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "distance_cm": 1000.0,
+        "segment_count": 1
+      }
+    },
+    {
+      "section": "measurement",
+      "tool": "measure_travel_time",
+      "kwargs": {
+        "speed_type": "Run"
+      },
+      "result": {
+        "status": "ok",
+        "distance_cm": 1000.0,
+        "speed_cms": 450.0,
+        "time_seconds": 2.2222222222222223
+      }
+    },
+    {
+      "section": "localization",
+      "tool": "text_export_manifest",
+      "kwargs": {
+        "format": "json"
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\localization\\manifest.json"
+      }
+    },
+    {
+      "section": "localization",
+      "tool": "text_apply_translation",
+      "kwargs": {
+        "manifest_path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\localization\\manifest.json"
+      },
+      "result": {
+        "status": "ok",
+        "applied": 1,
+        "attempted": 1
+      }
+    },
+    {
+      "section": "environmental",
+      "tool": "foliage_audit_brushes",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 41,
+        "meshes": [
+          "/BlastBerryMapContent/Game/Athena/Environments/Landscape/Foliage/DesertGrassFoliage01",
+          "/BlastBerryMapContent/Game/Athena/Environments/Landscape/Foliage/GrassFoliageType_Athena",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd00",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd01",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd02",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd03",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd04",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd05",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd06",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd07",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd08",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd09",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd10",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd11",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd12",
+          "/DelMarGame/Environments/Desert/Meshes/Crowd/Foliage_DelMar_Crowd13",
+          "/DelMarGame/Environments/Desert/Meshes/Flora/Foliage_ARI_Arid_Tree_01",
+          "/DelMarGame/Environments/Desert/Meshes/Flora/Foliage_ARI_AridBush02_FoliageType",
+          "/DelMarGame/Environments/Desert/Meshes/Flora/Foliage_ARI_AridBush03",
+          "/DelMarGame/Environments/Desert/Meshes/Flora/Foliage_ARI_Joshua_Tree_01",
+          "/DelMarGame/Environments/Desert/Meshes/Flora/Foliage_ARI_Joshua_Tree_03",
+          "/DelMarGame/Environments/Desert/Meshes/Flora/Foliage_ARI_Joshua_Tree_04",
+          "/DelMarGame/Environments/Desert/Meshes/Flora/Foliage_DM_Cactus00",
+          "/DelMarGame/Environments/Desert/Meshes/Flora/Foliage_DM_Cactus01",
+          "/DelMarGame/Environments/Desert/Meshes/Flora/Foliage_DM_Cactus02",
+          "/DelMarGame/Environments/Desert/Meshes/Flora/Foliage_DM_Cactus03",
+          "/DelMarGame/Environments/Desert/Meshes/Rocks/Foliage_CP_S_Artemis_Desert_RockSm_01",
+          "/DelMarGame/Environments/Desert/Meshes/Rocks/Foliage_CP_S_Artemis_Desert_RockSm_02",
+          "/DelMarGame/Environments/Desert/Meshes/Rocks/Foliage_CP_S_Artemis_Desert_RockSm_03",
+          "/Game/Athena/Apollo/Environments/Landscape/SmallFoliage/DataAssets/StaticMeshFoliageType/NoRVTorBiomes/SMF_ApolloGrass01_Simple",
+          "/Game/Athena/Apollo/Environments/Landscape/SmallFoliage/DataAssets/StaticMeshFoliageType/SMF_ApolloGrass01",
+          "/Game/Environments/Apollo/Rocks/Natural_Rocks/Meshes/Foliage/SM_Apolla_Rock_Natural_Scree_2_FoliageType",
+          "/Game/Environments/Apollo/Rocks/Natural_Rocks/Meshes/Foliage/SM_Apollo_Pebble_Scree_FoliageType",
+          "/Game/Environments/Apollo/Rocks/Natural_Rocks/Meshes/Foliage/SM_Apollo_Rock_LRG_02_FoliageType",
+          "/Game/Environments/Asteria/Foliage/Procedural/FoliageMesh_Grass_Standard_NoBiome",
+          "/Game/Environments/Asteria/Foliage/Procedural/FoliageMesh_JungleFlower_01",
+          "/Game/Environments/Foliage/FoliageType/DesertShrub01Foliage",
+          "/Game/Environments/Foliage/FoliageType/GrassFoliageType",
+          "/Game/Environments/Foliage/FoliageType/GrassFoliageType_Athena",
+          "/Game/Environments/Foliage/FoliageType/GrassFoliageType_Athena_Arid_02",
+          "/Game/Environments/Foliage/FoliageType/GrassFoliageType_AthenaOptimized"
+        ]
+      }
+    },
+    {
+      "section": "environmental",
+      "tool": "foliage_convert_selected_to_actor",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "converted": 1
+      }
+    },
+    {
+      "section": "entities",
+      "tool": "entity_list_kits",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 3,
+        "kits": [
+          "Lobby Starter",
+          "Teleport Link",
+          "Objective Hub"
+        ]
+      }
+    },
+    {
+      "section": "entities",
+      "tool": "entity_spawn_kit",
+      "kwargs": {
+        "kit_name": "Teleport Link"
+      },
+      "result": {
+        "status": "error",
+        "kit": "Teleport Link",
+        "count": 0,
+        "requested": 2,
+        "reason": "no_device_classes_available"
+      }
+    },
+    {
+      "section": "selection",
+      "tool": "select_in_radius",
+      "kwargs": {
+        "radius": 600.0,
+        "actor_class_name": "StaticMeshActor"
+      },
+      "result": {
+        "status": "ok",
+        "count": 6,
+        "labels": [
+          "GridPlane4",
+          "GridPlane2",
+          "GridPlane1",
+          "GridPlane3",
+          "Cube",
+          "Cube2"
+        ]
+      }
+    },
+    {
+      "section": "selection",
+      "tool": "select_by_property",
+      "kwargs": {
+        "prop_name": "Actor Label",
+        "value": "TARGET"
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "labels": [
+          "INTEGRATION_TEST_TARGET"
+        ]
+      }
+    },
+    {
+      "section": "lighting_integration",
+      "tool": "light_cinematic_preset",
+      "kwargs": {
+        "mood": "Cyberpunk"
+      },
+      "result": {
+        "status": "ok",
+        "mood": "Cyberpunk"
+      }
+    },
+    {
+      "section": "lighting_integration",
+      "tool": "light_randomize_sky",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "pitch": null,
+        "yaw": null
+      }
+    },
+    {
+      "section": "project_admin_integration",
+      "tool": "system_perf_audit",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "actor_count": 12,
+        "light_count": 0,
+        "mesh_count": 4
+      }
+    },
+    {
+      "section": "zone_tools",
+      "tool": "zone_spawn",
+      "kwargs": {
+        "width": 800,
+        "depth": 800,
+        "height": 400,
+        "label": "TestZone"
+      },
+      "result": {
+        "status": "ok",
+        "label": "TestZone",
+        "width": 800,
+        "depth": 800,
+        "height": 400,
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "section": "zone_tools",
+      "tool": "zone_list",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "zones": [
+          {
+            "label": "TestZone",
+            "folder": "Zones",
+            "center": [
+              0,
+              0,
+              0
+            ],
+            "width": 800,
+            "depth": 800,
+            "height": 400
+          }
+        ]
+      }
+    },
+    {
+      "section": "zone_tools",
+      "tool": "zone_select_contents",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "zone": "TestZone",
+        "actors_found": 12,
+        "actor_labels": [
+          "WorldDataLayers",
+          "LevelBounds",
+          "Player 1 Spawn Pad",
+          "WorldPartitionMiniMap",
+          "GridPlane4",
+          "GridPlane2",
+          "GridPlane1",
+          "Player 2 Spawn Pad",
+          "GridPlane3",
+          "IslandSettings0",
+          "FortPlayerStartCreative",
+          "FortPlayerStartCreative"
+        ]
+      }
+    },
+    {
+      "section": "zone_tools",
+      "tool": "zone_snap_to_selection",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "zone": "WorldDataLayers",
+        "new_center": [
+          -1.8189894035458565e-12,
+          3.637978807091713e-12,
+          0.0
+        ]
+      }
+    },
+    {
+      "section": "zone_tools",
+      "tool": "zone_fill_scatter",
+      "kwargs": {
+        "asset_path": "/Engine/BasicShapes/Cube",
+        "count": 3,
+        "folder": "TOOLBELT_TEST_Zones"
+      },
+      "result": {
+        "status": "ok",
+        "zone": "TestZone",
+        "spawned": 3,
+        "requested": 3,
+        "folder": "TOOLBELT_TEST_Zones"
+      }
+    },
+    {
+      "section": "stamp_tools",
+      "tool": "stamp_save",
+      "kwargs": {
+        "name": "__test_stamp__"
+      },
+      "result": {
+        "status": "ok",
+        "name": "__test_stamp__",
+        "actors_saved": 3,
+        "actors_skipped": 0,
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\stamps\\__test_stamp__.json"
+      }
+    },
+    {
+      "section": "stamp_tools",
+      "tool": "stamp_list",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "stamps": [
+          {
+            "name": "__test_stamp__",
+            "actor_count": 3
+          }
+        ]
+      }
+    },
+    {
+      "section": "stamp_tools",
+      "tool": "stamp_info",
+      "kwargs": {
+        "name": "__test_stamp__"
+      },
+      "result": {
+        "status": "ok",
+        "stamp": {
+          "name": "__test_stamp__",
+          "actor_count": 3,
+          "actors": [
+            {
+              "label": "Cube",
+              "mesh": "/Engine/BasicShapes/Cube",
+              "rotation": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "folder": "None",
+              "rel": [
+                -100.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "label": "Cube2",
+              "mesh": "/Engine/BasicShapes/Cube",
+              "rotation": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "folder": "None",
+              "rel": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "label": "Cube3",
+              "mesh": "/Engine/BasicShapes/Cube",
+              "rotation": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "folder": "None",
+              "rel": [
+                100.0,
+                0.0,
+                0.0
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "section": "stamp_tools",
+      "tool": "stamp_place",
+      "kwargs": {
+        "name": "__test_stamp__",
+        "folder": "TOOLBELT_TEST_Stamps"
+      },
+      "result": {
+        "status": "ok",
+        "name": "__test_stamp__",
+        "actors_stamped": 3,
+        "actors_total": 3,
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yaw_offset": 0.0,
+        "scale_factor": 1.0,
+        "folder": "TOOLBELT_TEST_Stamps"
+      }
+    },
+    {
+      "section": "stamp_tools",
+      "tool": "stamp_save",
+      "kwargs": {
+        "name": "__test_stamp_exp__"
+      },
+      "result": {
+        "status": "ok",
+        "name": "__test_stamp_exp__",
+        "actors_saved": 3,
+        "actors_skipped": 0,
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\stamps\\__test_stamp_exp__.json"
+      }
+    },
+    {
+      "section": "stamp_tools",
+      "tool": "stamp_export",
+      "kwargs": {
+        "name": "__test_stamp_exp__",
+        "output_path": "C:\\Users\\mikea\\AppData\\Local\\Temp\\__tb_test_stamp__.json"
+      },
+      "result": {
+        "status": "ok",
+        "name": "__test_stamp_exp__",
+        "output_path": "C:\\Users\\mikea\\AppData\\Local\\Temp\\__tb_test_stamp__.json"
+      }
+    },
+    {
+      "section": "stamp_tools",
+      "tool": "stamp_import",
+      "kwargs": {
+        "file_path": "C:\\Users\\mikea\\AppData\\Local\\Temp\\__tb_test_stamp__.json",
+        "name_override": "__test_stamp_imported__",
+        "overwrite": true
+      },
+      "result": {
+        "status": "ok",
+        "name": "__test_stamp_imported__",
+        "actor_count": 3,
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\stamps\\__test_stamp_imported__.json"
+      }
+    },
+    {
+      "section": "stamp_tools",
+      "tool": "stamp_delete",
+      "kwargs": {
+        "name": "__test_stamp_exp__"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": "__test_stamp_exp__"
+      }
+    },
+    {
+      "section": "stamp_tools",
+      "tool": "stamp_delete",
+      "kwargs": {
+        "name": "__test_stamp_imported__"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": "__test_stamp_imported__"
+      }
+    },
+    {
+      "section": "stamp_tools",
+      "tool": "stamp_delete",
+      "kwargs": {
+        "name": "__test_stamp__"
+      },
+      "result": {
+        "status": "ok",
+        "deleted": "__test_stamp__"
+      }
+    },
+    {
+      "section": "actor_org_tools",
+      "tool": "actor_move_to_folder",
+      "kwargs": {
+        "folder_name": "TOOLBELT_TEST_OrgFolder"
+      },
+      "result": {
+        "status": "ok",
+        "moved": 2,
+        "folder": "TOOLBELT_TEST_OrgFolder"
+      }
+    },
+    {
+      "section": "actor_org_tools",
+      "tool": "actor_folder_list",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "folders": {
+          "(root)": 12,
+          "TOOLBELT_TEST_OrgFolder": 2
+        },
+        "total_actors": 14
+      }
+    },
+    {
+      "section": "actor_org_tools",
+      "tool": "actor_select_by_folder",
+      "kwargs": {
+        "folder_name": "TOOLBELT_TEST_OrgFolder"
+      },
+      "result": {
+        "status": "ok",
+        "selected": 2,
+        "folder": "TOOLBELT_TEST_OrgFolder"
+      }
+    },
+    {
+      "section": "actor_org_tools",
+      "tool": "actor_select_by_class",
+      "kwargs": {
+        "class_filter": "StaticMesh"
+      },
+      "result": {
+        "status": "ok",
+        "selected": 2
+      }
+    },
+    {
+      "section": "actor_org_tools",
+      "tool": "actor_match_transform",
+      "kwargs": {
+        "copy_location": true,
+        "copy_rotation": false,
+        "copy_scale": false
+      },
+      "result": {
+        "status": "ok",
+        "applied": 1
+      }
+    },
+    {
+      "section": "actor_org_tools",
+      "tool": "actor_move_to_root",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "moved": 2
+      }
+    },
+    {
+      "section": "actor_org_tools",
+      "tool": "actor_attach_to_parent",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "attached": 1,
+        "parent_label": "Cube2"
+      }
+    },
+    {
+      "section": "actor_org_tools",
+      "tool": "actor_detach",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "detached": 2
+      }
+    },
+    {
+      "section": "proximity_tools",
+      "tool": "actor_place_next_to",
+      "kwargs": {
+        "direction": "+X",
+        "gap": 10.0,
+        "align": "center"
+      },
+      "result": {
+        "status": "ok",
+        "reference": "Cube",
+        "moved": "Cube2",
+        "direction": "+X",
+        "gap": 10.0
+      }
+    },
+    {
+      "section": "proximity_tools",
+      "tool": "actor_chain_place",
+      "kwargs": {
+        "axis": "X",
+        "gap": 0.0
+      },
+      "result": {
+        "status": "ok",
+        "actors_chained": 3,
+        "axis": "X",
+        "gap": 0.0
+      }
+    },
+    {
+      "section": "proximity_tools",
+      "tool": "actor_duplicate_offset",
+      "kwargs": {
+        "count": 2,
+        "offset_x": 200.0,
+        "folder": "TOOLBELT_TEST_DupOffset"
+      },
+      "result": {
+        "status": "ok",
+        "source_count": 1,
+        "copies_per_source": 2,
+        "total_spawned": 2,
+        "offset": [
+          200.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "section": "proximity_tools",
+      "tool": "actor_copy_to_positions",
+      "kwargs": {
+        "positions": [
+          [
+            100,
+            100,
+            0
+          ],
+          [
+            200,
+            100,
+            0
+          ]
+        ],
+        "folder": "TOOLBELT_TEST_CopyPos"
+      },
+      "result": {
+        "status": "ok",
+        "source": "Cube",
+        "positions_provided": 2,
+        "spawned": 2,
+        "folder": "TOOLBELT_TEST_CopyPos"
+      }
+    },
+    {
+      "section": "proximity_tools",
+      "tool": "actor_cluster_to_folder",
+      "kwargs": {
+        "radius": 50000.0,
+        "folder_prefix": "TestCluster",
+        "min_cluster_size": 2,
+        "base_folder": "TOOLBELT_TEST_Clusters"
+      },
+      "result": {
+        "status": "ok",
+        "total_actors": 3,
+        "clusters_formed": 1,
+        "actors_grouped": 3,
+        "radius": 50000.0,
+        "folder_prefix": "TestCluster"
+      }
+    },
+    {
+      "section": "proximity_tools",
+      "tool": "actor_replace_class",
+      "kwargs": {
+        "old_class_filter": "StaticMesh",
+        "new_asset_path": "/Engine/BasicShapes/Sphere",
+        "dry_run": true,
+        "scope": "level"
+      },
+      "result": {
+        "status": "ok",
+        "dry_run": true,
+        "would_replace": 11,
+        "labels": [
+          "GridPlane4",
+          "GridPlane2",
+          "GridPlane1",
+          "GridPlane3",
+          "Cube",
+          "Cube2",
+          "Cube3",
+          "Cube4",
+          "Cube5",
+          "Cube6",
+          "Cube7"
+        ]
+      }
+    },
+    {
+      "section": "advanced_alignment",
+      "tool": "align_to_reference",
+      "kwargs": {
+        "axis": "Z",
+        "reference": "first"
+      },
+      "result": {
+        "status": "ok",
+        "aligned": 2,
+        "reference_label": "Cube",
+        "axis": "Z"
+      }
+    },
+    {
+      "section": "advanced_alignment",
+      "tool": "distribute_with_gap",
+      "kwargs": {
+        "axis": "X",
+        "gap": 50.0
+      },
+      "result": {
+        "status": "ok",
+        "distributed": 2,
+        "axis": "X",
+        "gap": 50.0
+      }
+    },
+    {
+      "section": "advanced_alignment",
+      "tool": "rotate_around_pivot",
+      "kwargs": {
+        "angle_deg": 90,
+        "axis": "Z",
+        "pivot": "center"
+      },
+      "result": {
+        "status": "ok",
+        "rotated": 3,
+        "pivot_location": [
+          150.0,
+          2000.0,
+          0.0
+        ],
+        "angle_deg": 90
+      }
+    },
+    {
+      "section": "advanced_alignment",
+      "tool": "match_spacing",
+      "kwargs": {
+        "axis": "X"
+      },
+      "result": {
+        "status": "ok",
+        "redistributed": 1,
+        "axis": "X",
+        "spacing": 0.0
+      }
+    },
+    {
+      "section": "advanced_alignment",
+      "tool": "align_to_surface",
+      "kwargs": {
+        "offset_z": 0.0
+      },
+      "result": {
+        "status": "error",
+        "reason": "engine_api_unavailable",
+        "missing_apis": [
+          "EditorLevelLibrary.snap_objects_to_floor"
+        ],
+        "message": "align_to_surface is unavailable in this engine build: EditorLevelLibrary.snap_objects_to_floor not exposed (removed in UEFN 42.00 (UE 6.0)). The tool is disabled rather than failing part-way through. Run tb.smoke_test() for the full list."
+      }
+    },
+    {
+      "section": "advanced_alignment",
+      "tool": "align_to_grid_two_points",
+      "kwargs": {
+        "grid_size": 100.0
+      },
+      "result": {
+        "status": "ok",
+        "snapped": 1,
+        "grid_size": 100.0
+      }
+    },
+    {
+      "section": "sign_tools",
+      "tool": "sign_spawn_bulk",
+      "kwargs": {
+        "count": 3,
+        "text": "TEST",
+        "prefix": "TestSign",
+        "layout": "row_x",
+        "spacing": 200.0,
+        "folder": "TOOLBELT_TEST_Signs"
+      },
+      "result": {
+        "status": "ok",
+        "spawned": 3,
+        "folder": "TOOLBELT_TEST_Signs",
+        "labels": [
+          "TestSign_01",
+          "TestSign_02",
+          "TestSign_03"
+        ],
+        "publish_blocker": "TextRenderActor",
+        "cleanup": "tb.run(\"sign_clear\", all_text_actors=True, dry_run=False)"
+      }
+    },
+    {
+      "section": "sign_tools",
+      "tool": "sign_list",
+      "kwargs": {
+        "folder": "TOOLBELT_TEST_Signs"
+      },
+      "result": {
+        "status": "ok",
+        "count": 3,
+        "billboards": [
+          {
+            "label": "TestSign_01",
+            "text": "TEST",
+            "location": [
+              0.0,
+              0.0,
+              200.0
+            ],
+            "folder": "TOOLBELT_TEST_Signs"
+          },
+          {
+            "label": "TestSign_02",
+            "text": "TEST",
+            "location": [
+              200.0,
+              0.0,
+              200.0
+            ],
+            "folder": "TOOLBELT_TEST_Signs"
+          },
+          {
+            "label": "TestSign_03",
+            "text": "TEST",
+            "location": [
+              400.0,
+              0.0,
+              200.0
+            ],
+            "folder": "TOOLBELT_TEST_Signs"
+          }
+        ]
+      }
+    },
+    {
+      "section": "sign_tools",
+      "tool": "sign_batch_edit",
+      "kwargs": {
+        "text": "EDITED"
+      },
+      "result": {
+        "status": "ok",
+        "edited": 3,
+        "skipped": 0
+      }
+    },
+    {
+      "section": "sign_tools",
+      "tool": "sign_batch_rename",
+      "kwargs": {
+        "prefix": "TB_Sign",
+        "start": 1,
+        "sync_text": false
+      },
+      "result": {
+        "status": "ok",
+        "renamed": 3
+      }
+    },
+    {
+      "section": "sign_tools",
+      "tool": "sign_batch_set_text",
+      "kwargs": {
+        "texts": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "result": {
+        "status": "ok",
+        "assigned": 3,
+        "total_selected": 3
+      }
+    },
+    {
+      "section": "sign_tools",
+      "tool": "label_attach",
+      "kwargs": {
+        "offset_z": 120,
+        "use_actor_name": true,
+        "folder": "TOOLBELT_TEST_Signs"
+      },
+      "result": {
+        "status": "ok",
+        "attached": 1,
+        "skipped": 0,
+        "folder": "TOOLBELT_TEST_Signs",
+        "publish_blocker": "TextRenderActor",
+        "cleanup": "tb.run(\"sign_clear\", all_text_actors=True, dry_run=False)"
+      }
+    },
+    {
+      "section": "sign_tools",
+      "tool": "sign_clear",
+      "kwargs": {
+        "all_text_actors": true,
+        "dry_run": false
+      },
+      "result": {
+        "status": "ok",
+        "deleted": 4,
+        "attempted": 4,
+        "dry_run": false,
+        "all_text_actors": true
+      }
+    },
+    {
+      "section": "postprocess_and_world",
+      "tool": "postprocess_spawn",
+      "kwargs": {
+        "unbounded": true
+      },
+      "result": {
+        "status": "ok",
+        "action": "spawned",
+        "label": "GlobalPostProcess"
+      }
+    },
+    {
+      "section": "postprocess_and_world",
+      "tool": "postprocess_set",
+      "kwargs": {
+        "bloom": 0.5,
+        "vignette": 0.2
+      },
+      "result": {
+        "status": "ok",
+        "applied": {
+          "bloom": 0.5,
+          "vignette": 0.2
+        },
+        "ppv": "GlobalPostProcess"
+      }
+    },
+    {
+      "section": "postprocess_and_world",
+      "tool": "postprocess_preset",
+      "kwargs": {
+        "preset": "cinematic"
+      },
+      "result": {
+        "status": "ok",
+        "preset": "cinematic",
+        "applied": {
+          "bloom": 0.675,
+          "exposure": -1.0,
+          "contrast": 1.2,
+          "vignette": 0.4,
+          "saturation": 1.1
+        }
+      }
+    },
+    {
+      "section": "postprocess_and_world",
+      "tool": "postprocess_preset",
+      "kwargs": {
+        "preset": "reset"
+      },
+      "result": {
+        "status": "ok",
+        "preset": "reset",
+        "applied": {
+          "bloom": 0.675,
+          "exposure": 0.0,
+          "contrast": 1.0,
+          "vignette": 0.0,
+          "saturation": 1.0
+        }
+      }
+    },
+    {
+      "section": "postprocess_and_world",
+      "tool": "world_settings_set",
+      "kwargs": {
+        "gravity": -980.0
+      },
+      "result": {
+        "status": "error",
+        "applied": {},
+        "unavailable": {
+          "gravity": "FortWorldSettings: Failed to find property 'default_gravity_z' for attribute 'default_gravity_z' on 'FortWorldSettings'"
+        },
+        "reason": "properties_not_exposed",
+        "message": "UEFN does not expose gravity on WorldSettings for this engine build, so nothing was changed. This is an Epic-side limit, not a failure in the call."
+      }
+    },
+    {
+      "section": "audio_tools",
+      "tool": "audio_place",
+      "kwargs": {
+        "label": "TB_TestAudio",
+        "volume": 0.5,
+        "folder": "TOOLBELT_TEST_Audio"
+      },
+      "result": {
+        "status": "ok",
+        "label": "TB_TestAudio",
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "asset_path": "",
+        "volume": 0.5,
+        "radius": 0.0
+      }
+    },
+    {
+      "section": "audio_tools",
+      "tool": "audio_list",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "sounds": [
+          {
+            "label": "TB_TestAudio",
+            "folder": "TOOLBELT_TEST_Audio",
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "asset": "",
+            "volume": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "section": "audio_tools",
+      "tool": "audio_set_volume",
+      "kwargs": {
+        "volume": 0.8
+      },
+      "result": {
+        "status": "ok",
+        "volume": 0.8,
+        "changed": 1,
+        "skipped": 0,
+        "labels": [
+          "TB_TestAudio"
+        ]
+      }
+    },
+    {
+      "section": "audio_tools",
+      "tool": "audio_set_radius",
+      "kwargs": {
+        "radius": 1500.0
+      },
+      "result": {
+        "status": "ok",
+        "radius": 1500.0,
+        "changed": 1,
+        "skipped": 0,
+        "labels": [
+          "TB_TestAudio"
+        ]
+      }
+    },
+    {
+      "section": "level_health",
+      "tool": "level_health_report",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "score": 98,
+        "grade": "A+",
+        "categories": {
+          "actors": {
+            "label": "Actor Integrity",
+            "icon": "[ACT]",
+            "weight": 30,
+            "score": 27.7,
+            "max": 30,
+            "ratio": 0.923,
+            "summary": "1 actor(s) with bad scale or off-map location (of 13 total)",
+            "raw": {
+              "status": "ok",
+              "rogue_count": 1,
+              "total": 13
+            }
+          },
+          "naming": {
+            "label": "Naming Conventions",
+            "icon": "[NAM]",
+            "weight": 25,
+            "score": 25.0,
+            "max": 25,
+            "ratio": 1.0,
+            "summary": "All 21 checked assets follow conventions",
+            "raw": {
+              "status": "ok",
+              "violations": 0,
+              "checked": 21
+            }
+          },
+          "assets": {
+            "label": "Asset Inventory",
+            "icon": "[AST]",
+            "weight": 20,
+            "score": 20.0,
+            "max": 20,
+            "ratio": 1.0,
+            "summary": "1215186 project assets, 1220192 total in registry",
+            "raw": {
+              "status": "ok",
+              "total": 1220192,
+              "user_assets": 1215186
+            }
+          },
+          "devices": {
+            "label": "Verse Devices",
+            "icon": "[DEV]",
+            "weight": 15,
+            "score": 15.0,
+            "max": 15,
+            "ratio": 1.0,
+            "summary": "5 Creative/Verse device(s) in level",
+            "raw": {
+              "status": "ok",
+              "device_count": 5
+            }
+          },
+          "level": {
+            "label": "Level Info",
+            "icon": "[LVL]",
+            "weight": 10,
+            "score": 10.0,
+            "max": 10,
+            "ratio": 1.0,
+            "summary": "ToolbeltAcceptance \u2014 13 actors",
+            "raw": {
+              "status": "ok",
+              "actor_count": 13,
+              "world_name": "ToolbeltAcceptance"
+            }
+          }
+        }
+      }
+    },
+    {
+      "section": "level_health",
+      "tool": "rogue_actor_scan",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "total_scanned": 13,
+        "rogue_count": 11,
+        "issue_counts": {
+          "extreme_scale": 1,
+          "negative_scale": 0,
+          "at_origin": 8,
+          "unnamed": 5,
+          "extreme_location": 0,
+          "zero_scale": 0
+        },
+        "rogues": [
+          {
+            "label": "WorldDataLayers",
+            "class": "WorldDataLayers",
+            "issues": [
+              "at_origin",
+              "unnamed"
+            ],
+            "descriptions": [
+              "Actor is at exactly (0, 0, 0) \u2014 likely unplaced",
+              "Actor label matches its class name (never renamed)"
+            ]
+          },
+          {
+            "label": "LevelBounds",
+            "class": "LevelBounds",
+            "issues": [
+              "extreme_scale",
+              "unnamed"
+            ],
+            "descriptions": [
+              "Scale component > 100 or < 0.01 (likely import error)",
+              "Actor label matches its class name (never renamed)"
+            ]
+          },
+          {
+            "label": "WorldPartitionMiniMap",
+            "class": "WorldPartitionMiniMap",
+            "issues": [
+              "at_origin",
+              "unnamed"
+            ],
+            "descriptions": [
+              "Actor is at exactly (0, 0, 0) \u2014 likely unplaced",
+              "Actor label matches its class name (never renamed)"
+            ]
+          },
+          {
+            "label": "GridPlane4",
+            "class": "GridPlane_C",
+            "issues": [
+              "at_origin"
+            ],
+            "descriptions": [
+              "Actor is at exactly (0, 0, 0) \u2014 likely unplaced"
+            ]
+          },
+          {
+            "label": "GridPlane2",
+            "class": "GridPlane_C",
+            "issues": [
+              "at_origin"
+            ],
+            "descriptions": [
+              "Actor is at exactly (0, 0, 0) \u2014 likely unplaced"
+            ]
+          },
+          {
+            "label": "GridPlane1",
+            "class": "GridPlane_C",
+            "issues": [
+              "at_origin"
+            ],
+            "descriptions": [
+              "Actor is at exactly (0, 0, 0) \u2014 likely unplaced"
+            ]
+          },
+          {
+            "label": "GridPlane3",
+            "class": "GridPlane_C",
+            "issues": [
+              "at_origin"
+            ],
+            "descriptions": [
+              "Actor is at exactly (0, 0, 0) \u2014 likely unplaced"
+            ]
+          },
+          {
+            "label": "IslandSettings0",
+            "class": "Device_ExperienceSettings_V2_UEFN_C",
+            "issues": [
+              "at_origin"
+            ],
+            "descriptions": [
+              "Actor is at exactly (0, 0, 0) \u2014 likely unplaced"
+            ]
+          },
+          {
+            "label": "FortPlayerStartCreative",
+            "class": "FortPlayerStartCreative",
+            "issues": [
+              "unnamed"
+            ],
+            "descriptions": [
+              "Actor label matches its class name (never renamed)"
+            ]
+          },
+          {
+            "label": "FortPlayerStartCreative",
+            "class": "FortPlayerStartCreative",
+            "issues": [
+              "unnamed"
+            ],
+            "descriptions": [
+              "Actor label matches its class name (never renamed)"
+            ]
+          },
+          {
+            "label": "GlobalPostProcess",
+            "class": "PostProcessVolume",
+            "issues": [
+              "at_origin"
+            ],
+            "descriptions": [
+              "Actor is at exactly (0, 0, 0) \u2014 likely unplaced"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "section": "config_tools",
+      "tool": "config_list",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "values": {
+          "arena.fallback_mesh": "/Engine/BasicShapes/Cube",
+          "scatter.default_folder": "Scatter",
+          "scatter.default_radius": 2000.0,
+          "scatter.default_count": 50,
+          "text.default_folder": "ToolbeltText",
+          "text.default_color": "#FFFFFF",
+          "text.default_size": 100.0,
+          "screenshot.default_width": 1920,
+          "screenshot.default_height": 1080,
+          "screenshot.default_name": "shot",
+          "snapshot.default_scope": "all",
+          "verse.project_path": "",
+          "import.default_dir": "",
+          "ui.theme": "toolbelt_dark"
+        },
+        "custom_count": 0,
+        "total": 14
+      }
+    },
+    {
+      "section": "config_tools",
+      "tool": "config_set",
+      "kwargs": {
+        "key": "scatter.default_folder",
+        "value": "TOOLBELT_TEST_Config"
+      },
+      "result": {
+        "status": "ok",
+        "key": "scatter.default_folder",
+        "value": "TOOLBELT_TEST_Config",
+        "previous": "Scatter"
+      }
+    },
+    {
+      "section": "config_tools",
+      "tool": "config_get",
+      "kwargs": {
+        "key": "scatter.default_folder"
+      },
+      "result": {
+        "status": "ok",
+        "key": "scatter.default_folder",
+        "value": "TOOLBELT_TEST_Config",
+        "is_default": false
+      }
+    },
+    {
+      "section": "config_tools",
+      "tool": "config_reset",
+      "kwargs": {
+        "key": "scatter.default_folder"
+      },
+      "result": {
+        "status": "ok",
+        "key": "scatter.default_folder",
+        "default_value": "Scatter",
+        "was_custom": true
+      }
+    },
+    {
+      "section": "lighting_extended",
+      "tool": "light_place",
+      "kwargs": {
+        "light_type": "point",
+        "intensity": 1000,
+        "color": "#FFFFFF",
+        "folder": "TOOLBELT_TEST_Lights"
+      },
+      "result": {
+        "status": "ok",
+        "light_type": "point",
+        "label": "PointLight",
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "intensity": 1000,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "section": "lighting_extended",
+      "tool": "light_list",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "lights": [
+          {
+            "label": "PointLight",
+            "type": "PointLight",
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "intensity": 1000.0
+          }
+        ]
+      }
+    },
+    {
+      "section": "lighting_extended",
+      "tool": "light_set",
+      "kwargs": {
+        "intensity": 2000,
+        "color": "#FF8800"
+      },
+      "result": {
+        "status": "ok",
+        "changed": 1,
+        "skipped": 0,
+        "labels": [
+          "PointLight"
+        ]
+      }
+    },
+    {
+      "section": "lighting_extended",
+      "tool": "sky_set_time",
+      "kwargs": {
+        "hour": 12.0
+      },
+      "result": {
+        "status": "error",
+        "message": "No DirectionalLight in level."
+      }
+    },
+    {
+      "section": "world_state",
+      "tool": "world_state_export",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\world_state.json",
+        "count": 13
+      }
+    },
+    {
+      "section": "world_state",
+      "tool": "device_catalog_scan",
+      "kwargs": {
+        "save_to_docs": false
+      },
+      "result": {
+        "status": "ok",
+        "total_scanned": 24283,
+        "devices_found": 4545,
+        "categories": {
+          "Creative": 506,
+          "Score": 17,
+          "Device": 97,
+          "Stat": 482,
+          "Manager": 29,
+          "Audio": 71,
+          "Camera": 377,
+          "Zone": 16,
+          "Chest": 37,
+          "Round": 136,
+          "Race": 75,
+          "Capture": 7,
+          "Prop": 1521,
+          "Lock": 465,
+          "Trigger": 23,
+          "Barrier": 19,
+          "Pad": 42,
+          "Tracker": 35,
+          "Creature": 9,
+          "NPC": 172,
+          "Spawner": 88,
+          "Teleporter": 3,
+          "Gate": 97,
+          "Pulse": 10,
+          "Ammo": 17,
+          "Button": 23,
+          "Beacon": 49,
+          "Fortnite": 6,
+          "Guard": 25,
+          "Zipline": 24,
+          "Timer": 8,
+          "Switch": 3,
+          "Supply": 25,
+          "Mutator": 30,
+          "FortAthena": 1
+        },
+        "path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\device_catalog.json",
+        "repo_path": ""
+      }
+    },
+    {
+      "section": "visibility_tools",
+      "tool": "actor_hide",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "hidden": 2,
+        "labels": [
+          "Cube",
+          "Cube2"
+        ],
+        "tip": "Run actor_show_all to restore all hidden actors at once."
+      }
+    },
+    {
+      "section": "visibility_tools",
+      "tool": "actor_show",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "shown": 2,
+        "labels": [
+          "Cube",
+          "Cube2"
+        ]
+      }
+    },
+    {
+      "section": "visibility_tools",
+      "tool": "actor_isolate",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "visible": 2,
+        "hidden": 13,
+        "tip": "Run actor_show_all to restore full level visibility."
+      }
+    },
+    {
+      "section": "visibility_tools",
+      "tool": "actor_show_all",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "restored": 13
+      }
+    },
+    {
+      "section": "visibility_tools",
+      "tool": "actor_lock",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "locked": 0,
+        "failed": 1,
+        "labels": [
+          "Cube"
+        ]
+      }
+    },
+    {
+      "section": "visibility_tools",
+      "tool": "actor_unlock",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "unlocked": 0,
+        "failed": 1
+      }
+    },
+    {
+      "section": "viewport_bookmarks",
+      "tool": "viewport_showflag",
+      "kwargs": {
+        "preset": "clean"
+      },
+      "result": {
+        "status": "ok",
+        "preset": "clean",
+        "commands_applied": [
+          "ShowFlag.TextRenders 0",
+          "ShowFlag.BillboardSprites 0",
+          "ShowFlag.Decals 0"
+        ]
+      }
+    },
+    {
+      "section": "viewport_bookmarks",
+      "tool": "viewport_showflag",
+      "kwargs": {
+        "preset": "reset"
+      },
+      "result": {
+        "status": "ok",
+        "preset": "reset",
+        "commands_applied": [
+          "ShowFlag.TextRenders 1",
+          "ShowFlag.BillboardSprites 1",
+          "ShowFlag.Decals 1",
+          "ShowFlag.Particles 1"
+        ]
+      }
+    },
+    {
+      "section": "viewport_bookmarks",
+      "tool": "viewport_bookmark_save",
+      "kwargs": {
+        "name": "_integration_test"
+      },
+      "result": {
+        "status": "ok",
+        "name": "_integration_test",
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": {
+          "pitch": -40.0,
+          "yaw": 225.0
+        },
+        "total_bookmarks": 1
+      }
+    },
+    {
+      "section": "viewport_bookmarks",
+      "tool": "viewport_bookmark_list",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "bookmarks": {
+          "_integration_test": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": {
+              "pitch": -40.0,
+              "yaw": 225.0
+            }
+          }
+        },
+        "tip": "Use viewport_bookmark_jump with a name to teleport to any saved position."
+      }
+    },
+    {
+      "section": "viewport_bookmarks",
+      "tool": "viewport_bookmark_jump",
+      "kwargs": {
+        "name": "_integration_test"
+      },
+      "result": {
+        "status": "ok",
+        "name": "_integration_test",
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": {
+          "pitch": -40.0,
+          "yaw": 225.0
+        }
+      }
+    },
+    {
+      "section": "viewport_bookmarks",
+      "tool": "viewport_showflag",
+      "kwargs": {
+        "preset": "__nonexistent__"
+      },
+      "result": {
+        "status": "error",
+        "error": "Unknown preset '__nonexistent__'. Available: ['clean', 'no_text', 'no_icons', 'geometry_only', 'reset']"
+      }
+    },
+    {
+      "section": "selection_sets",
+      "tool": "selection_save",
+      "kwargs": {
+        "name": "_integration_test"
+      },
+      "result": {
+        "status": "ok",
+        "name": "_integration_test",
+        "count": 2,
+        "labels": [
+          "Cube",
+          "Cube2"
+        ]
+      }
+    },
+    {
+      "section": "selection_sets",
+      "tool": "selection_list",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "sets": {
+          "_integration_test": {
+            "actors": 2,
+            "labels": [
+              "Cube",
+              "Cube2"
+            ]
+          }
+        },
+        "tip": "Use selection_restore with a name to re-select any saved set."
+      }
+    },
+    {
+      "section": "selection_sets",
+      "tool": "selection_restore",
+      "kwargs": {
+        "name": "_integration_test"
+      },
+      "result": {
+        "status": "ok",
+        "name": "_integration_test",
+        "matched": 2,
+        "missing": 0,
+        "labels": [
+          "Cube",
+          "Cube2"
+        ]
+      }
+    },
+    {
+      "section": "selection_sets",
+      "tool": "selection_restore",
+      "kwargs": {
+        "name": "__nonexistent__"
+      },
+      "result": {
+        "status": "error",
+        "error": "Selection set '__nonexistent__' not found.",
+        "available": [
+          "_integration_test"
+        ]
+      }
+    },
+    {
+      "section": "project_admin_v196",
+      "tool": "save_all_dirty",
+      "kwargs": {},
+      "result": {
+        "status": "ok",
+        "level_saved": true,
+        "packages_saved": true
+      }
+    }
+  ],
+  "completed": true,
+  "current_section": "project_admin_v196",
+  "stop_reason": "",
+  "in_progress": false,
+  "started_sections": [
+    "materials",
+    "bulk_ops",
+    "bulk_ops_advanced",
+    "bulk_ops_extensions",
+    "patterns",
+    "patterns_advanced",
+    "advanced_patterns",
+    "scatter",
+    "splines",
+    "assets",
+    "memory",
+    "reference_auditor",
+    "project_scaffold",
+    "text_painter",
+    "advanced_materials",
+    "snapshots",
+    "crawler",
+    "asset_tagger",
+    "verse",
+    "verse_advanced",
+    "screenshots",
+    "lods_safe",
+    "optimization_safe",
+    "arena_safe",
+    "scatter_advanced_safe",
+    "assets_advanced_safe",
+    "bridge_safe",
+    "cooker_safe",
+    "curve_create_safe",
+    "measurement",
+    "localization",
+    "environmental",
+    "entities",
+    "selection",
+    "lighting_integration",
+    "project_admin_integration",
+    "zone_tools",
+    "stamp_tools",
+    "actor_org_tools",
+    "proximity_tools",
+    "advanced_alignment",
+    "sign_tools",
+    "postprocess_and_world",
+    "audio_tools",
+    "level_health",
+    "config_tools",
+    "lighting_extended",
+    "world_state",
+    "visibility_tools",
+    "viewport_bookmarks",
+    "selection_sets",
+    "project_admin_v196"
+  ]
+}

@@ -288,7 +288,7 @@ This file contains every registered tool with its full Python parameter signatur
   }
 }
 ```
-All 362 tools (100%) return `{"status": "ok"/"error", ...}` structured dicts as of Phase 21. Zero `None` returns remain in the codebase — MCP callers can read every result directly without parsing log output.
+Read each tool's structured result, including failure counts, unknown fields and partial-change facts. Diagnostic statuses can be domain-specific: `publish_audit` retains `ready`/`warnings`/`blocked`. Registration, an `ok` status or an empty scan alone does not establish the requested outcome.
 
 **Schema utility functions** (`schema_utils.py`):
 - `schema_utils.validate_property(class_name, prop)` — check if a property exists and is writable
@@ -552,8 +552,8 @@ import UEFN_Toolbelt as tb; tb.hard_reload(); tb.launch_qt()
 # Open the graph after a guarded reload; edits to this persistent window require a full restart
 import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("verse_graph_open")
 
-# Reload + run integration tests (use a clean template level)
-import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_integration_test")
+# Reload + run integration tests (use the dedicated ToolbeltAcceptance project)
+import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_integration_test", allow_mutation=True, preserve_bridge=True)
 
 # Reload + smoke test only
 import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_smoke_test")
@@ -576,24 +576,28 @@ Two separate test systems. Know which is which before running either.
 **Safe to run:** Anywhere, any project, any time. ~5 seconds.
 **Run after:** Every code change, before committing.
 
-### Integration Test — `tb.run("toolbelt_integration_test")`
-**What it proves:** tools *work* in a live UEFN editor. The harness spawns real actor fixtures, runs each tool against them, verifies the result (property changed, actor count correct, file written), and cleans up.
-**Coverage:** 116 test sections, **190 checks, 190/190 live on UEFN 42.00** — materials, bulk ops, patterns, scatter, zones, stamps, actor org, proximity, alignment, signs, post-process, audio, lighting, world state, and more.
+### Integration Test — dedicated native acceptance
 
-> **Read the split, not the total.** 163 of the 190 verify a real outcome; **27
-> are execution-only** — they prove the tool ran without raising, nothing more.
-> The suite prints both on every run. A check that cannot fail is not coverage:
-> counting all of them as one number is what let Quirk #41 (wrong rotator axis)
-> sit inside a fully green run. When you add a check, assert on a returned
-> value or re-read the state — `_record(..., True)` is a last resort and must
-> pass `verified=False`.
-**⚠️ INVASIVE — only run in a blank template level.** It spawns and deletes actors. Never run in a production project.
-**Run after:** Before any PR. After adding a new tool. After major refactors. ~70 seconds.
+Use the local UEFN console in `ToolbeltAcceptance`, after deployment and startup
+verification. The suite refuses other project identities and requires explicit
+`allow_mutation=True`. Select small sections; `preserve_bridge=True` preserves
+the current listener. The bridge deliberately refuses this self-managing suite.
 
+```python
+import UEFN_Toolbelt as tb
+tb.run("toolbelt_integration_test", sections=["bulk_ops"], allow_mutation=True, preserve_bridge=True)
 ```
-Results: Saved/UEFN_Toolbelt/integration_test_results.txt
-```
-If the editor crashes mid-run, the file contains partial results up to the last completed test — check it to find which section caused the crash.
+
+Read the structured results and independent editor/file readbacks. Execution-only
+checks, refusals, empty scans and dry runs establish different outcomes. Current
+source coverage and preserved native runs live in `TOOL_STATUS.md`; a registry
+count is not functional acceptance. JSON and text reports are written under the
+returned report directory. Capture them after every run because engine Saved
+paths can be shared. Partial/fatal/cleanup/evidence errors remain visible.
+
+This suite modifies actors, assets, files and persistent settings. Fixture
+cleanup does not fully restore the project or shared Saved state; preserve those
+resources before testing and restore them after evidence capture.
 
 | | Smoke Test | Integration Test |
 |---|---|---|

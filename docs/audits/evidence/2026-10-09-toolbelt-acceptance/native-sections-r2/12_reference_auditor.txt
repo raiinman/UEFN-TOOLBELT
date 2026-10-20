@@ -1,0 +1,16 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:05:00.179707
+Passed:  5/5
+Verified: 1 checked a real outcome · 4 execution-only (ran without raising)
+Elapsed: 0.56s
+============================================================
+
+
+[Assets]
+----------------------------------------
+  PASS  Audit Orphans
+  PASS  Audit Redirectors
+  PASS  Audit Duplicates
+  PASS  Audit Unused Textures
+  PASS  Ref Aud Full Report  (Report generated: True)

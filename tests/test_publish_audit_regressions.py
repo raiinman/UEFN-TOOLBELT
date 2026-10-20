@@ -1,4 +1,5 @@
 """Publish checks must reflect the active UEFN island, not engine defaults."""
+import json
 import os
 from types import SimpleNamespace
 
@@ -6,6 +7,53 @@ import pytest
 
 from UEFN_Toolbelt import core
 from UEFN_Toolbelt.tools import publish_audit as audit
+
+
+@pytest.mark.parametrize("summary", [
+    {}, {"estimated_vram_mb": None}, {"estimated_vram_mb": True},
+    {"estimated_vram_mb": "0"}, {"estimated_vram_mb": -1},
+    {"estimated_vram_mb": float("nan")}, {"estimated_vram_mb": float("inf")},
+    {"estimated_vram_mb": 0, "estimate_complete": False},
+    {"estimated_vram_mb": 0},
+    {"estimated_vram_mb": 0, "estimate_complete": True, "unknown_meshes": 1},
+    {"estimated_vram_mb": 0, "estimate_complete": True, "unknown_assets": "0"},
+])
+def test_memory_report_unknown_estimate_never_passes(tmp_path, summary, monkeypatch):
+    set_mount(monkeypatch, "acceptance-island")
+    (tmp_path / "memory_report.json").write_text(json.dumps({
+        "scan_path": "/acceptance-island", "project_mount": "acceptance-island",
+        "full_project_scan": True, "registry_enumeration_complete": True,
+        "summary": summary}))
+    result = audit._check_memory(str(tmp_path), 400, 512)
+    assert result["pass"] is None
+    assert result["severity"] == "warn"
+    assert "estimated_mb" not in result
+
+
+def test_memory_report_real_zero_does_not_fall_back_to_other_estimate(tmp_path, monkeypatch):
+    set_mount(monkeypatch, "acceptance-island")
+    (tmp_path / "memory_report.json").write_text(json.dumps({
+        "scan_path": "/acceptance-island",
+        "project_mount": "acceptance-island", "full_project_scan": True,
+        "registry_enumeration_complete": True,
+        "summary": {"estimated_vram_mb": 0, "estimate_complete": True},
+        "estimated_vram_mb": 999,
+    }))
+    result = audit._check_memory(str(tmp_path), 400, 512)
+    assert result["pass"] is True
+    assert result["estimated_mb"] == 0
+
+
+@pytest.mark.parametrize("scan_path", ["/other-island", "/acceptance-island/Fixtures", "", "/Game"])
+def test_memory_report_foreign_or_partial_scan_never_passes(tmp_path, monkeypatch, scan_path):
+    set_mount(monkeypatch, "acceptance-island")
+    (tmp_path / "memory_report.json").write_text(json.dumps({
+        "scan_path": scan_path,
+        "summary": {"estimated_vram_mb": 0, "estimate_complete": True},
+    }))
+    result = audit._check_memory(str(tmp_path), 400, 512)
+    assert result["pass"] is None
+    assert "full current island" in result["note"]
 
 
 def actor(class_name):
@@ -133,3 +181,34 @@ def test_unknown_mount_or_registry_error_never_passes(monkeypatch, mount):
     result = audit._check_redirectors()
     assert result["pass"] is None
     assert result["severity"] == "warn"
+
+
+@pytest.mark.parametrize("world,expected", [
+    (SimpleNamespace(), None),
+    (SimpleNamespace(is_dirty=lambda: None), None),
+    (SimpleNamespace(is_dirty=lambda: False, get_outer=lambda: SimpleNamespace()), True),
+])
+def test_unsaved_state_requires_real_boolean_evidence(world, expected):
+    result = audit._check_unsaved(world)
+    assert result["pass"] is expected
+    if expected is None:
+        assert result["dirty"] is None
+        assert result["severity"] == "warn"
+
+
+def test_unreadable_dirty_state_is_unknown():
+    def unavailable():
+        raise RuntimeError("property unavailable")
+
+    result = audit._check_unsaved(SimpleNamespace(is_dirty=unavailable))
+    assert result["pass"] is None
+    assert result["dirty"] is None
+
+
+def test_dirty_outer_package_cannot_be_hidden_by_clean_world():
+    result = audit._check_unsaved(SimpleNamespace(
+        is_dirty=lambda: False,
+        get_outer=lambda: SimpleNamespace(is_dirty=lambda: True),
+    ))
+    assert result["pass"] is False
+    assert result["dirty"] is True

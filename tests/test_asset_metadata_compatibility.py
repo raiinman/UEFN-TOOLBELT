@@ -67,3 +67,65 @@ def test_blueprint_with_unreadable_compile_status_is_not_reported_clean(monkeypa
     assert result["clean"] == 0
     assert result["issues"] == 1
     assert "unavailable" in result["issue_list"][0]["issue"]
+
+
+@pytest.mark.parametrize("compile_status,clean", [
+    ("BlueprintStatus.BS_UP_TO_DATE", 1),
+    ("BS_UP_TO_DATE", 1),
+    ("<BlueprintStatus.BS_UP_TO_DATE: 0>", 1),
+    ("BlueprintStatus.BS_UP_TO_DATE_WITH_WARNINGS", 0),
+    ("BlueprintStatus.BS_DIRTY", 0),
+    ("BlueprintStatus.BS_UNKNOWN", 0),
+    ("BlueprintStatus.BS_BEING_CREATED", 0),
+    ("BlueprintStatus.BS_ERROR", 0),
+    ("unexpected", 0),
+    ("<BlueprintStatus.BS_DIRTY: 1>", 0),
+    ("<BlueprintStatus.BS_UNKNOWN: 0>", 0),
+    ("<BlueprintStatus.BS_UP_TO_DATE_WITH_WARNINGS: 5>", 0),
+    ("garbage BlueprintStatus.BS_UP_TO_DATE", 0),
+])
+def test_blueprint_clean_requires_known_up_to_date_state(monkeypatch, compile_status, clean):
+    module = importlib.import_module("UEFN_Toolbelt.tools.blueprint_tools")
+    monkeypatch.setattr(module.unreal, "BlueprintStatus", None)
+
+    class Blueprint:
+        def get_editor_property(self, name):
+            return compile_status
+
+    registry = MagicMock()
+    registry.get_assets.return_value = [SimpleNamespace(asset_name="Example", package_name="/Island/Example")]
+    monkeypatch.setattr(module, "resolve_scan_path", lambda _: "/Island")
+    monkeypatch.setattr(module.unreal.AssetRegistryHelpers, "get_asset_registry", lambda: registry)
+    monkeypatch.setattr(module.unreal, "Blueprint", Blueprint)
+    monkeypatch.setattr(module.unreal.EditorAssetLibrary, "load_asset", lambda _: Blueprint())
+    result = module.run_blueprint_audit()
+    assert result["clean"] == clean
+    assert result["issues"] == 1 - clean
+
+
+def test_blueprint_native_enum_equality_is_used_without_string_parsing(monkeypatch):
+    module = importlib.import_module("UEFN_Toolbelt.tools.blueprint_tools")
+
+    class NativeEnumValue:
+        def __str__(self):
+            raise AssertionError("Native enum success must use equality")
+
+    up_to_date = NativeEnumValue()
+    monkeypatch.setattr(module.unreal, "BlueprintStatus", SimpleNamespace(BS_UP_TO_DATE=up_to_date))
+    assert module._is_blueprint_up_to_date(up_to_date) is True
+    assert module._is_blueprint_up_to_date(NativeEnumValue()) is False
+    assert module._is_blueprint_up_to_date("BS_UP_TO_DATE") is False
+
+    class Blueprint:
+        def get_editor_property(self, name):
+            return up_to_date
+
+    registry = MagicMock()
+    registry.get_assets.return_value = [SimpleNamespace(asset_name="Example", package_name="/Island/Example")]
+    monkeypatch.setattr(module, "resolve_scan_path", lambda _: "/Island")
+    monkeypatch.setattr(module.unreal.AssetRegistryHelpers, "get_asset_registry", lambda: registry)
+    monkeypatch.setattr(module.unreal, "Blueprint", Blueprint)
+    monkeypatch.setattr(module.unreal.EditorAssetLibrary, "load_asset", lambda _: Blueprint())
+    result = module.run_blueprint_audit()
+    assert result["clean"] == 1
+    assert result["issues"] == 0

@@ -1,0 +1,5663 @@
+{
+  "schema_version": 1,
+  "artifact_type": "derived combined native evidence ledger",
+  "as_of_date": "2026-10-20",
+  "generated_at_utc": "2026-10-20T08:26:49.400678+00:00",
+  "registered_tool_count": 362,
+  "recorded_inner_and_maintenance_calls": 342,
+  "distinct_registered_tools_invoked": 223,
+  "sources": [
+    {
+      "id": "native-sections-r2",
+      "path": "native-sections-r2/run.json",
+      "sha256": "ddf5622fff9739b3e7e964ecc90f29946e25038a94778ce359574067e40af59b",
+      "recorded_calls": 223,
+      "completed": true,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "engine_version": null,
+      "checks_passed": 0,
+      "checks_failed": 0,
+      "scope": "Original authored section annotations are not independent per-tool acceptance.",
+      "section_authored_checks": {
+        "sections": 52,
+        "total": 189,
+        "passed": 189,
+        "authored_verified_flags": 161,
+        "execution_only_flags": 28
+      }
+    },
+    {
+      "id": "native-assets-r1",
+      "path": "native-assets-r1/run.json",
+      "sha256": "1ce3d91597a6b8a4c39ccd48196a2d9c4331a3aa524471a6ba95d45dff348d94",
+      "recorded_calls": 49,
+      "completed": true,
+      "started_at_utc": "2026-10-10T00:17:22.395168+00:00",
+      "finished_at_utc": "2026-10-10T00:17:25.241307+00:00",
+      "engine_version": "6.0.0-58813929+++Fortnite+Release-42.30",
+      "checks_passed": 23,
+      "checks_failed": 1,
+      "scope": "Scoped independent checks; completed means procedure finished, not every check passed."
+    },
+    {
+      "id": "native-maintenance-r1",
+      "path": "native-maintenance-r1/run.json",
+      "sha256": "30c9730b1aeaeee2a32c1eb0c7d55b433100149a85f9461e92ef683d8eb940d1",
+      "recorded_calls": 20,
+      "completed": true,
+      "started_at_utc": "2026-10-20T08:19:28.230761+00:00",
+      "finished_at_utc": "2026-10-20T08:19:29.652576+00:00",
+      "engine_version": null,
+      "checks_passed": 13,
+      "checks_failed": 2,
+      "scope": "Scoped independent checks; completed means procedure finished, not every check passed."
+    },
+    {
+      "id": "native-assets-r2",
+      "path": "native-assets-r2/run.json",
+      "sha256": "b1fcdbbb173f335db2e4564bf257a1d164c86ff5bc5c7277dfc5f51a8b2d5c74",
+      "recorded_calls": 50,
+      "completed": true,
+      "started_at_utc": "2026-10-20T08:20:20.578213+00:00",
+      "finished_at_utc": "2026-10-20T08:20:25.775358+00:00",
+      "engine_version": "6.0.0-59247843+++Fortnite+Release-42.40",
+      "checks_passed": 25,
+      "checks_failed": 0,
+      "scope": "Scoped independent checks; completed means procedure finished, not every check passed."
+    }
+  ],
+  "source_coverage_promotion": false,
+  "classification_policy": "Disposition counts are conservative manually scoped interpretations, not PASS totals. No promotion from registry membership, authored verified flags, empty lists or structured refusals. Artifact source hashes bind observations to exactbytes; current source tree or editor build may differ. Original baseline/snapshot/negative evidence remains unchanged.",
+  "cold_restart_observation": {
+    "source": "native-maintenance-r1",
+    "check_indices": [
+      1,
+      2,
+      3
+    ],
+    "scope": "r1 finalPNG properties/dimensions and read-only WAVduration survived the later boot; does not establish post-r2 persistence of every newpreset."
+  },
+  "counts": {
+    "returned_only": 165,
+    "capability_unavailable_observed": 6,
+    "not_attempted": 139,
+    "negative_input_boundary": 1,
+    "empty_or_no_findings_boundary": 24,
+    "scoped_state_checked": 21,
+    "empty_fixture_noop": 2,
+    "diagnostic_subcheck_checked": 1,
+    "missing_fixture_refusal": 1,
+    "known_issue_checked": 1,
+    "harness_mixed_assertions": 1
+  },
+  "tools": [
+    {
+      "tool": "actor_attach_to_parent",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 164,
+          "section": "actor_org_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_chain_place",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 167,
+          "section": "proximity_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_cluster_to_folder",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 170,
+          "section": "proximity_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_copy_to_positions",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 169,
+          "section": "proximity_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_detach",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 165,
+          "section": "actor_org_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_duplicate_offset",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 168,
+          "section": "proximity_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_folder_list",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 159,
+          "section": "actor_org_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_hide",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 206,
+          "section": "visibility_tools",
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 6,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_isolate",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 208,
+          "section": "visibility_tools",
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 8,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_lock",
+      "disposition": "capability_unavailable_observed",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 210,
+          "section": "visibility_tools",
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 10,
+          "section": null,
+          "status": "error"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Original section falsely passed statusok despite failed1. Maintenance rerun now returns error, changed0, unavailable1 because selected FortStaticMeshActor has no supported readable boolean lock property. No lock/unlock success claimed."
+      ]
+    },
+    {
+      "tool": "actor_match_transform",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 162,
+          "section": "actor_org_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_move_to_folder",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 158,
+          "section": "actor_org_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_move_to_root",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 163,
+          "section": "actor_org_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_place_next_to",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 166,
+          "section": "proximity_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_rename_folder",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "actor_replace_class",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 171,
+          "section": "proximity_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_select_by_class",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 161,
+          "section": "actor_org_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_select_by_folder",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 160,
+          "section": "actor_org_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_select_same_folder",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "actor_show",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 207,
+          "section": "visibility_tools",
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 7,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_show_all",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 209,
+          "section": "visibility_tools",
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 9,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_unlock",
+      "disposition": "capability_unavailable_observed",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 211,
+          "section": "visibility_tools",
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 11,
+          "section": null,
+          "status": "error"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Original section falsely passed statusok despite failed1. Maintenance rerun now returns error, changed0, unavailable1 because selected FortStaticMeshActor has no supported readable boolean lock property. No lock/unlock success claimed."
+      ]
+    },
+    {
+      "tool": "align_to_grid_two_points",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 177,
+          "section": "advanced_alignment",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "align_to_reference",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 172,
+          "section": "advanced_alignment",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "align_to_surface",
+      "disposition": "capability_unavailable_observed",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 176,
+          "section": "advanced_alignment",
+          "status": "error"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "call176: engine_api_unavailable; no functional mutation outcome"
+      ]
+    },
+    {
+      "tool": "anim_create_montage",
+      "disposition": "negative_input_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 16,
+          "section": null,
+          "status": "error"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 17,
+          "section": null,
+          "status": "error"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 17,
+          "section": null,
+          "status": "error"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 18,
+          "section": null,
+          "status": "error"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Texture2D-as-sequence and missing-sequence inputs were refused without creating the named montage. Native factory availability is not valid montage-creation or playback evidence."
+      ]
+    },
+    {
+      "tool": "anim_list_blend_spaces",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 23,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 24,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "anim_list_montages",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 22,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 23,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "anim_list_sequences",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 21,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 22,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "anim_list_skeletons",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 20,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 21,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "api_crawl_level_classes",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 92,
+          "section": "crawler",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "api_crawl_selection",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 93,
+          "section": "crawler",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "api_export_full",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "api_generate_stubs",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "api_inspect",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 19,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 20,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance."
+      ]
+    },
+    {
+      "tool": "api_list_subsystems",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "api_search",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 18,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 19,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance."
+      ]
+    },
+    {
+      "tool": "api_sync_master",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "api_verse_get_schema",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "api_verse_refresh_schemas",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "arena_generate",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 120,
+          "section": "arena_safe",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "audio_list",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 191,
+          "section": "audio_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "audio_list_metasounds",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 24,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 25,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "audio_list_sound_classes",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 25,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 26,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "audio_list_sound_cues",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 26,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 27,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "audio_list_sound_mixes",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 27,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 28,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "audio_list_synesthesia",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 28,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 29,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "audio_place",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 190,
+          "section": "audio_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "audio_set_radius",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 193,
+          "section": "audio_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "audio_set_volume",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 192,
+          "section": "audio_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "blueprint_audit",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 39,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 40,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance."
+      ]
+    },
+    {
+      "tool": "blueprint_compile_folder",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "blueprint_inspect",
+      "disposition": "capability_unavailable_observed",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 40,
+          "section": null,
+          "status": "error"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 41,
+          "section": null,
+          "status": "error"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Recorded current-build API preflight refusal; functional operation not accepted."
+      ]
+    },
+    {
+      "tool": "blueprint_list",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 38,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 39,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "bulk_align",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 1,
+          "section": "bulk_ops",
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 18,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "bulk_ops",
+          "check_name": "Align X (First Actor)",
+          "detail": "X coords: 0.0, 0.0, 0.0",
+          "scope": "Independent fixture X locations compared to reference; scoped X alignment only.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/1/result/checks/0"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "bulk_distribute",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 2,
+          "section": "bulk_ops_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "bulk_ops_advanced",
+          "check_name": "Distribute X",
+          "detail": "Middle actor X: 500.0 (Expected: 500.0)",
+          "scope": "Independent fixture X locations compared with expected spacing.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/2/result/checks/0"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "bulk_face_camera",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 10,
+          "section": "bulk_ops_extensions",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "bulk_mirror",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 7,
+          "section": "bulk_ops_extensions",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 8,
+          "section": "bulk_ops_extensions",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "bulk_ops_extensions",
+          "check_name": "Mirror X",
+          "detail": "",
+          "scope": "Independent fixture X reflection scoped axis checks; raw section has multiple checks.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/3/result/checks/0"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "bulk_normalize_scale",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 9,
+          "section": "bulk_ops_extensions",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "bulk_ops_extensions",
+          "check_name": "Normalize Scale",
+          "detail": "Scale: <Struct 'Vector' (0x000000008BE09AA0) {x: 1.500000, y: 1.500000, z: 1.500000}>",
+          "scope": "Independent fixture scale readback.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/3/result/checks/1"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "bulk_randomize",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 4,
+          "section": "bulk_ops_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "bulk_ops_advanced",
+          "check_name": "Randomize (Rot)",
+          "detail": "yaw=-7.57 pitch=0.00 roll=0.00 (pitch/roll must stay 0 \u2014 a value here means Quirk #41 is back)",
+          "scope": "Independent pitch/roll/yaw constraints checked; selected bounds only.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/2/result/checks/2"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "bulk_reset",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 6,
+          "section": "bulk_ops_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "bulk_ops_advanced",
+          "check_name": "Reset Transforms",
+          "detail": "Loc: <Struct 'Vector' (0x000000008BE08AB0) {x: 1.000000, y: 2.000000, z: 3.000000}>, Rot: <Struct 'Rotator' (0x000000008BE0AD60) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>, Scale: <Struct 'Vector' (0x000000008BE09A50) {x: 1.000000, y: 1.000000, z: 1.000000}>",
+          "scope": "Independent rotation/scale readback only.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/2/result/checks/4"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "bulk_snap_to_grid",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 3,
+          "section": "bulk_ops_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "bulk_ops_advanced",
+          "check_name": "Snap to 100",
+          "detail": "Snapped to: <Struct 'Vector' (0x000000008BE09230) {x: 100.000000, y: 500.000000, z: 800.000000}>",
+          "scope": "Independent fixture location compared with expected grid.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/2/result/checks/1"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "bulk_stack",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 5,
+          "section": "bulk_ops_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "bulk_ops_advanced",
+          "check_name": "Stack Z",
+          "detail": "High actor Z: 150.0 (Expected: 150.0)",
+          "scope": "Independent fixture vertical location delta checked.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/2/result/checks/3"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "config_get",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 198,
+          "section": "config_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "config_list",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 196,
+          "section": "config_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "config_reset",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 199,
+          "section": "config_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "config_set",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 197,
+          "section": "config_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "convert_to_hism",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "cooker_mark_batch",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "cooker_mark_selection",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 127,
+          "section": "cooker_safe",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 128,
+          "section": "cooker_safe",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "cooker_open",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "cooker_scan",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "cooker_unmark_all",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "core_safety_audit",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "curve_create",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 129,
+          "section": "curve_create_safe",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "curve_export",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "curve_inspect",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "curve_list",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 41,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 42,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "data_layer_assign_selection",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "data_layer_create",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "data_layer_list",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 48,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 49,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "datatable_audit",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "datatable_export",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "datatable_inspect",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "datatable_list",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 42,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 43,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "datatable_row_names",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "debug_audit_verse_assets",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "debug_dump_verse_actor",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "device_call_method",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "device_catalog_scan",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 205,
+          "section": "world_state",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "device_set_property",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "distribute_with_gap",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 173,
+          "section": "advanced_alignment",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "entity_list_kits",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 136,
+          "section": "entities",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "entity_spawn_kit",
+      "disposition": "capability_unavailable_observed",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 137,
+          "section": "entities",
+          "status": "error"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "call137: no_device_classes_available; no functional mutation outcome"
+      ]
+    },
+    {
+      "tool": "epic_mcp_register",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "epic_mcp_status",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "epic_mcp_unregister",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "folder_hide",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "folder_show",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "foliage_audit_brushes",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 134,
+          "section": "environmental",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "foliage_convert_selected_to_actor",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 135,
+          "section": "environmental",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "geometry_boolean_intersect",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "geometry_boolean_subtract",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "geometry_boolean_union",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "geometry_compute_normals",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "geometry_fill_holes",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "geometry_generate_lightmap_uvs",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "geometry_remove_degenerate",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "geometry_weld_edges",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "import_fbx",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "import_fbx_folder",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "import_image_from_clipboard",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "import_image_from_url",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "input_create_action",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "input_inspect_context",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "input_list_actions",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 45,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 46,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "input_list_contexts",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 46,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 47,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "label_attach",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 183,
+          "section": "sign_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "landscape_audit",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "landscape_info",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "landscape_list",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "landscape_set_material",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "launch_qt",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "level_health_open",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "level_health_report",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 194,
+          "section": "level_health",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "light_cinematic_preset",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 140,
+          "section": "lighting_integration",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "light_list",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 201,
+          "section": "lighting_extended",
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 14,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "light_place",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 200,
+          "section": "lighting_extended",
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 13,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "light_randomize_sky",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 141,
+          "section": "lighting_integration",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "light_set",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 202,
+          "section": "lighting_extended",
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 15,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "lod_audit_folder",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 117,
+          "section": "lods_safe",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "lod_auto_generate_folder",
+      "disposition": "empty_fixture_noop",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 49,
+          "section": "memory",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "call 49: zero-count/no-op reported; functional mutation not established",
+        "Harness intentionally scanned an empty fixture directory; no LOD generation proof; existing stub availability flag stays in force."
+      ]
+    },
+    {
+      "tool": "lod_auto_generate_selection",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "lod_set_collision_folder",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "match_spacing",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 175,
+          "section": "advanced_alignment",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "material_apply_preset",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 0,
+          "section": "materials",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 77,
+          "section": "advanced_materials",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "materials",
+          "check_name": "Apply Preset",
+          "detail": "Applied 'gold' \u2192 MI_gold_Cube (instance=True, named=True, parent=True)",
+          "scope": "Independent selected component MaterialInstanceConstant identity/name/parent readback only; material parameter color not independently checked.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/0/result/checks/0"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "material_bulk_swap",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 80,
+          "section": "advanced_materials",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 81,
+          "section": "advanced_materials",
+          "status": "error"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "call 81: expected second-swap no-match refusal, manually reviewed source control",
+        "call81: Second identical swap deliberately misses because first removed oldmaterial; source negativecontrol."
+      ]
+    },
+    {
+      "tool": "material_color_harmony",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 76,
+          "section": "advanced_materials",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_glow_pulse_preview",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 75,
+          "section": "advanced_materials",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_gradient_painter",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 72,
+          "section": "advanced_materials",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_list_presets",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 79,
+          "section": "advanced_materials",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_parent_audit",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "material_pattern_painter",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 74,
+          "section": "advanced_materials",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_randomize_colors",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 71,
+          "section": "advanced_materials",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_save_preset",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 78,
+          "section": "advanced_materials",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_team_color_split",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 73,
+          "section": "advanced_materials",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "mcp_restart",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "mcp_start",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "mcp_status",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 126,
+          "section": "bridge_safe",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "mcp_stop",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "measure_distance",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 130,
+          "section": "measurement",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "measure_travel_time",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 131,
+          "section": "measurement",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "memory_autofix_lods",
+      "disposition": "empty_fixture_noop",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 50,
+          "section": "memory",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "call 50: zero-count/no-op reported; functional mutation not established",
+        "Harness intentionally scanned an empty fixture directory; no LOD generation proof; existing stub availability flag stays in force."
+      ]
+    },
+    {
+      "tool": "memory_scan",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 45,
+          "section": "memory",
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 0,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 2,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "source": "native-maintenance-r1",
+          "check_index": 4,
+          "name": "Memory scan observes known PNG dimensions",
+          "scope": "Saved report matches known32x32 texture and exact current project mount; partial versus full scope and enumeration completeness observed. Estimate is rough VRAM, not Fortnite memory calculation."
+        },
+        {
+          "source": "native-maintenance-r1",
+          "check_index": 5,
+          "name": "Partial memory scope identity",
+          "scope": "Saved report matches known32x32 texture and exact current project mount; partial versus full scope and enumeration completeness observed. Estimate is rough VRAM, not Fortnite memory calculation."
+        },
+        {
+          "source": "native-maintenance-r1",
+          "check_index": 7,
+          "name": "Full memory scope identity",
+          "scope": "Saved report matches known32x32 texture and exact current project mount; partial versus full scope and enumeration completeness observed. Estimate is rough VRAM, not Fortnite memory calculation."
+        }
+      ],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "memory_scan_meshes",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 47,
+          "section": "memory",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 119,
+          "section": "optimization_safe",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "memory_scan_textures",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 46,
+          "section": "memory",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 118,
+          "section": "optimization_safe",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "call 46: zero count returned; count may mean offenders, not scanned asset count",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "memory_top_offenders",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 48,
+          "section": "memory",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "mesh_merge_selection",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "movie_render_apply_preset",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "movie_render_queue_sequence",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "movie_render_status",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "nanite_audit",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "nanite_enable_folder",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "nanite_enable_selection",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "niagara_bulk_set_parameter",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "niagara_clear_systems",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "niagara_list_systems",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "niagara_spawn_system",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "organize_assets",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 124,
+          "section": "assets_advanced_safe",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 125,
+          "section": "assets_advanced_safe",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "organize_open",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "organize_smart_categorize",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "pattern_arc",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 17,
+          "section": "patterns_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "pattern_circle",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 13,
+          "section": "patterns_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "pattern_clear",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 12,
+          "section": "patterns",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 14,
+          "section": "patterns_advanced",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 16,
+          "section": "patterns_advanced",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 18,
+          "section": "patterns_advanced",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 20,
+          "section": "patterns_advanced",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 22,
+          "section": "patterns_advanced",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 24,
+          "section": "advanced_patterns",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 26,
+          "section": "advanced_patterns",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "patterns",
+          "check_name": "Clear All",
+          "detail": "Remaining: 0",
+          "scope": "Direct level absence after clearing test folder; other folder/path variants separately returned only.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/4/result/checks/1"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "pattern_grid",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 11,
+          "section": "patterns",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "patterns",
+          "check_name": "Grid Spawn (2x2)",
+          "detail": "Found 4 actors",
+          "scope": "Direct level actor count4; position/grid geometry not established.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/4/result/checks/0"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "pattern_helix",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 23,
+          "section": "advanced_patterns",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "pattern_line",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 15,
+          "section": "patterns_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "pattern_radial_rows",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 25,
+          "section": "advanced_patterns",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "pattern_spiral",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 19,
+          "section": "patterns_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "pattern_wave",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 21,
+          "section": "patterns_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "pcg_execute_graph",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "pcg_list_graphs",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "pcg_refresh_all",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "pcg_set_seed",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "physics_add",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "physics_list",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "physics_remove",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "plugin_export_manifest",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "plugin_list_custom",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "plugin_validate_all",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "postprocess_preset",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 187,
+          "section": "postprocess_and_world",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 188,
+          "section": "postprocess_and_world",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "postprocess_set",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 186,
+          "section": "postprocess_and_world",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "postprocess_spawn",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 185,
+          "section": "postprocess_and_world",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "prefab_export_to_disk",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "prefab_migrate_open",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "prefab_parse_refs",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "prefab_resolve_deps",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "procedural_volume_scatter",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "procedural_wire_create",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "project_setup",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "publish_audit",
+      "disposition": "diagnostic_subcheck_checked",
+      "attempts": [
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 1,
+          "section": null,
+          "status": "warnings"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 3,
+          "section": null,
+          "status": "warnings"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "source": "native-maintenance-r1",
+          "check_index": 6,
+          "name": "Partial publish memory is unknown",
+          "scope": "Only memory subcheck acceptance: partialreport is unknown; full current-island report agrees with estimate/completeness. Other warnings/unknown savedstate remain, no publish readiness or upload validation."
+        },
+        {
+          "source": "native-maintenance-r1",
+          "check_index": 8,
+          "name": "Full publish memory agrees with independent report",
+          "scope": "Only memory subcheck acceptance: partialreport is unknown; full current-island report agrees with estimate/completeness. Other warnings/unknown savedstate remain, no publish readiness or upload validation."
+        }
+      ],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance."
+      ]
+    },
+    {
+      "tool": "ref_audit_broken",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "ref_audit_duplicates",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 53,
+          "section": "reference_auditor",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "call 53: zero count returned; count may mean offenders, not scanned asset count",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "ref_audit_orphans",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 51,
+          "section": "reference_auditor",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "call 51: zero count returned; count may mean offenders, not scanned asset count",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "ref_audit_redirectors",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 52,
+          "section": "reference_auditor",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "call 52: zero count returned; count may mean offenders, not scanned asset count",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "ref_audit_unused_textures",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 54,
+          "section": "reference_auditor",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "ref_delete_orphans",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "ref_fix_redirectors",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "ref_full_report",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 55,
+          "section": "reference_auditor",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "rename_dry_run",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 41,
+          "section": "assets",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "rename_enforce_conventions",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 43,
+          "section": "assets",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 123,
+          "section": "assets_advanced_safe",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "rename_report",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 42,
+          "section": "assets",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "rename_strip_prefix",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 44,
+          "section": "assets",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "rogue_actor_scan",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 195,
+          "section": "level_health",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "rotate_around_pivot",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 174,
+          "section": "advanced_alignment",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "save_all_dirty",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 222,
+          "section": "project_admin_v196",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "scaffold_delete_template",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 60,
+          "section": "project_scaffold",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "scaffold_generate",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 57,
+          "section": "project_scaffold",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "scaffold_list_templates",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 59,
+          "section": "project_scaffold",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 61,
+          "section": "project_scaffold",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "scaffold_organize_loose",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "scaffold_preview",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 56,
+          "section": "project_scaffold",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "scaffold_save_template",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 58,
+          "section": "project_scaffold",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "scatter_along_path",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 27,
+          "section": "advanced_patterns",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 121,
+          "section": "scatter_advanced_safe",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "scatter_avoid",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "scatter_clear",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 28,
+          "section": "advanced_patterns",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 29,
+          "section": "scatter",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 32,
+          "section": "scatter",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 33,
+          "section": "scatter",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 122,
+          "section": "scatter_advanced_safe",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "scatter_export_manifest",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "scatter_hism",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 31,
+          "section": "scatter",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "scatter",
+          "check_name": "HISM Instances",
+          "detail": "HISM count: 50",
+          "scope": "Direct HISM instance count50; distribution/seed/collision not established.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/7/result/checks/1"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "scatter_props",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 30,
+          "section": "scatter",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "scatter_road_edge",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "screenshot_focus_selection",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 114,
+          "section": "screenshots",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "screenshot_open_folder",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 116,
+          "section": "screenshots",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "screenshot_take",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 113,
+          "section": "screenshots",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "screenshot_timed_series",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 115,
+          "section": "screenshots",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "select_by_property",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 139,
+          "section": "selection",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "select_by_verse_tag",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "select_in_radius",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 138,
+          "section": "selection",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "selection_list",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 219,
+          "section": "selection_sets",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "selection_restore",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 220,
+          "section": "selection_sets",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 221,
+          "section": "selection_sets",
+          "status": "error"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "call221: Nonexistent selectionset intentionally tests refusal after positive restore."
+      ]
+    },
+    {
+      "tool": "selection_save",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 218,
+          "section": "selection_sets",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "seq_actor_to_spline",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "seq_batch_keyframe",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "sign_batch_edit",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 180,
+          "section": "sign_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "sign_batch_rename",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 181,
+          "section": "sign_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "sign_batch_set_text",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 182,
+          "section": "sign_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "sign_clear",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 184,
+          "section": "sign_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "sign_list",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 179,
+          "section": "sign_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "sign_spawn_bulk",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 178,
+          "section": "sign_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "sim_generate_proxy",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "sim_trigger_method",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "skel_audit",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 44,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 45,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance."
+      ]
+    },
+    {
+      "tool": "skel_list",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 43,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 44,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "skel_list_sockets",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "skel_set_physics_asset",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "sky_set_time",
+      "disposition": "missing_fixture_refusal",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 203,
+          "section": "lighting_extended",
+          "status": "error"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 16,
+          "section": null,
+          "status": "error"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Both runs lack a DirectionalLight fixture. Updated rerun fails the check honestly; no time-of-day operation accepted."
+      ]
+    },
+    {
+      "tool": "snapshot_compare_live",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 85,
+          "section": "snapshots",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "snapshot_delete",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 89,
+          "section": "snapshots",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 90,
+          "section": "snapshots",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 91,
+          "section": "snapshots",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "snapshot_diff",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 87,
+          "section": "snapshots",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "snapshot_export",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 83,
+          "section": "snapshots",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "snapshot_import",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 84,
+          "section": "snapshots",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "snapshot_list",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "snapshot_restore",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 88,
+          "section": "snapshots",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "snapshot_save",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 82,
+          "section": "snapshots",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 86,
+          "section": "snapshots",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "sound_asset_audit",
+      "disposition": "known_issue_checked",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 15,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 35,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 16,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 36,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "source": "native-assets-r2",
+          "check_index": 18,
+          "name": "SoundWave missing SoundClass issue",
+          "scope": "Named shortwave with direct native SoundClassNone yields knownmissing-class issue and clean0; no blanket audio health acceptance."
+        }
+      ],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance."
+      ]
+    },
+    {
+      "tool": "sound_asset_list",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 14,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 34,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 15,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 35,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "source": "native-assets-r2",
+          "check_index": 17,
+          "name": "SoundWave named list fixture",
+          "scope": "Known SoundWave included; separate native read observed0.10000000149sec, mono,48000Hz. sample_rate_override unavailable remains explicitunknown."
+        }
+      ],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance."
+      ]
+    },
+    {
+      "tool": "sound_attenuation_list",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 36,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 37,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "sound_class_list",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 37,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 38,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "spline_clear_props",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 34,
+          "section": "splines",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 40,
+          "section": "splines",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "splines",
+          "check_name": "Clear Props",
+          "detail": "5 placed, 0 left after clear",
+          "scope": "Direct test folder absence after clear.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/8/result/checks/3"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "spline_export_json",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 39,
+          "section": "splines",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "spline_measure",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "spline_place_props",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 35,
+          "section": "splines",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "section": "splines",
+          "check_name": "Place Props",
+          "detail": "Spawned 5 props along spline",
+          "scope": "Direct test folder actor count5; path geometry/orientation not established.",
+          "source": "native-sections-r2",
+          "json_pointer": "/results/8/result/checks/0"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "tool": "spline_to_verse_patrol",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 37,
+          "section": "splines",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "spline_to_verse_points",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 36,
+          "section": "splines",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "spline_to_verse_zone_boundary",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 38,
+          "section": "splines",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "stamp_delete",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 155,
+          "section": "stamp_tools",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 156,
+          "section": "stamp_tools",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 157,
+          "section": "stamp_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "stamp_export",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 153,
+          "section": "stamp_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "stamp_import",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 154,
+          "section": "stamp_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "stamp_info",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 150,
+          "section": "stamp_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "stamp_list",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 149,
+          "section": "stamp_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "stamp_place",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 151,
+          "section": "stamp_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "stamp_save",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 148,
+          "section": "stamp_tools",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 152,
+          "section": "stamp_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "system_backup_project",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 4,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 5,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "source": "native-maintenance-r1",
+          "check_index": 9,
+          "name": "Native backup fixture bytes 1",
+          "scope": "Two distinct native ZIP archives preserve exact PNG/WAV .uasset bytes. Does not establish all project-file coverage, restoreability, or native traversal-error injection."
+        },
+        {
+          "source": "native-maintenance-r1",
+          "check_index": 10,
+          "name": "Native backup fixture bytes 2",
+          "scope": "Two distinct native ZIP archives preserve exact PNG/WAV .uasset bytes. Does not establish all project-file coverage, restoreability, or native traversal-error injection."
+        },
+        {
+          "source": "native-maintenance-r1",
+          "check_index": 11,
+          "name": "Repeated native backups preserve distinct archives",
+          "scope": "Two distinct native ZIP archives preserve exact PNG/WAV .uasset bytes. Does not establish all project-file coverage, restoreability, or native traversal-error injection."
+        }
+      ],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance."
+      ]
+    },
+    {
+      "tool": "system_build_verse",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "system_get_last_build_log",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "system_optimize_background_cpu",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "system_perf_audit",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 142,
+          "section": "project_admin_integration",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "tag_add",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 94,
+          "section": "asset_tagger",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "New calls recorded during in-flight section; no automatic linkage to authored checks."
+      ]
+    },
+    {
+      "tool": "tag_export",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 98,
+          "section": "asset_tagger",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "New calls recorded during in-flight section; no automatic linkage to authored checks."
+      ]
+    },
+    {
+      "tool": "tag_list_all",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 97,
+          "section": "asset_tagger",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "New calls recorded during in-flight section; no automatic linkage to authored checks."
+      ]
+    },
+    {
+      "tool": "tag_remove",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 99,
+          "section": "asset_tagger",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "New calls recorded during in-flight section; no automatic linkage to authored checks."
+      ]
+    },
+    {
+      "tool": "tag_search",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 96,
+          "section": "asset_tagger",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 100,
+          "section": "asset_tagger",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "New calls recorded during in-flight section; no automatic linkage to authored checks."
+      ]
+    },
+    {
+      "tool": "tag_show",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 95,
+          "section": "asset_tagger",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "New calls recorded during in-flight section; no automatic linkage to authored checks."
+      ]
+    },
+    {
+      "tool": "text_apply_translation",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 133,
+          "section": "localization",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "text_clear_folder",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 68,
+          "section": "text_painter",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 69,
+          "section": "text_painter",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 70,
+          "section": "text_painter",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "text_color_cycle",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 66,
+          "section": "text_painter",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "text_export_manifest",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 132,
+          "section": "localization",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "text_label_selection",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 67,
+          "section": "text_painter",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "text_list_styles",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 65,
+          "section": "text_painter",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "text_paint_grid",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 63,
+          "section": "text_painter",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "text_place",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 62,
+          "section": "text_painter",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "text_render_texture",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "text_save_style",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 64,
+          "section": "text_painter",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "text_voxelize_3d",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "texture_apply_preset",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 7,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 8,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 9,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 10,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 11,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 12,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 13,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 33,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 8,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 9,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 10,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 11,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 12,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 13,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 14,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 34,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "source": "native-assets-r2",
+          "check_index": 9,
+          "name": "texture_apply_preset native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 10,
+          "name": "texture_apply_preset native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 11,
+          "name": "texture_apply_preset native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 12,
+          "name": "texture_apply_preset native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 13,
+          "name": "texture_apply_preset native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 14,
+          "name": "texture_apply_preset native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 15,
+          "name": "texture_apply_preset native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 24,
+          "name": "texture_apply_preset preview preserves state",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        }
+      ],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "r1 compression check failure is preserved: masks implicitly disabledsRGB. r2 explicitly reproduced/reported that sideeffect and passed its scopedchecks. All seven preset states were checked only for texture_apply_preset."
+      ]
+    },
+    {
+      "tool": "texture_audit",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 29,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 30,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance."
+      ]
+    },
+    {
+      "tool": "texture_set_compression",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 3,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 4,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 30,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 4,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 5,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 31,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "source": "native-assets-r2",
+          "check_index": 5,
+          "name": "texture_set_compression native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 6,
+          "name": "texture_set_compression native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 21,
+          "name": "texture_set_compression preview preserves state",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        }
+      ],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "r1 compression check failure is preserved: masks implicitly disabledsRGB. r2 explicitly reproduced/reported that sideeffect and passed its scopedchecks. All seven preset states were checked only for texture_apply_preset."
+      ]
+    },
+    {
+      "tool": "texture_set_group",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 5,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 6,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 31,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 6,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 7,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 32,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "source": "native-assets-r2",
+          "check_index": 7,
+          "name": "texture_set_group native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 8,
+          "name": "texture_set_group native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 22,
+          "name": "texture_set_group preview preserves state",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        }
+      ],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "r1 compression check failure is preserved: masks implicitly disabledsRGB. r2 explicitly reproduced/reported that sideeffect and passed its scopedchecks. All seven preset states were checked only for texture_apply_preset."
+      ]
+    },
+    {
+      "tool": "texture_set_srgb",
+      "disposition": "scoped_state_checked",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 0,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 1,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 2,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r1",
+          "call_index": 32,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 0,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 1,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 2,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 3,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 33,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [
+        {
+          "source": "native-assets-r2",
+          "check_index": 1,
+          "name": "texture_set_srgb native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 2,
+          "name": "texture_set_srgb native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 3,
+          "name": "texture_set_srgb native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 4,
+          "name": "texture_set_srgb native property readback",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        },
+        {
+          "source": "native-assets-r2",
+          "check_index": 23,
+          "name": "texture_set_srgb preview preserves state",
+          "scope": "Exact named32x32 fixture native srgb/compression/group/mip properties, predicted changedcount, reported implicit changes and preview invariance. Savefile bytes/hashes and loaded object identity observed; no separate post-r2 restart."
+        }
+      ],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance.",
+        "r1 compression check failure is preserved: masks implicitly disabledsRGB. r2 explicitly reproduced/reported that sideeffect and passed its scopedchecks. All seven preset states were checked only for texture_apply_preset."
+      ]
+    },
+    {
+      "tool": "theme_get",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "theme_list",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "theme_set",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "toolbelt_activity_clear",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "toolbelt_activity_log",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "toolbelt_activity_stats",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "toolbelt_integration_test",
+      "disposition": "harness_mixed_assertions",
+      "attempts": [
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 12,
+          "section": null,
+          "status": "error"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 17,
+          "section": null,
+          "status": "error"
+        },
+        {
+          "source": "native-maintenance-r1",
+          "call_index": 19,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "52 completed original sections had189 passing authored checks (161 flagged verified,28 execution-only). Updated visibility and lighting reruns honestly record unsupported/missing-fixture failures. Neither count certifies362 tools."
+      ],
+      "section_invocation_source": {
+        "source": "native-sections-r2",
+        "result_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51
+        ]
+      }
+    },
+    {
+      "tool": "toolbelt_smoke_test",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "toolbelt_update",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "ui_icon_import_open",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "uv_add_channel",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "uv_generate_box",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "uv_generate_planar",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "uv_list_channels",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "verse_build_status",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "verse_bulk_set_property",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 112,
+          "section": "verse_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_export_report",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 109,
+          "section": "verse_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_find_project_path",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "verse_gen_custom",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 103,
+          "section": "verse_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_gen_device_declarations",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 102,
+          "section": "verse",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_gen_elimination_handler",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 104,
+          "section": "verse_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_gen_game_skeleton",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 105,
+          "section": "verse_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_gen_prop_spawner",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 106,
+          "section": "verse_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_gen_scoring_tracker",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 107,
+          "section": "verse_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_graph_export",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "verse_graph_open",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "verse_graph_scan",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "verse_list_devices",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 108,
+          "section": "verse_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_list_snippets",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 101,
+          "section": "verse",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_open_snippets_folder",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "verse_patch_errors",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "verse_select_by_class",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 111,
+          "section": "verse_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "verse_select_by_name",
+      "disposition": "empty_or_no_findings_boundary",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 110,
+          "section": "verse_advanced",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "All recorded count values were zero. Count may mean findings rather than assets scanned; no positive class-matching fixture outcome established."
+      ]
+    },
+    {
+      "tool": "verse_template_deploy",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "verse_template_get",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "verse_template_list",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "verse_write_file",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "viewport_bookmark_jump",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 216,
+          "section": "viewport_bookmarks",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "viewport_bookmark_list",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 215,
+          "section": "viewport_bookmarks",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "viewport_bookmark_save",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 214,
+          "section": "viewport_bookmarks",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "viewport_camera_get",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "viewport_focus_actor",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "viewport_goto",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "viewport_move_to_camera",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "viewport_showflag",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 212,
+          "section": "viewport_bookmarks",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 213,
+          "section": "viewport_bookmarks",
+          "status": "ok"
+        },
+        {
+          "source": "native-sections-r2",
+          "call_index": 217,
+          "section": "viewport_bookmarks",
+          "status": "error"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "call217: Nonexistentpreset intentionally tests refusal after validpresets."
+      ]
+    },
+    {
+      "tool": "world_partition_status",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-assets-r1",
+          "call_index": 47,
+          "section": null,
+          "status": "ok"
+        },
+        {
+          "source": "native-assets-r2",
+          "call_index": 48,
+          "section": null,
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Calls were recorded; results alone do not establish functional acceptance."
+      ]
+    },
+    {
+      "tool": "world_settings_set",
+      "disposition": "capability_unavailable_observed",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 189,
+          "section": "postprocess_and_world",
+          "status": "error"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "call189: properties_not_exposed; no functional mutation outcome"
+      ]
+    },
+    {
+      "tool": "world_state_export",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 204,
+          "section": "world_state",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "zone_fill_scatter",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 147,
+          "section": "zone_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "zone_list",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 144,
+          "section": "zone_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "zone_move_contents",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "zone_resize_to_selection",
+      "disposition": "not_attempted",
+      "attempts": [],
+      "scoped_checks": [],
+      "limits": []
+    },
+    {
+      "tool": "zone_select_contents",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 145,
+          "section": "zone_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "zone_snap_to_selection",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 146,
+          "section": "zone_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "zone_spawn",
+      "disposition": "returned_only",
+      "attempts": [
+        {
+          "source": "native-sections-r2",
+          "call_index": 143,
+          "section": "zone_tools",
+          "status": "ok"
+        }
+      ],
+      "scoped_checks": [],
+      "limits": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    }
+  ]
+}

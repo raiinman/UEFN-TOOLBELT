@@ -1,0 +1,17 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:40.583960
+Passed:  6/6
+Verified: 6 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.21s
+============================================================
+
+
+[Proximity]
+----------------------------------------
+  PASS  actor_place_next_to
+  PASS  actor_chain_place
+  PASS  actor_duplicate_offset  (spawned 2 (expected 2))
+  PASS  actor_copy_to_positions  (placed 2 (expected 2))
+  PASS  actor_cluster_to_folder
+  PASS  actor_replace_class (dry_run)  (would replace 11)

@@ -228,83 +228,102 @@ def run_folder_show(folder_name: str = "", **kwargs) -> dict:
 
 # ── Actor locking ──────────────────────────────────────────────────────────────
 
+_LOCK_PROPERTIES = ("lock_location", "bLockLocation", "bLocked")
+
+
+def _set_selected_lock_state(desired: bool) -> dict:
+    count_key = "locked" if desired else "unlocked"
+    outcomes = []
+    try:
+        actors = _sub().get_selected_level_actors()
+        if not actors:
+            return {"status": "error", "error": "No actors selected.", count_key: 0,
+                    "attempted": 0, "changed": 0, "failed": 0}
+        with unreal.ScopedEditorTransaction("Lock Actors" if desired else "Unlock Actors"):
+            for index, actor in enumerate(actors):
+                try:
+                    label = actor.get_actor_label()
+                except Exception:
+                    label = f"Selected actor {index + 1}"
+                outcome = {"label": label, "status": "error", "changed": False,
+                           "property": None, "before": None, "after": None,
+                           "may_have_changed": False}
+                probes = []
+                for prop in _LOCK_PROPERTIES:
+                    try:
+                        before = actor.get_editor_property(prop)
+                        if not isinstance(before, bool):
+                            raise ValueError("Lock property did not return a boolean")
+                    except Exception as exc:
+                        probes.append({"property": prop, "message": str(exc)})
+                        continue
+                    outcome.update(property=prop, before=before)
+                    break
+                else:
+                    outcome.update(reason="actor_lock_unavailable", probes=probes,
+                                   message="No supported boolean movement-lock property is readable in this build.")
+                    outcomes.append(outcome)
+                    continue
+                if before is desired:
+                    outcome.update(status="ok", after=before, already_in_state=True)
+                    outcomes.append(outcome)
+                    continue
+                outcome["may_have_changed"] = True
+                try:
+                    actor.set_editor_property(prop, desired)
+                except Exception as exc:
+                    outcome.update(reason="actor_lock_set_failed", message=str(exc))
+                    outcomes.append(outcome)
+                    continue
+                try:
+                    after = actor.get_editor_property(prop)
+                    outcome["after"] = after if isinstance(after, bool) else None
+                    if after is not desired:
+                        raise ValueError("Movement-lock readback did not match the requested state")
+                except Exception as exc:
+                    outcome.update(reason="actor_lock_readback_failed", message=str(exc))
+                    outcomes.append(outcome)
+                    continue
+                outcome.update(status="ok", changed=True, may_have_changed=False)
+                outcomes.append(outcome)
+    except Exception as exc:
+        return {"status": "error", "reason": "actor_lock_failed", "error": str(exc),
+                count_key: sum(item["status"] == "ok" for item in outcomes),
+                "changed": sum(item["changed"] for item in outcomes), "actors": outcomes,
+                "possible_partial_changes": bool(outcomes)}
+    errors = [item for item in outcomes if item["status"] == "error"]
+    unavailable = sum(item.get("reason") == "actor_lock_unavailable" for item in errors)
+    result = {"status": "error" if errors else "ok", count_key: len(outcomes) - len(errors),
+              "attempted": len(outcomes), "changed": sum(item["changed"] for item in outcomes),
+              "failed": len(errors), "unavailable": unavailable,
+              "labels": [item["label"] for item in outcomes], "actors": outcomes,
+              "errors": errors,
+              "possible_partial_changes": bool(errors) and any(
+                  item["changed"] or item["may_have_changed"] for item in outcomes)}
+    if errors:
+        result["reason"] = ("actor_lock_unavailable" if unavailable == len(outcomes)
+                            else "actor_lock_failed")
+    log_info(f"actor_{'lock' if desired else 'unlock'}: verified={result[count_key]}, failed={len(errors)}")
+    return result
+
+
 @register_tool(
     name="actor_lock",
     category="Visibility",
-    description=(
-        "Lock selected actors in place — prevents accidental moves, rotations, "
-        "and scale changes in the viewport. Use actor_unlock to reverse."
-    ),
+    description="Set the exposed movement-lock property on selected actors and verify readback; unsupported actors return errors.",
     tags=["lock", "freeze", "protect", "actor", "placement"],
 )
 def run_actor_lock(**kwargs) -> dict:
-    """Lock selected actors so they cannot be dragged or transformed in the viewport."""
-    try:
-        sub = _sub()
-        actors = sub.get_selected_level_actors()
-        if not actors:
-            return {"status": "error", "error": "No actors selected."}
-        locked = failed = 0
-        errors = []
-        with unreal.ScopedEditorTransaction("Lock Actors"):
-            for a in actors:
-                # Try bLockLocation first, then bLocked (UEFN property name varies by build)
-                success = False
-                for prop in ("bLockLocation", "bLocked"):
-                    try:
-                        a.set_editor_property(prop, True)
-                        locked += 1
-                        success = True
-                        break
-                    except Exception:
-                        continue
-                if not success:
-                    failed += 1
-                    errors.append(a.get_actor_label())
-        if errors:
-            log_info(f"actor_lock: locked {locked}, failed {failed} — UEFN may sandbox bLockLocation on: {errors}")
-        else:
-            log_info(f"actor_lock: locked {locked}")
-        return {
-            "status": "ok",
-            "locked": locked,
-            "failed": failed,
-            "labels": [a.get_actor_label() for a in actors],
-        }
-    except Exception as e:
-        log_error(f"actor_lock failed: {e}")
-        return {"status": "error", "error": str(e)}
+    """Verify the requested lock state; property readback does not prove viewport behavior."""
+    return _set_selected_lock_state(True)
 
 
 @register_tool(
     name="actor_unlock",
     category="Visibility",
-    description="Unlock selected actors — restores full move/rotate/scale in the viewport.",
+    description="Clear the exposed movement-lock property on selected actors and verify readback; unsupported actors return errors.",
     tags=["lock", "unlock", "actor", "selection", "transform"],
 )
 def run_actor_unlock(**kwargs) -> dict:
-    """Unlock selected actors so they can be transformed freely in the viewport again."""
-    try:
-        sub = _sub()
-        actors = sub.get_selected_level_actors()
-        if not actors:
-            return {"status": "error", "error": "No actors selected."}
-        unlocked = failed = 0
-        with unreal.ScopedEditorTransaction("Unlock Actors"):
-            for a in actors:
-                success = False
-                for prop in ("bLockLocation", "bLocked"):
-                    try:
-                        a.set_editor_property(prop, False)
-                        unlocked += 1
-                        success = True
-                        break
-                    except Exception:
-                        continue
-                if not success:
-                    failed += 1
-        log_info(f"actor_unlock: unlocked {unlocked}, failed {failed}")
-        return {"status": "ok", "unlocked": unlocked, "failed": failed}
-    except Exception as e:
-        log_error(f"actor_unlock failed: {e}")
-        return {"status": "error", "error": str(e)}
+    """Verify the requested unlocked state without guessing property availability."""
+    return _set_selected_lock_state(False)

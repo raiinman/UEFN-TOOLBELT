@@ -35,12 +35,13 @@ MCP usage:
 from __future__ import annotations
 
 import json
+import math
 import os
 from datetime import datetime
 
 import unreal
 
-from ..core import detect_project_mount, log_info
+from ..core import detect_project_mount, log_info, native_project_dir
 from ..registry import register_tool
 from .system_build import _pick_build_log, _scan_build_snapshot
 
@@ -184,16 +185,19 @@ def _check_verse_build(project_saved_dir: str) -> dict:
 
 
 def _check_unsaved(world) -> dict:
-    dirty = False
+    values = []
     try:
         if hasattr(world, "is_dirty"):
-            dirty = world.is_dirty()
-        if not dirty:
-            pkg = world.get_outer() if hasattr(world, "get_outer") else None
-            if pkg and hasattr(pkg, "is_dirty"):
-                dirty = pkg.is_dirty()
-    except Exception:
-        pass
+            values.append(world.is_dirty())
+        pkg = world.get_outer() if hasattr(world, "get_outer") else None
+        if pkg and hasattr(pkg, "is_dirty"):
+            values.append(pkg.is_dirty())
+        if not values or not all(isinstance(value, bool) for value in values):
+            raise ValueError("Dirty-state API is unavailable or returned no boolean")
+    except Exception as e:
+        return {"pass": None, "dirty": None, "severity": "warn",
+                "note": f"Level saved state unavailable — verify in the editor: {e}"}
+    dirty = any(values)
     return {
         "pass":     not dirty,
         "dirty":    dirty,
@@ -248,8 +252,28 @@ def _check_memory(toolbelt_saved_dir: str, warn_mb: float, crit_mb: float) -> di
                     "note": f"Memory report is {age_h:.1f}h old — re-run memory_scan"}
         with open(report_path, encoding="utf-8") as f:
             data = json.load(f)
-        est_mb = (data.get("summary", {}).get("estimated_vram_mb")
-                  or data.get("estimated_vram_mb", 0))
+        mount = detect_project_mount()
+        if not mount or mount in {"Game", "Engine", "Fortnite", "FortniteGame"}:
+            raise ValueError("Current island identity is unavailable")
+        if data.get("scan_path", "").rstrip("/") != f"/{mount}":
+            raise ValueError("Memory report must cover the full current island; re-run memory_scan")
+        if (data.get("project_mount") != mount or data.get("full_project_scan") is not True
+                or data.get("registry_enumeration_complete") is not True):
+            raise ValueError("Memory report identity or inventory completeness is unavailable")
+        summary = data.get("summary", {})
+        if not isinstance(summary, dict):
+            raise ValueError("Memory summary is not an object")
+        if summary.get("estimate_complete") is not True:
+            raise ValueError("Memory estimate completeness is unavailable or false; re-run memory_scan")
+        for key in ("unknown_assets", "unknown_textures", "unknown_meshes", "unknown_sounds"):
+            count = summary.get(key, 0)
+            if isinstance(count, bool) or not isinstance(count, int) or count != 0:
+                raise ValueError("Memory report contains unknown asset inspections")
+        est_mb = (summary["estimated_vram_mb"] if "estimated_vram_mb" in summary
+                  else data.get("estimated_vram_mb"))
+        if (isinstance(est_mb, bool) or not isinstance(est_mb, (int, float))
+                or not math.isfinite(est_mb) or est_mb < 0):
+            raise ValueError("Memory estimate is missing or invalid")
         severity = "ok" if est_mb < warn_mb else ("warn" if est_mb < crit_mb else "fail")
         return {
             "pass":         est_mb < crit_mb,
@@ -328,7 +352,10 @@ def publish_audit(
         tb.run("publish_audit", required_devices="SpawnPadDevice,EndGameDevice",
                actor_limit=3000)
     """
-    toolbelt_saved = os.path.join(unreal.Paths.project_saved_dir(), "UEFN_Toolbelt")
+    try:
+        toolbelt_saved = os.path.join(native_project_dir(), "Saved", "UEFN_Toolbelt")
+    except Exception as exc:
+        return {"status": "error", "reason": "project_identity_unavailable", "message": str(exc)}
     os.makedirs(toolbelt_saved, exist_ok=True)
 
     sub     = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)

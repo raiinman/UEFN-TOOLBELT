@@ -97,7 +97,7 @@ def _test_my_new_tool() -> None:
    import Toolbelt fresh, and register all tools. Do not guarded reload.
 3. If this extends an existing pure tool module, paste this into the UEFN Python console:
 ```python
-import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_integration_test")
+import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_integration_test", allow_mutation=True, preserve_bridge=True)
 ```
 4. Run the new tool directly and verify its returned data or editor state, not
    merely that it raised no exception.

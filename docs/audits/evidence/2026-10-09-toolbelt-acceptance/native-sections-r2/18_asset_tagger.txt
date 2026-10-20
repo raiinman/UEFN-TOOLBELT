@@ -1,0 +1,18 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:09:48.382072
+Passed:  7/7
+Verified: 7 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 259.28s
+============================================================
+
+
+[Asset Tagger]
+----------------------------------------
+  PASS  Add Tag  (status=ok tagged=1/1)
+  PASS  Show Tags  (status=ok tags={'TEST_INTEGRATION_TAG': 'verified'})
+  PASS  Search finds the tag it just wrote  (1 hit(s) in /001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Tags)
+  PASS  List All  (TEST_INTEGRATION_TAG=1 asset(s), keys=['TEST_INTEGRATION_TAG'])
+  PASS  Export Tags
+  PASS  Remove Tag  (status=ok removed=1/1)
+  PASS  Search no longer finds it after removal  (0 hit(s) remaining)

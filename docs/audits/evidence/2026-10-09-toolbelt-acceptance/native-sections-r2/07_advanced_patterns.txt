@@ -1,0 +1,17 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:04:36.036849
+Passed:  3/3
+Verified: 3 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.44s
+============================================================
+
+
+[Patterns]
+----------------------------------------
+  PASS  Helix Spawn (Count=24)  (Found 24 actors)
+  PASS  Radial Rows (Count=37)  (Found 37 actors)
+
+[Procedural]
+----------------------------------------
+  PASS  Scatter Along Path (Count=6)  (Found 6)

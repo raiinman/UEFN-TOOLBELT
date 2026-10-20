@@ -1,0 +1,13 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:36.788674
+Passed:  2/2
+Verified: 2 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.05s
+============================================================
+
+
+[Measurement]
+----------------------------------------
+  PASS  Measure Distance  (Dist: 1000.0)
+  PASS  Travel Time (Run)  (Time: 2.22s)

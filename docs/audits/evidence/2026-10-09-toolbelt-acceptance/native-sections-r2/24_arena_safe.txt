@@ -1,0 +1,13 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:07.936017
+Passed:  2/2
+Verified: 2 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.60s
+============================================================
+
+
+[Arena]
+----------------------------------------
+  PASS  Generate  (Spawned 236 actors)
+  PASS  Cleanup  (236 destroyed, 0 still in the Arena folder)

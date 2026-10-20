@@ -1,0 +1,14 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:04:33.776879
+Passed:  3/3
+Verified: 2 checked a real outcome · 1 execution-only (ran without raising)
+Elapsed: 0.14s
+============================================================
+
+
+[Bulk Ops]
+----------------------------------------
+  PASS  Mirror X
+  PASS  Normalize Scale  (Scale: <Struct 'Vector' (0x000000008BE09AA0) {x: 1.500000, y: 1.500000, z: 1.500000}>)
+  PASS  Face Camera

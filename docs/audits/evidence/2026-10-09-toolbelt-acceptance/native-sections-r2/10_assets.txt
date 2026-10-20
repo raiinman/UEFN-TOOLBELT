@@ -1,0 +1,15 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:04:56.633295
+Passed:  4/4
+Verified: 4 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 13.83s
+============================================================
+
+
+[Assets]
+----------------------------------------
+  PASS  Rename Dry Run  (Report generated: True)
+  PASS  Rename Report  (JSON Report created)
+  PASS  Enforce Conventions  (renamed=2 status=ok)
+  PASS  Strip Prefix  (done=1/1 status=ok)

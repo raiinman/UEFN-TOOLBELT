@@ -15,6 +15,7 @@ Read the repository-root AGENTS.md and every parent AGENTS.md before editing thi
 - conftest.py supplies a fake unreal module for off-editor tests; passing those tests establishes no live UEFN behavior.
 - pyproject.toml defines test collection; smoke_test.py is a separate live-editor entry point.
 - Keep tests isolated from real project state and preserve evidence categories when testing coverage reports.
+- CI uses four pytest-xdist workers with individual-case distribution. Keep writable fixture state in per-process sandboxes or per-test tmp_path directories; never share mutable repository or editor state between workers.
 
 ## Work Guidance
 

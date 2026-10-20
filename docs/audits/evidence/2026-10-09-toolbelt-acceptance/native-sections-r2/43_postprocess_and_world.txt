@@ -1,0 +1,16 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:41.866215
+Passed:  5/5
+Verified: 4 checked a real outcome · 1 execution-only (ran without raising)
+Elapsed: 0.10s
+============================================================
+
+
+[PostProcess]
+----------------------------------------
+  PASS  postprocess_spawn
+  PASS  postprocess_set
+  PASS  postprocess_preset (cinematic)
+  PASS  postprocess_preset (reset)
+  PASS  world_settings_set (gravity)  (status=error applied={} unavailable=['gravity'])

@@ -1,0 +1,4115 @@
+{
+  "artifact_type": "derived final baseline per-tool evidence ledger",
+  "source": "native-sections-r2/run.json",
+  "source_snapshot_sha256": "ddf5622fff9739b3e7e964ecc90f29946e25038a94778ce359574067e40af59b",
+  "source_completed": true,
+  "source_current_section": "project_admin_v196",
+  "source_section_result_count": 52,
+  "source_call_count": 223,
+  "registered_tool_count": 362,
+  "generated_at_utc": "2026-10-10T00:16:50.065975+00:00",
+  "classification_policy": "No promotion from registration or green authoredflag. Callrecords identify returnedoutputs only; manuallylisted independentassertions have narrow scopes. Finalbaseline covers this exactruntime on one WindowsPC and disposableUEFNboot. Additionalasset acceptance and futurecorrectionretests belong separateartifacts. Canonicalsourcecoverage ledger unchanged.",
+  "counts": {
+    "returned_only": 166,
+    "operation_failed_observed": 2,
+    "not_attempted": 173,
+    "capability_unavailable_observed": 3,
+    "scoped_state_checked": 14,
+    "empty_fixture_noop": 2,
+    "missing_fixture_refusal": 1,
+    "section_harness_observed": 1
+  },
+  "tools": [
+    {
+      "tool": "actor_attach_to_parent",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        164
+      ],
+      "sections": [
+        "actor_org_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_chain_place",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        167
+      ],
+      "sections": [
+        "proximity_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_cluster_to_folder",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        170
+      ],
+      "sections": [
+        "proximity_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_copy_to_positions",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        169
+      ],
+      "sections": [
+        "proximity_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_detach",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        165
+      ],
+      "sections": [
+        "actor_org_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_duplicate_offset",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        168
+      ],
+      "sections": [
+        "proximity_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_folder_list",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        159
+      ],
+      "sections": [
+        "actor_org_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_hide",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        206
+      ],
+      "sections": [
+        "visibility_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_isolate",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        208
+      ],
+      "sections": [
+        "visibility_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_lock",
+      "disposition": "operation_failed_observed",
+      "raw_call_indices": [
+        210
+      ],
+      "sections": [
+        "visibility_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "call210: resultstatus may sayok but peritem errors/failures present; no fullsuccess",
+        "Known selectedCube fixture: locked/unlocked0 failed1, yet authoredstatus-only check passed with verifiedflagTrue. Actual native boundary/false-success defect remains for repair."
+      ]
+    },
+    {
+      "tool": "actor_match_transform",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        162
+      ],
+      "sections": [
+        "actor_org_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_move_to_folder",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        158
+      ],
+      "sections": [
+        "actor_org_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_move_to_root",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        163
+      ],
+      "sections": [
+        "actor_org_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_place_next_to",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        166
+      ],
+      "sections": [
+        "proximity_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_rename_folder",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "actor_replace_class",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        171
+      ],
+      "sections": [
+        "proximity_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_select_by_class",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        161
+      ],
+      "sections": [
+        "actor_org_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_select_by_folder",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        160
+      ],
+      "sections": [
+        "actor_org_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_select_same_folder",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "actor_show",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        207
+      ],
+      "sections": [
+        "visibility_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_show_all",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        209
+      ],
+      "sections": [
+        "visibility_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "actor_unlock",
+      "disposition": "operation_failed_observed",
+      "raw_call_indices": [
+        211
+      ],
+      "sections": [
+        "visibility_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "call211: resultstatus may sayok but peritem errors/failures present; no fullsuccess",
+        "Known selectedCube fixture: locked/unlocked0 failed1, yet authoredstatus-only check passed with verifiedflagTrue. Actual native boundary/false-success defect remains for repair."
+      ]
+    },
+    {
+      "tool": "align_to_grid_two_points",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        177
+      ],
+      "sections": [
+        "advanced_alignment"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "align_to_reference",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        172
+      ],
+      "sections": [
+        "advanced_alignment"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "align_to_surface",
+      "disposition": "capability_unavailable_observed",
+      "raw_call_indices": [
+        176
+      ],
+      "sections": [
+        "advanced_alignment"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "call176: engine_api_unavailable; no functional mutation outcome"
+      ]
+    },
+    {
+      "tool": "anim_create_montage",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "anim_list_blend_spaces",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "anim_list_montages",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "anim_list_sequences",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "anim_list_skeletons",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "api_crawl_level_classes",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        92
+      ],
+      "sections": [
+        "crawler"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "api_crawl_selection",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        93
+      ],
+      "sections": [
+        "crawler"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "api_export_full",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "api_generate_stubs",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "api_inspect",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "api_list_subsystems",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "api_search",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "api_sync_master",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "api_verse_get_schema",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "api_verse_refresh_schemas",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "arena_generate",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        120
+      ],
+      "sections": [
+        "arena_safe"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "audio_list",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        191
+      ],
+      "sections": [
+        "audio_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "audio_list_metasounds",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "audio_list_sound_classes",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "audio_list_sound_cues",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "audio_list_sound_mixes",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "audio_list_synesthesia",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "audio_place",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        190
+      ],
+      "sections": [
+        "audio_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "audio_set_radius",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        193
+      ],
+      "sections": [
+        "audio_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "audio_set_volume",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        192
+      ],
+      "sections": [
+        "audio_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "blueprint_audit",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "blueprint_compile_folder",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "blueprint_inspect",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "blueprint_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "bulk_align",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        1
+      ],
+      "sections": [
+        "bulk_ops"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "bulk_ops",
+          "check_name": "Align X (First Actor)",
+          "detail": "X coords: 0.0, 0.0, 0.0",
+          "scope": "Independent fixture X locations compared to reference; scoped X alignment only."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "bulk_distribute",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        2
+      ],
+      "sections": [
+        "bulk_ops_advanced"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "bulk_ops_advanced",
+          "check_name": "Distribute X",
+          "detail": "Middle actor X: 500.0 (Expected: 500.0)",
+          "scope": "Independent fixture X locations compared with expected spacing."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "bulk_face_camera",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        10
+      ],
+      "sections": [
+        "bulk_ops_extensions"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "bulk_mirror",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        7,
+        8
+      ],
+      "sections": [
+        "bulk_ops_extensions"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "bulk_ops_extensions",
+          "check_name": "Mirror X",
+          "detail": "",
+          "scope": "Independent fixture X reflection scoped axis checks; raw section has multiple checks."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "bulk_normalize_scale",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        9
+      ],
+      "sections": [
+        "bulk_ops_extensions"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "bulk_ops_extensions",
+          "check_name": "Normalize Scale",
+          "detail": "Scale: <Struct 'Vector' (0x000000008BE09AA0) {x: 1.500000, y: 1.500000, z: 1.500000}>",
+          "scope": "Independent fixture scale readback."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "bulk_randomize",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        4
+      ],
+      "sections": [
+        "bulk_ops_advanced"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "bulk_ops_advanced",
+          "check_name": "Randomize (Rot)",
+          "detail": "yaw=-7.57 pitch=0.00 roll=0.00 (pitch/roll must stay 0 \u2014 a value here means Quirk #41 is back)",
+          "scope": "Independent pitch/roll/yaw constraints checked; selected bounds only."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "bulk_reset",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        6
+      ],
+      "sections": [
+        "bulk_ops_advanced"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "bulk_ops_advanced",
+          "check_name": "Reset Transforms",
+          "detail": "Loc: <Struct 'Vector' (0x000000008BE08AB0) {x: 1.000000, y: 2.000000, z: 3.000000}>, Rot: <Struct 'Rotator' (0x000000008BE0AD60) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>, Scale: <Struct 'Vector' (0x000000008BE09A50) {x: 1.000000, y: 1.000000, z: 1.000000}>",
+          "scope": "Independent rotation/scale readback only."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "bulk_snap_to_grid",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        3
+      ],
+      "sections": [
+        "bulk_ops_advanced"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "bulk_ops_advanced",
+          "check_name": "Snap to 100",
+          "detail": "Snapped to: <Struct 'Vector' (0x000000008BE09230) {x: 100.000000, y: 500.000000, z: 800.000000}>",
+          "scope": "Independent fixture location compared with expected grid."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "bulk_stack",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        5
+      ],
+      "sections": [
+        "bulk_ops_advanced"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "bulk_ops_advanced",
+          "check_name": "Stack Z",
+          "detail": "High actor Z: 150.0 (Expected: 150.0)",
+          "scope": "Independent fixture vertical location delta checked."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "config_get",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        198
+      ],
+      "sections": [
+        "config_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "config_list",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        196
+      ],
+      "sections": [
+        "config_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "config_reset",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        199
+      ],
+      "sections": [
+        "config_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "config_set",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        197
+      ],
+      "sections": [
+        "config_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "convert_to_hism",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "cooker_mark_batch",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "cooker_mark_selection",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        127,
+        128
+      ],
+      "sections": [
+        "cooker_safe"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "cooker_open",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "cooker_scan",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "cooker_unmark_all",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "core_safety_audit",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "curve_create",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        129
+      ],
+      "sections": [
+        "curve_create_safe"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "curve_export",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "curve_inspect",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "curve_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "data_layer_assign_selection",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "data_layer_create",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "data_layer_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "datatable_audit",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "datatable_export",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "datatable_inspect",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "datatable_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "datatable_row_names",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "debug_audit_verse_assets",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "debug_dump_verse_actor",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "device_call_method",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "device_catalog_scan",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        205
+      ],
+      "sections": [
+        "world_state"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "device_set_property",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "distribute_with_gap",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        173
+      ],
+      "sections": [
+        "advanced_alignment"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "entity_list_kits",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        136
+      ],
+      "sections": [
+        "entities"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "entity_spawn_kit",
+      "disposition": "capability_unavailable_observed",
+      "raw_call_indices": [
+        137
+      ],
+      "sections": [
+        "entities"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "call137: no_device_classes_available; no functional mutation outcome"
+      ]
+    },
+    {
+      "tool": "epic_mcp_register",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "epic_mcp_status",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "epic_mcp_unregister",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "folder_hide",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "folder_show",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "foliage_audit_brushes",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        134
+      ],
+      "sections": [
+        "environmental"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "foliage_convert_selected_to_actor",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        135
+      ],
+      "sections": [
+        "environmental"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "geometry_boolean_intersect",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "geometry_boolean_subtract",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "geometry_boolean_union",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "geometry_compute_normals",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "geometry_fill_holes",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "geometry_generate_lightmap_uvs",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "geometry_remove_degenerate",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "geometry_weld_edges",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "import_fbx",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "import_fbx_folder",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "import_image_from_clipboard",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "import_image_from_url",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "input_create_action",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "input_inspect_context",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "input_list_actions",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "input_list_contexts",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "label_attach",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        183
+      ],
+      "sections": [
+        "sign_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "landscape_audit",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "landscape_info",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "landscape_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "landscape_set_material",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "launch_qt",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "level_health_open",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "level_health_report",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        194
+      ],
+      "sections": [
+        "level_health"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "light_cinematic_preset",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        140
+      ],
+      "sections": [
+        "lighting_integration"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "light_list",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        201
+      ],
+      "sections": [
+        "lighting_extended"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "light_place",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        200
+      ],
+      "sections": [
+        "lighting_extended"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "light_randomize_sky",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        141
+      ],
+      "sections": [
+        "lighting_integration"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "light_set",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        202
+      ],
+      "sections": [
+        "lighting_extended"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "lod_audit_folder",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        117
+      ],
+      "sections": [
+        "lods_safe"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "lod_auto_generate_folder",
+      "disposition": "empty_fixture_noop",
+      "raw_call_indices": [
+        49
+      ],
+      "sections": [
+        "memory"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "call 49: zero-count/no-op reported; functional mutation not established",
+        "Harness intentionally scanned an empty fixture directory; no LOD generation proof; existing stub availability flag stays in force."
+      ]
+    },
+    {
+      "tool": "lod_auto_generate_selection",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "lod_set_collision_folder",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "match_spacing",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        175
+      ],
+      "sections": [
+        "advanced_alignment"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "material_apply_preset",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        0,
+        77
+      ],
+      "sections": [
+        "advanced_materials",
+        "materials"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "materials",
+          "check_name": "Apply Preset",
+          "detail": "Applied 'gold' \u2192 MI_gold_Cube (instance=True, named=True, parent=True)",
+          "scope": "Independent selected component MaterialInstanceConstant identity/name/parent readback only; material parameter color not independently checked."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "material_bulk_swap",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        80,
+        81
+      ],
+      "sections": [
+        "advanced_materials"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "call 81: expected second-swap no-match refusal, manually reviewed source control",
+        "call81: Second identical swap deliberately misses because first removed oldmaterial; source negativecontrol."
+      ]
+    },
+    {
+      "tool": "material_color_harmony",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        76
+      ],
+      "sections": [
+        "advanced_materials"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_glow_pulse_preview",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        75
+      ],
+      "sections": [
+        "advanced_materials"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_gradient_painter",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        72
+      ],
+      "sections": [
+        "advanced_materials"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_list_presets",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        79
+      ],
+      "sections": [
+        "advanced_materials"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_parent_audit",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "material_pattern_painter",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        74
+      ],
+      "sections": [
+        "advanced_materials"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_randomize_colors",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        71
+      ],
+      "sections": [
+        "advanced_materials"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_save_preset",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        78
+      ],
+      "sections": [
+        "advanced_materials"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "material_team_color_split",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        73
+      ],
+      "sections": [
+        "advanced_materials"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Authored verified flags/counters/preset-name membership alone do not verify material color or shader behavior."
+      ]
+    },
+    {
+      "tool": "mcp_restart",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "mcp_start",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "mcp_status",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        126
+      ],
+      "sections": [
+        "bridge_safe"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "mcp_stop",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "measure_distance",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        130
+      ],
+      "sections": [
+        "measurement"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "measure_travel_time",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        131
+      ],
+      "sections": [
+        "measurement"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "memory_autofix_lods",
+      "disposition": "empty_fixture_noop",
+      "raw_call_indices": [
+        50
+      ],
+      "sections": [
+        "memory"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "call 50: zero-count/no-op reported; functional mutation not established",
+        "Harness intentionally scanned an empty fixture directory; no LOD generation proof; existing stub availability flag stays in force."
+      ]
+    },
+    {
+      "tool": "memory_scan",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        45
+      ],
+      "sections": [
+        "memory"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "memory_scan_meshes",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        47,
+        119
+      ],
+      "sections": [
+        "memory",
+        "optimization_safe"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "memory_scan_textures",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        46,
+        118
+      ],
+      "sections": [
+        "memory",
+        "optimization_safe"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "call 46: zero count returned; count may mean offenders, not scanned asset count"
+      ]
+    },
+    {
+      "tool": "memory_top_offenders",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        48
+      ],
+      "sections": [
+        "memory"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "mesh_merge_selection",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "movie_render_apply_preset",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "movie_render_queue_sequence",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "movie_render_status",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "nanite_audit",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "nanite_enable_folder",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "nanite_enable_selection",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "niagara_bulk_set_parameter",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "niagara_clear_systems",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "niagara_list_systems",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "niagara_spawn_system",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "organize_assets",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        124,
+        125
+      ],
+      "sections": [
+        "assets_advanced_safe"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "organize_open",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "organize_smart_categorize",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "pattern_arc",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        17
+      ],
+      "sections": [
+        "patterns_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "pattern_circle",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        13
+      ],
+      "sections": [
+        "patterns_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "pattern_clear",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        24,
+        26
+      ],
+      "sections": [
+        "advanced_patterns",
+        "patterns",
+        "patterns_advanced"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "patterns",
+          "check_name": "Clear All",
+          "detail": "Remaining: 0",
+          "scope": "Direct level absence after clearing test folder; other folder/path variants separately returned only."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "pattern_grid",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        11
+      ],
+      "sections": [
+        "patterns"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "patterns",
+          "check_name": "Grid Spawn (2x2)",
+          "detail": "Found 4 actors",
+          "scope": "Direct level actor count4; position/grid geometry not established."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "pattern_helix",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        23
+      ],
+      "sections": [
+        "advanced_patterns"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "pattern_line",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        15
+      ],
+      "sections": [
+        "patterns_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "pattern_radial_rows",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        25
+      ],
+      "sections": [
+        "advanced_patterns"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "pattern_spiral",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        19
+      ],
+      "sections": [
+        "patterns_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "pattern_wave",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        21
+      ],
+      "sections": [
+        "patterns_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "pcg_execute_graph",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "pcg_list_graphs",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "pcg_refresh_all",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "pcg_set_seed",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "physics_add",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "physics_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "physics_remove",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "plugin_export_manifest",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "plugin_list_custom",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "plugin_validate_all",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "postprocess_preset",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        187,
+        188
+      ],
+      "sections": [
+        "postprocess_and_world"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "postprocess_set",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        186
+      ],
+      "sections": [
+        "postprocess_and_world"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "postprocess_spawn",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        185
+      ],
+      "sections": [
+        "postprocess_and_world"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "prefab_export_to_disk",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "prefab_migrate_open",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "prefab_parse_refs",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "prefab_resolve_deps",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "procedural_volume_scatter",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "procedural_wire_create",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "project_setup",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "publish_audit",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "ref_audit_broken",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "ref_audit_duplicates",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        53
+      ],
+      "sections": [
+        "reference_auditor"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "call 53: zero count returned; count may mean offenders, not scanned asset count"
+      ]
+    },
+    {
+      "tool": "ref_audit_orphans",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        51
+      ],
+      "sections": [
+        "reference_auditor"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "call 51: zero count returned; count may mean offenders, not scanned asset count"
+      ]
+    },
+    {
+      "tool": "ref_audit_redirectors",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        52
+      ],
+      "sections": [
+        "reference_auditor"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "call 52: zero count returned; count may mean offenders, not scanned asset count"
+      ]
+    },
+    {
+      "tool": "ref_audit_unused_textures",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        54
+      ],
+      "sections": [
+        "reference_auditor"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "ref_delete_orphans",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "ref_fix_redirectors",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "ref_full_report",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        55
+      ],
+      "sections": [
+        "reference_auditor"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "rename_dry_run",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        41
+      ],
+      "sections": [
+        "assets"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "rename_enforce_conventions",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        43,
+        123
+      ],
+      "sections": [
+        "assets",
+        "assets_advanced_safe"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "rename_report",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        42
+      ],
+      "sections": [
+        "assets"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "rename_strip_prefix",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        44
+      ],
+      "sections": [
+        "assets"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "rogue_actor_scan",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        195
+      ],
+      "sections": [
+        "level_health"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "rotate_around_pivot",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        174
+      ],
+      "sections": [
+        "advanced_alignment"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "save_all_dirty",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        222
+      ],
+      "sections": [
+        "project_admin_v196"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "scaffold_delete_template",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        60
+      ],
+      "sections": [
+        "project_scaffold"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "scaffold_generate",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        57
+      ],
+      "sections": [
+        "project_scaffold"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "scaffold_list_templates",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        59,
+        61
+      ],
+      "sections": [
+        "project_scaffold"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "scaffold_organize_loose",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "scaffold_preview",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        56
+      ],
+      "sections": [
+        "project_scaffold"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "scaffold_save_template",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        58
+      ],
+      "sections": [
+        "project_scaffold"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "scatter_along_path",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        27,
+        121
+      ],
+      "sections": [
+        "advanced_patterns",
+        "scatter_advanced_safe"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "scatter_avoid",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "scatter_clear",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        28,
+        29,
+        32,
+        33,
+        122
+      ],
+      "sections": [
+        "advanced_patterns",
+        "scatter",
+        "scatter_advanced_safe"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "scatter_export_manifest",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "scatter_hism",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        31
+      ],
+      "sections": [
+        "scatter"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "scatter",
+          "check_name": "HISM Instances",
+          "detail": "HISM count: 50",
+          "scope": "Direct HISM instance count50; distribution/seed/collision not established."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "scatter_props",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        30
+      ],
+      "sections": [
+        "scatter"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "scatter_road_edge",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "screenshot_focus_selection",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        114
+      ],
+      "sections": [
+        "screenshots"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "screenshot_open_folder",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        116
+      ],
+      "sections": [
+        "screenshots"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "screenshot_take",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        113
+      ],
+      "sections": [
+        "screenshots"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "screenshot_timed_series",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        115
+      ],
+      "sections": [
+        "screenshots"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "select_by_property",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        139
+      ],
+      "sections": [
+        "selection"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "select_by_verse_tag",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "select_in_radius",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        138
+      ],
+      "sections": [
+        "selection"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "selection_list",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        219
+      ],
+      "sections": [
+        "selection_sets"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "selection_restore",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        220,
+        221
+      ],
+      "sections": [
+        "selection_sets"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "call221: Nonexistent selectionset intentionally tests refusal after positive restore."
+      ]
+    },
+    {
+      "tool": "selection_save",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        218
+      ],
+      "sections": [
+        "selection_sets"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "seq_actor_to_spline",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "seq_batch_keyframe",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "sign_batch_edit",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        180
+      ],
+      "sections": [
+        "sign_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "sign_batch_rename",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        181
+      ],
+      "sections": [
+        "sign_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "sign_batch_set_text",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        182
+      ],
+      "sections": [
+        "sign_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "sign_clear",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        184
+      ],
+      "sections": [
+        "sign_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "sign_list",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        179
+      ],
+      "sections": [
+        "sign_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "sign_spawn_bulk",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        178
+      ],
+      "sections": [
+        "sign_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "sim_generate_proxy",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "sim_trigger_method",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "skel_audit",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "skel_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "skel_list_sockets",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "skel_set_physics_asset",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "sky_set_time",
+      "disposition": "missing_fixture_refusal",
+      "raw_call_indices": [
+        203
+      ],
+      "sections": [
+        "lighting_extended"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "No DirectionalLightfixture; authored anydict check acceptederror, no time-of-day operation proved."
+      ]
+    },
+    {
+      "tool": "snapshot_compare_live",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        85
+      ],
+      "sections": [
+        "snapshots"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "snapshot_delete",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        89,
+        90,
+        91
+      ],
+      "sections": [
+        "snapshots"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "snapshot_diff",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        87
+      ],
+      "sections": [
+        "snapshots"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "snapshot_export",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        83
+      ],
+      "sections": [
+        "snapshots"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "snapshot_import",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        84
+      ],
+      "sections": [
+        "snapshots"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "snapshot_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "snapshot_restore",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        88
+      ],
+      "sections": [
+        "snapshots"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "snapshot_save",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        82,
+        86
+      ],
+      "sections": [
+        "snapshots"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "sound_asset_audit",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "sound_asset_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "sound_attenuation_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "sound_class_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "spline_clear_props",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        34,
+        40
+      ],
+      "sections": [
+        "splines"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "splines",
+          "check_name": "Clear Props",
+          "detail": "5 placed, 0 left after clear",
+          "scope": "Direct test folder absence after clear."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "spline_export_json",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        39
+      ],
+      "sections": [
+        "splines"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "spline_measure",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "spline_place_props",
+      "disposition": "scoped_state_checked",
+      "raw_call_indices": [
+        35
+      ],
+      "sections": [
+        "splines"
+      ],
+      "manually_reviewed_state_checks": [
+        {
+          "section": "splines",
+          "check_name": "Place Props",
+          "detail": "Spawned 5 props along spline",
+          "scope": "Direct test folder actor count5; path geometry/orientation not established."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "tool": "spline_to_verse_patrol",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        37
+      ],
+      "sections": [
+        "splines"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "spline_to_verse_points",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        36
+      ],
+      "sections": [
+        "splines"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "spline_to_verse_zone_boundary",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        38
+      ],
+      "sections": [
+        "splines"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Returned output path and authored file-existence checks require independent fresh-content validation before stronger file-output acceptance."
+      ]
+    },
+    {
+      "tool": "stamp_delete",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        155,
+        156,
+        157
+      ],
+      "sections": [
+        "stamp_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "stamp_export",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        153
+      ],
+      "sections": [
+        "stamp_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "stamp_import",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        154
+      ],
+      "sections": [
+        "stamp_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "stamp_info",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        150
+      ],
+      "sections": [
+        "stamp_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "stamp_list",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        149
+      ],
+      "sections": [
+        "stamp_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "stamp_place",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        151
+      ],
+      "sections": [
+        "stamp_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "stamp_save",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        148,
+        152
+      ],
+      "sections": [
+        "stamp_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "system_backup_project",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "system_build_verse",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "system_get_last_build_log",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "system_optimize_background_cpu",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "system_perf_audit",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        142
+      ],
+      "sections": [
+        "project_admin_integration"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "tag_add",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        94
+      ],
+      "sections": [
+        "asset_tagger"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "New calls recorded during in-flight section; no automatic linkage to authored checks."
+      ]
+    },
+    {
+      "tool": "tag_export",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        98
+      ],
+      "sections": [
+        "asset_tagger"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "New calls recorded during in-flight section; no automatic linkage to authored checks."
+      ]
+    },
+    {
+      "tool": "tag_list_all",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        97
+      ],
+      "sections": [
+        "asset_tagger"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "New calls recorded during in-flight section; no automatic linkage to authored checks."
+      ]
+    },
+    {
+      "tool": "tag_remove",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        99
+      ],
+      "sections": [
+        "asset_tagger"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "New calls recorded during in-flight section; no automatic linkage to authored checks."
+      ]
+    },
+    {
+      "tool": "tag_search",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        96,
+        100
+      ],
+      "sections": [
+        "asset_tagger"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "New calls recorded during in-flight section; no automatic linkage to authored checks."
+      ]
+    },
+    {
+      "tool": "tag_show",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        95
+      ],
+      "sections": [
+        "asset_tagger"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "New calls recorded during in-flight section; no automatic linkage to authored checks."
+      ]
+    },
+    {
+      "tool": "text_apply_translation",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        133
+      ],
+      "sections": [
+        "localization"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "text_clear_folder",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        68,
+        69,
+        70
+      ],
+      "sections": [
+        "text_painter"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "text_color_cycle",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        66
+      ],
+      "sections": [
+        "text_painter"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "text_export_manifest",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        132
+      ],
+      "sections": [
+        "localization"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "text_label_selection",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        67
+      ],
+      "sections": [
+        "text_painter"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "text_list_styles",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        65
+      ],
+      "sections": [
+        "text_painter"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "text_paint_grid",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        63
+      ],
+      "sections": [
+        "text_painter"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "text_place",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        62
+      ],
+      "sections": [
+        "text_painter"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "text_render_texture",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "text_save_style",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        64
+      ],
+      "sections": [
+        "text_painter"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "text_voxelize_3d",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "texture_apply_preset",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "texture_audit",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "texture_set_compression",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "texture_set_group",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "texture_set_srgb",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "theme_get",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "theme_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "theme_set",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "toolbelt_activity_clear",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "toolbelt_activity_log",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "toolbelt_activity_stats",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "toolbelt_integration_test",
+      "disposition": "section_harness_observed",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "52 completedsections;189 authoredchecks passed,161 authoredverifiedflags and28executiononly flags. Flags retain originalmeaning and do not implypertool acceptance."
+      ]
+    },
+    {
+      "tool": "toolbelt_smoke_test",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "toolbelt_update",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "ui_icon_import_open",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "uv_add_channel",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "uv_generate_box",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "uv_generate_planar",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "uv_list_channels",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "verse_build_status",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "verse_bulk_set_property",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        112
+      ],
+      "sections": [
+        "verse_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_export_report",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        109
+      ],
+      "sections": [
+        "verse_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_find_project_path",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "verse_gen_custom",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        103
+      ],
+      "sections": [
+        "verse_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_gen_device_declarations",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        102
+      ],
+      "sections": [
+        "verse"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_gen_elimination_handler",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        104
+      ],
+      "sections": [
+        "verse_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_gen_game_skeleton",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        105
+      ],
+      "sections": [
+        "verse_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_gen_prop_spawner",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        106
+      ],
+      "sections": [
+        "verse_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_gen_scoring_tracker",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        107
+      ],
+      "sections": [
+        "verse_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_graph_export",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "verse_graph_open",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "verse_graph_scan",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "verse_list_devices",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        108
+      ],
+      "sections": [
+        "verse_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_list_snippets",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        101
+      ],
+      "sections": [
+        "verse"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_open_snippets_folder",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "verse_patch_errors",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "verse_select_by_class",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        111
+      ],
+      "sections": [
+        "verse_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_select_by_name",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        110
+      ],
+      "sections": [
+        "verse_advanced"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "verse_template_deploy",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "verse_template_get",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "verse_template_list",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "verse_write_file",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "viewport_bookmark_jump",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        216
+      ],
+      "sections": [
+        "viewport_bookmarks"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "viewport_bookmark_list",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        215
+      ],
+      "sections": [
+        "viewport_bookmarks"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "viewport_bookmark_save",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        214
+      ],
+      "sections": [
+        "viewport_bookmarks"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "viewport_camera_get",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "viewport_focus_actor",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "viewport_goto",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "viewport_move_to_camera",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "viewport_showflag",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        212,
+        213,
+        217
+      ],
+      "sections": [
+        "viewport_bookmarks"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "call217: Nonexistentpreset intentionally tests refusal after validpresets."
+      ]
+    },
+    {
+      "tool": "world_partition_status",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "world_settings_set",
+      "disposition": "capability_unavailable_observed",
+      "raw_call_indices": [
+        189
+      ],
+      "sections": [
+        "postprocess_and_world"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred.",
+        "call189: properties_not_exposed; no functional mutation outcome"
+      ]
+    },
+    {
+      "tool": "world_state_export",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        204
+      ],
+      "sections": [
+        "world_state"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "zone_fill_scatter",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        147
+      ],
+      "sections": [
+        "zone_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "zone_list",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        144
+      ],
+      "sections": [
+        "zone_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "zone_move_contents",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "zone_resize_to_selection",
+      "disposition": "not_attempted",
+      "raw_call_indices": [],
+      "sections": [],
+      "manually_reviewed_state_checks": [],
+      "notes": []
+    },
+    {
+      "tool": "zone_select_contents",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        145
+      ],
+      "sections": [
+        "zone_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "zone_snap_to_selection",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        146
+      ],
+      "sections": [
+        "zone_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    },
+    {
+      "tool": "zone_spawn",
+      "disposition": "returned_only",
+      "raw_call_indices": [
+        143
+      ],
+      "sections": [
+        "zone_tools"
+      ],
+      "manually_reviewed_state_checks": [],
+      "notes": [
+        "Call result observed; sourcecheck mapping was not automatically inferred."
+      ]
+    }
+  ]
+}

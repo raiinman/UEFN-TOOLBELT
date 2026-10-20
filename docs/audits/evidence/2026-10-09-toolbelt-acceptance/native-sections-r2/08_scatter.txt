@@ -1,0 +1,14 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:04:36.406565
+Passed:  3/3
+Verified: 3 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.10s
+============================================================
+
+
+[Scatter]
+----------------------------------------
+  PASS  Props Count  (Found 10 actors)
+  PASS  HISM Instances  (HISM count: 50)
+  PASS  Clear  (Remaining: 0)

@@ -18,6 +18,8 @@ Read the repository-root AGENTS.md and every parent AGENTS.md before editing thi
 - `debug_audit_verse_assets` scans the resolved project mount and reports at most 200 metadata matches. Its name-based candidates do not prove an asset is a usable Verse-generated Blueprint.
 - Dashboard and tool windows use normal desktop stacking. Reopening the dashboard restores minimized windows and raises and activates both hidden and visible windows; keep its tool windows accessible without an always-on-top dashboard.
 
+- The registered toolbelt_smoke_test returns a structured result with status, passed and report path. Public tb.smoke_test() keeps its boolean API. Neither proves individual tool outcomes.
+
 ## Work Guidance
 
 - Before Unreal API changes, read docs/UEFN_QUIRKS.md from the repository root.

@@ -1,0 +1,13 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:45.434260
+Passed:  2/2
+Verified: 2 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 2.94s
+============================================================
+
+
+[LevelHealth]
+----------------------------------------
+  PASS  level_health_report  (score=98/100)
+  PASS  rogue_actor_scan  (11 of 13 actors flagged)

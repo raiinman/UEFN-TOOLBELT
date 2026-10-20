@@ -819,7 +819,7 @@ Low-frequency tools — check these exist before re-implementing similar functio
 | `toolbelt_activity_log` | System | Rolling log of all tool calls — name, status, duration, timestamp, error |
 | `toolbelt_activity_stats` | System | Aggregate stats: total calls, error rate, slowest tool, most called |
 | `toolbelt_activity_clear` | System | Wipe the in-memory log and activity_log.json |
-| `toolbelt_integration_test` | Tests | ⚠️ Invasive full automation — use in clean template level only |
+| `toolbelt_integration_test` | Tests | Invasive acceptance — dedicated ToolbeltAcceptance project and explicit mutation opt-in |
 
 ---
 

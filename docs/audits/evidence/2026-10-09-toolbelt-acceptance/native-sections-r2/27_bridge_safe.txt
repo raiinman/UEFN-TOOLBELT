@@ -1,0 +1,12 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:31.538549
+Passed:  1/1
+Verified: 0 checked a real outcome · 1 execution-only (ran without raising)
+Elapsed: 0.02s
+============================================================
+
+
+[Bridge]
+----------------------------------------
+  PASS  Listener preserved  (running=True; no lifecycle calls)

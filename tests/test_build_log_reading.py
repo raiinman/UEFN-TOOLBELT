@@ -162,6 +162,25 @@ def test_status_preserves_legacy_locations(monkeypatch, tmp_path):
     assert result["error_count"] == 1
 
 
+def test_repeated_failure_summaries_preserve_latest_diagnostic_count(monkeypatch, tmp_path):
+    first = "VerseBuild: Error: C:/test.verse(2,3, 2,5): Script error 3506: Unknown name"
+    second = "VerseBuild: Error: C:/test.verse(8,1, 8,4): Script error 3506: Unknown name"
+    finished = "LogSolLoadCompiler: Display: Global Verse compile finished: FAILED."
+    result = _live_status_from_log(monkeypatch, tmp_path, [first, second, finished, FAILED])
+    assert result["build_status"] == "FAILED"
+    assert result["error_count"] == 2
+
+
+def test_repeated_summaries_do_not_accumulate_next_failed_compile(monkeypatch, tmp_path):
+    first = "VerseBuild: Error: C:/test.verse(2,3, 2,5): Script error 3506: Unknown name"
+    second = "VerseBuild: Error: C:/test.verse(8,1, 8,4): Script error 3506: Unknown name"
+    finished = "LogSolLoadCompiler: Display: Global Verse compile finished: FAILED."
+    result = _live_status_from_log(monkeypatch, tmp_path, [first, second, finished, FAILED,
+        second, finished, FAILED])
+    assert result["build_status"] == "FAILED"
+    assert result["error_count"] == 1
+
+
 def test_long_unrelated_log_lines_do_not_stall_status():
     import time
 

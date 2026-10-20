@@ -1,0 +1,18 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:41.504434
+Passed:  7/7
+Verified: 7 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.22s
+============================================================
+
+
+[Signs]
+----------------------------------------
+  PASS  sign_spawn_bulk  (spawned 3)
+  PASS  sign_list  (3 signs found)
+  PASS  sign_batch_edit
+  PASS  sign_batch_rename
+  PASS  sign_batch_set_text
+  PASS  label_attach
+  PASS  sign_clear (publish-safe cleanup)  (deleted=4, remaining=0)

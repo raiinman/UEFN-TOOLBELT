@@ -72,49 +72,33 @@ echo.
 echo  Deploying to:  !DEST!
 echo.
 
-:: Copy files
-echo  [1/4]  Copying UEFN_Toolbelt package...
-xcopy /E /I /Y "%~dp0Content\Python\UEFN_Toolbelt" "!DEST!\Content\Python\UEFN_Toolbelt" >nul
+:: Use the canonical staged installer so removed modules cannot survive upgrades.
+set "INSTALL_PYTHON="
+if exist "%~dp0.venv\Scripts\python.exe" set "INSTALL_PYTHON=%~dp0.venv\Scripts\python.exe"
+if not defined INSTALL_PYTHON (
+    for /f "delims=" %%P in ('python -c "import sys; print(sys.executable)" 2^>nul') do set "INSTALL_PYTHON=%%P"
+)
+if not defined INSTALL_PYTHON (
+    for %%P in (
+        "C:\Program Files\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\python.exe"
+        "C:\Program Files (x86)\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\python.exe"
+        "D:\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\python.exe"
+        "E:\Epic Games\Fortnite\Engine\Binaries\ThirdParty\Python3\Win64\python.exe"
+    ) do if exist %%P if not defined INSTALL_PYTHON set "INSTALL_PYTHON=%%~P"
+)
+if not defined INSTALL_PYTHON (
+    echo  ERROR: Python 3.11 or newer is required for staged deployment.
+    goto :error
+)
+"!INSTALL_PYTHON!" -c "import sys; sys.exit(sys.version_info < (3,11))" >nul 2>&1
+if errorlevel 1 (
+    echo  ERROR: Python 3.11 or newer is required for staged deployment.
+    goto :error
+)
+set "PYTHONUTF8=1"
+echo  [1/1]  Installing package, startup and Verse reference...
+"!INSTALL_PYTHON!" "%~dp0install.py" --project "!DEST!" --skip-dependencies --preserve-startup --install-reference
 if errorlevel 1 ( echo         FAILED & goto :error ) else ( echo         OK )
-
-echo  [2/4]  Ensuring init_unreal.py...
-if exist "!DEST!\Content\Python\init_unreal.py" (
-    echo         PRESERVED existing startup script
-) else (
-    xcopy /Y "%~dp0init_unreal.py" "!DEST!\Content\Python\" >nul
-    if errorlevel 1 ( echo         FAILED & goto :error ) else ( echo         OK )
-)
-
-echo  [3/4]  Copying verse-book reference without Python helpers...
-if exist "%~dp0verse-book\" (
-    robocopy "%~dp0verse-book" "!DEST!\verse-book" /E /XF *.py *.pyc /XD .git __pycache__ >nul
-    set "ROBOCOPY_EXIT=!ERRORLEVEL!"
-    if !ROBOCOPY_EXIT! GEQ 8 ( echo         FAILED & goto :error ) else ( echo         OK )
-) else (
-    echo         SKIPPED ^(verse-book is not cloned^)
-)
-
-:: -- Build stamp --------------------------------------------------------------
-:: Written AFTER the copy, straight into the destination, so it describes what is
-:: actually deployed rather than what the repo happens to contain. Two test runs
-:: were lost to a project silently sitting 40 minutes behind on a different
-:: build; this makes that visible in the editor instead of needing a file audit.
-echo  [4/4]  Writing build stamp...
-set "GIT_SHA=unknown"
-set "GIT_DIRTY="
-set "STAMP_TIME=unknown"
-for /f "delims=" %%i in ('git -C "%~dp0." rev-parse --short HEAD 2^>nul') do set "GIT_SHA=%%i"
-for /f "delims=" %%i in ('git -C "%~dp0." status --porcelain 2^>nul') do set "GIT_DIRTY=+dirty"
-for /f "delims=" %%i in ('powershell -NoProfile -Command "Get-Date -Format s" 2^>nul') do set "STAMP_TIME=%%i"
-set "STAMP_FILE=!DEST!\Content\Python\UEFN_Toolbelt\_build_stamp.json"
-> "!STAMP_FILE!" (
-    echo {
-    echo   "commit": "!GIT_SHA!!GIT_DIRTY!",
-    echo   "deployed_at": "!STAMP_TIME!",
-    echo   "project": "!PROJECT!"
-    echo }
-)
-if exist "!STAMP_FILE!" ( echo         OK  ^(!GIT_SHA!!GIT_DIRTY! -^> !PROJECT!^) ) else ( echo         FAILED & goto :error )
 
 :: PySide6 check ? tries multiple install locations
 if defined NO_PAUSE (
@@ -180,8 +164,8 @@ echo.
 echo [SMOKE TEST] Reload + verify health:
 echo import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_smoke_test")
 echo.
-echo [INTEGRATION TEST] WARNING - invasive, use a clean template only:
-echo import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_integration_test")
+echo [INTEGRATION TEST] Invasive: requires the dedicated ToolbeltAcceptance project:
+echo import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_integration_test", allow_mutation=True, preserve_bridge=True)
 echo.
 echo [MASTER SYNC] Reload + sync docs ^& Verse IQ:
 echo import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("api_sync_master")

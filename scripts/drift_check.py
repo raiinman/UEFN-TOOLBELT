@@ -5288,7 +5288,492 @@ _WO008_A_LIVE_TRACES = (
     _ISSUED_SESSION_A_LIVE_AUTH,
     _WO008_A_LIVE_HEADING,
 )
-# Three literal entries, not a policy engine. Each phase names its own current
+# Session A replacement attempt (A_LIVE_2): one replacement attempt after the
+# A_LIVE attempt stopped before step 0. The gate, marker, opening,
+# prerequisites, NEXT GATE and every A_LIVE record stay exactly as committed
+# and required; one record is added on each surface, with four pointer bullets.
+_WO008_A_LIVE_2_COMMIT = "ce04d17ab5fd548adaddb95775e23b97f418829f"
+_WO008_A_LIVE_2_WORKFLOW = "37874506631"
+_WO008_A_LIVE_2_JOB = "113639869831"
+_WO008_A_LIVE_2_INSTRUCTION_SHA256 = (
+    "420d59ff3fb1f4bcbd1169ef5a3fce3c63187aa7ab99bc4faa628864274f44e2"
+)
+_WO008_A_LIVE_2_PLAN_SHA256SUMS = (
+    "5806aeef223c80a10f9b540728b574af4600852727b0f231bae1082dd7ec7440"
+)
+_WO008_A_LIVE_2_POINTER_SEQUENCE = _WO008_A_LIVE_POINTER_SEQUENCE + (
+    "- WO-008 Session A live baseline commit: `" + _WO008_A_LIVE_2_COMMIT + "`",
+    "- WO-008 Session A live baseline CI workflow: `" + _WO008_A_LIVE_2_WORKFLOW + "`",
+    "- WO-008 Session A live baseline CI job: `" + _WO008_A_LIVE_2_JOB
+    + "` — Lint, types, tests",
+    "- WO-008 Session A replacement attempt instruction SHA-256: `"
+    + _WO008_A_LIVE_2_INSTRUCTION_SHA256 + "`",
+)
+_WO008_A_LIVE_2_POINTER_RECORD = (
+    "WO-008 Session A replacement attempt record: the live baseline transition was\n"
+    "committed as `" + _WO008_A_LIVE_2_COMMIT + "`; [CI workflow\n"
+    "`" + _WO008_A_LIVE_2_WORKFLOW + "`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/" + _WO008_A_LIVE_2_WORKFLOW + ")\n"
+    "completed successfully on that commit, including required job\n"
+    "[`" + _WO008_A_LIVE_2_JOB + "` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/" + _WO008_A_LIVE_2_WORKFLOW + "/job/" + _WO008_A_LIVE_2_JOB + ").\n"
+    "The single attempt that the live baseline record allowed, run\n"
+    "`wo008-a-live-2026-10-09-1`, stopped at setup step 2, before step 0, because\n"
+    "a setup method was supplied at a path the operator's environment could not\n"
+    "resolve. Nothing was deployed, no editor or client was launched, no tool call\n"
+    "was made and no project file was read; that attempt produced no live result.\n"
+    "The accepted plan for this transition is identified by SHA256SUMS\n"
+    "`" + _WO008_A_LIVE_2_PLAN_SHA256SUMS + "`, and its instruction by SHA-256\n"
+    "`" + _WO008_A_LIVE_2_INSTRUCTION_SHA256 + "`. That attempt is used, and this record alone governs the\n"
+    "next one. Session A may make one replacement attempt: one attempt of the\n"
+    "accepted call plan, as amended by the accepted execution addendum and this\n"
+    "transition's accepted plan, through Claude Code with the owner decisions\n"
+    "that instruction records, deployed from the clean, synchronized commit that\n"
+    "carries this record once that commit's own CI has succeeded, with every\n"
+    "setup method verified at its pinned path before setup begins. Independent\n"
+    "review, the commit, the push and that CI are preconditions only; none of\n"
+    "them authorizes or starts the run. Any stop after its setup begins ends the\n"
+    "attempt. A further attempt needs a new reviewed transition recorded here,\n"
+    "and recovery needs a separately bounded owner instruction. A choice or setup\n"
+    "item that instruction omits follows the accepted addendum's missing-choice\n"
+    "rule. Product corrections, installations or configuration changes that\n"
+    "instruction does not name, commits and pushes remain unauthorized. Session B\n"
+    "and Session C remain unauthorized, results are recorded only by a separate\n"
+    "transition, and this record grants no further authority."
+)
+_WO008_A_LIVE_2_HEADING = "## Session A replacement attempt record"
+_WO008_A_LIVE_2_RECORD = (
+    "Session A live baseline commit: `" + _WO008_A_LIVE_2_COMMIT + "`\n"
+    "Session A live baseline commit CI workflow: `" + _WO008_A_LIVE_2_WORKFLOW + "`\n"
+    "Session A live baseline commit CI job: `" + _WO008_A_LIVE_2_JOB + "` — Lint, types, tests\n"
+    "Stopped attempt run ID: `wo008-a-live-2026-10-09-1`\n"
+    "Accepted replacement attempt plan SHA256SUMS: `" + _WO008_A_LIVE_2_PLAN_SHA256SUMS + "`\n"
+    "Owner Session A replacement attempt instruction SHA-256: `" + _WO008_A_LIVE_2_INSTRUCTION_SHA256 + "`\n"
+    "\n"
+    "The single attempt that the live baseline record allowed stopped at setup\n"
+    "step 2, before step 0, because a setup method was supplied at a path the\n"
+    "operator's environment could not resolve. Nothing was deployed, no editor or\n"
+    "client was launched, no tool call was made and no project file was read. It\n"
+    "produced no live result, and this section records only why it stopped.\n"
+    "\n"
+    "That attempt is used, and this section alone governs the next one. The owner\n"
+    "authorized one replacement attempt for Session A: one run of the accepted\n"
+    "call plan, as amended by the accepted execution addendum and the accepted\n"
+    "replacement attempt plan, through Claude Code against an owner-approved\n"
+    "disposable project, with the owner decisions that the replacement attempt\n"
+    "instruction records. CI succeeded on the live baseline commit, not on this\n"
+    "transition or any live result; it demonstrates neither an MCP host nor a\n"
+    "live UEFN build.\n"
+    "\n"
+    "Within that one run, Session A uses as its deploy source the clean,\n"
+    "synchronized commit that carries this record, after that commit's own CI\n"
+    "has succeeded and its runtime and deployment sources are shown unchanged\n"
+    "from `" + _WO008_A_LIVE_BASE + "`, and every setup method is\n"
+    "verified at its pinned path before setup begins. For Session A the owner\n"
+    "performs the deploy, editor start, fixture preparation and local bridge\n"
+    "start, and stops the bridge only as the cleanup decision that instruction\n"
+    "records allows; Session A's client issues only the nine planned tool calls,\n"
+    "each approved individually, with no retry. Any stop after its setup begins\n"
+    "ends the attempt. Session A recovery, a further attempt, installations or\n"
+    "configuration changes that instruction does not name, product corrections,\n"
+    "Session B, Session C, commits and pushes remain unauthorized. Results are\n"
+    "recorded only by a separate transition.\n"
+    "\n"
+    "Independent review, the commit, the push and successful CI are\n"
+    "preconditions only; none of them authorizes or starts the run. A choice\n"
+    "or setup item that instruction omits follows the accepted addendum's\n"
+    "missing-choice rule.\n"
+    "\n"
+    "The owner accepted a narrow offline-verification exemption for this\n"
+    "transition's four governance paths only. The replacement attempt is\n"
+    "Session A evidence, not verification of this transition."
+)
+_WO008_A_LIVE_2_SECTION_HEADINGS = (
+    _WO008_A_LIVE_SECTION_HEADINGS[:5] + (_WO008_A_LIVE_2_HEADING,)
+    + _WO008_A_LIVE_SECTION_HEADINGS[5:])
+# None of these occurs in any committed state through the A_LIVE commit.
+_WO008_A_LIVE_2_TRACES = (
+    "- WO-008 Session A live baseline commit:",
+    "- WO-008 Session A replacement attempt instruction SHA-256:",
+    "WO-008 Session A replacement attempt record:",
+    _WO008_A_LIVE_2_HEADING,
+)
+# Session A result recorded (A_RECORDED, enforcement plan r2's phase): the
+# replacement attempt is consumed and its accepted evidence handoff is recorded
+# as a limited diagnostic result only, not as Session A acceptance. Execution
+# authority closes: session NONE, plan r2's exact gate and marker, a new
+# opening, prerequisites head and NEXT GATE. Every earlier record stays exactly
+# as committed and required; one record is added on each surface, with four
+# pointer bullets.
+_WO008_A_RECORDED_COMMIT = "ca86bc0f641591e830fd882ea05607d62ca11c6b"
+_WO008_A_RECORDED_WORKFLOW = "38164234607"
+_WO008_A_RECORDED_JOB = "114543334362"
+_WO008_A_RECORDED_RUN_ID = "wo008-a-live-2026-10-11-2"
+_WO008_A_RECORDED_HANDOFF_SHA256SUMS = (
+    "67d3728dafbda53955fe31ea40de281dc9c0f51d18d003c53548fbe346c94486"
+)
+_WO008_A_RECORDED_DELTA_REVIEW_SHA256SUMS = (
+    "9722d9d75eee4d33f2a2b90b9092f92293f7096a0fc99e0acec69652e3fa0f4d"
+)
+_WO008_A_RECORDED_REVIEW_SHA256SUMS = (
+    "38a160706f8700fae7f915211ee498a9eb3bfec279196f1ca3efe109780651c6"
+)
+_WO008_A_RECORDED_PLAN_SHA256SUMS = (
+    "c39081f3aacf38c0dbdf2ec459a6743c78e43d6429e0cda296c7848ecf2e7971"
+)
+_WO008_A_RECORDED_INSTRUCTION_SHA256 = (
+    "dffc1b6e525b9242770cd850bc76cbb79628df52f988b4d3b594d9bd8c0b8e14"
+)
+# Enforcement plan r2's phase table, A_RECORDED row, exactly.
+_WO008_A_RECORDED_GATE = "WO-008 SESSION A RECORDED — SESSION B NOT AUTHORIZED"
+_ISSUED_SESSION_A_RECORDED_AUTH = (
+    "AUTHORIZATION: ISSUED — SESSION A RECORDED; NO SESSION AUTHORIZED"
+)
+_WO008_A_RECORDED_POINTER_SEQUENCE = (
+    "- Current issued Work Order: WO-008",
+    "- Authorized session: NONE",
+    "- Base commit: `" + _WO008_A_RECORDED_COMMIT + "`",
+    "- Current gate: " + _WO008_A_RECORDED_GATE,
+) + _WO008_A_LIVE_2_POINTER_SEQUENCE[4:] + (
+    "- WO-008 Session A replacement attempt commit: `" + _WO008_A_RECORDED_COMMIT + "`",
+    "- WO-008 Session A replacement attempt CI workflow: `" + _WO008_A_RECORDED_WORKFLOW + "`",
+    "- WO-008 Session A replacement attempt CI job: `" + _WO008_A_RECORDED_JOB
+    + "` — Lint, types, tests",
+    "- WO-008 Session A diagnostic result instruction SHA-256: `"
+    + _WO008_A_RECORDED_INSTRUCTION_SHA256 + "`",
+)
+_WO008_A_RECORDED_POINTER_RECORD = (
+    "WO-008 Session A diagnostic result record: the replacement attempt transition\n"
+    "was committed as `" + _WO008_A_RECORDED_COMMIT + "`; [CI workflow\n"
+    "`" + _WO008_A_RECORDED_WORKFLOW + "`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/" + _WO008_A_RECORDED_WORKFLOW + ")\n"
+    "completed successfully on that commit, including required job\n"
+    "[`" + _WO008_A_RECORDED_JOB + "` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/" + _WO008_A_RECORDED_WORKFLOW + "/job/" + _WO008_A_RECORDED_JOB + ").\n"
+    "That CI tested the replacement attempt enforcement, not a live result, an MCP\n"
+    "host or a live build. The replacement attempt, run\n"
+    "`" + _WO008_A_RECORDED_RUN_ID + "`, is consumed. As the accepted handoff reports,\n"
+    "under the accepted protocol its first evidenced definite stop came before\n"
+    "step 0, at a client first-run prompt that its instruction did not name, and\n"
+    "further stop and hold conditions followed. As the client displayed, the\n"
+    "planned calls were then made under owner direction, outside the retry gate.\n"
+    "None of Session A's call stages is met as an attempt step, and no\n"
+    "compatibility, exactly-once execution or persistent rollback is established.\n"
+    "The owner accepted the redacted evidence handoff r2 and its independent delta\n"
+    "review as a limited diagnostic result only. They are identified by SHA256SUMS\n"
+    "`" + _WO008_A_RECORDED_HANDOFF_SHA256SUMS + "` and\n"
+    "`" + _WO008_A_RECORDED_DELTA_REVIEW_SHA256SUMS + "`, and the\n"
+    "first independent review by SHA256SUMS\n"
+    "`" + _WO008_A_RECORDED_REVIEW_SHA256SUMS + "`. The accepted\n"
+    "plan for this transition is identified by SHA256SUMS\n"
+    "`" + _WO008_A_RECORDED_PLAN_SHA256SUMS + "`, and its instruction by SHA-256\n"
+    "`" + _WO008_A_RECORDED_INSTRUCTION_SHA256 + "`. That attempt is consumed, and this\n"
+    "record governs over the earlier Session A records, including the replacement\n"
+    "attempt record. No session is authorized. A further Session A attempt,\n"
+    "Session B, Session C, product corrections, installations and configuration\n"
+    "changes each need a separate reviewed transition recorded here; recovery and\n"
+    "cleanup of retained client or project state need a separately bounded owner\n"
+    "instruction; and commits and pushes remain separate owner decisions. This\n"
+    "record grants no authority."
+)
+_WO008_A_RECORDED_OPENING = (
+    "This is an issued following-train Work Order, outside the frozen\n"
+    "WO-001 through WO-007 train. The root pointer identifies WO-008 with\n"
+    "session NONE. The Session A result is recorded as diagnostic only: the\n"
+    "replacement attempt is consumed, and Session B and Session C remain\n"
+    "unauthorized."
+)
+_WO008_A_LIVE_PREREQUISITES_HEAD = (
+    "The separately adopted issuance/session-enforcement plan r2 supported the\n"
+    "closed issuance and Session A offline preparation, and a separate transition\n"
+    "installs the pinned Session A live baseline only. Recording the result,\n"
+    "product corrections and live acceptance still need separately reviewed\n"
+    "enforcement transitions and explicit owner decisions. No later phase is\n"
+    "installed here."
+)
+# The source-exact head that A_RECORDED put in place of the A_LIVE head; the
+# admission paragraph before it and the frozen-train tail after it stay.
+_WO008_A_RECORDED_PREREQUISITES_HEAD = (
+    "The separately adopted issuance/session-enforcement plan r2 supported the\n"
+    "closed issuance and Session A offline preparation. Separate transitions\n"
+    "installed the pinned Session A live baseline and its replacement attempt,\n"
+    "and a separate transition records that attempt's result as diagnostic only.\n"
+    "Session A acceptance, product corrections and live acceptance still need\n"
+    "separately reviewed enforcement transitions and explicit owner decisions. No\n"
+    "later phase is installed here."
+)
+_WO008_A_RECORDED_PREREQUISITES = _replaced_once(_WO008_A_LIVE_PREREQUISITES, ((
+    _WO008_A_LIVE_PREREQUISITES_HEAD, _WO008_A_RECORDED_PREREQUISITES_HEAD,
+),))
+_WO008_A_RECORDED_HEADING = "## Session A diagnostic result record"
+_WO008_A_RECORDED_RECORD = (
+    "Session A replacement attempt commit: `" + _WO008_A_RECORDED_COMMIT + "`\n"
+    "Session A replacement attempt CI workflow: `" + _WO008_A_RECORDED_WORKFLOW + "`\n"
+    "Session A replacement attempt CI job: `" + _WO008_A_RECORDED_JOB + "` — Lint, types, tests\n"
+    "Replacement attempt run ID: `" + _WO008_A_RECORDED_RUN_ID + "`\n"
+    "Accepted evidence handoff r2 SHA256SUMS: `" + _WO008_A_RECORDED_HANDOFF_SHA256SUMS + "`\n"
+    "Accepted evidence delta review SHA256SUMS: `" + _WO008_A_RECORDED_DELTA_REVIEW_SHA256SUMS + "`\n"
+    "First evidence review SHA256SUMS: `" + _WO008_A_RECORDED_REVIEW_SHA256SUMS + "`\n"
+    "Accepted diagnostic result plan SHA256SUMS: `" + _WO008_A_RECORDED_PLAN_SHA256SUMS + "`\n"
+    "Owner Session A diagnostic result instruction SHA-256: `" + _WO008_A_RECORDED_INSTRUCTION_SHA256 + "`\n"
+    "\n"
+    "The replacement attempt is consumed. As the accepted handoff reports, under\n"
+    "the accepted protocol its first evidenced definite stop came before step 0,\n"
+    "when the client showed a first-run prompt that the instruction did not name.\n"
+    "Further stop and hold conditions followed: a second MCP server was connected,\n"
+    "an auto-accept permission mode was active, no per-call approval prompt was\n"
+    "shown, and the client replaced four oversized replies with notices. These\n"
+    "observations rest on owner screenshots and reports that the run's evidence\n"
+    "folder does not preserve. As the client displayed, the nine planned calls were\n"
+    "then made under owner direction, outside the retry gate; that no other call\n"
+    "was made is not established. None of Session A's call stages is met as an\n"
+    "attempt step, and this record is not Session A acceptance or compatibility\n"
+    "evidence. Other disclosed protocol departures are recorded in the accepted\n"
+    "handoff.\n"
+    "\n"
+    "The owner accepted the redacted evidence handoff r2 and its independent delta\n"
+    "review as a limited diagnostic result only. Preserved records show that the\n"
+    "deployed runtime matched the source commit, and that the project footprint\n"
+    "gained one saved actor and lost no file. A preserved narrative record, without\n"
+    "a command transcript, reports that after the run no listener remained. The\n"
+    "absence of the bridge handoff file at both default locations rests on unsaved\n"
+    "session output and on an owner-reported editor-side check, and its record has\n"
+    "no command transcript. Owner reports, screenshots read by the implementer and\n"
+    "unsaved session output, none of them preserved in the run's evidence folder,\n"
+    "indicate that the client's tool list had 34 entries, that it reported\n"
+    "authenticated queued transport with remote Python disabled, and that one actor\n"
+    "was moved 100 cm and restored in memory within tolerance. These are credible\n"
+    "but unverified.\n"
+    "\n"
+    "Required records were not made for the UEFN About build, the external Python\n"
+    "version or the engine install to be started, and the evidence-location rule\n"
+    "was not met for the owner-operated and live steps. The required repeat of the\n"
+    "launch-window environment check is not evidenced. Simulate Physics was not\n"
+    "observed as a setting, an unresolved block before live start with no recorded\n"
+    "owner decision. The cleanup ran under owner direction, outside the\n"
+    "normal-cleanup rule, and its save-prompt answer was not recorded. Persistent\n"
+    "rollback is not established: one actor was saved during editor use, and its\n"
+    "saved transform is unknown. Client configuration changes, a client\n"
+    "auto-update and approval writes occurred during the run, and retained client\n"
+    "and project state was not removed. Per-call approval, conformance beyond the\n"
+    "client's own display, exactly-once execution and the completeness of any\n"
+    "oversized reply are not established.\n"
+    "\n"
+    "As the client displayed and unsaved session output recorded, at the client's\n"
+    "default MCP output limit the `list_toolbelt_tools` reply, which lists every\n"
+    "registered tool (about 235,000 characters), and each `get_all_actors` reply on\n"
+    "the 176-actor test level (about 580 characters per actor) were replaced by\n"
+    "notices, so on that level those steps cannot be met in the client as planned.\n"
+    "A correction is product work. It needs a separately authorized bounded\n"
+    "amendment and plan, and this record installs none.\n"
+    "\n"
+    "That attempt is consumed, and this section governs over the earlier Session A\n"
+    "sections, including the replacement attempt section. No session is authorized.\n"
+    "A further Session A attempt, Session B, Session C, product corrections,\n"
+    "installations and configuration changes each need a separate reviewed\n"
+    "transition recorded in the root pointer; recovery and cleanup of retained\n"
+    "client or project state need a separately bounded owner instruction; and\n"
+    "commits and pushes remain separate owner decisions.\n"
+    "\n"
+    "The owner accepted a narrow offline-verification exemption for this\n"
+    "transition's five governance paths only. This transition records evidence; it\n"
+    "is not live verification."
+)
+_WO008_A_RECORDED_NEXT_GATE = (
+    "NEXT GATE: separate owner decision on WO-008's direction. No session is\n"
+    "authorized. Session B, Session C, product corrections, recovery, cleanup,\n"
+    "exact commits and pushes remain separate decisions. This mandate grants no\n"
+    "review, implementation, commit or push authority."
+)
+_WO008_A_RECORDED_ISSUED_SEQUENCE = tuple(
+    _ISSUED_SESSION_A_RECORDED_AUTH if line == _ISSUED_SESSION_A_LIVE_AUTH else line
+    for line in _WO008_A_LIVE_ISSUED_SEQUENCE)
+_WO008_A_RECORDED_SECTION_HEADINGS = (
+    _WO008_A_LIVE_2_SECTION_HEADINGS[:6] + (_WO008_A_RECORDED_HEADING,)
+    + _WO008_A_LIVE_2_SECTION_HEADINGS[6:])
+# None of these occurs in any committed state through the A_LIVE_2 commit. The
+# gate and marker are the A_RECORDED probe texts that the earlier "later phases
+# are not installed" tests insert, so those probes now select this shape.
+_WO008_A_RECORDED_TRACES = (
+    _WO008_A_RECORDED_GATE,
+    _ISSUED_SESSION_A_RECORDED_AUTH,
+    "- WO-008 Session A replacement attempt commit:",
+    "- WO-008 Session A diagnostic result instruction SHA-256:",
+    "WO-008 Session A diagnostic result record:",
+    _WO008_A_RECORDED_HEADING,
+)
+# WO-008 Session B oversized-reply amendment (OR_CORRECTION): owner amendment
+# OR-1 adds three literal phases beside enforcement plan r2's table, and this
+# is the first. Session B is authorized for one bounded correction only, and
+# Session A acceptance is not met. Every earlier record stays exactly as
+# committed and required; one record is added on each surface, with four
+# pointer bullets. OR_PROOF and OR_RECORDED are not installed here.
+_WO008_OR_CORRECTION_BASE = "f551b7fa161464ecca0aa0a0ea959d873430fc4e"
+_WO008_OR_CORRECTION_WORKFLOW = "38521809934"
+_WO008_OR_CORRECTION_JOB = "115712995226"
+_WO008_OR_AMENDMENT_SHA256 = (
+    "7e2282fc3d8578c32a9d7469708306cd621dff699ec15bfba1ab0f125e4b2538"
+)
+_WO008_OR_PRODUCT_PLAN_SHA256SUMS = (
+    "fe528f8e9a872defd4beab4441495ff4f43282c3a1f66a94c2e10d2a527eeca9"
+)
+_WO008_OR_CHECK_SHA256SUMS = (
+    "aac9238481763371008575780ce867e1daa3fcb3a8f7d838534438d52f8c2c88"
+)
+_WO008_OR_ADOPTION_INSTRUCTION_SHA256 = (
+    "ab0f1b3854203fad6ea8845f7c29515fbf83475042b2605e605402c352baea9c"
+)
+_WO008_OR_CORRECTION_PLAN_SHA256SUMS = "00bda882993a9f32c94d468015d5e745ffb7b646c624707f81a22b49fafe9e6f"
+_WO008_OR_CORRECTION_INSTRUCTION_SHA256 = "198897bb226ca5ed290dfd073e41ca2bc43892d667a8089216553420975d7b11"
+# Owner amendment OR-1's phase table, OR_CORRECTION row, exactly.
+_WO008_OR_CORRECTION_GATE = (
+    "WO-008 SESSION B OVERSIZED-REPLY AMENDMENT ONLY — SESSION A NOT ACCEPTED; "
+    "LIVE PROOF NOT AUTHORIZED"
+)
+_ISSUED_SESSION_B_OR_CORRECTION_AUTH = (
+    "AUTHORIZATION: ISSUED — SESSION B AUTHORIZED FOR THE OVERSIZED-REPLY "
+    "AMENDMENT ONLY; SESSION A NOT ACCEPTED"
+)
+_WO008_OR_CORRECTION_POINTER_SEQUENCE = (
+    "- Current issued Work Order: WO-008",
+    "- Authorized session: B",
+    "- Base commit: `" + _WO008_OR_CORRECTION_BASE + "`",
+    "- Current gate: " + _WO008_OR_CORRECTION_GATE,
+) + _WO008_A_RECORDED_POINTER_SEQUENCE[4:] + (
+    "- WO-008 Session A diagnostic result commit: `" + _WO008_OR_CORRECTION_BASE + "`",
+    "- WO-008 Session A diagnostic result CI workflow: `" + _WO008_OR_CORRECTION_WORKFLOW + "`",
+    "- WO-008 Session A diagnostic result CI job: `" + _WO008_OR_CORRECTION_JOB
+    + "` — Lint, types, tests",
+    "- WO-008 oversized-reply amendment instruction SHA-256: `"
+    + _WO008_OR_CORRECTION_INSTRUCTION_SHA256 + "`",
+)
+_WO008_OR_CORRECTION_POINTER_RECORD = (
+    "WO-008 Session B oversized-reply amendment record: the Session A diagnostic\n"
+    "result transition was committed as `" + _WO008_OR_CORRECTION_BASE + "`;\n"
+    "[CI workflow `" + _WO008_OR_CORRECTION_WORKFLOW + "`](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/" + _WO008_OR_CORRECTION_WORKFLOW + ")\n"
+    "completed successfully on that commit, including required job\n"
+    "[`" + _WO008_OR_CORRECTION_JOB + "` — Lint, types, tests](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/runs/" + _WO008_OR_CORRECTION_WORKFLOW + "/job/" + _WO008_OR_CORRECTION_JOB + ").\n"
+    "That CI tested the diagnostic result enforcement, not a live result, an MCP\n"
+    "host or a live build. The Session A result stays recorded as diagnostic only,\n"
+    "and Session A acceptance is not met; this record does not treat it as met.\n"
+    "The owner adopted owner amendment OR-1, identified by SHA-256\n"
+    "`" + _WO008_OR_AMENDMENT_SHA256 + "`, with the\n"
+    "oversized-reply correction plan identified by SHA256SUMS\n"
+    "`" + _WO008_OR_PRODUCT_PLAN_SHA256SUMS + "` and its\n"
+    "accepting check identified by SHA256SUMS\n"
+    "`" + _WO008_OR_CHECK_SHA256SUMS + "`, by an\n"
+    "instruction identified by SHA-256\n"
+    "`" + _WO008_OR_ADOPTION_INSTRUCTION_SHA256 + "`. As the\n"
+    "bounded amendment the mandate requires for an unexpected integration defect,\n"
+    "Session B is limited to one correction: bounded, paged replies for the MCP\n"
+    "tools `list_toolbelt_tools` and `get_all_actors`, within `mcp_server.py`,\n"
+    "`tests/test_mcp_security.py`, `.claude/mcp_reference.md` and a new unreleased\n"
+    "entry in `docs/CHANGELOG.md`, left uncommitted for independent review. This\n"
+    "transition's independent review, commit, push and successful CI are\n"
+    "preconditions only and are not permission for the correction's\n"
+    "implementation, which needs a separate owner implementation instruction. The\n"
+    "accepted plan for this transition is identified by SHA256SUMS\n"
+    "`" + _WO008_OR_CORRECTION_PLAN_SHA256SUMS + "`, and its instruction by SHA-256\n"
+    "`" + _WO008_OR_CORRECTION_INSTRUCTION_SHA256 + "`. This record is the separate\n"
+    "reviewed transition that the Session A diagnostic result record requires for\n"
+    "Session B, for this one correction only; it governs over that record's\n"
+    "statement that no session is authorized, and over nothing else. Every other\n"
+    "Session B item still requires accepted Session A evidence. The oversized-reply\n"
+    "live proof, Session C, a further Session A attempt, other product corrections,\n"
+    "installations, configuration changes and deployment each need a separate\n"
+    "reviewed transition recorded here; recovery and cleanup need a separately\n"
+    "bounded owner instruction; and commits and pushes remain separate owner\n"
+    "decisions. This record grants no other authority."
+)
+_WO008_OR_CORRECTION_OPENING = (
+    "This is an issued following-train Work Order, outside the frozen\n"
+    "WO-001 through WO-007 train. The root pointer identifies WO-008 with\n"
+    "session B for the oversized-reply amendment only. The Session A result stays\n"
+    "recorded as diagnostic only, Session A acceptance is not met, and Session C\n"
+    "remains unauthorized."
+)
+# The replacement for the source-exact A_RECORDED head only; the admission
+# paragraph and the frozen-train tail sentence stay.
+_WO008_OR_CORRECTION_PREREQUISITES_HEAD = (
+    "The separately adopted issuance/session-enforcement plan r2 supported the\n"
+    "closed issuance and Session A offline preparation. Separate transitions\n"
+    "installed the pinned Session A live baseline and its replacement attempt and\n"
+    "recorded that attempt's result as diagnostic only. Owner amendment OR-1 adds\n"
+    "three literal oversized-reply phases beside plan r2's phase table, and a\n"
+    "separate transition installs the first of them, OR_CORRECTION. Session A\n"
+    "acceptance, other product corrections, the oversized-reply live proof and live\n"
+    "acceptance still need separately reviewed enforcement transitions and explicit\n"
+    "owner decisions. No later phase is installed here."
+)
+_WO008_OR_CORRECTION_PREREQUISITES = _replaced_once(_WO008_A_RECORDED_PREREQUISITES, ((
+    _WO008_A_RECORDED_PREREQUISITES_HEAD, _WO008_OR_CORRECTION_PREREQUISITES_HEAD,
+),))
+_WO008_OR_CORRECTION_HEADING = "## Session B oversized-reply amendment record"
+_WO008_OR_CORRECTION_RECORD = (
+    "Session A diagnostic result commit: `" + _WO008_OR_CORRECTION_BASE + "`\n"
+    "Session A diagnostic result CI workflow: `" + _WO008_OR_CORRECTION_WORKFLOW + "`\n"
+    "Session A diagnostic result CI job: `" + _WO008_OR_CORRECTION_JOB + "` — Lint, types, tests\n"
+    "Owner amendment OR-1 SHA-256: `" + _WO008_OR_AMENDMENT_SHA256 + "`\n"
+    "Oversized-reply correction plan SHA256SUMS: `" + _WO008_OR_PRODUCT_PLAN_SHA256SUMS + "`\n"
+    "Accepting correction plan check SHA256SUMS: `" + _WO008_OR_CHECK_SHA256SUMS + "`\n"
+    "Owner adoption instruction SHA-256: `" + _WO008_OR_ADOPTION_INSTRUCTION_SHA256 + "`\n"
+    "Accepted amendment transition plan SHA256SUMS: `" + _WO008_OR_CORRECTION_PLAN_SHA256SUMS + "`\n"
+    "Owner amendment transition instruction SHA-256: `" + _WO008_OR_CORRECTION_INSTRUCTION_SHA256 + "`\n"
+    "\n"
+    "The Session A replacement attempt is consumed and recorded with a limited\n"
+    "diagnostic result only; Session A acceptance is not met, and this record does\n"
+    "not treat it as met. As the bounded amendment this mandate requires for an\n"
+    "unexpected integration defect, the owner allowed one correction on the basis\n"
+    "of the accepted diagnostic finding alone: bounded, paged replies for the MCP\n"
+    "tools `list_toolbelt_tools` and `get_all_actors`, under the reviewed\n"
+    "correction plan identified above. Its ceiling is `mcp_server.py`,\n"
+    "`tests/test_mcp_security.py`, `.claude/mcp_reference.md` and a new unreleased\n"
+    "entry in `docs/CHANGELOG.md`. Every other Session B item still requires\n"
+    "accepted Session A evidence. The implementation authority is single-pass. It\n"
+    "covers the implementation and any fixes the independent review requires,\n"
+    "within those four paths and under a bounded owner instruction with a delta\n"
+    "review, and it ends at the reviewed snapshot that the live-proof record pins.\n"
+    "The correction stays uncommitted for independent review and its separately\n"
+    "authorized live proof. It is not Session C and records no Session A, Session\n"
+    "C or compatibility acceptance. Commits, pushes and publication remain separate\n"
+    "owner decisions, and this section grants no further authority.\n"
+    "\n"
+    "This section is the separate reviewed transition that the diagnostic result\n"
+    "section requires for Session B, for this one correction only. It governs over\n"
+    "that section's statement that no session is authorized, and over nothing else;\n"
+    "the Session A diagnostic result stays as recorded. This transition's\n"
+    "independent review, commit, push and successful CI are preconditions only and\n"
+    "are not permission for the correction's implementation, which needs a separate\n"
+    "owner implementation instruction. The oversized-reply live proof and\n"
+    "its later record each need their own reviewed transition recorded in the root\n"
+    "pointer, and neither is installed here.\n"
+    "\n"
+    "The owner accepted a narrow offline-verification exemption for this\n"
+    "transition's five governance paths only. This transition records authority; it\n"
+    "is not live verification."
+)
+_WO008_OR_CORRECTION_NEXT_GATE = (
+    "NEXT GATE: a separate owner implementation instruction for the oversized-reply\n"
+    "correction only, under which Session B implements it uncommitted for\n"
+    "independent review. The oversized-reply live proof, Session C, Session A\n"
+    "acceptance, other product corrections, recovery, cleanup, exact commits and\n"
+    "pushes remain separate decisions. By itself, this mandate grants no\n"
+    "implementation, review, live, commit or push authority."
+)
+_WO008_OR_CORRECTION_ISSUED_SEQUENCE = tuple(
+    _ISSUED_SESSION_B_OR_CORRECTION_AUTH if line == _ISSUED_SESSION_A_RECORDED_AUTH else line
+    for line in _WO008_A_RECORDED_ISSUED_SEQUENCE)
+_WO008_OR_CORRECTION_SECTION_HEADINGS = tuple(
+    heading for old in _WO008_A_RECORDED_SECTION_HEADINGS
+    for heading in ((old, _WO008_OR_CORRECTION_HEADING)
+                    if old == _WO008_A_RECORDED_HEADING else (old,)))
+# None of these occurs in any committed state through the A_RECORDED commit.
+# OR states keep the A_RECORDED records as history, so these are selected first.
+_WO008_OR_CORRECTION_TRACES = (
+    _WO008_OR_CORRECTION_GATE,
+    _ISSUED_SESSION_B_OR_CORRECTION_AUTH,
+    "- WO-008 Session A diagnostic result commit:",
+    "- WO-008 oversized-reply amendment instruction SHA-256:",
+    "WO-008 Session B oversized-reply amendment record:",
+    _WO008_OR_CORRECTION_HEADING,
+)
+# Six literal entries, not a policy engine. Each phase names its own current
 # texts and the prior-state texts that must not survive the change.
 _WO008_PHASES: dict[str, dict] = {
     "ISSUED_CLOSED": {
@@ -5359,19 +5844,143 @@ _WO008_PHASES: dict[str, dict] = {
         "record": "WO-008 Session A live baseline record",
         "session": "A",
     },
+    "A_LIVE_2": {
+        "pointer_sequence": _WO008_A_LIVE_2_POINTER_SEQUENCE,
+        "issued_sequence": _WO008_A_LIVE_ISSUED_SEQUENCE,
+        "marker": _ISSUED_SESSION_A_LIVE_AUTH,
+        "gate": _WO008_A_LIVE_GATE,
+        "pointer_records": (_WO008_CLOSED_HISTORY_RECORD,
+                            _WO008_A_PREP_HISTORY_POINTER_RECORD,
+                            _WO008_A_LIVE_POINTER_RECORD,
+                            _WO008_A_LIVE_2_POINTER_RECORD),
+        "opening": _WO008_A_LIVE_OPENING,
+        "prerequisites": _WO008_A_LIVE_PREREQUISITES,
+        "sections": (("## Issuance basis", _WO008_ISSUANCE_RECORD),
+                     (_WO008_A_PREP_HEADING, _WO008_A_PREP_HISTORY_RECORD),
+                     (_WO008_A_LIVE_HEADING, _WO008_A_LIVE_RECORD),
+                     (_WO008_A_LIVE_2_HEADING, _WO008_A_LIVE_2_RECORD)),
+        "next_gate": _WO008_A_LIVE_NEXT_GATE,
+        "headings": _WO008_A_LIVE_2_SECTION_HEADINGS,
+        "forbidden_pointer": (_WO008_POINTER_RECORD, _WO008_GATE,
+                              _WO008_A_PREP_POINTER_RECORD, _WO008_A_PREP_GATE),
+        "forbidden_document": (_WO008_OPENING, _WO008_NEXT_GATE,
+                               _WO008_CLOSED_PREREQUISITES_HEAD,
+                               _ISSUED_NO_SESSION_AUTH,
+                               _WO008_A_PREP_OPENING, _WO008_A_PREP_NEXT_GATE,
+                               _WO008_A_PREP_PREREQUISITES_HEAD,
+                               _ISSUED_SESSION_A_PREP_AUTH,
+                               _WO008_A_PREP_RECORD),
+        "label": "WO-008 Session A replacement attempt",
+        "record": "WO-008 Session A replacement attempt record",
+        "session": "A",
+    },
+    "A_RECORDED": {
+        "pointer_sequence": _WO008_A_RECORDED_POINTER_SEQUENCE,
+        "issued_sequence": _WO008_A_RECORDED_ISSUED_SEQUENCE,
+        "marker": _ISSUED_SESSION_A_RECORDED_AUTH,
+        "gate": _WO008_A_RECORDED_GATE,
+        "pointer_records": (_WO008_CLOSED_HISTORY_RECORD,
+                            _WO008_A_PREP_HISTORY_POINTER_RECORD,
+                            _WO008_A_LIVE_POINTER_RECORD,
+                            _WO008_A_LIVE_2_POINTER_RECORD,
+                            _WO008_A_RECORDED_POINTER_RECORD),
+        "opening": _WO008_A_RECORDED_OPENING,
+        "prerequisites": _WO008_A_RECORDED_PREREQUISITES,
+        "sections": (("## Issuance basis", _WO008_ISSUANCE_RECORD),
+                     (_WO008_A_PREP_HEADING, _WO008_A_PREP_HISTORY_RECORD),
+                     (_WO008_A_LIVE_HEADING, _WO008_A_LIVE_RECORD),
+                     (_WO008_A_LIVE_2_HEADING, _WO008_A_LIVE_2_RECORD),
+                     (_WO008_A_RECORDED_HEADING, _WO008_A_RECORDED_RECORD)),
+        "next_gate": _WO008_A_RECORDED_NEXT_GATE,
+        "headings": _WO008_A_RECORDED_SECTION_HEADINGS,
+        # The live-baseline gate, marker, opening, prerequisites head and NEXT
+        # GATE are the replaced current texts; restored beside the new records
+        # they would read as a reopened Session A.
+        "forbidden_pointer": (_WO008_POINTER_RECORD, _WO008_GATE,
+                              _WO008_A_PREP_POINTER_RECORD, _WO008_A_PREP_GATE,
+                              _WO008_A_LIVE_GATE),
+        "forbidden_document": (_WO008_OPENING, _WO008_NEXT_GATE,
+                               _WO008_CLOSED_PREREQUISITES_HEAD,
+                               _ISSUED_NO_SESSION_AUTH,
+                               _WO008_A_PREP_OPENING, _WO008_A_PREP_NEXT_GATE,
+                               _WO008_A_PREP_PREREQUISITES_HEAD,
+                               _ISSUED_SESSION_A_PREP_AUTH,
+                               _WO008_A_PREP_RECORD,
+                               _WO008_A_LIVE_OPENING, _WO008_A_LIVE_NEXT_GATE,
+                               _WO008_A_LIVE_PREREQUISITES_HEAD,
+                               _ISSUED_SESSION_A_LIVE_AUTH),
+        "label": "WO-008 Session A diagnostic result",
+        "record": "WO-008 Session A diagnostic result record",
+        "session": "",
+    },
+    "OR_CORRECTION": {
+        "pointer_sequence": _WO008_OR_CORRECTION_POINTER_SEQUENCE,
+        "issued_sequence": _WO008_OR_CORRECTION_ISSUED_SEQUENCE,
+        "marker": _ISSUED_SESSION_B_OR_CORRECTION_AUTH,
+        "gate": _WO008_OR_CORRECTION_GATE,
+        "pointer_records": (_WO008_CLOSED_HISTORY_RECORD,
+                            _WO008_A_PREP_HISTORY_POINTER_RECORD,
+                            _WO008_A_LIVE_POINTER_RECORD,
+                            _WO008_A_LIVE_2_POINTER_RECORD,
+                            _WO008_A_RECORDED_POINTER_RECORD,
+                            _WO008_OR_CORRECTION_POINTER_RECORD),
+        "opening": _WO008_OR_CORRECTION_OPENING,
+        "prerequisites": _WO008_OR_CORRECTION_PREREQUISITES,
+        "sections": (("## Issuance basis", _WO008_ISSUANCE_RECORD),
+                     (_WO008_A_PREP_HEADING, _WO008_A_PREP_HISTORY_RECORD),
+                     (_WO008_A_LIVE_HEADING, _WO008_A_LIVE_RECORD),
+                     (_WO008_A_LIVE_2_HEADING, _WO008_A_LIVE_2_RECORD),
+                     (_WO008_A_RECORDED_HEADING, _WO008_A_RECORDED_RECORD),
+                     (_WO008_OR_CORRECTION_HEADING, _WO008_OR_CORRECTION_RECORD)),
+        "next_gate": _WO008_OR_CORRECTION_NEXT_GATE,
+        "headings": _WO008_OR_CORRECTION_SECTION_HEADINGS,
+        # Cumulative (owner amendment OR-1, plan r5 section 9.3): everything
+        # A_RECORDED forbids, on the same surface and in the same order, then
+        # A_RECORDED's own replaced gate, marker, opening, source-exact
+        # prerequisites head and NEXT GATE.
+        "forbidden_pointer": (_WO008_POINTER_RECORD, _WO008_GATE,
+                              _WO008_A_PREP_POINTER_RECORD, _WO008_A_PREP_GATE,
+                              _WO008_A_LIVE_GATE,
+                              _WO008_A_RECORDED_GATE),
+        "forbidden_document": (_WO008_OPENING, _WO008_NEXT_GATE,
+                               _WO008_CLOSED_PREREQUISITES_HEAD,
+                               _ISSUED_NO_SESSION_AUTH,
+                               _WO008_A_PREP_OPENING, _WO008_A_PREP_NEXT_GATE,
+                               _WO008_A_PREP_PREREQUISITES_HEAD,
+                               _ISSUED_SESSION_A_PREP_AUTH,
+                               _WO008_A_PREP_RECORD,
+                               _WO008_A_LIVE_OPENING, _WO008_A_LIVE_NEXT_GATE,
+                               _WO008_A_LIVE_PREREQUISITES_HEAD,
+                               _ISSUED_SESSION_A_LIVE_AUTH,
+                               _WO008_A_RECORDED_OPENING, _WO008_A_RECORDED_NEXT_GATE,
+                               _WO008_A_RECORDED_PREREQUISITES_HEAD,
+                               _ISSUED_SESSION_A_RECORDED_AUTH),
+        "label": "WO-008 Session B oversized-reply amendment",
+        "record": "WO-008 Session B oversized-reply amendment record",
+        # Session B is the current session: the other-session scan exempts only
+        # Session B statements, and the own-session widening scan then rejects
+        # any Session B grant beyond these pinned records.
+        "session": "B",
+    },
 }
 
 
 def _wo008_phase(pointer: str, text: str) -> str:
     """Any trace on either surface selects that phase's full shape.
 
-    A_LIVE is checked first, because the A_LIVE state legitimately keeps
-    A_PREP traces in its history. A partial install is then validated against
-    the selected shape and fails on what is missing; it can never fall back to
-    an earlier clean shape. The session line counts only while the pointer
-    names WO-008: an earlier order's Session A, such as WO-007's in its
-    historical states, is not a trace.
+    OR_CORRECTION is checked first, then A_RECORDED, A_LIVE_2 and A_LIVE, because these states
+    legitimately keeps the earlier states' traces in its history. A partial
+    install is then validated against the selected shape and fails on what is
+    missing; it can never fall back to an earlier clean shape. The session line
+    counts only while the pointer names WO-008: an earlier order's Session A,
+    such as WO-007's in its historical states, is not a trace.
     """
+    if any(trace in pointer or trace in text for trace in _WO008_OR_CORRECTION_TRACES):
+        return "OR_CORRECTION"
+    if any(trace in pointer or trace in text for trace in _WO008_A_RECORDED_TRACES):
+        return "A_RECORDED"
+    if any(trace in pointer or trace in text for trace in _WO008_A_LIVE_2_TRACES):
+        return "A_LIVE_2"
     if any(trace in pointer or trace in text for trace in _WO008_A_LIVE_TRACES):
         return "A_LIVE"
     lines = pointer.splitlines()
@@ -5491,7 +6100,8 @@ def _wo008_issuance_findings(
 def _wo008_phase_findings(
     pointer: str, text: str, rel: str, surface: str, phase: str | None = None,
 ) -> tuple[list[tuple[str, str, str, str]], str]:
-    """ISSUED_CLOSED, A_PREP or A_LIVE only; later phases need separate transitions."""
+    """ISSUED_CLOSED, A_PREP, A_LIVE, A_LIVE_2, A_RECORDED or OR_CORRECTION only; later phases need separate
+    transitions."""
     spec = _WO008_PHASES[phase or _wo008_phase(pointer, text)]
     source = pointer if surface == "pointer" else text
     out = _wo008_issuance_findings(pointer, text, rel, surface, phase)
@@ -6472,7 +7082,7 @@ def check_work_order_contract() -> list[dict]:
         current == _WO008_ID or bool(wo008_text)
         or "WO-008 closed issuance record:" in pointer
         or "- WO-008 admission basis commit:" in pointer
-        or wo008_phase in ("A_PREP", "A_LIVE"))
+        or wo008_phase in ("A_PREP", "A_LIVE", "A_LIVE_2", "A_RECORDED", "OR_CORRECTION"))
     wo008_pointer_residual = pointer
     wo008_history_findings = []
     if wo008_trace:
@@ -6488,6 +7098,25 @@ def check_work_order_contract() -> list[dict]:
             add("WORKORDER.md", "WO-008 Session A live baseline state",
                 "the Session A live baseline records were removed",
                 "WO-008 Session A live baseline records")
+        # One-way: once the replacement attempt is installed, a coherent
+        # rollback to the live baseline trips exactly this lock.
+        if wo008_phase == "A_LIVE":
+            add("WORKORDER.md", "WO-008 Session A replacement attempt state",
+                "the Session A replacement attempt records were removed",
+                "WO-008 Session A replacement attempt records")
+        # One-way: once the Session A result is recorded, a coherent
+        # rollback to the replacement attempt trips exactly this lock.
+        if wo008_phase == "A_LIVE_2":
+            add("WORKORDER.md", "WO-008 Session A diagnostic result state",
+                "the Session A diagnostic result records were removed",
+                "WO-008 Session A diagnostic result records")
+        # One-way: once the oversized-reply amendment is installed, a
+        # coherent rollback to the Session A diagnostic result trips
+        # exactly this lock.
+        if wo008_phase == "A_RECORDED":
+            add("WORKORDER.md", "WO-008 Session B oversized-reply amendment state",
+                "the oversized-reply amendment records were removed",
+                "WO-008 oversized-reply amendment records")
         # Old NONE fields retire, not their canonical history or terminal locks.
         wo008_history_findings = _wo007_completed_findings(
             pointer, wo007_completed_text,
@@ -6940,8 +7569,10 @@ def check_work_order_contract() -> list[dict]:
                     add(rel, "planning-only proposal placement",
                         "issuance record missing or malformed",
                         "canonical issued WO-008 with validated closed records")
-                # In A_PREP and A_LIVE the other-session scan exempts only Session A;
-                # any Session A grant beyond the records is widening below.
+                # In A_PREP, A_LIVE and A_LIVE_2 the other-session scan exempts only
+                # Session A; in A_RECORDED it exempts no session; in OR_CORRECTION it
+                # exempts only Session B, whose grants beyond the records are widening.
+                # Any Session A grant beyond the records is widening below.
                 for where, residual in (
                     ("WORKORDER.md", wo008_pointer_residual),
                     (rel, body_residual),
@@ -6957,6 +7588,13 @@ def check_work_order_contract() -> list[dict]:
                     if _current_session_widening(residual, "A", ()):
                         add(where, "session scope widening",
                             "positive Session A permission", "no session authorized")
+                    # The current session of a phase other than A also
+                    # gets its own widening scan.
+                    if (spec["session"] not in ("", "A")
+                            and _current_session_widening(residual, spec["session"], ())):
+                        add(where, "session scope widening",
+                            "positive Session " + spec["session"] + " permission",
+                            "no grant beyond the pinned records")
                 # Release/external scans always see the original surfaces.
                 if _has_release_authorization(pointer):
                     add("WORKORDER.md", "release authorization", "positive permission",
@@ -8579,9 +9217,6 @@ _HISTORICAL_VERSION_LINES = (
      "Release tag under comparison: `v2.4.1` at"),
     ("docs/audits/2026-08-24-uefn-42-official-mcp-audit.md",
      "- drift: passed at v2.4.1, 362 tools, 55 categories;"),
-    (".agents/workflows/run_tests.md",
-     "Check the Output Log for `INTEGRATION TEST COMPLETE — Passed: N/N`. "
-     "The v2.4.1"),
 )
 
 # ── Scanner ────────────────────────────────────────────────────────────────────

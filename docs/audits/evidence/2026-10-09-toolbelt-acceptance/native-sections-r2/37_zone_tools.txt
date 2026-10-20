@@ -1,0 +1,16 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:39.192354
+Passed:  5/5
+Verified: 5 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.13s
+============================================================
+
+
+[Zone]
+----------------------------------------
+  PASS  zone_spawn  (TestZone)
+  PASS  zone_list  (1 zones found)
+  PASS  zone_select_contents
+  PASS  zone_snap_to_selection
+  PASS  zone_fill_scatter  (spawned 3)

@@ -1,0 +1,17 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:41.009742
+Passed:  6/6
+Verified: 6 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.14s
+============================================================
+
+
+[AdvAlign]
+----------------------------------------
+  PASS  align_to_reference
+  PASS  distribute_with_gap
+  PASS  rotate_around_pivot
+  PASS  match_spacing
+  PASS  align_to_surface  (refused cleanly — API absent on this build)
+  PASS  align_to_grid_two_points

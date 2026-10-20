@@ -1,0 +1,14 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:31.879061
+Passed:  3/3
+Verified: 3 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.06s
+============================================================
+
+
+[Cooker]
+----------------------------------------
+  PASS  mark_selection status matches the count  (status=ok changed=2 failed=0 (ok with 0 changed is the bug))
+  PASS  save=False is honoured  (saved=False (expected False))
+  PASS  mark_selection(False) status matches the count  (status=ok changed=2 failed=0)

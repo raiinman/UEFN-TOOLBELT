@@ -172,6 +172,21 @@ def _ensure_pyside6() -> None:
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
+def _has_project_descriptor(path: str) -> bool:
+    try:
+        return any(name.lower().endswith(".uefnproject")
+                   and os.path.isfile(os.path.join(path, name)) for name in os.listdir(path))
+    except OSError:
+        return False
+
+
+def _validate_project(path: str) -> str:
+    if not os.path.isdir(path) or not _has_project_descriptor(path):
+        print(f"ERROR: Target must be an existing folder containing a .uefnproject descriptor: {path}")
+        sys.exit(1)
+    return os.path.abspath(path)
+
+
 def _find_uefn_projects():
     """Best-effort scan of common UEFN project locations."""
     candidates = []
@@ -197,19 +212,16 @@ def _find_uefn_projects():
             except (PermissionError, OSError):
                 continue
             for name in entries:
-                uproject = os.path.join(root, name, f"{name}.uproject")
-                if os.path.exists(uproject):
-                    candidates.append(os.path.join(root, name))
+                project = os.path.join(root, name)
+                if _has_project_descriptor(project):
+                    candidates.append(project)
 
     return candidates
 
 
 def _pick_project(explicit_path: str | None) -> str:
     if explicit_path:
-        if not os.path.isdir(explicit_path):
-            print(f"ERROR: Path does not exist: {explicit_path}")
-            sys.exit(1)
-        return os.path.abspath(explicit_path)
+        return _validate_project(explicit_path)
 
     candidates = _find_uefn_projects()
 
@@ -220,16 +232,13 @@ def _pick_project(explicit_path: str | None) -> str:
         print("  [0] Enter path manually")
         choice = input("\nSelect project (number): ").strip()
         if choice.isdigit() and 1 <= int(choice) <= len(candidates):
-            return candidates[int(choice) - 1]
+            return _validate_project(candidates[int(choice) - 1])
 
     path = input("Enter your UEFN project folder path: ").strip().strip('"')
-    if not os.path.isdir(path):
-        print(f"ERROR: Path does not exist: {path}")
-        sys.exit(1)
-    return os.path.abspath(path)
+    return _validate_project(path)
 
 
-def _install_toolbelt(project_path: str):
+def _install_toolbelt(project_path: str, preserve_startup: bool = False):
     dest_python = os.path.join(project_path, "Content", "Python")
     dest_tb     = os.path.join(dest_python, "UEFN_Toolbelt")
     dest_init   = os.path.join(dest_python, "init_unreal.py")
@@ -238,21 +247,31 @@ def _install_toolbelt(project_path: str):
 
     # ── Step 1: Copy the Toolbelt package ─────────────────────────────────────
     try:
-        with tempfile.TemporaryDirectory(prefix=".toolbelt-install-", dir=dest_python) as staging:
-            if os.path.commonpath([os.path.realpath(staging), os.path.realpath(dest_python)]) != os.path.realpath(dest_python):
-                raise ValueError("Installer staging escaped the project Python directory")
+        staging = tempfile.mkdtemp(prefix=".toolbelt-install-", dir=dest_python)
+        if os.path.commonpath([os.path.realpath(staging), os.path.realpath(dest_python)]) != os.path.realpath(dest_python):
+            raise ValueError("Installer staging escaped the project Python directory")
+        recovery_required = False
+        try:
             staged_package = os.path.join(staging, "package")
             backup = os.path.join(staging, "previous")
             shutil.copytree(TOOLBELT_SRC, staged_package)
             if os.path.exists(dest_tb):
                 print("  Updating existing installation...")
                 os.replace(dest_tb, backup)
+                recovery_required = True
             try:
                 os.replace(staged_package, dest_tb)
-            except OSError:
+                recovery_required = False
+            except BaseException:
                 if os.path.exists(backup):
                     os.replace(backup, dest_tb)
+                    recovery_required = False
                 raise
+        finally:
+            if recovery_required:
+                print(f"  RECOVERY REQUIRED: previous package preserved at {backup}")
+            else:
+                shutil.rmtree(staging)
         print(f"  ✓ Copied UEFN_Toolbelt → {dest_tb}")
     except Exception as e:
         print(f"  ✗ Failed to copy Toolbelt: {e}")
@@ -263,6 +282,8 @@ def _install_toolbelt(project_path: str):
         # Clean install — just copy the template
         shutil.copy2(INIT_SRC, dest_init)
         print(f"  ✓ Created init_unreal.py → {dest_init}")
+    elif preserve_startup:
+        print("  ✓ Preserved existing startup script byte-for-byte")
     else:
         # Existing file — patch it if the loader block isn't already there
         with open(dest_init, encoding="utf-8") as f:
@@ -323,6 +344,60 @@ def _install_toolbelt(project_path: str):
                    "project": os.path.basename(os.path.abspath(project_path))}, f, indent=2)
 
 
+def _install_reference(project_path: str) -> None:
+    """Install a real docs-only clone, retaining any prior snapshot for recovery."""
+    source = os.path.join(REPO_ROOT, "verse-book")
+    destination = os.path.join(project_path, "verse-book")
+    if not os.path.exists(os.path.join(source, ".git")):
+        print("  SKIPPED: source verse-book Git clone is unavailable")
+        return
+
+    def git(*args):
+        return subprocess.run(["git", *args], check=True, capture_output=True, text=True)
+
+    if os.path.exists(os.path.join(destination, ".git")):
+        git("-C", destination, "rev-parse", "--is-inside-work-tree")
+        print("  Preserved existing verse-book Git reference")
+        return
+    staging = tempfile.mkdtemp(prefix=".verse-book-install-", dir=project_path)
+    if os.path.commonpath([os.path.realpath(staging), os.path.realpath(project_path)]) != os.path.realpath(project_path):
+        raise ValueError("Reference staging escaped the project directory")
+    staged_reference = os.path.join(staging, "reference")
+    backup = ""
+    recovery_required = False
+    try:
+        git("clone", "--no-checkout", "--no-hardlinks", source, staged_reference)
+        git("-C", staged_reference, "sparse-checkout", "set", "--no-cone", "/docs/")
+        git("-C", staged_reference, "checkout", "HEAD")
+        git("-C", staged_reference, "remote", "set-url", "origin", "https://github.com/verselang/book.git")
+        for _root, folders, files in os.walk(staged_reference):
+            folders[:] = [name for name in folders if name != ".git"]
+            if any(name.lower().endswith((".py", ".pyc")) for name in files):
+                raise ValueError("Reference documentation contains project-blocking Python helpers")
+        if os.path.exists(destination):
+            backup_parent = tempfile.mkdtemp(prefix=".verse-book-backup-", dir=project_path)
+            if os.path.commonpath([os.path.realpath(backup_parent), os.path.realpath(project_path)]) != os.path.realpath(project_path):
+                raise ValueError("Reference backup escaped the project directory")
+            backup = os.path.join(backup_parent, "verse-book")
+            os.replace(destination, backup)
+            recovery_required = True
+        try:
+            os.replace(staged_reference, destination)
+            recovery_required = False
+        except BaseException:
+            if backup:
+                os.replace(backup, destination)
+                recovery_required = False
+            raise
+        print("  Installed docs-only verse-book Git reference")
+        if backup:
+            print(f"  Previous verse-book snapshot preserved at {backup}")
+    finally:
+        if recovery_required:
+            print(f"  RECOVERY REQUIRED: previous verse-book preserved at {backup}")
+        shutil.rmtree(staging)
+
+
 def _print_next_steps(project_path: str):
     print("""
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -363,24 +438,34 @@ def main():
         "--skip-dependencies", action="store_true",
         help="Update the project package while preserving existing PySide6 dependencies.",
     )
+    parser.add_argument(
+        "--preserve-startup", action="store_true",
+        help="Preserve any existing init_unreal.py byte-for-byte (used by deploy.bat).",
+    )
+    parser.add_argument(
+        "--install-reference", action="store_true",
+        help="Install a docs-only verse-book Git clone; preserve existing snapshots as backups.",
+    )
     args = parser.parse_args()
 
     print("\nUEFN Toolbelt Installer")
     print("═" * 40)
 
-    # Step 0: PySide6 (dashboard UI dependency)
-    print("\n[1/3] Checking PySide6...")
+    # Validate the destination before dependency installation or project writes.
+    print("\n[1/3] Selecting UEFN project...")
+    project_path = _pick_project(args.project)
+    print("\n[2/3] Checking PySide6...")
     if args.skip_dependencies:
         print("  Existing PySide6 dependencies left unchanged.")
     else:
         _ensure_pyside6()
 
     # Step 1-2: Install into project
-    print("\n[2/3] Selecting UEFN project...")
-    project_path = _pick_project(args.project)
     print(f"\n[3/3] Installing into: {project_path}\n")
 
-    _install_toolbelt(project_path)
+    _install_toolbelt(project_path, preserve_startup=args.preserve_startup)
+    if args.install_reference:
+        _install_reference(project_path)
     _print_next_steps(project_path)
 
 

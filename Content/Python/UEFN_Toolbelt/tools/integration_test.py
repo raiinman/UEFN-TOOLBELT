@@ -17,6 +17,8 @@ Usage:
 from __future__ import annotations
 
 VERSION = "V11-ULTIMATE-171"
+import hashlib
+import json
 import os
 import time
 from datetime import datetime
@@ -41,6 +43,7 @@ _FIXTURE_TAG = "TOOLBELT_TEST_FIXTURE"
 _results: list[dict] = []
 _start_time = time.time()
 _spawn_fixtures: list[unreal.Actor] = []
+_integration_running = False
 
 def _assert_delta(val: float, expected: float, tolerance: float = 1.0) -> bool:
     """Check if a float value is within tolerance of expected."""
@@ -76,6 +79,7 @@ def _record(section: str, name: str, passed: bool, detail: str = "",
                 ico = "PASS" if r["passed"] else "FAIL"
                 det = f"  ({r['detail']})" if r["detail"] else ""
                 f.write(f"  {ico}  [{r['section']}] {r['name']}{det}\n")
+        _write_json_report(completed=False)
     except Exception:
         pass  # never let file I/O crash the test
 
@@ -120,10 +124,18 @@ def _select_fixture(actors: list[unreal.Actor]) -> None:
 def _cleanup_fixtures() -> None:
     actor_sub = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     all_actors = actor_sub.get_all_level_actors()
+    refused = []
     for actor in _spawn_fixtures:
         if actor and actor in all_actors:
-            actor_sub.destroy_actor(actor)
-    _spawn_fixtures.clear()
+            if actor_sub.destroy_actor(actor) is not True:
+                refused.append(actor)
+    # A successful return is not cleanup evidence: verify absence independently.
+    remaining = actor_sub.get_all_level_actors()
+    _spawn_fixtures[:] = [actor for actor in _spawn_fixtures
+                         if actor and actor in remaining]
+    if _spawn_fixtures:
+        raise RuntimeError(f"Cleanup left {len(_spawn_fixtures)} tracked fixtures; "
+                           f"destroy refused {len(refused)} requests")
 
 def _save_report() -> str:
     os.makedirs(_SAVED, exist_ok=True)
@@ -1167,122 +1179,91 @@ def _test_advanced_materials() -> None:
 @register_tool(
     name="toolbelt_integration_test",
     category="Tests",
-    description="[WARNING: INVASIVE] Runs full automation. Spawns/Deletes actors. BEST IN TEST TEMPLATE.",
+    description="[INVASIVE] Native acceptance requires ToolbeltAcceptance and allow_mutation=True; optional whitelist sections.",
     icon="🧪",
     tags=["test", "integration", "full", "automation"],
 )
-def toolbelt_integration_test(**kwargs) -> dict:
+def toolbelt_integration_test(sections=None, allow_mutation: bool = False,
+                              preserve_bridge: bool = True, **kwargs) -> dict:
+    """Run selected native sections only in the disposable acceptance project.
+
+    ``sections`` contains whitelist names without the ``_test_`` prefix; omit
+    it to run the full suite. Mutation must be explicitly acknowledged. Results
+    prove only their recorded assertions, never all registered tools.
     """
-    Run the full suite of integration tests.
-    This will spawn temporary actors, select them, and run tools to verify behavior.
-    """
-    global _results, _start_time
+    global _integration_running
+    if _integration_running:
+        return {"status": "error", "reason": "integration_already_running",
+                "completed": False, "message": "An integration acceptance run is already active."}
+    _integration_running = True
+    try:
+        return _run_integration_acceptance(sections, allow_mutation, preserve_bridge)
+    finally:
+        _integration_running = False
+
+
+def _run_integration_acceptance(sections, allow_mutation: bool, preserve_bridge: bool) -> dict:
+    global _results, _start_time, _selected_sections, _project_context
+    try:
+        chosen = _validate_sections(sections)
+    except (TypeError, ValueError) as exc:
+        return {"status": "error", "reason": "invalid_sections", "message": str(exc),
+                "available_sections": list(_SECTION_NAMES)}
+    if allow_mutation is not True:
+        return {"status": "error", "reason": "disposable_project_required",
+                "message": "Requires project ToolbeltAcceptance and allow_mutation=True.",
+                "available_sections": list(_SECTION_NAMES)}
+    try:
+        _project_context = _acceptance_identity()
+    except Exception as exc:
+        return {"status": "error", "reason": "disposable_project_required",
+                "message": str(exc), "available_sections": list(_SECTION_NAMES)}
     _results = []
     _start_time = time.time()
-
-    unreal.log("══════════════════════════════════════════════════════")
-    unreal.log("  UEFN TOOLBELT INTEGRATION TEST — STARTING")
-    unreal.log("══════════════════════════════════════════════════════")
-
-    with undo_transaction("Toolbelt Integration Test"):
+    _selected_sections = list(chosen)
+    try:
+        _write_json_report(completed=False)
+    except Exception as exc:
+        return {"status": "error", "reason": "evidence_unavailable",
+                "message": str(exc), "completed": False, "total": 0}
+    try:
+        with undo_transaction("Toolbelt Integration Test"):
+            for section in chosen:
+                fn = globals()["_test_" + section]
+                if section == "bridge_safe":
+                    fn(preserve_bridge=preserve_bridge)
+                else:
+                    fn()
+            _cleanup_fixtures()
+        report_path = _save_report()
+        _write_json_report(completed=True)
+        passed = sum(1 for r in _results if r["passed"])
+        verified_n = sum(1 for r in _results if r.get("verified", True))
+        return {"status": "ok" if _results and passed == len(_results) else "error",
+                "passed": passed, "failed": len(_results) - passed,
+                "total": len(_results), "verified": verified_n,
+                "execution_only": len(_results) - verified_n,
+                "report": report_path, "json_report": _RESULTS_JSON_PATH,
+                "completed": True, "sections": list(chosen),
+                "checks": [dict(r) for r in _results],
+                "failures": [dict(r) for r in _results if not r["passed"]]}
+    except Exception as exc:
+        unreal.log_error(f"FATAL ERROR IN INTEGRATION TEST: {exc}")
+        cleanup_error = ""
         try:
-            _test_materials()
-            _test_bulk_ops()
-            _test_bulk_ops_advanced()
-            _test_bulk_ops_extensions()
-            _test_patterns()
-            _test_patterns_advanced()
-            _test_advanced_patterns()
-            _test_scatter()
-            _test_splines()
-            _test_assets()
-            _test_memory()
-            _test_reference_auditor()
-            _test_project_scaffold()
-            _test_text_painter()
-            _test_advanced_materials()
-            _test_snapshots()
-            _test_crawler()
-            _test_asset_tagger()
-            _test_verse()
-            _test_verse_advanced()
-            _test_screenshots()
-
-            # --- Batch 8 (Careful/Non-Invasive) ---
-            _test_lods_safe()
-            _test_optimization_safe()
-            _test_arena_safe()
-            _test_scatter_advanced_safe()
-            _test_assets_advanced_safe()
-            _test_bridge_safe()
-            _test_cooker_safe()
-            _test_curve_create_safe()
-            _test_measurement()
-            _test_localization()
-            _test_environmental()
-            _test_entities()
-            _test_selection()
-            _test_lighting_integration()
-            _test_project_admin_integration()
-
-            # --- Batch 9 (Tools added after v1.6.0) ---
-            _test_zone_tools()
-            _test_stamp_tools()
-            _test_actor_org_tools()
-            _test_proximity_tools()
-            _test_advanced_alignment()
-            _test_sign_tools()
-            _test_postprocess_and_world()
-            _test_audio_tools()
-            _test_level_health()
-            _test_config_tools()
-            _test_lighting_extended()
-            _test_world_state()
-
-            # --- Batch 10 (Tools added in v1.9.6) ---
-            _test_visibility_tools()
-            _test_viewport_bookmarks()
-            _test_selection_sets()
-            _test_project_admin_v196()
-
-            # Finalize
             _cleanup_fixtures()
-            report_path = _save_report()
-
-            passed = sum(1 for r in _results if r["passed"])
-            total = len(_results)
-
-            unreal.log("\n══════════════════════════════════════════════════════")
-            unreal.log("  INTEGRATION TEST COMPLETE")
-            verified_n = sum(1 for r in _results if r.get("verified", True))
-            unreal.log(f"  Passed: {passed}/{total}")
-            unreal.log(f"  Verified: {verified_n} · execution-only: {total - verified_n}")
-            unreal.log(f"  Results: {report_path}")
-            unreal.log("══════════════════════════════════════════════════════")
-
-            return {
-                "status": "ok" if passed == total else "error",
-                "passed": passed,
-                "failed": total - passed,
-                "total": total,
-                "verified": verified_n,
-                "execution_only": total - verified_n,
-                "report": report_path,
-                "failures": [
-                    {"section": r.get("section"), "name": r.get("name"),
-                     "detail": r.get("detail")}
-                    for r in _results if not r["passed"]
-                ],
-            }
-
-        except Exception as e:
-            unreal.log_error(f"FATAL ERROR IN INTEGRATION TEST: {e}")
-            _cleanup_fixtures()
-            # The suite spawns real actors. A caller that cannot tell a crash
-            # from a clean run cannot know whether fixtures were left behind.
-            return {"status": "error", "reason": "fatal", "message": str(e),
-                    "passed": sum(1 for r in _results if r["passed"]),
-                    "total": len(_results)}
+        except Exception as cleanup_exc:
+            cleanup_error = str(cleanup_exc)
+        evidence_error = ""
+        try:
+            _write_json_report(completed=False, fatal=str(exc), cleanup_error=cleanup_error)
+        except Exception as report_exc:
+            evidence_error = str(report_exc)
+        return {"status": "error", "reason": "fatal", "message": str(exc),
+                "completed": False, "cleanup_error": cleanup_error, "evidence_error": evidence_error,
+                "passed": sum(1 for r in _results if r["passed"]),
+                "total": len(_results), "checks": [dict(r) for r in _results],
+                "json_report": _RESULTS_JSON_PATH}
 
 
 # ─── Batch 8 (Final 20%) ──────────────────────────────────────────────────────
@@ -1408,9 +1389,14 @@ def _test_assets_advanced_safe() -> None:
     except Exception as e:
         _record("Assets", "Error", False, str(e))
 
-def _test_bridge_safe() -> None:
+def _test_bridge_safe(preserve_bridge: bool = True) -> None:
     _header("8.6 Bridge Toggle")
     import UEFN_Toolbelt as tb
+    if preserve_bridge:
+        state = tb.run("mcp_status")
+        _record("Bridge", "Listener preserved", state.get("running") is True,
+                f"running={state.get('running')}; no lifecycle calls", verified=False)
+        return
     try:
         # Start/Stop bridge. mcp_status reports whether the listener is
         # actually up, so assert on that rather than on the call not raising -
@@ -2238,9 +2224,10 @@ def _test_lighting_extended() -> None:
         # sky_set_time requires a DirectionalLight in the level.
         # Returns status=error on a bare template. Mark as expected-limited.
         result = tb.run("sky_set_time", hour=12.0)
-        ran = isinstance(result, dict)  # pass if tool ran at all
-        _record("Lighting", "sky_set_time", ran,
-                result.get("message", "ok") if ran else "no result")
+        ran = isinstance(result, dict) and result.get("status") == "ok"
+        detail = (f"Execution only; no DirectionalLight fixture/readback: {result}"
+                  if ran else f"Operator refused or malformed result: {result}")
+        _record("Lighting", "sky_set_time", ran, detail, verified=False)
 
     except Exception as e:
         _record("Lighting", "Error", False, str(e))
@@ -2298,12 +2285,14 @@ def _test_visibility_tools() -> None:
         passed = result.get("status") == "ok" and result.get("restored", 0) > 0
         _record("Visibility", "actor_show_all", passed, f"restored={result.get('restored', 0)}")
 
-        # Lock/unlock — may fail on special actor types (sandboxed), status:ok is sufficient
+        # An unsupported lock setter is a failed operator check, never success.
         actor_sub.set_selected_level_actors([a1])
         result = tb.run("actor_lock")
-        _record("Visibility", "actor_lock (runs ok)", result.get("status") == "ok")
+        passed, detail, verified = _lock_check(a1, result, True)
+        _record("Visibility", "actor_lock (runs ok)", passed, detail, verified=verified)
         result = tb.run("actor_unlock")
-        _record("Visibility", "actor_unlock (runs ok)", result.get("status") == "ok")
+        passed, detail, verified = _lock_check(a1, result, False)
+        _record("Visibility", "actor_unlock (runs ok)", passed, detail, verified=verified)
 
     except Exception as e:
         _record("Visibility", "Error", False, str(e))
@@ -2392,3 +2381,107 @@ def _test_project_admin_v196() -> None:
 
 if __name__ == "__main__":
     toolbelt_integration_test()
+
+
+# Native acceptance controls: whitelist is explicit, never caller-supplied code.
+_SECTION_NAMES = ('materials', 'bulk_ops', 'bulk_ops_advanced', 'bulk_ops_extensions', 'patterns', 'patterns_advanced', 'advanced_patterns', 'scatter', 'splines', 'assets', 'memory', 'reference_auditor', 'project_scaffold', 'text_painter', 'advanced_materials', 'snapshots', 'crawler', 'asset_tagger', 'verse', 'verse_advanced', 'screenshots', 'lods_safe', 'optimization_safe', 'arena_safe', 'scatter_advanced_safe', 'assets_advanced_safe', 'bridge_safe', 'cooker_safe', 'curve_create_safe', 'measurement', 'localization', 'environmental', 'entities', 'selection', 'lighting_integration', 'project_admin_integration', 'zone_tools', 'stamp_tools', 'actor_org_tools', 'proximity_tools', 'advanced_alignment', 'sign_tools', 'postprocess_and_world', 'audio_tools', 'level_health', 'config_tools', 'lighting_extended', 'world_state', 'visibility_tools', 'viewport_bookmarks', 'selection_sets', 'project_admin_v196')
+_selected_sections: list[str] = []
+_project_context: dict = {}
+_RESULTS_JSON_PATH = os.path.join(_SAVED, "integration_test_results.json")
+
+
+def _validate_sections(sections):
+    if sections is None:
+        return _SECTION_NAMES
+    if not isinstance(sections, (list, tuple)) or not sections:
+        raise ValueError("sections must be a nonempty list of whitelist names")
+    if any(not isinstance(name, str) or name not in _SECTION_NAMES for name in sections):
+        raise ValueError("Unknown integration section")
+    if len(set(sections)) != len(sections):
+        raise ValueError("Duplicate integration sections")
+    return tuple(sections)
+
+
+def _write_json_report(completed: bool, fatal: str = "", cleanup_error: str = "") -> None:
+    """Atomic incremental evidence; preserve original check annotations."""
+    os.makedirs(_SAVED, exist_ok=True)
+    with open(__file__, "rb") as source:
+        harness_sha256 = hashlib.sha256(source.read()).hexdigest()
+    data = {"schema_version": 1, "harness_version": VERSION,
+            "harness_sha256": harness_sha256,
+            "project": dict(_project_context),
+            "engine_saved_dir": unreal.Paths.project_saved_dir(),
+            "report_dir": _SAVED,
+            "date": datetime.now().isoformat(), "completed": completed,
+            "sections": list(_selected_sections), "fatal": fatal,
+            "cleanup_error": cleanup_error, "checks": [dict(r) for r in _results],
+            "limitation": "Recorded assertions only; verified flags are authored annotations, not per-tool native acceptance. Status-only and refusal checks require independent interpretation."}
+    with open(_RESULTS_JSON_PATH + ".tmp", "w", encoding="utf-8") as stream:
+        json.dump(data, stream, indent=2)
+    os.replace(_RESULTS_JSON_PATH + ".tmp", _RESULTS_JSON_PATH)
+
+
+def _acceptance_identity() -> dict:
+    """Require deployed source, unique native descriptor and matching loaded world."""
+    cursor = os.path.dirname(os.path.realpath(__file__))
+    while os.path.basename(cursor) != "Content":
+        parent = os.path.dirname(cursor)
+        if parent == cursor:
+            raise ValueError("Deployed source has no native project Content ancestor")
+        cursor = parent
+    project_dir = os.path.dirname(cursor)
+    if os.path.basename(project_dir) != "ToolbeltAcceptance":
+        raise ValueError("Mutation acceptance requires the disposable ToolbeltAcceptance project")
+    descriptors = [os.path.join(project_dir, name) for name in os.listdir(project_dir)
+                   if name.lower().endswith(".uefnproject")
+                   and os.path.isfile(os.path.join(project_dir, name))]
+    if len(descriptors) != 1:
+        raise ValueError("Disposable project requires one unambiguous native descriptor")
+    with open(descriptors[0], encoding="utf-8") as stream:
+        descriptor = json.load(stream)
+    roots = [plugin.get("name") for plugin in descriptor.get("plugins", [])
+             if isinstance(plugin, dict) and plugin.get("bIsRoot") is True]
+    if len(roots) != 1 or not isinstance(roots[0], str) or not roots[0]:
+        raise ValueError("Disposable descriptor requires one root plugin mount")
+    mount = roots[0]
+    from UEFN_Toolbelt.core import PLUGIN_MOUNTS
+    reserved = {name.casefold() for name in PLUGIN_MOUNTS} | {"temp", ".", ".."}
+    if "/" in mount or "\\" in mount or mount.casefold() in reserved:
+        raise ValueError("Invalid disposable root plugin mount")
+    world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+    world_path = world.get_path_name() if world else ""
+    if not isinstance(world_path, str) or not world_path.startswith("/" + mount + "/"):
+        raise ValueError("Loaded editor world does not match the disposable project's root mount")
+    return {"project_dir": project_dir, "descriptor": descriptors[0],
+            "mount": mount, "world_path": world_path}
+
+
+
+def _lock_check(actor, result, expected: bool) -> tuple[bool, str, bool]:
+    """Require fixture readback and a changed or explicitly observed no-op count."""
+    if not isinstance(result, dict):
+        return False, "No structured lock result", False
+    observed = None
+    for property_name in ("lock_location", "bLockLocation", "bLocked"):
+        try:
+            value = actor.get_editor_property(property_name)
+            if isinstance(value, bool):
+                observed = value
+                break
+        except Exception:
+            continue
+    detail = f"expected={expected}; observed={observed}; result={result}"
+    unavailable = result.get("reason") in {
+        "engine_api_unavailable", "property_unavailable", "properties_not_exposed",
+        "lock_property_unavailable", "lock_state_unavailable", "actor_lock_unavailable"}
+    if observed is None or unavailable:
+        return False, "Unsupported/unreadable lock boundary; operator not accepted: " + detail, False
+    count = result.get("locked" if expected else "unlocked", 0)
+    unchanged = result.get("unchanged", 0)
+    valid_count = (isinstance(count, int) and not isinstance(count, bool) and count >= 0
+                   and isinstance(unchanged, int) and not isinstance(unchanged, bool)
+                   and unchanged >= 0 and count + unchanged == 1)
+    passed = (result.get("status") == "ok" and type(result.get("failed")) is int
+              and result["failed"] == 0
+              and valid_count and observed is expected)
+    return passed, detail, True

@@ -1,0 +1,14 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:37.193028
+Passed:  3/3
+Verified: 3 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.13s
+============================================================
+
+
+[Localization]
+----------------------------------------
+  PASS  Export Manifest
+  PASS  Apply Translation  (Current: Grok_Translated)
+  PASS  Cleanup TextRenderActor

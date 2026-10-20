@@ -24,6 +24,19 @@ Read the repository-root AGENTS.md and every parent AGENTS.md before editing thi
 - `select_by_verse_tag` defaults to an explicit unsupported VerseTagMarkup result; ordinary Actor.tags require tag_scope='actor'. Never treat ordinary actor metadata or an unreadable tag scan as a verified Verse-tag match/absence. Preserve selection on unsupported/unreadable scans.
 - mcp_bridge.py follows SECURITY.md; Toolbelt custom MCP and Epic official MCP remain distinct surfaces.
 
+- Texture mutations resolve documented Python enums before writes, verify property readback and saving, and report per-asset failures and possible partial changes. Preview does not establish a native mutation outcome.
+- Texture results expose native implicit property changes and unknown reads; verify requested values again after saving because the editor can adjust related settings.
+- Blueprint audit reports clean only for BS_UP_TO_DATE. Unreadable, dirty, unknown and other states remain issues. Publish saved-state checks require actual boolean observations; unavailable checks return unknown.
+- The integration harness requires explicit allow_mutation=True and descriptor/world-confirmed ToolbeltAcceptance. Select small sections; preserve_bridge=True keeps the listener running. Capture its incremental JSON immediately per run; checks retain outcome/execution flags and report incomplete/fatal/cleanup/evidence-write failures. Test content and persistent settings are not comprehensively restored by fixture cleanup.
+
+- Sound asset audits keep missing/invalid duration and unavailable class/load/property inspection as unknown issues. Unknown assets never count as clean.
+- Montage creation preflights native API availability and source class, then verifies saving and loaded montage/skeleton state. Failed saves/readbacks retain path/created/saved facts and return error.
+- Native backup/prefab/schema paths use core native filesystem helpers; retain legitimate engine Saved digest/build-log reads separately.
+- Project backups use unique exclusive archives and fail on directory traversal errors; incomplete archives never count as successful backups. Preserve previous archives on failure.
+- Memory inspection retains unreadable assets and metrics as unknown. Reports are atomic and project-local; publish audit requires current mount, full-project scan, complete enumeration and valid estimates before accepting the cached memory check.
+- Actor lock/unlock counts require boolean property readback. Unsupported properties, refused writes and failed readback return per-actor errors rather than successful zero-change operations.
+- Integration runs reject reentry before changing shared results or fixtures and release their guard after failures. Local acceptance drivers must also guard nested Slate ticks and leave callbacks inert when scheduling fails.
+
 ## Work Guidance
 
 - Read docs/UEFN_QUIRKS.md before Unreal API edits and docs/ui_style_guide.md before window edits.

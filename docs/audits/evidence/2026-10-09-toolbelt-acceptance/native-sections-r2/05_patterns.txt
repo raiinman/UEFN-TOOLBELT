@@ -1,0 +1,13 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:04:34.323127
+Passed:  2/2
+Verified: 2 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.28s
+============================================================
+
+
+[Patterns]
+----------------------------------------
+  PASS  Grid Spawn (2x2)  (Found 4 actors)
+  PASS  Clear All  (Remaining: 0)

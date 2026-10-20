@@ -1,0 +1,19 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:40.110375
+Passed:  8/8
+Verified: 8 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.14s
+============================================================
+
+
+[ActorOrg]
+----------------------------------------
+  PASS  actor_move_to_folder
+  PASS  actor_folder_list  (2 folders, test folder present=True)
+  PASS  actor_select_by_folder
+  PASS  actor_select_by_class
+  PASS  actor_match_transform
+  PASS  actor_move_to_root
+  PASS  actor_attach_to_parent
+  PASS  actor_detach

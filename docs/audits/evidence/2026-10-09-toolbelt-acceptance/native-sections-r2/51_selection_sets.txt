@@ -1,0 +1,15 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:48.071153
+Passed:  4/4
+Verified: 4 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.11s
+============================================================
+
+
+[SelectionSets]
+----------------------------------------
+  PASS  selection_save  (count=2)
+  PASS  selection_list
+  PASS  selection_restore  (matched=2, missing=0)
+  PASS  selection_restore (unknown = error)

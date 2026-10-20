@@ -16,6 +16,8 @@ Read the repository-root AGENTS.md and every parent AGENTS.md before editing thi
 - Coverage mappings distinguish source coverage from observed run evidence.
 - session_python.ps1 owns the prepare/restore manifest workflow; preserve exact restoration and the root wrapper contracts.
 
+- Optional run-evidence artifacts name contained repository-relative paths and exact SHA256s. Missing, unreadable, escaping or tampered artifacts invalidate the run record; run evidence never promotes source coverage.
+
 ## Work Guidance
 
 - Read each script entry point and existing targeted tests before changing its behavior.

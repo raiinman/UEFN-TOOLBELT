@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "harness_version": "V11-ULTIMATE-171",
+  "harness_sha256": "349bb56a20ae98fccda7870862fe2bd79683405f19b5ccb7f7e9e7c03174186a",
+  "project": {
+    "project_dir": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance",
+    "descriptor": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\ToolbeltAcceptance.uefnproject",
+    "mount": "001485b2-9178-47cf-a1a5-e66b92a43825",
+    "world_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/ToolbeltAcceptance.ToolbeltAcceptance"
+  },
+  "engine_saved_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/",
+  "report_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt",
+  "date": "2026-10-09T17:10:39.704338",
+  "completed": true,
+  "sections": [
+    "stamp_tools"
+  ],
+  "fatal": "",
+  "cleanup_error": "",
+  "checks": [
+    {
+      "section": "Stamps",
+      "name": "stamp_save",
+      "passed": true,
+      "detail": "saved 3 of 3 fixtures",
+      "verified": true
+    },
+    {
+      "section": "Stamps",
+      "name": "stamp_list",
+      "passed": true,
+      "detail": "",
+      "verified": true
+    },
+    {
+      "section": "Stamps",
+      "name": "stamp_info",
+      "passed": true,
+      "detail": "3 actors in stamp",
+      "verified": true
+    },
+    {
+      "section": "Stamps",
+      "name": "stamp_place",
+      "passed": 3,
+      "detail": "placed 3/3",
+      "verified": true
+    },
+    {
+      "section": "Stamps",
+      "name": "stamp_export",
+      "passed": true,
+      "detail": "C:\\Users\\mikea\\AppData\\Local\\Temp\\__tb_test_stamp__.json",
+      "verified": true
+    },
+    {
+      "section": "Stamps",
+      "name": "stamp_import",
+      "passed": true,
+      "detail": "actor_count=3",
+      "verified": true
+    },
+    {
+      "section": "Stamps",
+      "name": "stamp_delete",
+      "passed": true,
+      "detail": "",
+      "verified": true
+    }
+  ],
+  "limitation": "Recorded assertions only; verified flags are authored annotations, not per-tool native acceptance. Status-only and refusal checks require independent interpretation."
+}

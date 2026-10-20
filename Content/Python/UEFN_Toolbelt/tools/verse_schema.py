@@ -3,7 +3,7 @@ import re
 
 import unreal
 
-from ..core import log_info, log_warning
+from ..core import log_info, log_warning, native_project_dir
 from ..registry import register_tool
 
 
@@ -20,17 +20,10 @@ class VerseSchemaParser:
 
     def load_digests(self):
         """Finds and parses all .digest files in the project."""
-        # Robust root resolution: Walk up until we find 'Content'
-        curr = os.path.abspath(__file__)
-        proj_root = None
-        while curr and os.path.dirname(curr) != curr:
-            curr = os.path.dirname(curr)
-            if os.path.basename(curr) == "Content":
-                proj_root = os.path.dirname(curr)
-                break
-
-        if not proj_root:
-            proj_root = unreal.Paths.project_dir()
+        try:
+            proj_root = native_project_dir()
+        except (OSError, ValueError):
+            proj_root = None  # Engine/global digests remain valid read-only sources.
 
         # UEFN 5.4+ often stores digests in the Local AppData folder
         appdata = os.path.expandvars("%LOCALAPPDATA%")
@@ -38,11 +31,11 @@ class VerseSchemaParser:
 
         search_paths = [
             proj_root,
-            os.path.join(proj_root, ".verse"),
+            os.path.join(proj_root, ".verse") if proj_root else None,
             saved_verse,
-            unreal.Paths.project_content_dir(),
-            unreal.Paths.project_plugins_dir(),
-            unreal.Paths.project_intermediate_dir(),
+            os.path.join(proj_root, "Content") if proj_root else None,
+            os.path.join(proj_root, "Plugins") if proj_root else None,
+            os.path.join(proj_root, "Intermediate") if proj_root else None,
             unreal.Paths.engine_dir(),
             unreal.Paths.engine_content_dir(),
             unreal.Paths.engine_plugins_dir()

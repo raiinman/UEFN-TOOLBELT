@@ -27,7 +27,7 @@ import shutil
 
 import unreal
 
-from ..core import log_error
+from ..core import log_error, project_content_dir
 from ..registry import register_tool
 
 # ── PySide6 guard ─────────────────────────────────────────────────────────────
@@ -561,10 +561,7 @@ WHAT IT DOES NOT MIGRATE
             self._proj_mount = ""
 
             # Source path — only used for cross-project disk copy
-            _project_root = unreal.Paths.convert_relative_path_to_full(
-                unreal.Paths.project_dir()
-            ).rstrip("/\\")
-            _abs_content = _project_root + "/Content"
+            _abs_content = project_content_dir()
             self._src_lbl = _lbl("Source project Content folder  (only used for cross-project disk copy — not needed for /Game/… destinations):")
             self._src_lbl.setStyleSheet("color:#666666; font-size:8pt;")
             pl.addWidget(self._src_lbl)
@@ -1148,7 +1145,10 @@ def prefab_export_to_disk(
         return {"status": "error", "message": "Provide packages list."}
     if not dst_content:
         return {"status": "error", "message": "Provide dst_content path."}
-    src_content = unreal.Paths.project_content_dir().rstrip("/\\")
+    try:
+        src_content = project_content_dir()
+    except (OSError, ValueError) as exc:
+        return {"status": "error", "message": str(exc)}
     results = _export_to_disk(
         set(packages), src_content, dst_content,
         flatten, overwrite, dry_run,

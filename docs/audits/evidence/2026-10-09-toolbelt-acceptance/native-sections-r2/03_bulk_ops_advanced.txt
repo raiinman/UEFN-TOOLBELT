@@ -1,0 +1,16 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:04:33.376323
+Passed:  5/5
+Verified: 5 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.17s
+============================================================
+
+
+[Bulk Ops]
+----------------------------------------
+  PASS  Distribute X  (Middle actor X: 500.0 (Expected: 500.0))
+  PASS  Snap to 100  (Snapped to: <Struct 'Vector' (0x000000008BE09230) {x: 100.000000, y: 500.000000, z: 800.000000}>)
+  PASS  Randomize (Rot)  (yaw=-7.57 pitch=0.00 roll=0.00 (pitch/roll must stay 0 — a value here means Quirk #41 is back))
+  PASS  Stack Z  (High actor Z: 150.0 (Expected: 150.0))
+  PASS  Reset Transforms  (Loc: <Struct 'Vector' (0x000000008BE08AB0) {x: 1.000000, y: 2.000000, z: 3.000000}>, Rot: <Struct 'Rotator' (0x000000008BE0AD60) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>, Scale: <Struct 'Vector' (0x000000008BE09A50) {x: 1.000000, y: 1.000000, z: 1.000000}>)

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "harness_version": "V11-ULTIMATE-171",
+  "harness_sha256": "ddf82364acbe35e2fc58a042d18ac48915c92e72244c6cec7eabdbb4953ab2d5",
+  "project": {
+    "project_dir": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance",
+    "descriptor": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\ToolbeltAcceptance.uefnproject",
+    "mount": "001485b2-9178-47cf-a1a5-e66b92a43825",
+    "world_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/ToolbeltAcceptance.ToolbeltAcceptance"
+  },
+  "engine_saved_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/",
+  "report_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt",
+  "date": "2026-10-20T01:19:29.631973",
+  "completed": true,
+  "sections": [
+    "bulk_ops"
+  ],
+  "fatal": "",
+  "cleanup_error": "",
+  "checks": [
+    {
+      "section": "Bulk Ops",
+      "name": "Align X (First Actor)",
+      "passed": true,
+      "detail": "X coords: 0.0, 0.0, 0.0",
+      "verified": true
+    }
+  ],
+  "limitation": "Recorded assertions only; verified flags are authored annotations, not per-tool native acceptance. Status-only and refusal checks require independent interpretation."
+}

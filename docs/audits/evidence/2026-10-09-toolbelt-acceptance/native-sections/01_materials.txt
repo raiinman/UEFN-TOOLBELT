@@ -1,0 +1,12 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:01:45.615438
+Passed:  0/1
+Verified: 1 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.04s
+============================================================
+
+
+[Materials]
+----------------------------------------
+  FAIL  Apply Preset  (maximum recursion depth exceeded)

@@ -1,0 +1,17 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:47.281102
+Passed:  6/6
+Verified: 6 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.14s
+============================================================
+
+
+[Visibility]
+----------------------------------------
+  PASS  actor_hide  (hidden=2)
+  PASS  actor_show  (shown=2)
+  PASS  actor_isolate  (visible=2)
+  PASS  actor_show_all  (restored=13)
+  PASS  actor_lock (runs ok)
+  PASS  actor_unlock (runs ok)
