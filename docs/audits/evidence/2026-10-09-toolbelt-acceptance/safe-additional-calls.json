@@ -1,0 +1,313 @@
+{
+  "artifact_type": "additional nonmutating call selection",
+  "target": {
+    "project_dir": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance",
+    "descriptor": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\ToolbeltAcceptance.uefnproject",
+    "mount": "001485b2-9178-47cf-a1a5-e66b92a43825",
+    "world_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/ToolbeltAcceptance.ToolbeltAcceptance"
+  },
+  "calls": [
+    {
+      "tool": "api_search",
+      "kwargs": {
+        "query": "Texture2D",
+        "max_results": 5
+      },
+      "prerequisite": "Current build API index accessible.",
+      "independent_readback": "Texture2D known native class appears; resultcount <=5. Does not validate any asset tool.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "api_inspect",
+      "kwargs": {
+        "name": "Texture2D"
+      },
+      "prerequisite": "Native Texture2D class exists.",
+      "independent_readback": "Compare returned exposed properties with safe native class/property introspection; preserve missing fields.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "anim_list_skeletons",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Animations"
+      },
+      "prerequisite": "Native class-matching fixture must first be identified inside this small folder; no current animation fixture exists on disk.",
+      "independent_readback": "Compare named class-specific known fixture with native AssetData and sequence skeleton/duration readback. If fixture absent, empty-list boundary only.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "anim_list_sequences",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Animations"
+      },
+      "prerequisite": "Native class-matching fixture must first be identified inside this small folder; no current animation fixture exists on disk.",
+      "independent_readback": "Compare named class-specific known fixture with native AssetData and sequence skeleton/duration readback. If fixture absent, empty-list boundary only.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "anim_list_montages",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Animations"
+      },
+      "prerequisite": "Native class-matching fixture must first be identified inside this small folder; no current animation fixture exists on disk.",
+      "independent_readback": "Compare named class-specific known fixture with native AssetData and sequence skeleton/duration readback. If fixture absent, empty-list boundary only.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "anim_list_blend_spaces",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Animations"
+      },
+      "prerequisite": "Native class-matching fixture must first be identified inside this small folder; no current animation fixture exists on disk.",
+      "independent_readback": "Compare named class-specific known fixture with native AssetData and sequence skeleton/duration readback. If fixture absent, empty-list boundary only.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "audio_list_metasounds",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio"
+      },
+      "prerequisite": "Needs exact native audio class fixture; WAV supplies SoundWave only, not these assets.",
+      "independent_readback": "Returned list must contain known matching native class asset; direct readable properties inspected separately, unreadable metadata remains unavailable.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "audio_list_sound_classes",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio"
+      },
+      "prerequisite": "Needs exact native audio class fixture; WAV supplies SoundWave only, not these assets.",
+      "independent_readback": "Returned list must contain known matching native class asset; direct readable properties inspected separately, unreadable metadata remains unavailable.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "audio_list_sound_cues",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio"
+      },
+      "prerequisite": "Needs exact native audio class fixture; WAV supplies SoundWave only, not these assets.",
+      "independent_readback": "Returned list must contain known matching native class asset; direct readable properties inspected separately, unreadable metadata remains unavailable.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "audio_list_sound_mixes",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio"
+      },
+      "prerequisite": "Needs exact native audio class fixture; WAV supplies SoundWave only, not these assets.",
+      "independent_readback": "Returned list must contain known matching native class asset; direct readable properties inspected separately, unreadable metadata remains unavailable.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "audio_list_synesthesia",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio"
+      },
+      "prerequisite": "Needs exact native audio class fixture; WAV supplies SoundWave only, not these assets.",
+      "independent_readback": "Returned list must contain known matching native class asset; direct readable properties inspected separately, unreadable metadata remains unavailable.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "texture_audit",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "max_results": 5
+      },
+      "prerequisite": "Import generated 8x8 RGBA PNG as T_Acceptance into exact project fixturefolder; verify Texture2D class first.",
+      "independent_readback": "Direct loaded texture blueprint_width/height or current size getter=8x8; compare available registrytags. Missingtags remain unknown.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "texture_set_compression",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": true,
+        "compression": "TC_MASKS",
+        "max_assets": 5
+      },
+      "prerequisite": "Known imported 8x8 Texture2D fixture only.",
+      "independent_readback": "Before/after direct compression_settings/lod_group/srgb/mip_gen_settings must remain identical. Preview changedcount matches expected delta; this proves preview/read-path only. Real mutation and reload require separate explicit fixture-only test.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "texture_set_group",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": true,
+        "group": "ui"
+      },
+      "prerequisite": "Known imported 8x8 Texture2D fixture only.",
+      "independent_readback": "Before/after direct compression_settings/lod_group/srgb/mip_gen_settings must remain identical. Preview changedcount matches expected delta; this proves preview/read-path only. Real mutation and reload require separate explicit fixture-only test.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "texture_set_srgb",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": true,
+        "srgb": false
+      },
+      "prerequisite": "Known imported 8x8 Texture2D fixture only.",
+      "independent_readback": "Before/after direct compression_settings/lod_group/srgb/mip_gen_settings must remain identical. Preview changedcount matches expected delta; this proves preview/read-path only. Real mutation and reload require separate explicit fixture-only test.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "texture_apply_preset",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures",
+        "dry_run": true,
+        "preset": "ui"
+      },
+      "prerequisite": "Known imported 8x8 Texture2D fixture only.",
+      "independent_readback": "Before/after direct compression_settings/lod_group/srgb/mip_gen_settings must remain identical. Preview changedcount matches expected delta; this proves preview/read-path only. Real mutation and reload require separate explicit fixture-only test.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "sound_asset_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio",
+        "sound_type": "wave",
+        "max_results": 5
+      },
+      "prerequisite": "Import generated 0.1sec PCM16 mono22050 WAV as SW_Acceptance into exactfolder.",
+      "independent_readback": "Known SoundWave included; direct duration approximately0.1 and native sample/channel properties, if exposed.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "sound_asset_audit",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio",
+        "warn_duration_sec": 1,
+        "max_results": 5
+      },
+      "prerequisite": "Known0.1sec SoundWave; deliberately no SoundClass unless native importer assignsone.",
+      "independent_readback": "total1; shortduration not longissue; missingSoundClass valid knownissue if directpointerNone. UnavailableDuration/classinspection must yield unknown>0 and clean0.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "sound_attenuation_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio",
+        "max_results": 5
+      },
+      "prerequisite": "Native SoundAttenuation or SoundClass required; small-folder empty test mayrun but not positiveclassvalidation.",
+      "independent_readback": "Named exactclass fixture metadata compared to direct loadedclass; no implicit global engine scans.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "sound_class_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio",
+        "max_results": 5
+      },
+      "prerequisite": "Native SoundAttenuation or SoundClass required; small-folder empty test mayrun but not positiveclassvalidation.",
+      "independent_readback": "Named exactclass fixture metadata compared to direct loadedclass; no implicit global engine scans.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "blueprint_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Blueprints",
+        "max_results": 5
+      },
+      "prerequisite": "Native editable fixture Blueprint created/duplicated into exactfolder; .uasset existence alone not classproof.",
+      "independent_readback": "List namedknownparentasset; audit direct native status BS_UP_TO_DATE ->clean, BS_DIRTY->issue, unreadable->unavailableissue. No compile invoked by these calls.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "blueprint_audit",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Blueprints",
+        "max_results": 5
+      },
+      "prerequisite": "Native editable fixture Blueprint created/duplicated into exactfolder; .uasset existence alone not classproof.",
+      "independent_readback": "List namedknownparentasset; audit direct native status BS_UP_TO_DATE ->clean, BS_DIRTY->issue, unreadable->unavailableissue. No compile invoked by these calls.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "blueprint_inspect",
+      "kwargs": {
+        "asset_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Blueprints/BP_Acceptance"
+      },
+      "prerequisite": "Confirmed native Blueprint class fixture named BP_Acceptance.",
+      "independent_readback": "Compare direct parentclass, generatedclass and current compile status with returneddetails; unreadablefields explicitunknown.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "curve_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures",
+        "max_results": 5,
+        "curve_type": "all"
+      },
+      "prerequisite": "Exact native correspondingclassfixture needed; no matchingfixture currently verified.",
+      "independent_readback": "Knownfixture name/path/class included; audit issue fields compared actualnativeproperties. Absentfixture tests onlyemptyquery/refusal.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "datatable_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures",
+        "max_results": 5
+      },
+      "prerequisite": "Exact native correspondingclassfixture needed; no matchingfixture currently verified.",
+      "independent_readback": "Knownfixture name/path/class included; audit issue fields compared actualnativeproperties. Absentfixture tests onlyemptyquery/refusal.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "skel_list",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures",
+        "max_results": 5
+      },
+      "prerequisite": "Exact native correspondingclassfixture needed; no matchingfixture currently verified.",
+      "independent_readback": "Knownfixture name/path/class included; audit issue fields compared actualnativeproperties. Absentfixture tests onlyemptyquery/refusal.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "skel_audit",
+      "kwargs": {
+        "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures",
+        "max_results": 5
+      },
+      "prerequisite": "Exact native correspondingclassfixture needed; no matchingfixture currently verified.",
+      "independent_readback": "Knownfixture name/path/class included; audit issue fields compared actualnativeproperties. Absentfixture tests onlyemptyquery/refusal.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "input_list_actions",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Input"
+      },
+      "prerequisite": "InputAction nativeclass fixture needed; InputActionFactory may unavailable and must be observed.",
+      "independent_readback": "Nonemptyknownclass list; unsupportedfactory does not establish actioncreation.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "input_list_contexts",
+      "kwargs": {
+        "search_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Input"
+      },
+      "prerequisite": "InputMappingContext nativeclassfixture needed.",
+      "independent_readback": "Exactknownfixture returned; inspect keys/actions directly if supported.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "world_partition_status",
+      "kwargs": {},
+      "prerequisite": "Active descriptor/world-confirmed disposable project.",
+      "independent_readback": "Direct editor-world WorldPartition pointer compared. A caught unreadable property falsely looksdisabled in source; classify unavailable if readback fails.",
+      "disposition_before_execution": "NOT_RUN"
+    },
+    {
+      "tool": "data_layer_list",
+      "kwargs": {},
+      "prerequisite": "Native DataLayerEditorSubsystem and preexisting layers; no creation selected.",
+      "independent_readback": "Known layer names/loadflags compare direct subsystem reads; missingproperty must not countknownflags.",
+      "disposition_before_execution": "NOT_RUN"
+    }
+  ],
+  "excluded_operations": "World/asset mutations; project deletes; network URL import; publishing/launch; bridge lifecycle; global setting changes; async generators; filesystem exports. Texture calls selected only in dry_run=True. Fixture creation is a separate reviewed native prerequisite.",
+  "fixture_recipe": "Python standard-library struct/zlib creates8x8RGBA PNG, wave creates0.1secPCM16 mono22050WAV; native AssetImportTask/TextureFactory/SoundFactory if build exposes. Animation needs compatible native AnimSequence+Skeleton, MetaSound/Cue/Class/Mix/Synesthesia need their real classes, Blueprint needs supported native factory/editor flow. Current disk inventory has materialinstances but no confirmed texture/audio/animation/Blueprint fixtures.",
+  "mutation_followup_required": "After baseline complete and deployment of corrections, run repairedtexture mutations oneproperty atatime on namedfixture with direct native readback+save/reload; create montage only with realcompatibleAnimSequence and gate factorysupport. No positive capabilities can be invented from emptyqueries or invalidarg refusals."
+}

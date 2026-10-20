@@ -1,0 +1,16 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:04:59.323073
+Passed:  5/5
+Verified: 1 checked a real outcome · 4 execution-only (ran without raising)
+Elapsed: 2.42s
+============================================================
+
+
+[Optimization]
+----------------------------------------
+  PASS  Memory Scan JSON  (Report generated: True)
+  PASS  Scan Textures
+  PASS  Scan Meshes
+  PASS  Top Offenders
+  PASS  Auto-Fix LODs  (Tool runs safely on Empty Dir)

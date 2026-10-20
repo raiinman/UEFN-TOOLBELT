@@ -58,9 +58,9 @@ def run_audio_list_metasounds(search_path: str = "", **kwargs) -> dict:
         assets = _ar().get_assets(filter_)
         results = []
         for a in assets:
-            entry = {"name": str(a.asset_name), "path": str(a.package_name), "class": str(a.asset_class)}
+            entry = {"name": str(a.asset_name), "path": str(a.package_name), "class": str(a.asset_class_path.asset_name)}
             try:
-                loaded = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                loaded = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if loaded:
                     autoplay = loaded.get_editor_property("b_auto_play") if hasattr(loaded, "get_editor_property") else None
                     if autoplay is not None:
@@ -99,7 +99,7 @@ def run_audio_list_sound_classes(search_path: str = "", **kwargs) -> dict:
         for a in assets:
             entry = {"name": str(a.asset_name), "path": str(a.package_name)}
             try:
-                loaded = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                loaded = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if loaded:
                     props = loaded.get_editor_property("properties")
                     if props:
@@ -191,7 +191,7 @@ def run_audio_list_synesthesia(search_path: str = "", **kwargs) -> dict:
         )
         assets = _ar().get_assets(filter_)
         results = [
-            {"name": str(a.asset_name), "path": str(a.package_name), "class": str(a.asset_class)}
+            {"name": str(a.asset_name), "path": str(a.package_name), "class": str(a.asset_class_path.asset_name)}
             for a in assets
         ]
         log_info(f"[audio_list_synesthesia] {len(results)} AudioSynesthesia analyzers in {search_path}")

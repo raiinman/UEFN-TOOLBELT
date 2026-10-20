@@ -1,0 +1,13 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:37.512881
+Passed:  2/2
+Verified: 2 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.06s
+============================================================
+
+
+[Environmental]
+----------------------------------------
+  PASS  Audit Brushes
+  PASS  Convert Props  (Converted: 1)

@@ -362,8 +362,11 @@ def test_registration_only_tools_carry_their_reason(tmp_path):
 
 def test_run_evidence_matches_the_mandate_and_promotes_nothing(tmp_path):
     evidence = json.loads((REPO / cr.EVIDENCE_REL).read_text(encoding="utf-8"))
-    runs = {r["scope"]: r for r in evidence["run_evidence"]}
-    assert set(runs) == {"integration", "other"}
+    # Preserve the original records even as later observations are appended.
+    runs = {}
+    for record in evidence["run_evidence"]:
+        runs.setdefault(record["scope"], record)
+    assert set(runs) == {"integration", "other", "smoke"}
     integration = runs["integration"]
     assert integration["date"] == "2026-08-23"
     assert "112671c" in integration["build"]
@@ -379,7 +382,13 @@ def test_run_evidence_matches_the_mandate_and_promotes_nothing(tmp_path):
     assert "One machine and one boot" in other["limitation"]
     assert "never promoted" in other["limitation"]
     report = cr.build_report(REPO)
-    assert report["run_scopes_without_records"] == ["smoke"]
+    assert report["run_scopes_without_records"] == []
+    smoke = runs["smoke"]
+    assert smoke["date"] == "2026-10-09"
+    assert "89/89" in smoke["result"]
+    assert "Environment health only" in smoke["limitation"]
+    artifact = REPO / smoke["source"].split(";")[0]
+    assert "Passed:  89/89" in artifact.read_text(encoding="utf-8")
     # No source fact is run evidence.
     for run in evidence["run_evidence"]:
         assert run["source"] not in cr.CHECK_SOURCES.values()
@@ -511,7 +520,7 @@ def test_the_cli_modes_report_the_same_data():
     code, out, err = _cli(REPO)
     assert code == 0, err
     for needle in ("Registered: 362", "Source coverage", "Availability flags",
-                   "Run evidence", "[smoke] no preserved run record"):
+                   "Run evidence", "89/89"):
         assert needle in out
     code, out, _err = _cli(REPO, "--json")
     data = json.loads(out)
@@ -521,3 +530,106 @@ def test_the_cli_modes_report_the_same_data():
     assert code == 0
     assert sum(1 for line in out.splitlines()
                if line.startswith("    ") and "  " in line.strip()) >= 362
+
+# Preserved artifacts are authenticated run evidence, never source promotion.
+def _artifact_run(artifacts=None):
+    record = {"scope": "other", "build": "fixture", "date": "2026-10-09",
+              "result": "fixture observation", "source": "fixture log",
+              "limitation": "Offline test of attribution only"}
+    if artifacts is not None:
+        record["artifacts"] = artifacts
+    return record
+
+
+def test_historical_six_string_run_still_supported(tmp_path):
+    record = _artifact_run()
+    root = _repo(tmp_path, runs=[record])
+    report = cr.build_report(root)
+    assert report["errors"] == []
+    assert report["run_evidence"] == [record]
+    assert report["source_coverage"]["counts"][cr.REGISTRATION_ONLY] == len(TOOLS)
+
+
+def test_valid_artifact_digest_is_checked_without_promoting_tools(tmp_path):
+    import hashlib
+    content = "native check bytes"
+    digest = hashlib.sha256(content.encode()).hexdigest()
+    record = _artifact_run([{"path": "evidence/raw.txt", "sha256": digest.upper()}])
+    root = _repo(tmp_path, runs=[record], extra={"evidence/raw.txt": content})
+    report = cr.build_report(root)
+    assert report["errors"] == []
+    assert report["run_evidence"] == [record]
+    assert report["source_coverage"]["counts"][cr.REGISTRATION_ONLY] == len(TOOLS)
+    (root / "evidence/raw.txt").write_text("tampered", encoding="utf-8")
+    tampered = cr.build_report(root)
+    assert any("sha256 mismatch" in error for error in tampered["errors"])
+    assert tampered["run_evidence"] == []
+    assert tampered["tools"] == report["tools"]
+    assert _cli(root, "--check")[0] == 1
+
+
+@pytest.mark.parametrize("path", ["../outside.txt", "evidence/../../outside.txt",
+                                  r"..\outside.txt", "/tmp/outside.txt",
+                                  r"C:\outside.txt", r"C:outside.txt",
+                                  r"\\server\share\outside.txt", "."])
+def test_artifact_path_must_be_contained_on_all_platforms(tmp_path, path):
+    root = _repo(tmp_path, runs=[_artifact_run([{"path": path, "sha256": "0" * 64}])])
+    report = cr.build_report(root)
+    assert report["run_evidence"] == []
+    assert any("within the repository" in error for error in report["errors"])
+
+
+@pytest.mark.parametrize("artifact,fragment", [
+    ({"path": "missing.txt", "sha256": "0" * 64}, "not readable"),
+    ({"path": "scripts", "sha256": "0" * 64}, "not a readable file"),
+    ({"path": "some.txt", "sha256": "not-a-digest"}, "invalid sha256"),
+    ({"path": "some.txt", "sha256": "z" * 64}, "invalid sha256"),
+    ({"path": "", "sha256": "0" * 64}, "nonempty relative path"),
+    ({"sha256": "0" * 64}, "nonempty relative path"),
+    ("some.txt", "contain path and sha256"),
+])
+def test_missing_or_malformed_artifact_is_rejected(tmp_path, artifact, fragment):
+    root = _repo(tmp_path, runs=[_artifact_run([artifact])])
+    report = cr.build_report(root)
+    assert report["run_evidence"] == []
+    assert any(fragment in error for error in report["errors"])
+
+
+def test_artifacts_container_must_be_list(tmp_path):
+    root = _repo(tmp_path, runs=[_artifact_run({"path": "some.txt", "sha256": "0" * 64})])
+    assert "run-evidence artifacts must be a list" in cr.build_report(root)["errors"]
+
+
+def test_symlink_escape_is_rejected_even_with_correct_digest(tmp_path):
+    import hashlib
+    root = _repo(tmp_path)
+    outside = tmp_path / "outside.txt"
+    outside.write_bytes(b"real data")
+    link = root / "evidence-link.txt"
+    try:
+        link.symlink_to(outside)
+    except OSError as exc:
+        pytest.skip(f"Host cannot create symlinks: {exc}")
+    record = _artifact_run([{"path": link.name, "sha256": hashlib.sha256(b"real data").hexdigest()}])
+    (root / cr.EVIDENCE_REL).write_text(json.dumps({"run_evidence": [record]}), encoding="utf-8")
+    report = cr.build_report(root)
+    assert report["run_evidence"] == []
+    assert any("resolves outside" in error for error in report["errors"])
+
+
+def test_unreadable_artifact_is_not_accepted(tmp_path, monkeypatch):
+    import hashlib
+    content = "fixture"
+    root = _repo(tmp_path, extra={"evidence/raw.txt": content}, runs=[_artifact_run([
+        {"path": "evidence/raw.txt", "sha256": hashlib.sha256(content.encode()).hexdigest()}])])
+    original = Path.read_bytes
+
+    def refuse(path):
+        if path.name == "raw.txt":
+            raise PermissionError("fixture permission refusal")
+        return original(path)
+
+    monkeypatch.setattr(Path, "read_bytes", refuse)
+    report = cr.build_report(root)
+    assert report["run_evidence"] == []
+    assert any("not readable" in error for error in report["errors"])

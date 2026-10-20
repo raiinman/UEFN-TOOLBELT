@@ -1,0 +1,16 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:04:35.319651
+Passed:  5/5
+Verified: 5 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.73s
+============================================================
+
+
+[Patterns]
+----------------------------------------
+  PASS  Circle (Radius/Count)  (Count: 8, Dist: 1000.0)
+  PASS  Line Spawn (Count=5)  (Found 5 actors)
+  PASS  Arc Spawn (180deg)  (Found 4 actors)
+  PASS  Spiral Spawn (Count=12)  (Found 12 actors)
+  PASS  Wave Spawn (Count=6)  (Found 6 actors)

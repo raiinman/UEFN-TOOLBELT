@@ -1,0 +1,12 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:04:32.318055
+Passed:  1/1
+Verified: 1 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 5.80s
+============================================================
+
+
+[Materials]
+----------------------------------------
+  PASS  Apply Preset  (Applied 'gold' → MI_gold_Cube (instance=True, named=True, parent=True))

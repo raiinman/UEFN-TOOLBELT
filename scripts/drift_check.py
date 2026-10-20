@@ -9217,9 +9217,6 @@ _HISTORICAL_VERSION_LINES = (
      "Release tag under comparison: `v2.4.1` at"),
     ("docs/audits/2026-08-24-uefn-42-official-mcp-audit.md",
      "- drift: passed at v2.4.1, 362 tools, 55 categories;"),
-    (".agents/workflows/run_tests.md",
-     "Check the Output Log for `INTEGRATION TEST COMPLETE — Passed: N/N`. "
-     "The v2.4.1"),
 )
 
 # ── Scanner ────────────────────────────────────────────────────────────────────

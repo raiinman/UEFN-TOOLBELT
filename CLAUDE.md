@@ -23,12 +23,12 @@ This is the single most important rule in this project. Syntax checks and unit t
 | Change type | Required test |
 |---|---|
 | Any code change | **`deploy.bat` first**, then the appropriate step below |
-| New tool or tool modification | `deploy.bat` → nuclear reload → `tb.run("tool_name")` |
+| New tool or tool modification | `deploy.bat` → guarded reload → `tb.run("tool_name")` |
 | Dashboard UI change (new tab, widget, layout) | `deploy.bat` → **full UEFN restart** → visual inspect |
 | Theme / styling change | `deploy.bat` → **full UEFN restart** → switch themes in Appearance tab |
-| `verse_device_graph.py` or `dashboard_pyside6.py` | `deploy.bat` → **full UEFN restart** (nuclear reload will crash) |
+| `verse_device_graph.py` or `dashboard_pyside6.py` | `deploy.bat` → **full UEFN restart** (guarded reload will crash) |
 | MCP bridge change | `deploy.bat` → **full UEFN restart** → `tb.run("mcp_start")` + authenticated external ping |
-| `core/` module change | `deploy.bat` → nuclear reload → `tb.run("toolbelt_smoke_test")` |
+| `core/` module change | `deploy.bat` → guarded reload → `tb.run("toolbelt_smoke_test")` |
 | `install.py` / `deploy.bat` change | Run the script end-to-end |
 | Launch Session / Push Changes / publish | `prepare_launch.bat` → upload → `restore_after_launch.bat` |
 | Any change touching PySide6 windows | `deploy.bat` → **full UEFN restart** → open window, interact |
@@ -98,28 +98,28 @@ Then paste the hot-reload command it prints into the UEFN Python console. Syntax
 
 ### The hard refresh bundle (paste into UEFN Python console)
 
-> ⚠️ **Nuclear reload is unsafe when adding a NEW module to `tools/__init__.py`.**
+> ⚠️ **Guarded reload is unsafe when adding a NEW module to `tools/__init__.py`.**
 > It can cause `EXCEPTION_ACCESS_VIOLATION` as stale C++ callbacks fire against freed Python objects.
 > **Use a full UEFN restart instead** when first introducing a new tool module.
-> Nuclear reload is safe for iterating on existing tools. See `docs/UEFN_QUIRKS.md` Quirk #26.
+> Guarded reload is safe for iterating on existing tools. See `docs/UEFN_QUIRKS.md` Quirk #26.
 >
-> ⚠️ **Nuclear reload is also unsafe for modules with active Qt windows or Slate tick callbacks**
+> ⚠️ **Guarded reload is also unsafe for modules with active Qt windows or Slate tick callbacks**
 > (e.g. `verse_device_graph.py`, `dashboard_pyside6.py`). If UEFN hard-crashes after a nuclear
 > reload, close UEFN completely, run `deploy.bat` again, restart UEFN, then do a clean import.
-> Nuclear reload is only safe for pure tool modules with no persistent window state.
+> Guarded reload is only safe for pure tool modules with no persistent window state.
 >
-> 🔁 **Nuclear reload fixes code. Hard restart fixes state.**
+> 🔁 **Guarded reload fixes code. Hard restart fixes state.**
 > After a crash, a project switch, or a `Shiboken` abort — close UEFN completely and reopen.
 > `tb` is undefined after switching projects; always import fresh after a restart. See Quirk #27.
 
 ```python
-import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.launch_qt()
+import UEFN_Toolbelt as tb; tb.hard_reload(); tb.launch_qt()
 ```
 
-Always ask the user to run this after UI or core changes. After a tool-only change, a simpler reload is enough:
+For UI, startup, new modules or persistent callbacks, fully restart UEFN and verify the changed behavior. Existing pure tool-module edits can use the guarded reload:
 
 ```python
-import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("tool_name")
+import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("tool_name")
 ```
 
 **Only commit after the user confirms it works in the live editor.**
@@ -288,7 +288,7 @@ This file contains every registered tool with its full Python parameter signatur
   }
 }
 ```
-All 362 tools (100%) return `{"status": "ok"/"error", ...}` structured dicts as of Phase 21. Zero `None` returns remain in the codebase — MCP callers can read every result directly without parsing log output.
+Read each tool's structured result, including failure counts, unknown fields and partial-change facts. Diagnostic statuses can be domain-specific: `publish_audit` retains `ready`/`warnings`/`blocked`. Registration, an `ok` status or an empty scan alone does not establish the requested outcome.
 
 **Schema utility functions** (`schema_utils.py`):
 - `schema_utils.validate_property(class_name, prop)` — check if a property exists and is writable
@@ -517,7 +517,7 @@ See `docs/plugin_dev_guide.md` for full details. You can generate plugins for th
 > **`import UEFN_Toolbelt as tb` alone does NOT register any tools.**
 > A bare import only loads the package root — the registry is empty until you call
 > `tb.register_all_tools()`. If `tb.run("anything")` returns "Unknown tool", this is why.
-> Always use one of the nuclear reload one-liners below, or call `tb.register_all_tools()`
+> Always use one of the guarded reload one-liners below, or call `tb.register_all_tools()`
 > explicitly after any fresh import.
 
 ```python
@@ -534,34 +534,35 @@ tb.smoke_test()
 # List everything available
 for t in tb.registry.list_tools():
     print(f"{t['category']:20s} {t['name']}")
+```
 
-### **The "Nuclear Reload" Command**
-If you have modified the Toolbelt source code, run this in the UEFN console to refresh everything without a restart.
+### **The "Guarded Reload" Command**
+For existing pure tool-module edits, this closes live windows before reloading and rebuilding the registry. Fully restart UEFN for startup, new modules or persistent-window changes.
 
 > **When does `tb` already exist vs. when do you need to import?**
-> - Same project, same session → `tb` is already defined; nuclear reload refreshes it
+> - Same project, same session → `tb` is already defined; guarded reload refreshes it
 > - Switched to a different project → Python environment resets; `tb` is gone — run the full import line
 > - Fresh UEFN launch → always import first
 > - Rule of thumb: `NameError: name 'tb' is not defined` → run the full reload line below
 
 ```python
 # Standard — reload + open dashboard
-import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.launch_qt()
+import UEFN_Toolbelt as tb; tb.hard_reload(); tb.launch_qt()
 
-# Iterating on the Verse Device Graph window
-import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("verse_graph_open")
+# Open the graph after a guarded reload; edits to this persistent window require a full restart
+import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("verse_graph_open")
 
-# Reload + run integration tests (use a clean template level)
-import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("toolbelt_integration_test")
+# Reload + run integration tests (use the dedicated ToolbeltAcceptance project)
+import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_integration_test", allow_mutation=True, preserve_bridge=True)
 
 # Reload + smoke test only
-import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("toolbelt_smoke_test")
+import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("toolbelt_smoke_test")
 
 # Reload only (no UI — useful when testing tools that don't need the dashboard)
-import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools()
+import UEFN_Toolbelt as tb; tb.hard_reload()
 ```
 > [!IMPORTANT]
-> Always include `tb.register_all_tools()` after a pop, otherwise the tool registry will be empty!
+> `tb.hard_reload()` rebuilds the registry. Use a full restart for startup, new modules and persistent-window changes.
 
 ---
 
@@ -575,24 +576,28 @@ Two separate test systems. Know which is which before running either.
 **Safe to run:** Anywhere, any project, any time. ~5 seconds.
 **Run after:** Every code change, before committing.
 
-### Integration Test — `tb.run("toolbelt_integration_test")`
-**What it proves:** tools *work* in a live UEFN editor. The harness spawns real actor fixtures, runs each tool against them, verifies the result (property changed, actor count correct, file written), and cleans up.
-**Coverage:** 116 test sections, **190 checks, 190/190 live on UEFN 42.00** — materials, bulk ops, patterns, scatter, zones, stamps, actor org, proximity, alignment, signs, post-process, audio, lighting, world state, and more.
+### Integration Test — dedicated native acceptance
 
-> **Read the split, not the total.** 163 of the 190 verify a real outcome; **27
-> are execution-only** — they prove the tool ran without raising, nothing more.
-> The suite prints both on every run. A check that cannot fail is not coverage:
-> counting all of them as one number is what let Quirk #41 (wrong rotator axis)
-> sit inside a fully green run. When you add a check, assert on a returned
-> value or re-read the state — `_record(..., True)` is a last resort and must
-> pass `verified=False`.
-**⚠️ INVASIVE — only run in a blank template level.** It spawns and deletes actors. Never run in a production project.
-**Run after:** Before any PR. After adding a new tool. After major refactors. ~70 seconds.
+Use the local UEFN console in `ToolbeltAcceptance`, after deployment and startup
+verification. The suite refuses other project identities and requires explicit
+`allow_mutation=True`. Select small sections; `preserve_bridge=True` preserves
+the current listener. The bridge deliberately refuses this self-managing suite.
 
+```python
+import UEFN_Toolbelt as tb
+tb.run("toolbelt_integration_test", sections=["bulk_ops"], allow_mutation=True, preserve_bridge=True)
 ```
-Results: Saved/UEFN_Toolbelt/integration_test_results.txt
-```
-If the editor crashes mid-run, the file contains partial results up to the last completed test — check it to find which section caused the crash.
+
+Read the structured results and independent editor/file readbacks. Execution-only
+checks, refusals, empty scans and dry runs establish different outcomes. Current
+source coverage and preserved native runs live in `TOOL_STATUS.md`; a registry
+count is not functional acceptance. JSON and text reports are written under the
+returned report directory. Capture them after every run because engine Saved
+paths can be shared. Partial/fatal/cleanup/evidence errors remain visible.
+
+This suite modifies actors, assets, files and persistent settings. Fixture
+cleanup does not fully restore the project or shared Saved state; preserve those
+resources before testing and restore them after evidence capture.
 
 | | Smoke Test | Integration Test |
 |---|---|---|
@@ -647,10 +652,10 @@ If you call an asynchronous Unreal API (e.g., `unreal.AutomationLibrary.take_hig
 
 ### Common Pitfalls
 - **ModuleNotFoundError on new projects**: UEFN only scans `Content/Python` on startup. If you deploy to a new project while the editor is open, restart UEFN.
-- **Hot Reload vs Restart**: Use the "Nuclear Reload" for code changes, but a full restart for `init_unreal.py` changes.
+- **Hot Reload vs Restart**: Use the "Guarded Reload" for code changes, but a full restart for `init_unreal.py` changes.
 
 ### **Hot-Reloading (sys.modules)**
-UEFN does not natively reload modified Python modules. Use the **"Nuclear Reload"** (provided in `README.md`) to clear `sys.modules` and force a fresh import of Toolbelt logic.
+UEFN does not natively reload modified Python modules. Use the **"Guarded Reload"** (provided in `README.md`) to clear `sys.modules` and force a fresh import of Toolbelt logic.
 
 ---
 
@@ -665,7 +670,7 @@ When compacting this conversation, always preserve:
 - Any UEFN quirk numbers encountered and the root cause discovered
 - Exact Python syntax errors and their fixes
 - Which tools were confirmed working in live UEFN (user pasted log output)
-- Whether `deploy.bat` was run and whether the nuclear reload was done
+- Whether `deploy.bat` was run and whether the guarded reload was done
 - Any Epic API limitations newly discovered
 - Current git branch and last commit hash
 

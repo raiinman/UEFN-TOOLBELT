@@ -21,7 +21,15 @@ from __future__ import annotations
 
 import unreal
 
-from ..core import log_error, log_info, resolve_content_path, resolve_scan_path, save_asset
+from ..core import (
+    api_unavailable,
+    log_error,
+    log_info,
+    missing_unreal_apis,
+    resolve_content_path,
+    resolve_scan_path,
+    save_asset,
+)
 from ..registry import register_tool
 
 
@@ -82,7 +90,7 @@ def run_anim_list_sequences(search_path: str = "", **kwargs) -> dict:
         for a in assets:
             entry = {"name": str(a.asset_name), "path": str(a.package_name)}
             try:
-                loaded = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                loaded = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if loaded:
                     if hasattr(loaded, "get_play_length"):
                         entry["duration_sec"] = round(loaded.get_play_length(), 3)
@@ -122,7 +130,7 @@ def run_anim_list_montages(search_path: str = "", **kwargs) -> dict:
         for a in assets:
             entry = {"name": str(a.asset_name), "path": str(a.package_name)}
             try:
-                loaded = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                loaded = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if loaded and hasattr(loaded, "get_play_length"):
                     entry["duration_sec"] = round(loaded.get_play_length(), 3)
             except Exception:
@@ -156,7 +164,7 @@ def run_anim_list_blend_spaces(search_path: str = "", **kwargs) -> dict:
         )
         assets = _ar().get_assets(filter_)
         results = [
-            {"name": str(a.asset_name), "path": str(a.package_name), "class": str(a.asset_class)}
+            {"name": str(a.asset_name), "path": str(a.package_name), "class": str(a.asset_class_path.asset_name)}
             for a in assets
         ]
         log_info(f"[anim_list_blend_spaces] {len(results)} BlendSpaces in {search_path}")
@@ -183,19 +191,33 @@ def run_anim_create_montage(
     name: str = "",
     **kwargs,
 ) -> dict:
-    destination = resolve_content_path(destination, "Animations")
     if not sequence_path:
         return {"status": "error", "message": "sequence_path is required."}
+    missing = missing_unreal_apis(
+        "AnimSequence", "AnimMontage", "AnimMontageFactory",
+        "AssetToolsHelpers.get_asset_tools", "AssetTools.create_asset",
+        "EditorAssetLibrary.load_asset", "EditorAssetLibrary.save_asset",
+    )
+    if missing:
+        return api_unavailable("anim_create_montage", missing)
+    created = False
+    saved = False
+    path = ""
     try:
+        destination = resolve_content_path(destination, "Animations")
         seq = unreal.EditorAssetLibrary.load_asset(sequence_path)
         if seq is None:
             return {"status": "error", "message": f"Sequence not found: {sequence_path}"}
+        if not isinstance(seq, unreal.AnimSequence):
+            return {"status": "error", "message": f"Asset is not an AnimSequence: {sequence_path}"}
 
         skeleton = seq.get_editor_property("skeleton") if hasattr(seq, "get_editor_property") else None
         if skeleton is None:
             return {"status": "error", "message": "Could not read skeleton from sequence."}
 
         montage_name = name or f"AM_{seq.get_name()}"
+        skeleton_name = skeleton.get_name()
+        path = f"{destination.rstrip('/')}/{montage_name}"
         factory = unreal.AnimMontageFactory()
         factory.set_editor_property("target_skeleton", skeleton)
 
@@ -205,16 +227,30 @@ def run_anim_create_montage(
         if montage is None:
             return {"status": "error", "message": f"Failed to create montage '{montage_name}'"}
 
-        path = f"{destination.rstrip('/')}/{montage_name}"
-        saved = save_asset(path)
+        created = True
+        saved = save_asset(path) is True
+        if not saved:
+            return {"status": "error", "reason": "asset_save_failed", "path": path,
+                    "name": montage_name, "created": True, "saved": False,
+                    "readback_verified": False, "skeleton": skeleton_name,
+                    "message": "Montage exists in memory but could not be saved; inspect it before retrying."}
+        readback = unreal.EditorAssetLibrary.load_asset(path)
+        if not isinstance(readback, unreal.AnimMontage) or readback.get_editor_property("skeleton") != skeleton:
+            return {"status": "error", "reason": "asset_readback_failed", "path": path,
+                    "name": montage_name, "created": True, "saved": True,
+                    "readback_verified": False, "skeleton": skeleton_name,
+                    "message": "Saved montage could not be verified with the intended skeleton."}
         log_info(f"[anim_create_montage] Created: {path}")
         return {
-            "status": "ok" if saved else "partial",
+            "status": "ok",
             "path": path,
             "name": montage_name,
             "saved": saved,
-            "skeleton": skeleton.get_name(),
+            "created": True,
+            "readback_verified": True,
+            "skeleton": skeleton_name,
         }
     except Exception as e:
         log_error(f"[anim_create_montage] {e}")
-        return {"status": "error", "message": str(e)}
+        return {"status": "error", "message": str(e), "created": created,
+                "saved": saved, "path": path, "readback_verified": False}

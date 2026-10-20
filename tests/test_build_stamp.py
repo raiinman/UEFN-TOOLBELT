@@ -6,7 +6,7 @@ Two live test runs were lost in one session to a project sitting silently on a
 ways that read as code bugs, and finding out took comparing file mtimes across
 projects on disk.
 
-deploy.bat writes _build_stamp.json into the DESTINATION after copying, so the
+The shared installer writes _build_stamp.json into the DESTINATION after copying, so the
 stamp describes what was deployed rather than what the repo contains. Every
 startup log and every hard_reload now carries it.
 """
@@ -70,16 +70,6 @@ def test_dirty_working_tree_is_visible_in_the_commit_field():
         assert tb.build_info()["commit"].endswith("+dirty")
     finally:
         STAMP.unlink()
-
-
-def test_deploy_script_still_writes_the_stamp():
-    """Guards the other half: build_info is useless if deploy stops stamping."""
-    text = (REPO / "deploy.bat").read_text(encoding="utf-8", errors="replace")
-    assert "_build_stamp.json" in text, "deploy.bat no longer writes the stamp"
-    assert "rev-parse --short HEAD" in text, "stamp no longer records the commit"
-    assert "STAMP_FILE" in text
-    # Written after the copy, or it would describe the wrong tree.
-    assert text.index("Copying UEFN_Toolbelt package") < text.index("_build_stamp.json")
 
 
 def test_build_info_is_not_a_registered_tool():

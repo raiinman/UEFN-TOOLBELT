@@ -1,0 +1,14 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:06.367065
+Passed:  3/3
+Verified: 1 checked a real outcome · 2 execution-only (ran without raising)
+Elapsed: 5.82s
+============================================================
+
+
+[Screenshots]
+----------------------------------------
+  PASS  Focus Selection
+  PASS  Timed Series
+  PASS  Capture Paths  (Queued → {'status': 'ok', 'path': 'C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\screenshots\\integration_test_shot_20261009_171000_1920x1080.png'})

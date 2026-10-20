@@ -20464,7 +20464,7 @@ def test_release_prep_record_accepts_closed_language(
 
 # --- Historical-version exemption ----------------------------------------
 #
-# Three exact lines state a past release's version as history. They are
+# Two frozen audit lines state a past release's version as history. They are
 # exempt from the version patterns only, by exact content and path, and each
 # must match exactly one line of its file. Counts on them are still checked,
 # and every other stale version - in the same files or elsewhere - is still
@@ -20475,9 +20475,6 @@ _HISTORICAL_WORKFLOW = ".agents/workflows/run_tests.md"
 _HISTORICAL_VERSION_LINES = (
     (_HISTORICAL_AUDIT, "Release tag under comparison: `v2.4.1` at"),
     (_HISTORICAL_AUDIT, "- drift: passed at v2.4.1, 362 tools, 55 categories;"),
-    (_HISTORICAL_WORKFLOW,
-     "Check the Output Log for `INTEGRATION TEST COMPLETE " + _EM
-     + " Passed: N/N`. The v2.4.1"),
 )
 _HISTORICAL_EXEMPTION = "historical version exemption"
 _INLINE_VERSION = "version (inline version)"
@@ -20506,7 +20503,7 @@ def _historical_scan(repo_root, tmp_path, monkeypatch, name, rel,
 def test_historical_version_lines_are_exact_declared_and_historical(
     repo_root,
 ) -> None:
-    """The exemption is exactly these three lines: each in a declared scan
+    """The exemption is exactly these two lines: each in a declared scan
     target, each matching one line of its file, each naming a version other
     than the current one. Widening it means editing this test too."""
     drift_check = _load_drift_check(repo_root, "historical_declared")
@@ -20531,7 +20528,7 @@ def test_historical_version_files_scan_clean(repo_root, tmp_path, monkeypatch,
 
 @pytest.mark.parametrize("damage", ("edited", "duplicated", "removed"))
 @pytest.mark.parametrize(("rel", "line"), _HISTORICAL_VERSION_LINES,
-                         ids=["audit-tag", "audit-drift", "workflow-baseline"])
+                         ids=["audit-tag", "audit-drift"])
 def test_historical_version_exemption_damage_is_caught(
     repo_root, tmp_path, monkeypatch, rel, line, damage
 ) -> None:
@@ -20569,7 +20566,7 @@ def test_historical_version_exemption_leaves_other_lines_checked(
 
 
 @pytest.mark.parametrize(("rel", "line"), _HISTORICAL_VERSION_LINES,
-                         ids=["audit-tag", "audit-drift", "workflow-baseline"])
+                         ids=["audit-tag", "audit-drift"])
 def test_historical_version_exemption_is_bound_to_its_file(
     repo_root, tmp_path, monkeypatch, rel, line
 ) -> None:

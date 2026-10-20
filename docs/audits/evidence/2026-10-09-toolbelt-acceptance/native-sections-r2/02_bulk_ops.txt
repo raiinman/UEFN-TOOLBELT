@@ -1,0 +1,12 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:04:32.798801
+Passed:  1/1
+Verified: 1 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.06s
+============================================================
+
+
+[Bulk Ops]
+----------------------------------------
+  PASS  Align X (First Actor)  (X coords: 0.0, 0.0, 0.0)

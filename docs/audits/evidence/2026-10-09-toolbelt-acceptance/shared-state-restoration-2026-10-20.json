@@ -1,0 +1,52 @@
+{
+  "restored_to": "2026-10-20 pre-resume baseline",
+  "captured_utc": "2026-10-20T08:27:31.215062+00:00",
+  "preserved_post_test_files": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\acceptance-state-backup\\after-2026-10-20-tests",
+  "files": [
+    {
+      "path": "activity_log.json",
+      "restored_sha256": "f2badd39523e627b179e3b02f089dd86741c0176f2c5626669596ad6c94a82f7",
+      "post_test_sha256": "e0603a00f694acf6a14dcbe7150bed73deb8aa5568224a54faf444a848d2103f"
+    },
+    {
+      "path": "config.json",
+      "restored_sha256": "6c462585cb47222d94cbc668e8bedcbe611804728b67df28d400fe726d8b0637",
+      "post_test_sha256": "6c462585cb47222d94cbc668e8bedcbe611804728b67df28d400fe726d8b0637"
+    },
+    {
+      "path": "device_catalog.json",
+      "restored_sha256": "093ef06a335aaa69ea1c934c82e120530d18f620d02a33a309475e8db1c48b4e",
+      "post_test_sha256": "093ef06a335aaa69ea1c934c82e120530d18f620d02a33a309475e8db1c48b4e"
+    },
+    {
+      "path": "import_log.json",
+      "restored_sha256": "bb4ad0d626e047fa4ec6d9942cb2d9a70eb41ae1d9036b52a08f34aced4e9056",
+      "post_test_sha256": "bb4ad0d626e047fa4ec6d9942cb2d9a70eb41ae1d9036b52a08f34aced4e9056"
+    },
+    {
+      "path": "publish_audit.json",
+      "restored_sha256": "a40368d5c3c0bffe6c9511bf4f8d0d5ba0143ab7f0be1d7122ba9a83c08cb1ea",
+      "post_test_sha256": "a40368d5c3c0bffe6c9511bf4f8d0d5ba0143ab7f0be1d7122ba9a83c08cb1ea"
+    },
+    {
+      "path": "smoke_test_results.txt",
+      "restored_sha256": "e5b62da7bed9d5eea15c08fc529e5c5643b981260c83c8ffc53ea1776328e484",
+      "post_test_sha256": "0b8f4264d8dc9a8572e13be381fbaaf6062a52073ecf5bc96cb9a05d10f36286"
+    },
+    {
+      "path": "verse_device_report.json",
+      "restored_sha256": "931949cc158f8d7da4cdaac86a2d4fd6bcb8ffaae12196f1766cb7507c8b746e",
+      "post_test_sha256": "931949cc158f8d7da4cdaac86a2d4fd6bcb8ffaae12196f1766cb7507c8b746e"
+    },
+    {
+      "path": "world_state.json",
+      "restored_sha256": "c27f463e9a28570cfbb78e00abf4abd95f9dff9ab9509c8b9e67af9ef38a457e",
+      "post_test_sha256": "c27f463e9a28570cfbb78e00abf4abd95f9dff9ab9509c8b9e67af9ef38a457e"
+    },
+    {
+      "path": "snapshots/Riftbloom_Blank_Baseline.json",
+      "restored_sha256": "b38277f52b35ae21303599f91860d0962cbaa1afbe4d43fde7dbad9cebc2090d",
+      "post_test_sha256": "b38277f52b35ae21303599f91860d0962cbaa1afbe4d43fde7dbad9cebc2090d"
+    }
+  ]
+}

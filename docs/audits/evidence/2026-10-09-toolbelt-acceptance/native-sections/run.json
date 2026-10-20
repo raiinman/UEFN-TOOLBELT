@@ -1,0 +1,112 @@
+{
+  "identity": {
+    "project_dir": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance",
+    "descriptor": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\ToolbeltAcceptance.uefnproject",
+    "mount": "001485b2-9178-47cf-a1a5-e66b92a43825",
+    "world_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/ToolbeltAcceptance.ToolbeltAcceptance"
+  },
+  "sections": [
+    "materials",
+    "bulk_ops",
+    "bulk_ops_advanced",
+    "bulk_ops_extensions",
+    "patterns",
+    "patterns_advanced",
+    "advanced_patterns",
+    "scatter",
+    "splines",
+    "assets",
+    "memory",
+    "reference_auditor",
+    "project_scaffold",
+    "text_painter",
+    "advanced_materials",
+    "snapshots",
+    "crawler",
+    "asset_tagger",
+    "verse",
+    "verse_advanced",
+    "screenshots",
+    "lods_safe",
+    "optimization_safe",
+    "arena_safe",
+    "scatter_advanced_safe",
+    "assets_advanced_safe",
+    "bridge_safe",
+    "cooker_safe",
+    "curve_create_safe",
+    "measurement",
+    "localization",
+    "environmental",
+    "entities",
+    "selection",
+    "lighting_integration",
+    "project_admin_integration",
+    "zone_tools",
+    "stamp_tools",
+    "actor_org_tools",
+    "proximity_tools",
+    "advanced_alignment",
+    "sign_tools",
+    "postprocess_and_world",
+    "audio_tools",
+    "level_health",
+    "config_tools",
+    "lighting_extended",
+    "world_state",
+    "visibility_tools",
+    "viewport_bookmarks",
+    "selection_sets",
+    "project_admin_v196"
+  ],
+  "results": [
+    {
+      "section": "materials",
+      "result": {
+        "status": "error",
+        "passed": 0,
+        "failed": 1,
+        "total": 1,
+        "verified": 1,
+        "execution_only": 0,
+        "report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.txt",
+        "json_report": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\integration_test_results.json",
+        "completed": true,
+        "sections": [
+          "materials"
+        ],
+        "checks": [
+          {
+            "section": "Materials",
+            "name": "Apply Preset",
+            "passed": false,
+            "detail": "maximum recursion depth exceeded",
+            "verified": true
+          }
+        ],
+        "failures": [
+          {
+            "section": "Materials",
+            "name": "Apply Preset",
+            "passed": false,
+            "detail": "maximum recursion depth exceeded",
+            "verified": true
+          }
+        ]
+      }
+    }
+  ],
+  "calls": [
+    {
+      "section": "materials",
+      "tool": "material_apply_preset",
+      "kwargs": {
+        "preset": "gold"
+      },
+      "raised": "maximum recursion depth exceeded"
+    }
+  ],
+  "completed": false,
+  "current_section": "materials",
+  "stop_reason": ""
+}

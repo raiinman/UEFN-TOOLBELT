@@ -1,0 +1,15 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:05:01.519299
+Passed:  4/4
+Verified: 3 checked a real outcome · 1 execution-only (ran without raising)
+Elapsed: 1.05s
+============================================================
+
+
+[Project]
+----------------------------------------
+  PASS  Scaffold Preview
+  PASS  Scaffold Generate  (Maps folder created: True)
+  PASS  Scaffold Save Template  (listed as {'folder_count': 2, 'source': 'custom'})
+  PASS  Scaffold Delete Template  (removed from the list)

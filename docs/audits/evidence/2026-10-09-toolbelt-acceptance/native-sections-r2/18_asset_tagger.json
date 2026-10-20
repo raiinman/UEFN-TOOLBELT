@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "harness_version": "V11-ULTIMATE-171",
+  "harness_sha256": "349bb56a20ae98fccda7870862fe2bd79683405f19b5ccb7f7e9e7c03174186a",
+  "project": {
+    "project_dir": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance",
+    "descriptor": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\ToolbeltAcceptance.uefnproject",
+    "mount": "001485b2-9178-47cf-a1a5-e66b92a43825",
+    "world_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/ToolbeltAcceptance.ToolbeltAcceptance"
+  },
+  "engine_saved_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/",
+  "report_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt",
+  "date": "2026-10-09T17:09:48.384072",
+  "completed": true,
+  "sections": [
+    "asset_tagger"
+  ],
+  "fatal": "",
+  "cleanup_error": "",
+  "checks": [
+    {
+      "section": "Asset Tagger",
+      "name": "Add Tag",
+      "passed": true,
+      "detail": "status=ok tagged=1/1",
+      "verified": true
+    },
+    {
+      "section": "Asset Tagger",
+      "name": "Show Tags",
+      "passed": true,
+      "detail": "status=ok tags={'TEST_INTEGRATION_TAG': 'verified'}",
+      "verified": true
+    },
+    {
+      "section": "Asset Tagger",
+      "name": "Search finds the tag it just wrote",
+      "passed": true,
+      "detail": "1 hit(s) in /001485b2-9178-47cf-a1a5-e66b92a43825/TOOLBELT_TEST/Tags",
+      "verified": true
+    },
+    {
+      "section": "Asset Tagger",
+      "name": "List All",
+      "passed": true,
+      "detail": "TEST_INTEGRATION_TAG=1 asset(s), keys=['TEST_INTEGRATION_TAG']",
+      "verified": true
+    },
+    {
+      "section": "Asset Tagger",
+      "name": "Export Tags",
+      "passed": true,
+      "detail": "",
+      "verified": true
+    },
+    {
+      "section": "Asset Tagger",
+      "name": "Remove Tag",
+      "passed": true,
+      "detail": "status=ok removed=1/1",
+      "verified": true
+    },
+    {
+      "section": "Asset Tagger",
+      "name": "Search no longer finds it after removal",
+      "passed": true,
+      "detail": "0 hit(s) remaining",
+      "verified": true
+    }
+  ],
+  "limitation": "Recorded assertions only; verified flags are authored annotations, not per-tool native acceptance. Status-only and refusal checks require independent interpretation."
+}

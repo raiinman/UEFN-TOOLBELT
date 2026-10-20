@@ -1,0 +1,98 @@
+--- codex_toolbelt_startup.py.before-discovery-20261020-021510.bak
++++ codex_toolbelt_startup.py
+@@ -1,9 +1,10 @@
+ """Start Toolbelt after an authorized UEFN project is mounted."""
+ import json
+ import os
+-from pathlib import Path
++import re
+ import sys
+ import time
++from pathlib import Path
+ 
+ import unreal
+ 
+@@ -13,10 +14,53 @@
+ 
+ 
+ def _normal(path):
+-    return os.path.normcase(os.path.abspath(path)).rstrip("/\\")
++    return os.path.normcase(os.path.realpath(path)).rstrip("/\\")
++
++
++def _installed_project(python_dir):
++    """Read one installed native project, without searching beyond its root."""
++    try:
++        python_dir = Path(python_dir).resolve()
++        if python_dir.name.lower() != "python" or python_dir.parent.name.lower() != "content":
++            return None
++        package = python_dir / "UEFN_Toolbelt" / "__init__.py"
++        if not package.is_file() or not package.resolve().is_relative_to(python_dir):
++            return None
++        root = python_dir.parent.parent
++        descriptors = list(root.glob("*.uefnproject"))
++        if len(descriptors) != 1 or not descriptors[0].resolve().is_relative_to(root):
++            return None
++        descriptor = json.loads(descriptors[0].read_text(encoding="utf-8-sig"))
++        roots = [p for p in descriptor.get("plugins", [])
++                 if isinstance(p, dict) and p.get("bIsRoot") is True]
++        if len(roots) != 1:
++            return None
++        mount = roots[0].get("name")
++        if (not isinstance(mount, str) or not re.fullmatch(r"[A-Za-z0-9_][A-Za-z0-9_-]*", mount)
++                or mount.lower() in {"temp", "game", "engine", "script"}):
++            return None
++        return {"mount": mount, "project_file": str(descriptors[0]), "python_dir": str(python_dir)}
++    except (OSError, ValueError, TypeError, AttributeError):
++        return None
++
++
++def _project_candidates(projects):
++    # sys.path is supplied by the active editor/project hook. The optional old
++    # registry contributes bounded fallbacks, never an unrestricted disk scan.
++    candidates = {}
++    paths = [p for p in sys.path if isinstance(p, str) and p]
++    paths.extend(p.get("python_dir") for p in projects if isinstance(p, dict))
++    for path in paths:
++        if not isinstance(path, str) or not path:
++            continue
++        project = _installed_project(path)
++        if project is not None:
++            candidates[_normal(project["python_dir"])] = project
++    return list(candidates.values())
+ 
+ 
+ def _select_project(projects):
++    projects = _project_candidates(projects)
+     world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+     if world is None:
+         return None
+@@ -44,7 +88,12 @@
+     global _handle, _started_at
+     if _handle is not None or _finished:
+         return
+-    projects = json.loads(Path(__file__).with_name("projects.json").read_text(encoding="utf-8"))
++    try:
++        projects = json.loads(Path(__file__).with_name("projects.json").read_text(encoding="utf-8"))
++        if not isinstance(projects, list):
++            projects = []
++    except (OSError, ValueError):
++        projects = []
+     _started_at = time.monotonic()
+ 
+     def on_tick(_dt):
+@@ -53,7 +102,7 @@
+             return
+         if elapsed > 180:
+             _stop()
+-            unreal.log_warning("[CODEX TOOLBELT] No configured project became ready; listener not started.")
++            unreal.log_warning("[CODEX TOOLBELT] No installed native project became ready; listener not started.")
+             return
+         try:
+             project = _select_project(projects)
+@@ -83,4 +132,4 @@
+             unreal.log_error(f"[CODEX TOOLBELT] Automatic startup failed: {type(exc).__name__}: {exc}")
+ 
+     _handle = unreal.register_slate_post_tick_callback(on_tick)
+-    unreal.log("[CODEX TOOLBELT] Waiting for the configured UEFN project to finish loading.")
++    unreal.log("[CODEX TOOLBELT] Waiting for an installed native UEFN project to finish loading.")

@@ -15,11 +15,14 @@ Epic's official UEFN MCP server, which Toolbelt is not reachable through.
 ## Non-negotiable rules
 
 1. **Never commit without a live UEFN test.** Syntax passing ≠ working in the editor.
-2. **Always run `deploy.bat` before testing.** Repo and UEFN project are separate directories.
+2. **Always run `deploy.bat` before testing.** Repo and UEFN project are separate directories. For nonstandard locations use `deploy.bat "C:\path\to\project" /nopause`; unattended mode skips optional dependency installation and preserves existing `init_unreal.py` byte-for-byte. Inspect the startup hook separately; a preserved hook does not prove startup works.
+   `deploy.bat` uses the canonical staged `install.py` replacement, requires Python 3.11+, and removes obsolete package modules. Both CLI installers validate a native descriptor before changes. `install.py` restores the prior package if replacement fails; when restoration also fails, retain its recovery directory and report that exact path. It preserves managed startup hooks and an unchanged default loader, and writes a destination build stamp.
+   Use `--skip-dependencies` when retaining existing dashboard libraries. `--install-reference` stages a real docs-only Verse-book clone; retain non-Git snapshots in named backups and leave existing Git clones intact. External adapter dependencies are declared separately in `requirements-mcp.txt`; editor installs do not consume that file.
 3. **Run `python scripts/drift_check.py` before every commit.** Must return PASS.
 4. **Bump `__tool_count__` and `__category_count__`** in `Content/Python/UEFN_Toolbelt/__init__.py` when adding tools.
 5. **Full UEFN restart required** when adding a new module to `tools/__init__.py`. Nuclear reload crashes. See `docs/UEFN_QUIRKS.md` Quirk #26.
 6. **All tool functions must return `{"status": "ok"/"error", ...}`** — never None, never a bare primitive.
+   The existing `publish_audit` diagnostic retains documented `ready`/`warnings`/`blocked` statuses for compatibility; inspect its individual checks and unknown results. This exception does not change mutation-tool outcome requirements.
 
 7. **Never build an `unreal.*` struct with positional args.** Their order follows
    the C++ field declaration, not the order the docs describe them in.
@@ -97,7 +100,7 @@ python -c "import ast; ast.parse(open('Content/Python/UEFN_Toolbelt/tools/your_t
 
 ```
 deploy.bat                          → sync repo → UEFN project
-[nuclear reload in UEFN console]    → hot-reload modules
+[full restart for startup/window changes; tb.hard_reload() otherwise] → reload safely
 tb.run("tool_name")                 → test live
 [user confirms output]              → leave the complete change uncommitted
 [independent review accepts]         → owner may authorize the exact commit
@@ -193,6 +196,10 @@ Default section order:
 ## User Preferences
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md.
+
+- For repository maintenance, identify and implement improvements autonomously; do not ask the user to design enhancements. Authorized subagents may review and repair separate scopes. Keep progress updates brief, outcome-first, with a clear next step.
+- Native mutation acceptance belongs in the dedicated ToolbeltAcceptance project, verified against its descriptor and active world. Never run its fixtures in playable projects.
+- Toolbelt is a general UEFN toolset for whichever native project is open. Resolve identity from that project's descriptor; named acceptance projects are test targets, not a restriction on normal tools. Include package/startup/reference setup when preparing another project.
 
 ## Project Ownership
 

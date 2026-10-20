@@ -1,0 +1,14 @@
+{
+  "artifact_type": "redacted editor log",
+  "original_sha256": "c6beda49f410898bcdead4d5a930ddf7e09d433a35caef38ff9b4e81a4bb0f85",
+  "redacted_sha256": "df71f7b5200269d3f3bf3a659f839d07d0889e5db1b27e3c7147888fd014e595",
+  "original_retention": "Original bytes preserved privately outside repository; private location supplied to owner coordinator.",
+  "redaction_policy": "Replace authentication/account lines, encryption key identifiers, local user-home prefix, emails and unrelated playable project identifiers. Preserve line ordering and acceptance diagnostics. Non-loopback IPv4 addresses removed.",
+  "redacted_authentication_or_account_lines": 115,
+  "driver_section_log_lines": 71,
+  "distinct_driver_sections": [
+    "materials"
+  ],
+  "observation": "Run terminated by owner coordinator without saving disposable editor after repeated material-section Slate reentry; not accepted as a completed integration run.",
+  "redacted_network_addresses": 5
+}

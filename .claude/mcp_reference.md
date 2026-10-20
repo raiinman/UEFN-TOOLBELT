@@ -7,6 +7,10 @@ same-user loopback HTTP listener. This is not Epic's official UEFN MCP server, a
 Toolbelt is not reachable through that server — WO-002 recorded the external
 result as `failed`, bounded by `UE::ValkyrieToolset::ToolsetPolicy`.
 
+Install external adapter dependencies with `python -m pip install -r requirements-mcp.txt`.
+The current adapter uses the SDK 1.x FastMCP API; dependency upgrades are separate
+from editor package deployment.
+
 When the listener is running, an authenticated client can call these directly:
 
 | Command | Params | What it does |

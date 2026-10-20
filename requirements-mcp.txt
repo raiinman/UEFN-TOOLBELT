@@ -1,0 +1,3 @@
+# External MCP adapter only; UEFN's editor package does not install this.
+# SDK 2 removes mcp.server.fastmcp. The live local adapter uses SDK 1.30.0.
+mcp>=1.30.0,<2

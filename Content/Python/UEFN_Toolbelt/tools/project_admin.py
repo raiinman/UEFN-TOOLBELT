@@ -1,10 +1,11 @@
 import datetime
 import os
+import uuid
 import zipfile
 
 import unreal
 
-from ..core import log_error, log_info
+from ..core import log_error, log_info, project_content_dir
 from ..registry import register_tool
 
 
@@ -19,25 +20,31 @@ def run_system_backup_project(**kwargs) -> dict:
     Zips the Content folder into Saved/UEFN_Toolbelt/backups/
     """
     # Get project root (parent of Content)
-    content_dir = unreal.Paths.project_content_dir()
+    try:
+        content_dir = project_content_dir()
+    except (OSError, ValueError) as exc:
+        return {"status": "error", "message": str(exc)}
     # Handle the fact that project_content_dir may be relative or have specific format
     # Convert to absolute OS path
     abs_content = os.path.abspath(content_dir)
     project_root = os.path.dirname(abs_content)
 
-    backup_root = os.path.join(unreal.Paths.project_saved_dir(), "UEFN_Toolbelt", "backups")
-    if not os.path.exists(backup_root):
-        os.makedirs(backup_root)
-
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    zip_name = f"Project_Backup_{timestamp}.zip"
+    backup_root = os.path.join(project_root, "Saved", "UEFN_Toolbelt", "backups")
+    zip_name = f"Project_Backup_{timestamp}_{uuid.uuid4().hex}.zip"
     zip_path = os.path.join(backup_root, zip_name)
 
     log_info(f"Creating backup: {zip_name}...")
 
+    def refuse_partial_traversal(error: OSError) -> None:
+        raise error
+
+    created_zip = False
     try:
-        with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-            for root, _dirs, files in os.walk(abs_content):
+        os.makedirs(backup_root, exist_ok=True)
+        with zipfile.ZipFile(zip_path, 'x', zipfile.ZIP_DEFLATED) as zipf:
+            created_zip = True
+            for root, _dirs, files in os.walk(abs_content, onerror=refuse_partial_traversal):
                 for file in files:
                     # Ignore massive build/temp files if any
                     if ".uasset" in file or ".umap" in file or ".verse" in file:
@@ -47,10 +54,18 @@ def run_system_backup_project(**kwargs) -> dict:
 
         size_mb = os.path.getsize(zip_path) / (1024 * 1024)
         log_info(f"✓ Backup complete: {zip_path} ({size_mb:.2f} MB)")
-        return {"status": "ok", "path": zip_path, "size_mb": round(size_mb, 2)}
+        return {"status": "ok", "path": zip_path, "source_content": abs_content,
+                "size_mb": round(size_mb, 2)}
     except Exception as e:
         log_error(f"Backup failed: {str(e)}")
-        return {"status": "error", "message": str(e)}
+        incomplete_path = ""
+        if created_zip:
+            try:
+                os.remove(zip_path)
+            except OSError:
+                incomplete_path = zip_path
+        return {"status": "error", "message": str(e), "incomplete_path": incomplete_path,
+                "source_content": abs_content}
 
 @register_tool(
     name="system_perf_audit",

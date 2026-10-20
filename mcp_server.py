@@ -13,11 +13,11 @@ This is the *outside-UEFN* side of the two-process MCP architecture:
                              └── Content/Python/UEFN_Toolbelt/tools/mcp_bridge.py
 
 Requirements:
-    pip install mcp
+    python -m pip install -r requirements-mcp.txt
     (Uses the standard 'mcp' package from Anthropic — same as Claude Code MCP ecosystem)
 
 One-time setup:
-    pip install mcp
+    python -m pip install -r requirements-mcp.txt
     # Place this file anywhere accessible (project root is fine)
 
 Claude Code config — add to .mcp.json in your project root:

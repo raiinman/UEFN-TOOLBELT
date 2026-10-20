@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "harness_version": "V11-ULTIMATE-171",
+  "harness_sha256": "ddf82364acbe35e2fc58a042d18ac48915c92e72244c6cec7eabdbb4953ab2d5",
+  "project": {
+    "project_dir": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance",
+    "descriptor": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\ToolbeltAcceptance.uefnproject",
+    "mount": "001485b2-9178-47cf-a1a5-e66b92a43825",
+    "world_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/ToolbeltAcceptance.ToolbeltAcceptance"
+  },
+  "engine_saved_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/",
+  "report_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt",
+  "date": "2026-10-20T01:19:29.426464",
+  "completed": true,
+  "sections": [
+    "visibility_tools"
+  ],
+  "fatal": "",
+  "cleanup_error": "",
+  "checks": [
+    {
+      "section": "Visibility",
+      "name": "actor_hide",
+      "passed": true,
+      "detail": "hidden=2",
+      "verified": true
+    },
+    {
+      "section": "Visibility",
+      "name": "actor_show",
+      "passed": true,
+      "detail": "shown=2",
+      "verified": true
+    },
+    {
+      "section": "Visibility",
+      "name": "actor_isolate",
+      "passed": true,
+      "detail": "visible=2",
+      "verified": true
+    },
+    {
+      "section": "Visibility",
+      "name": "actor_show_all",
+      "passed": true,
+      "detail": "restored=13",
+      "verified": true
+    },
+    {
+      "section": "Visibility",
+      "name": "actor_lock (runs ok)",
+      "passed": false,
+      "detail": "Unsupported/unreadable lock boundary; operator not accepted: expected=True; observed=None; result={'status': 'error', 'locked': 0, 'attempted': 1, 'changed': 0, 'failed': 1, 'unavailable': 1, 'labels': ['Cube'], 'actors': [{'label': 'Cube', 'status': 'error', 'changed': False, 'property': None, 'before': None, 'after': None, 'may_have_changed': False, 'reason': 'actor_lock_unavailable', 'probes': [{'property': 'lock_location', 'message': \"FortStaticMeshActor: Failed to find property 'lock_location' for attribute 'lock_location' on 'FortStaticMeshActor'\"}, {'property': 'bLockLocation', 'message': \"FortStaticMeshActor: Property 'bLockLocation' for attribute 'bLockLocation' on 'FortStaticMeshActor' is protected and cannot be read\"}, {'property': 'bLocked', 'message': \"FortStaticMeshActor: Failed to find property 'bLocked' for attribute 'bLocked' on 'FortStaticMeshActor'\"}], 'message': 'No supported boolean movement-lock property is readable in this build.'}], 'errors': [{'label': 'Cube', 'status': 'error', 'changed': False, 'property': None, 'before': None, 'after': None, 'may_have_changed': False, 'reason': 'actor_lock_unavailable', 'probes': [{'property': 'lock_location', 'message': \"FortStaticMeshActor: Failed to find property 'lock_location' for attribute 'lock_location' on 'FortStaticMeshActor'\"}, {'property': 'bLockLocation', 'message': \"FortStaticMeshActor: Property 'bLockLocation' for attribute 'bLockLocation' on 'FortStaticMeshActor' is protected and cannot be read\"}, {'property': 'bLocked', 'message': \"FortStaticMeshActor: Failed to find property 'bLocked' for attribute 'bLocked' on 'FortStaticMeshActor'\"}], 'message': 'No supported boolean movement-lock property is readable in this build.'}], 'possible_partial_changes': False, 'reason': 'actor_lock_unavailable'}",
+      "verified": false
+    },
+    {
+      "section": "Visibility",
+      "name": "actor_unlock (runs ok)",
+      "passed": false,
+      "detail": "Unsupported/unreadable lock boundary; operator not accepted: expected=False; observed=None; result={'status': 'error', 'unlocked': 0, 'attempted': 1, 'changed': 0, 'failed': 1, 'unavailable': 1, 'labels': ['Cube'], 'actors': [{'label': 'Cube', 'status': 'error', 'changed': False, 'property': None, 'before': None, 'after': None, 'may_have_changed': False, 'reason': 'actor_lock_unavailable', 'probes': [{'property': 'lock_location', 'message': \"FortStaticMeshActor: Failed to find property 'lock_location' for attribute 'lock_location' on 'FortStaticMeshActor'\"}, {'property': 'bLockLocation', 'message': \"FortStaticMeshActor: Property 'bLockLocation' for attribute 'bLockLocation' on 'FortStaticMeshActor' is protected and cannot be read\"}, {'property': 'bLocked', 'message': \"FortStaticMeshActor: Failed to find property 'bLocked' for attribute 'bLocked' on 'FortStaticMeshActor'\"}], 'message': 'No supported boolean movement-lock property is readable in this build.'}], 'errors': [{'label': 'Cube', 'status': 'error', 'changed': False, 'property': None, 'before': None, 'after': None, 'may_have_changed': False, 'reason': 'actor_lock_unavailable', 'probes': [{'property': 'lock_location', 'message': \"FortStaticMeshActor: Failed to find property 'lock_location' for attribute 'lock_location' on 'FortStaticMeshActor'\"}, {'property': 'bLockLocation', 'message': \"FortStaticMeshActor: Property 'bLockLocation' for attribute 'bLockLocation' on 'FortStaticMeshActor' is protected and cannot be read\"}, {'property': 'bLocked', 'message': \"FortStaticMeshActor: Failed to find property 'bLocked' for attribute 'bLocked' on 'FortStaticMeshActor'\"}], 'message': 'No supported boolean movement-lock property is readable in this build.'}], 'possible_partial_changes': False, 'reason': 'actor_lock_unavailable'}",
+      "verified": false
+    }
+  ],
+  "limitation": "Recorded assertions only; verified flags are authored annotations, not per-tool native acceptance. Status-only and refusal checks require independent interpretation."
+}

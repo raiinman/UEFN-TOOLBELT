@@ -502,12 +502,18 @@ def _c_set_actor_transform(
     )
     if target is None:
         raise ValueError(f"Actor not found: {actor_path}")
-    if location is not None:
-        target.set_actor_location(unreal.Vector(*location), False, False)
-    if rotation is not None:
-        target.set_actor_rotation(_rotator_from_list(rotation), False)
-    if scale is not None:
-        target.set_actor_scale3d(unreal.Vector(*scale))
+    transform = unreal.Transform()
+    transform.translation = (unreal.Vector(x=float(location[0]), y=float(location[1]),
+                                          z=float(location[2]))
+                             if location is not None else target.get_actor_location())
+    desired_rotation = (_rotator_from_list(rotation) if rotation is not None
+                        else target.get_actor_rotation())
+    transform.rotation = desired_rotation.quaternion()
+    transform.scale3d = (unreal.Vector(x=float(scale[0]), y=float(scale[1]), z=float(scale[2]))
+                         if scale is not None else target.get_actor_scale3d())
+    with unreal.ScopedEditorTransaction("Toolbelt actor transform"):
+        if not sub.set_actor_transform(target, transform):
+            raise RuntimeError(f"Editor refused actor transform: {actor_path}")
     return {"actor": _serialize_actor(target)}
 
 
@@ -641,17 +647,11 @@ def _c_search_assets(class_name: str = "", directory: str = "",
                       recursive: bool = True) -> dict:
     directory = resolve_scan_path(directory)
     reg    = unreal.AssetRegistryHelpers.get_asset_registry()
-    filt   = unreal.ARFilter()
-    if directory:
-        filt.package_paths = [directory]
-    filt.recursive_paths = recursive
+    results = reg.get_assets_by_path(directory, recursive=recursive)
     if class_name:
-        try:
-            filt.class_names = [class_name]
-        except Exception:
-            pass
-    results = reg.get_assets(filt)
-    return {"assets": [_serialize(a) for a in results], "count": len(results)}
+        results = [a for a in results if str(a.asset_class_path.asset_name) == class_name]
+    return {"assets": [_serialize(a) for a in results[:200]], "count": len(results),
+            "truncated": len(results) > 200}
 
 
 # ─── Material commands ────────────────────────────────────────────────────────

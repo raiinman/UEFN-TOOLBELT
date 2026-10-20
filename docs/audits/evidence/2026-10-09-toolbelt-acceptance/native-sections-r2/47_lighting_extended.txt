@@ -1,0 +1,15 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:46.186361
+Passed:  4/4
+Verified: 4 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.09s
+============================================================
+
+
+[Lighting]
+----------------------------------------
+  PASS  light_place (point)
+  PASS  light_list  (1 lights)
+  PASS  light_set
+  PASS  sky_set_time  (No DirectionalLight in level.)

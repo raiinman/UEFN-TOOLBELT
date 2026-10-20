@@ -1,0 +1,13 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:46.872704
+Passed:  2/2
+Verified: 2 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.41s
+============================================================
+
+
+[WorldState]
+----------------------------------------
+  PASS  world_state_export  (13 actors captured)
+  PASS  device_catalog_scan  (4545 devices found)

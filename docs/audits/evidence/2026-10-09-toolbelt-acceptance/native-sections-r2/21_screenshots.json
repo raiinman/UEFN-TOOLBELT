@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "harness_version": "V11-ULTIMATE-171",
+  "harness_sha256": "349bb56a20ae98fccda7870862fe2bd79683405f19b5ccb7f7e9e7c03174186a",
+  "project": {
+    "project_dir": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance",
+    "descriptor": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\ToolbeltAcceptance.uefnproject",
+    "mount": "001485b2-9178-47cf-a1a5-e66b92a43825",
+    "world_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/ToolbeltAcceptance.ToolbeltAcceptance"
+  },
+  "engine_saved_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/",
+  "report_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt",
+  "date": "2026-10-09T17:10:06.369583",
+  "completed": true,
+  "sections": [
+    "screenshots"
+  ],
+  "fatal": "",
+  "cleanup_error": "",
+  "checks": [
+    {
+      "section": "Screenshots",
+      "name": "Focus Selection",
+      "passed": true,
+      "detail": "",
+      "verified": false
+    },
+    {
+      "section": "Screenshots",
+      "name": "Timed Series",
+      "passed": true,
+      "detail": "",
+      "verified": false
+    },
+    {
+      "section": "Screenshots",
+      "name": "Capture Paths",
+      "passed": true,
+      "detail": "Queued \u2192 {'status': 'ok', 'path': 'C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt\\\\screenshots\\\\integration_test_shot_20261009_171000_1920x1080.png'}",
+      "verified": true
+    }
+  ],
+  "limitation": "Recorded assertions only; verified flags are authored annotations, not per-tool native acceptance. Status-only and refusal checks require independent interpretation."
+}

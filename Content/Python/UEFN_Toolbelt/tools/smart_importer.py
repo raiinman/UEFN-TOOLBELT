@@ -102,9 +102,9 @@ def _build_import_task(
     options.import_materials = False  # we apply our own material
     options.import_as_skeletal = False
     options.static_mesh_import_data.combine_meshes = combine_meshes
-    options.static_mesh_import_data.build_adjacency_buffer = False
     options.static_mesh_import_data.build_reversed_index_buffer = True
-    options.static_mesh_import_data.generate_lightmap_uvs = True
+    options.static_mesh_import_data.generate_lightmap_u_vs = True
+    options.static_mesh_import_data.auto_generate_collision = True
     task.options = options
 
     return task

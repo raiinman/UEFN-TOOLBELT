@@ -3,7 +3,7 @@
 UEFN Toolbelt contains **362 tools across 35+ modules**. Because many tools actively modify the viewport, spawn actors, or depend on specific Content Browser selections, **the `integration_test.py` suite uses temporary fixtures to automate verification of context-dependent tools.**
 
 ### Phase 21 — Complete AI Return Loop
-As of Phase 21, **every registered tool returns a structured `dict`** — `{"status": "ok"/"error", ...}`. Zero `None` returns remain anywhere in the codebase. This means AI agents using the MCP bridge can act on results programmatically: no log parsing, no guessing. The `describe_tool` MCP command was also added for per-tool manifest lookup.
+Tools target structured dictionary results. Inspect failure counts, unknown fields and partial-change facts as well as status; diagnostics such as `publish_audit` use domain statuses (`ready`/`warnings`/`blocked`). The `describe_tool` command provides parameter discovery. These interfaces do not establish positive operation acceptance; see the source coverage ledger and dated native evidence below.
 
 ### UEFN 42.00 / UE 6.0 — Engine API Status (2026-08-20)
 
@@ -38,9 +38,14 @@ never auto-starts. See README "Known Issue" and UEFN_QUIRKS.md #36. Detected by
 
 ### ⚠️ Architectural Constraints
 *   **Main Thread Lock**: UEFN Python runs on the main render thread. Operations like `time.sleep` in wait loops will **deadlock** the engine, preventing async tasks (like screenshot saves) from completing. Verification logic should avoid blocking waits.
-*   **Hot-Reloading**: Use "Nuclear Reload" to clear `sys.modules` cache. **Mandatory**: Must call `tb.register_all_tools()` after reloading to rebuild the registry.
+*   **Hot-Reloading**: Use `tb.hard_reload()` for existing pure tool-module changes; it closes live windows and rebuilds the registry. Startup, new modules and persistent-window changes require a full editor restart.
 
 This document outlines the current testing status of the toolbelt. The automated smoke test verifies no individual tool: it checks registration only, a minimum registry count (179) and six named tools, and executes none. The sections below record which tools have test coverage and which require manual verification.
+
+That coverage mapping refers to `tests/smoke_test.py`. The deployed package's
+six-layer health check additionally probes the Python environment, API presence,
+bridge state, dashboard dependencies and Verse reference. Its checks still do
+not establish individual tools' gameplay or mutation outcomes.
 
 ## 🟡 Automated Verification Status
 
@@ -73,7 +78,9 @@ This document outlines the current testing status of the toolbelt. The automated
 |---|---|---|---|---|---|
 | integration | UEFN 42.00, publishing hardening build based on 112671c | 2026-08-23 | 190/190 checks passed (163 with verified true, 27 execution-only) | TOOL_STATUS.md, Automated Verification Status (narrative) | Narrative only: the results file is not preserved and the harness source that run used is not identified. A check-level result, never converted into per-tool verification. |
 | other | ++Fortnite+Release-42.20-CL-58011042 | 2026-09-28 | After a deploy and full restart the editor log reported a registry count of 362, and the registered tools mcp_start and mcp_stop were run from the console | docs/audits/2026-09-28-wo004-session-c-live-acceptance.md | One machine and one boot, not a general result. Not an integration or smoke run; never promoted into integration coverage or per-tool outcome verification. |
-| smoke | — | — | No preserved run record | — | — |
+| smoke | UEFN 42.30 / UE 6.0.0-58813929, fork 2a22aef with local maintenance repairs | 2026-10-09 | Packaged six-layer environment health check passed 89/89 after deploy and full editor restart | docs/audits/evidence/2026-10-09-toolbelt-maintenance/native-smoke.txt; companion deployed-python.json and SHA256SUMS.txt | One Windows PC and one Riftbloom boot. Environment health only, not individual tool mutation/gameplay verification or WO-008 client acceptance. Runtime source hashes are preserved in the companion manifest. |
+| smoke | UEFN 42.40 / UE 6.0.0-59247843, maintained working tree based on 47ff89a | 2026-10-20 | Cold-start ToolbeltAcceptance and Riftbloom environment checks each passed 89/89; both dashboards showed five setup checks passing and 94 deployed Python files matched source | docs/audits/2026-10-09-native-tool-acceptance.md | One Windows PC, two named projects. Environment health and source attribution only; no all-tool, gameplay or WO-008 client acceptance. |
+| integration | Disposable ToolbeltAcceptance on UEFN 42.30 and 42.40, source identities in raw runs | 2026-10-20 | Four procedures preserved 342 calls; distinct invoked names: 223 of 362. Unattempted: 139. Latest asset checks 25/25; maintenance 13/15 with unsupported locks and missing-light failures retained | docs/audits/2026-10-09-native-tool-acceptance.md and runtime-tool-ledger-final.json | Mixed and scoped evidence, not 223 functional passes. Original harness assertions include false greens, empty queries and execution-only calls. Animation and other compatible class fixtures remain unverified. |
 
 **`defined-outcome`:** `actor_copy_to_positions`, `actor_duplicate_offset`, `actor_folder_list`, `actor_hide`, `actor_isolate`, `actor_show`, `actor_show_all`, `api_crawl_level_classes`, `api_crawl_selection`, `arena_generate`, `bulk_align`, `bulk_distribute`, `bulk_mirror`, `bulk_normalize_scale`, `bulk_randomize`, `bulk_reset`, `bulk_snap_to_grid`, `bulk_stack`, `config_get`, `cooker_mark_selection`, `curve_create`, `entity_list_kits`, `entity_spawn_kit`, `foliage_convert_selected_to_actor`, `level_health_report`, `material_apply_preset`, `material_bulk_swap`, `material_color_harmony`, `material_glow_pulse_preview`, `material_gradient_painter`, `material_pattern_painter`, `material_randomize_colors`, `material_team_color_split`, `measure_distance`, `measure_travel_time`, `memory_scan`, `organize_assets`, `pattern_circle`, `pattern_clear`, `pattern_grid`, `pattern_helix`, `ref_full_report`, `rename_dry_run`, `rename_enforce_conventions`, `rename_strip_prefix`, `scaffold_generate`, `scatter_along_path`, `scatter_clear`, `scatter_hism`, `select_by_property`, `select_in_radius`, `selection_list`, `selection_restore`, `selection_save`, `sign_clear`, `snapshot_delete`, `snapshot_export`, `snapshot_import`, `snapshot_restore`, `snapshot_save`, `spline_clear_props`, `spline_export_json`, `stamp_info`, `stamp_list`, `stamp_place`, `stamp_save`, `tag_add`, `tag_export`, `tag_list_all`, `tag_remove`, `tag_search`, `tag_show`, `text_apply_translation`, `text_clear_folder`, `text_export_manifest`, `text_paint_grid`, `viewport_bookmark_list`, `viewport_bookmark_save`, `world_settings_set`, `world_state_export`
 
@@ -97,6 +104,8 @@ none
 
 </details>
 <!-- coverage:end -->
+
+
 
 Integration suite has **116 test sections written**, all run live. The suite
 records 190 individual checks; **190/190 passed on UEFN 42.00** (publishing

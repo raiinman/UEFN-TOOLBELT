@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-10-20T01:19:28.783630",
+  "scan_path": "/001485b2-9178-47cf-a1a5-e66b92a43825",
+  "project_mount": "001485b2-9178-47cf-a1a5-e66b92a43825",
+  "full_project_scan": true,
+  "registry_enumeration_complete": true,
+  "textures": [
+    {
+      "width": 32,
+      "height": 32,
+      "max_dim": 32,
+      "estimated_vram_kb": 4.0,
+      "severity": "ok",
+      "inspection_complete": true,
+      "unknown_fields": [],
+      "load_failed": false,
+      "path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Textures/T_Acceptance.T_Acceptance"
+    }
+  ],
+  "meshes": [],
+  "sounds": [
+    {
+      "duration_secs": 0.1,
+      "severity": "ok",
+      "inspection_complete": true,
+      "unknown_fields": [],
+      "load_failed": false,
+      "path": "/001485b2-9178-47cf-a1a5-e66b92a43825/AcceptanceFixtures/Audio/SW_Acceptance.SW_Acceptance"
+    }
+  ],
+  "summary": {
+    "total_textures": 1,
+    "texture_warnings": 0,
+    "texture_criticals": 0,
+    "estimated_vram_mb": 0.0,
+    "known_vram_mb": 0.0,
+    "estimate_complete": true,
+    "unknown_textures": 0,
+    "unknown_meshes": 0,
+    "unknown_sounds": 0,
+    "unknown_assets": 0,
+    "total_meshes": 0,
+    "mesh_warnings": 0,
+    "mesh_criticals": 0,
+    "meshes_missing_lods": 0,
+    "total_sounds": 1,
+    "sound_warnings": 0,
+    "sound_criticals": 0
+  }
+}

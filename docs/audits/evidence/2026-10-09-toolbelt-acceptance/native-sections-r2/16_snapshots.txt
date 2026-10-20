@@ -1,0 +1,18 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:05:28.479744
+Passed:  7/7
+Verified: 5 checked a real outcome · 2 execution-only (ran without raising)
+Elapsed: 0.26s
+============================================================
+
+
+[Snapshots]
+----------------------------------------
+  PASS  Save JSON
+  PASS  Export JSON
+  PASS  Import JSON
+  PASS  Compare Live
+  PASS  Diff JSON
+  PASS  Restore Transforms
+  PASS  Delete JSON

@@ -1,0 +1,59 @@
+{
+  "provenance": "Derived summary of observed MCP responses and native UI observations in this chat; not a complete tool acceptance suite.",
+  "engine": "UEFN 42.30 / UE 6.0.0-58813929",
+  "world": "Riftbloom",
+  "actor_count": 122,
+  "dashboard": {
+    "setup_checks": 5,
+    "passing": 5,
+    "tool_count": 362,
+    "PySide6": "6.12.0",
+    "verse_book_chapters": 23
+  },
+  "blueprint_audit": {
+    "before": {
+      "total": 1,
+      "clean": 0,
+      "issues": 1,
+      "issue": "AssetData has no attribute object_path"
+    },
+    "after": {
+      "total": 1,
+      "clean": 1,
+      "issues": 0
+    },
+    "asset": "Prop_SM_BossPulseDisc"
+  },
+  "verse_asset_audit": {
+    "before": {
+      "found": false,
+      "hardcoded_mount": "/TOOL_TEST"
+    },
+    "after": {
+      "found": true,
+      "count": 30,
+      "scan_path": "/96af6cef-b385-4bf5-a7ec-1ea0c19944c5"
+    }
+  },
+  "build_status": {
+    "status": "ok",
+    "build_status": "SUCCESS",
+    "log_modified": "2026-10-09T21:45:49.340659+00:00",
+    "stale": false,
+    "stale_seconds": 10.8,
+    "error_count": 0,
+    "log_path": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/Logs\\UnrealEditorFortnite.log",
+    "tip": "Build succeeded. Call world_state_export or publish_audit to verify."
+  },
+  "publish_build_check": {
+    "pass": true,
+    "status": "SUCCESS",
+    "severity": "ok",
+    "note": "Verse build SUCCESS ✓"
+  },
+  "limits": [
+    "No mutating integration harness.",
+    "Asset-class-specific mutation and gameplay behavior remain unverified.",
+    "These observations do not execute or complete upstream WO-008's pinned Claude Code acceptance run."
+  ]
+}

@@ -1,0 +1,17 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:47.673719
+Passed:  6/6
+Verified: 6 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.12s
+============================================================
+
+
+[Viewport]
+----------------------------------------
+  PASS  viewport_showflag (clean)  (['ShowFlag.TextRenders 0', 'ShowFlag.BillboardSprites 0', 'ShowFlag.Decals 0'])
+  PASS  viewport_showflag (reset)
+  PASS  viewport_bookmark_save
+  PASS  viewport_bookmark_list
+  PASS  viewport_bookmark_jump
+  PASS  viewport_showflag (unknown preset = error)

@@ -1,0 +1,12 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:58.376476
+Passed:  1/1
+Verified: 1 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 10.03s
+============================================================
+
+
+[ProjectAdmin]
+----------------------------------------
+  PASS  save_all_dirty  (level=True, packages=True)

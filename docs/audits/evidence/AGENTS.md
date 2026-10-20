@@ -14,6 +14,7 @@ Read the repository-root AGENTS.md and every parent AGENTS.md before editing thi
 
 - Keep raw artifacts, derived artifacts, provenance, and redactions distinguishable.
 - Recorded files establish only the observations documented by their provenance and accepted scope.
+- SHA256-bound raw captures retain exact bytes across Git checkouts. Set scoped `-text` attributes before staging such evidence; do not silently normalize captured line endings.
 
 ## Work Guidance
 

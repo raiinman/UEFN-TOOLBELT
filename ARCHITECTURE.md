@@ -247,8 +247,8 @@ These are the hardest constraints. Violating them causes silent failures or cras
 | **No pip** | Only stdlib and `unreal` in the editor. PySide6 installed separately to UE's Python. |
 | **Asset paths** | UEFN mounts at project name, not `/Game/`. Use `detect_project_mount()`. Never hardcode `/Game/`. |
 | **V2 devices** | `set_editor_property` fails silently on V2 Fortnite Creative devices (Timer, Score Manager, etc.) — these use Verse `@editable` props. Use `device_call_method` or generate Verse instead. |
-| **Hot reload** | Nuclear reload fixes code. Hard restart fixes stale C++ state. After a crash or project switch, always do a full UEFN restart. |
-| **New modules** | Adding a new `.py` file requires a full UEFN restart — not nuclear reload. Reload + new module = `EXCEPTION_ACCESS_VIOLATION` (Quirk #26). |
+| **Hot reload** | Guarded reload fixes code. Hard restart fixes stale C++ state. After a crash or project switch, always do a full UEFN restart. |
+| **New modules** | Adding a new `.py` file requires a full UEFN restart — not guarded reload. Reload + new module = `EXCEPTION_ACCESS_VIOLATION` (Quirk #26). |
 
 Full details: `docs/UEFN_QUIRKS.md`
 

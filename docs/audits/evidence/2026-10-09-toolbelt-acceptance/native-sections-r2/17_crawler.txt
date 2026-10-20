@@ -1,0 +1,13 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:05:28.825254
+Passed:  2/2
+Verified: 2 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 0.07s
+============================================================
+
+
+[Crawler]
+----------------------------------------
+  PASS  Level Crawl JSON
+  PASS  Selection Crawl JSON

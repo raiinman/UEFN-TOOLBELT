@@ -18,6 +18,8 @@ from __future__ import annotations
 import ast
 import pathlib
 
+import pytest
+
 PKG = pathlib.Path("Content/Python/UEFN_Toolbelt")
 
 
@@ -37,12 +39,28 @@ def _always_returns(body: list) -> bool:
     if isinstance(last, ast.Try):
         if last.finalbody and _always_returns(last.finalbody):
             return True
-        main = _always_returns(last.orelse) if last.orelse else _always_returns(last.body)
-        return (main and bool(last.handlers)
+        # A returning try body never reaches else. Without handlers, raised
+        # exceptions propagate, so try/finally needs no synthetic except arm.
+        main = _always_returns(last.body) or _always_returns(last.orelse)
+        return (main
                 and all(_always_returns(h.body) for h in last.handlers))
     if isinstance(last, ast.Match):
         return bool(last.cases) and all(_always_returns(c.body) for c in last.cases)
     return False
+
+
+@pytest.mark.parametrize("source, expected", [
+    ("try:\n    return {}\nfinally:\n    cleanup()", True),
+    ("try:\n    work()\nfinally:\n    cleanup()", False),
+    ("try:\n    work()\nfinally:\n    return {}", True),
+    ("try:\n    return {}\nexcept Exception:\n    recover()", False),
+    ("try:\n    return {}\nexcept Exception:\n    raise", True),
+    ("try:\n    work()\nexcept Exception:\n    return {}\nelse:\n    return {}", True),
+    ("try:\n    return {}\nexcept Exception:\n    return {}\nelse:\n    work()", True),
+    ("try:\n    work()\nexcept Exception:\n    return {}\nelse:\n    work()", False),
+])
+def test_return_analysis_tracks_try_except_else_finally(source, expected):
+    assert _always_returns(ast.parse(source).body) is expected
 
 
 def _tool_functions():

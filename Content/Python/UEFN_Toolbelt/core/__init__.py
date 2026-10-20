@@ -7,10 +7,12 @@ Shared helpers used by every tool module.
 from __future__ import annotations
 
 import contextlib
+import json
 import math
 import os
 import random
 from collections.abc import Generator, Iterable
+from pathlib import Path
 from typing import Optional
 
 import unreal
@@ -50,17 +52,16 @@ def detect_project_mount() -> str:
     """
     Return the user's project Content Browser mount point.
 
-    Primary strategy: walk up from __file__ to find the folder that contains
-    the 'Content' directory — that folder's name IS the project mount.  This
-    is the only 100% reliable method; AR-count heuristics fail when Fortnite
-    game paks (BRCosmetics, etc.) are loaded, as they have far more entries.
+    Primary strategy: locate the project from __file__ and read its root plugin
+    name from the .uefnproject descriptor. New UEFN projects use UUID mounts;
+    the display/folder name is not necessarily their asset mount.
 
     Fallback: AR path count excluding PLUGIN_MOUNTS (catches edge cases where
     __file__ walkup is unavailable or returns an unexpected path).
 
     Returns e.g. "Device_API_Mapping" (no leading slash).
     """
-    # ── Primary: __file__ walkup ──────────────────────────────────────────
+    # ── Primary: descriptor beside the Content directory ──────────────────
     try:
         path = os.path.abspath(__file__).replace("\\", "/")
         parts = path.split("/")
@@ -68,6 +69,25 @@ def detect_project_mount() -> str:
             if part == "Content" and i > 0:
                 candidate = parts[i - 1]
                 if candidate and candidate not in PLUGIN_MOUNTS:
+                    project_dir = "/".join(parts[:i])
+                    project_file = os.path.join(project_dir, candidate + ".uefnproject")
+                    if not os.path.isfile(project_file):
+                        descriptors = [os.path.join(project_dir, name) for name in os.listdir(project_dir)
+                                       if name.lower().endswith(".uefnproject")
+                                       and os.path.isfile(os.path.join(project_dir, name))]
+                        if len(descriptors) > 1:
+                            return "Game"  # Ambiguous identity; path resolvers refuse this mount.
+                        project_file = descriptors[0] if descriptors else ""
+                    if project_file:
+                        try:
+                            with open(project_file, encoding="utf-8") as descriptor:
+                                plugins = json.load(descriptor).get("plugins", [])
+                            roots = [p.get("name") for p in plugins if p.get("bIsRoot") is True]
+                        except Exception:
+                            return "Game"  # An unreadable descriptor is not a confirmed mount.
+                        if len(roots) == 1 and isinstance(roots[0], str) and roots[0]:
+                            return roots[0]
+                        return "Game"  # A descriptor exists but cannot establish project identity.
                     return candidate
     except Exception:
         pass
@@ -161,6 +181,14 @@ def scannable_assets(paths) -> list[str]:
     return [p for p in paths if is_scannable_asset(p)]
 
 
+def _project_mount_path() -> str:
+    mount = detect_project_mount()
+    reserved = {name.lower() for name in PLUGIN_MOUNTS} | {"temp"}
+    if not mount or mount.lower() in reserved or "/" in mount or "\\" in mount:
+        raise ValueError("User project mount is unavailable; open the intended UEFN project first.")
+    return f"/{mount}"
+
+
 def resolve_scan_path(scan_path: str) -> str:
     """
     Resolve an empty scan_path to the project's Content Browser mount point.
@@ -173,7 +201,7 @@ def resolve_scan_path(scan_path: str) -> str:
     """
     if scan_path:
         return scan_path
-    return f"/{detect_project_mount()}"
+    return _project_mount_path()
 
 
 def resolve_content_path(path: str, default_subpath: str = "") -> str:
@@ -193,7 +221,7 @@ def resolve_content_path(path: str, default_subpath: str = "") -> str:
 
     Resolved at call time — mount detection needs a live editor.
     """
-    mount = f"/{detect_project_mount()}"
+    mount = _project_mount_path()
     if not path:
         return f"{mount}/{default_subpath}".rstrip("/")
     if path == "/Game" or path.startswith("/Game/"):
@@ -201,18 +229,36 @@ def resolve_content_path(path: str, default_subpath: str = "") -> str:
     return path
 
 
-def project_content_dir() -> str:
-    """
-    Return the user's project Content directory path on disk.
+def native_project_dir() -> str:
+    """Return the descriptor-confirmed deployed island folder, never FortniteGame."""
+    package = Path(__file__).resolve()
+    for parent in package.parents:
+        if parent.name != "Content":
+            continue
+        root = parent.parent
+        descriptors = [path for path in root.iterdir()
+                       if path.is_file() and path.suffix.lower() == ".uefnproject"]
+        if len(descriptors) != 1:
+            raise ValueError("Native project path requires one unique .uefnproject descriptor")
+        try:
+            descriptor = json.loads(descriptors[0].read_text(encoding="utf-8"))
+            roots = [entry.get("name") for entry in descriptor.get("plugins", [])
+                     if entry.get("bIsRoot") is True]
+        except (OSError, ValueError, TypeError, AttributeError) as exc:
+            raise ValueError("Native project descriptor is unreadable") from exc
+        reserved = {name.casefold() for name in PLUGIN_MOUNTS} | {"temp"}
+        if (len(roots) != 1 or not isinstance(roots[0], str) or not roots[0]
+                or roots[0].casefold() in reserved or any(char in roots[0] for char in "/\\")):
+            raise ValueError("Native project descriptor has no valid root plugin")
+        if not descriptors[0].resolve().is_relative_to(root):
+            raise ValueError("Native project descriptor resolves outside its project")
+        return str(root)
+    raise ValueError("Native project path cannot identify the deployed island")
 
-    unreal.Paths.project_content_dir() returns the FortniteGame *engine*
-    content path in UEFN — not the user's island project.  This helper
-    uses project_dir() + '/Content' which always resolves correctly.
-    """
-    root = unreal.Paths.convert_relative_path_to_full(
-        unreal.Paths.project_dir()
-    ).rstrip("/\\")
-    return root + "/Content"
+
+def project_content_dir() -> str:
+    """Return the confirmed native Content folder; unresolved identity refuses."""
+    return os.path.join(native_project_dir(), "Content")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

@@ -1,0 +1,15 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:04:42.534943
+Passed:  4/4
+Verified: 3 checked a real outcome · 1 execution-only (ran without raising)
+Elapsed: 5.87s
+============================================================
+
+
+[Spline]
+----------------------------------------
+  PASS  Place Props  (Spawned 5 props along spline)
+  PASS  Code Generate Verse
+  PASS  Export JSON
+  PASS  Clear Props  (5 placed, 0 left after clear)

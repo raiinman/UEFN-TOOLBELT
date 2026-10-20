@@ -35,7 +35,7 @@
 
 
 
-[![CI](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/workflows/ci.yml/badge.svg)](https://github.com/undergroundrap/UEFN-TOOLBELT/actions/workflows/ci.yml)
+[![CI](https://github.com/raiinman/UEFN-TOOLBELT/actions/workflows/ci.yml/badge.svg)](https://github.com/raiinman/UEFN-TOOLBELT/actions/workflows/ci.yml)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-2.5.0-green.svg)](docs/CHANGELOG.md)
 [![Discussions](https://img.shields.io/badge/community-discussions-blueviolet)](https://github.com/undergroundrap/UEFN-TOOLBELT/discussions)
@@ -69,8 +69,8 @@ Automate the tedious, script the impossible, and bridge the gap between Python a
 UEFN Toolbelt is a master utility designed to leverage the **2026 UEFN Python 3.11 Update**,
 allowing creators to manipulate actors, manage assets, and generate boilerplate Verse code
 through a high-level, developer-friendly interface — all from the PySide6 dashboard
-(`tb.launch_qt()`). **362 registered tools** across 55 categories, complete AI-agent
-readiness (100% structured dict returns), and a unified theme system so every window in the
+(`tb.launch_qt()`). **362 registered tools** across 55 categories, structured
+automation results, and a unified theme system so every window in the
 platform looks and feels identical.
 
 ---
@@ -293,102 +293,39 @@ Python editor scripts run with full access to your project — treat them like e
 
 ## ⚠️ Automated Integration Testing
 
-The smoke test checks registration only: a minimum registry count (179) and six named tools; it executes no tool and validates no schema. The integration test verifies that they *work* — in a live UEFN editor, against real actors.
+The smoke test checks environment health, API availability, module loading and
+registration. It does not establish that individual tools perform their work.
+Current source coverage and preserved runs are reported in [TOOL_STATUS.md](TOOL_STATUS.md).
+
+**Registry coverage:** The smoke test checks registration only: a minimum registry count (179) and six named tools; it executes no tool and validates no schema.
 
 <a name="readme-section-11"></a>
 
 ### What the integration test actually does
 
-`toolbelt_integration_test` is a fixture-driven test harness that runs inside UEFN:
+<p align="center">The native harness runs fixture checks only in <code>ToolbeltAcceptance</code>. It verifies the deployed package, native descriptor and loaded world before mutation. Results distinguish assertions about editor state from execution-only checks. A passing check establishes only its recorded assertion, not acceptance of every registered tool.</p>
 
-<table align="center"><tbody><tr><td align="center">1</td><td align="center"><strong>Spawns</strong> temporary cube/sphere actors programmatically</td></tr><tr><td align="center">2</td><td align="center"><strong>Selects</strong> them via <code>EditorActorSubsystem</code></td></tr><tr><td align="center">3</td><td align="center"><strong>Runs</strong> each tool against that live selection</td></tr><tr><td align="center">4</td><td align="center"><strong>Verifies</strong> the result — property changed, actor spawned, file written, count correct</td></tr><tr><td align="center">5</td><td align="center"><strong>Cleans up</strong> every actor it touched via a single undo transaction</td></tr></tbody></table>
+<table align="center"><thead><tr><th align="center">Stage</th><th align="center">Scope</th></tr></thead><tbody><tr><td align="center">Fixtures</td><td align="center">Spawn, select, modify and delete temporary actors and assets for the selected sections.</td></tr><tr><td align="center">Evidence</td><td align="center">Record measured outcomes, execution-only checks, unavailable operations and incomplete runs separately.</td></tr><tr><td align="center">Cleanup</td><td align="center">Check tracked actor cleanup. Persistent settings, saved assets and files are not comprehensively restored.</td></tr></tbody></table>
 
-
-**190 checks across 362 tools — 190/190 passing live on UEFN 42.00** — covering materials, bulk ops, patterns, scatter, splines, snapshots, asset management, Verse tools, screenshots, LODs, arena, measurement, localization, zones, stamps, actor org, proximity placement, advanced alignment, signs, post-process, audio, level health, config, lighting, and world state.
-
-Of those 190, **163 verify a real outcome** — a property changed, a file written,
-an actor count, a tag read back — and **27 are execution-only**: they prove the
-tool ran without raising, nothing more. Both numbers are reported by the suite
-on every run, because a headline "190/190" that silently includes checks which
-cannot fail overstates what the suite knows. That is not hypothetical: a fully
-green run once hid a wrong-rotation-axis bug ([Quirk #41](docs/UEFN_QUIRKS.md))
-for exactly that reason.
-
-This is the closest thing to a full CI suite possible inside the UEFN Python sandbox. If this passes, you have high confidence that the core tool logic is sound — not just that it imported. The current live run takes about 70 seconds.
+<p align="center">Current coverage and preserved native runs are reported in <a href="TOOL_STATUS.md">TOOL_STATUS.md</a> and the <a href="docs/audits/2026-10-09-native-tool-acceptance.md">native acceptance record</a>. Empty lists, unsupported operations and previews are not positive mutation evidence. Historical release results remain scoped to their original builds and checks.</p>
 
 <a name="readme-section-12"></a>
 
 ### How to run it
 
-<table align="center"><tbody><tr><td align="left"><pre><code class="language-python"># Use a clean template level — never run in a production project&#10;import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("toolbelt_integration_test")&#10;</code></pre></td></tr></tbody></table>
+<p align="center">Use the local UEFN Python console in the dedicated disposable project. The MCP bridge refuses this invasive suite. Start with a small section; omitting <code>sections</code> requests the full suite.</p>
 
+<table align="center"><tbody><tr><td align="left"><pre><code class="language-python">import UEFN_Toolbelt as tb; tb.run("toolbelt_integration_test", sections=["bulk_ops"], allow_mutation=True, preserve_bridge=True)&#10;</code></pre></td></tr></tbody></table>
 
+<p align="center">Capture <code>integration_test_results.json</code> and <code>.txt</code> immediately from the returned report paths. JSON records deployed harness and native project identity, completion, partial checks, cleanup and evidence errors. Engine Saved paths may be shared between projects; their containing folder does not identify the tested island.</p>
 
-Results are written to:
-<table align="center"><tbody><tr><td align="left"><pre><code>Saved/UEFN_Toolbelt/integration_test_results.txt&#10;</code></pre></td></tr></tbody></table>
-
-
-
-If the editor crashes mid-run (rare), the file will contain partial results up to the last completed test — useful for pinpointing which section caused the crash.
-
-<blockquote align="center">
-<p align="center">[!WARNING]
-<strong>DO NOT run the full integration test in a live production project.</strong>
-It spawns, modifies, and deletes actors. Use a blank <strong>Empty Level</strong> or throwaway test project.
-Every test section cleans up after itself, but the undo history will be long.</p>
-</blockquote>
-
-
+<blockquote align="center"><p align="center"><strong>Invasive:</strong> never run these fixtures in a playable project. The suite changes actors, assets, files and persistent settings. A completed run can contain failed checks, and fixture cleanup does not undo every change.</p></blockquote>
 
 <a name="readme-section-13"></a>
 
 ### Smoke test vs integration test
 
-<table align="center">
-<thead>
-<tr>
-<th align="center"></th>
-<th align="center">Smoke Test</th>
-<th align="center">Integration Test</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center">Runs outside UEFN?</td>
-<td align="center">No (needs editor)</td>
-<td align="center">No (needs editor)</td>
-</tr>
-<tr>
-<td align="center">Executes tools?</td>
-<td align="center">No — a minimum registry count (179) and six named tools</td>
-<td align="center">Yes — fixture checks against real actors</td>
-</tr>
-<tr>
-<td align="center">Requires level actors?</td>
-<td align="center">No</td>
-<td align="center">Yes (spawns its own)</td>
-</tr>
-<tr>
-<td align="center">Safe in production?</td>
-<td align="center">Yes</td>
-<td align="center"><strong>No — use blank level</strong></td>
-</tr>
-<tr>
-<td align="center">Runtime</td>
-<td align="center">~5 seconds</td>
-<td align="center">~70 seconds</td>
-</tr>
-<tr>
-<td align="center">Command</td>
-<td align="center"><code>tb.run("toolbelt_smoke_test")</code></td>
-<td align="center"><code>tb.run("toolbelt_integration_test")</code></td>
-</tr>
-</tbody>
-</table>
-
-
-
-Run the smoke test after every change. Run the integration test before submitting a PR.
+<table align="center"><thead><tr><th align="center"></th><th align="center">Smoke test</th><th align="center">Native integration</th></tr></thead><tbody><tr><td align="center">Purpose</td><td align="center">Environment health and registration; no individual tool outcomes.</td><td align="center">Selected fixture assertions and execution checks.</td></tr><tr><td align="center">Target</td><td align="center">Loaded editor project.</td><td align="center">Descriptor/world-confirmed ToolbeltAcceptance only.</td></tr><tr><td align="center">Mutation</td><td align="center">Environment probes, no fixture-level operations.</td><td align="center">Changes native editor state and persistent files/settings.</td></tr><tr><td align="center">Command</td><td align="center"><code>tb.run("toolbelt_smoke_test")</code></td><td align="center"><code>tb.run("toolbelt_integration_test", sections=["bulk_ops"], allow_mutation=True, preserve_bridge=True)</code></td></tr></tbody></table>
 
 ---
 
@@ -2310,7 +2247,7 @@ Save a group of placed actors as a reusable named stamp and re-place it anywhere
 <tbody>
 <tr>
 <td align="center"><code>toolbelt_integration_test</code></td>
-<td align="center">⚠️ Invasive — spawns/deletes actors. Run in a clean template level only.</td>
+<td align="center">Invasive: requires the dedicated ToolbeltAcceptance project and explicit allow_mutation=True; selected sections are recommended.</td>
 </tr>
 </tbody>
 </table>
@@ -2733,7 +2670,7 @@ Or point it directly at a project:
 
 
 <blockquote align="center">
-<p align="center"><strong>Updating after a <code>git pull</code>:</strong> Re-run <code>python install.py</code> — it overwrites only the Toolbelt package, never your project's own files.</p>
+<p align="center"><strong>Updating after a <code>git pull</code>:</strong> Re-run <code>python install.py</code>. It replaces the Toolbelt package; managed hooks and unchanged default loaders are preserved. Custom startup files may receive the documented loader block, so inspect your startup hook separately.</p>
 </blockquote>
 
 
@@ -2743,10 +2680,23 @@ Or point it directly at a project:
 **If you're actively developing the Toolbelt itself — use `deploy.bat` instead:**
 
 `deploy.bat` is the dev workflow tool. Double-click it or run it from a terminal. In addition to copying files it will:
-<table align="center"><tbody><tr><td align="center">Check and install PySide6 automatically if it's missing</td></tr><tr><td align="center">Copy the <code>verse-book/</code> reference without its Python lexer helpers</td></tr><tr><td align="center">Print the hot-reload command to paste into UEFN so you don't need a full restart</td></tr></tbody></table>
+<table align="center"><thead><tr><th align="center">Deployment behavior</th></tr></thead><tbody><tr><td align="center">Use the staged installer to replace the package completely, removing obsolete modules.</td></tr><tr><td align="center">Preserve any existing init_unreal.py byte-for-byte and write the deployed build stamp.</td></tr><tr><td align="center">Install a real docs-only Verse-book Git clone without its Python lexer helpers.</td></tr><tr><td align="center">Check optional PySide6 installation in interactive mode; /nopause preserves existing dependencies.</td></tr><tr><td align="center">Print the supported reload procedure and identify changes requiring a full UEFN restart.</td></tr></tbody></table>
 
 
 <table align="center"><tbody><tr><td align="left"><pre><code class="language-bat">deploy.bat&#10;</code></pre></td></tr></tbody></table>
+
+<p align="center">For nonstandard project locations or unattended deployment:</p>
+
+<table align="center"><tbody><tr><td align="left"><pre><code class="language-bat">deploy.bat "C:\path\to\project" /nopause&#10;</code></pre></td></tr></tbody></table>
+
+<p align="center">To retain existing dashboard dependencies with the installer:</p>
+
+<table align="center"><tbody><tr><td align="left"><pre><code class="language-bat">python install.py --project "C:\path\to\project" --skip-dependencies&#10;</code></pre></td></tr></tbody></table>
+
+<p align="center">Both CLI installers validate a native <code>.uefnproject</code> destination. Package updates are staged before replacement and restore the previous package if installation fails. If rollback is blocked too, preserve the reported recovery directory. Deployment requires Python 3.11+.</p>
+
+<p align="center"><code>install.py --install-reference</code> stages a real docs-only local-source Git clone with the official Verse-book update origin. Existing Git clones stay intact; non-Git snapshots are retained in named backups. Managed startup hooks are preserved, and installations write a deployed build stamp.</p>
+
 
 
 
@@ -2762,8 +2712,8 @@ restore refuses to overwrite any file created while the stash was active.</p>
 
 
 <blockquote align="center">
-<p align="center"><strong>Hot-reload after any code change</strong> (no UEFN restart needed):</p>
-<table align="center"><tbody><tr><td align="left"><pre><code class="language-python">import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.launch_qt()&#10;</code></pre></td></tr></tbody></table>
+<p align="center"><strong>Existing pure tool-module edits only:</strong> use the supported reload and check its status. Startup, new modules and persistent-window changes require a full UEFN restart.</p>
+<table align="center"><tbody><tr><td align="left"><pre><code class="language-python">import UEFN_Toolbelt as tb; reload_result = tb.hard_reload(); tb.launch_qt() if reload_result.get("status") == "ok" else print(reload_result)&#10;</code></pre></td></tr></tbody></table>
 </blockquote>
 
 
@@ -2813,66 +2763,11 @@ In the Output Log, switch the input dropdown from **Cmd** to **Python** and run:
 
 
 
-Expected output in the log:
-<table align="center"><tbody><tr><td align="left"><pre><code>✓ All systems healthy — Toolbelt is ready.&#10;</code></pre></td></tr></tbody></table>
+<p align="center">The preserved <a href="docs/audits/evidence/2026-10-09-toolbelt-acceptance/smoke-2026-10-20.txt">20 October 2026 environment-health run</a> recorded <strong>89/89</strong> on UEFN 42.40, UE 6.0.0-59247843 and Python 3.11.8. Its checks are listed below; later runs may differ. Environment health is separate from individual tool acceptance.</p>
 
+<table align="center"><thead><tr><th align="center">Layer</th><th align="center">Scope</th><th align="center">Checks in the linked run</th></tr></thead><tbody><tr><td align="center">1. Python environment</td><td align="center">Imports, sockets, threads and temporary file I/O.</td><td align="center">13</td></tr><tr><td align="center">2. UEFN API surface</td><td align="center">Required symbols, dependency manifest and handled API removals.</td><td align="center">17</td></tr><tr><td align="center">3. Toolbelt core</td><td align="center">Module loading and registration, no individual tool execution.</td><td align="center">42</td></tr><tr><td align="center">4. MCP bridge</td><td align="center">Handlers and listener state; not host compatibility.</td><td align="center">4</td></tr><tr><td align="center">5. PySide6</td><td align="center">Import and QApplication accessibility; the dashboard-import entry is not an actual import.</td><td align="center">3</td></tr><tr><td align="center">6. Verse reference</td><td align="center">Git checkout, chapter threshold and reference files.</td><td align="center">10</td></tr></tbody></table>
 
-
-<table align="center">
-<thead>
-<tr>
-<th align="center">Layer</th>
-<th align="center">What It Verifies</th>
-<th align="center">Checks</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center"><strong>Layer 1</strong> — Python Environment</td>
-<td align="center">stdlib, threading, sockets, HTTP server, file I/O</td>
-<td align="center">13</td>
-</tr>
-<tr>
-<td align="center"><strong>Layer 2</strong> — UEFN API Surface</td>
-<td align="center"><code>unreal</code> module, subsystems, AutomationLibrary, Materials</td>
-<td align="center">13</td>
-</tr>
-<tr>
-<td align="center"><strong>Layer 3</strong> — Toolbelt Core</td>
-<td align="center">Package import, <code>register_all_tools()</code>, every expected module present, a minimum registry count (179), and six named tools registered; no tool is executed</td>
-<td align="center">40</td>
-</tr>
-<tr>
-<td align="center"><strong>Layer 4</strong> — MCP Bridge</td>
-<td align="center">31 command handlers, HTTP listener state</td>
-<td align="center">4</td>
-</tr>
-<tr>
-<td align="center"><strong>Layer 5</strong> — Dashboard (PySide6)</td>
-<td align="center">PySide6 importable and <code>QApplication.instance()</code> callable; its "ToolbeltDashboard importable" entry records a pass without importing the dashboard</td>
-<td align="center">3</td>
-</tr>
-<tr>
-<td align="center"><strong>Layer 6</strong> — Verse Book</td>
-<td align="center">clone present, git reachable, 22 chapters parsed</td>
-<td align="center">12</td>
-</tr>
-<tr>
-<td align="center"><strong>Layer 7</strong> — Integration</td>
-<td align="center">Fixture-based verification of context-aware tools — see Integration Testing section above</td>
-<td align="center">—</td>
-</tr>
-</tbody>
-</table>
-
-
-
-<blockquote align="center">
-<p align="center">If you haven't installed PySide6 or cloned the verse-book yet, you may see a few non-critical failures.
-Complete Steps 2 and 7 in the Getting Started guide above to resolve them.</p>
-</blockquote>
-
-
+<p align="center">Integration is a separate invasive suite, not a seventh smoke-test layer. Resolve reported dependency/reference failures and inspect the returned report before proceeding.</p>
 
 ---
 
@@ -2917,8 +2812,8 @@ A dark-themed floating window opens with a left sidebar nav and 362 tools across
 
 
 <blockquote align="center">
-<p align="center"><strong>If the dashboard doesn't open after installing PySide6:</strong> The module may be cached from before PySide6 was installed. Paste this single line to clear and reload:</p>
-<table align="center"><tbody><tr><td align="left"><pre><code class="language-python">import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.launch_qt()&#10;</code></pre></td></tr></tbody></table>
+<p align="center"><strong>If the dashboard doesn't open after installing PySide6:</strong> Fully restart UEFN after installing dashboard libraries. For an existing pure tool-module edit, the supported reload closes live windows before rebuilding registrations:</p>
+<table align="center"><tbody><tr><td align="left"><pre><code class="language-python">import UEFN_Toolbelt as tb; reload_result = tb.hard_reload(); tb.launch_qt() if reload_result.get("status") == "ok" else print(reload_result)&#10;</code></pre></td></tr></tbody></table>
 </blockquote>
 
 
@@ -2935,7 +2830,7 @@ In your repo folder, run:
 
 
 
-This gives Claude access to the full live Verse language spec for spec-accurate code generation. After cloning, the smoke test reports 89/89 with PySide6 installed.
+The adapter reads this local reference checkout. Install a docs-only reference in the native project with <code>install.py --install-reference</code> for dashboard health. A successful clone alone does not establish a passing smoke test or correct generated Verse.
 
 ---
 
@@ -2946,7 +2841,7 @@ This gives Claude access to the full live Verse language spec for spec-accurate 
 This lets Claude Code directly control UEFN — spawn actors, run any tool, generate Verse code — without you typing anything in the console.
 
 **1. Install the MCP Python package** (regular terminal, not UEFN):
-<table align="center"><tbody><tr><td align="left"><pre><code class="language-bat">pip install mcp&#10;</code></pre></td></tr></tbody></table>
+<table align="center"><tbody><tr><td align="left"><pre><code class="language-bat">python -m pip install -r requirements-mcp.txt&#10;</code></pre></td></tr></tbody></table>
 
 
 
@@ -3022,17 +2917,13 @@ Snippets also auto-copy to the Windows clipboard when generated, so you can past
 
 <a name="readme-section-87"></a>
 
-### **The "Nuclear Reload" Command**
-If you have modified the Toolbelt source code, run this in the UEFN console to refresh everything without a restart:
-<table align="center"><tbody><tr><td align="left"><pre><code class="language-python">import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.launch_qt()&#10;</code></pre></td></tr></tbody></table>
+### Guarded reload
 
+<p align="center">Deploy first. For existing pure tool-module edits, use the supported reload and proceed only when its returned status is <code>ok</code>:</p>
 
-<blockquote align="center">
-<p align="center">[!IMPORTANT]
-Always include <code>tb.register_all_tools()</code> after a pop, otherwise the tool registry will be empty!</p>
-</blockquote>
+<table align="center"><tbody><tr><td align="left"><pre><code class="language-python">import UEFN_Toolbelt as tb; reload_result = tb.hard_reload(); tb.launch_qt() if reload_result.get("status") == "ok" else print(reload_result)&#10;</code></pre></td></tr></tbody></table>
 
-
+<blockquote align="center"><p align="center">Fully restart UEFN for startup hooks, new modules and persistent Qt/window changes. Direct module-cache clearing can crash the editor. An incomplete reload requires a restart.</p></blockquote>
 
 <a name="readme-section-88"></a>
 
@@ -3052,8 +2943,8 @@ Always include <code>tb.register_all_tools()</code> after a pop, otherwise the t
 
 
 
-**Force reload (after git pull or update):**
-<table align="center"><tbody><tr><td align="left"><pre><code class="language-python">import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.launch_qt()&#10;</code></pre></td></tr></tbody></table>
+**After a pull or update:** fully restart for startup/new-module/window changes; otherwise use the supported reload below.
+<table align="center"><tbody><tr><td align="left"><pre><code class="language-python">import UEFN_Toolbelt as tb; reload_result = tb.hard_reload(); tb.launch_qt() if reload_result.get("status") == "ok" else print(reload_result)&#10;</code></pre></td></tr></tbody></table>
 
 
 
@@ -3850,7 +3741,7 @@ Because UEFN runs Python on the **main render thread**, there is a unique deadlo
 
 The UEFN Toolbelt includes a sophisticated integration test suite that validates tools **programmatically**. 
 
-<table align="center"><tbody><tr><td align="center"><strong>How it works</strong>: The <code>integration_test.py</code> script uses the Unreal Python API to remote-control the editor. It spawns actors, modifies transforms, applies tags, and captures screenshots—verified against the engine's internal state.</td></tr><tr><td align="center"><strong>What it tests</strong>: It validates the "Logic &amp; Engine" layer (Layer 3). While it doesn't click the physical buttons on the Pyside6 UI, it proves that the toolbelt's brain is working perfectly.</td></tr><tr><td align="center"><strong>Benefits</strong>: Run 12 tests in under 5 seconds (excluding screenshots) to ensure no regressions were introduced.</td></tr></tbody></table>
+<table align="center"><tbody><tr><td align="center"><strong>How it works</strong>: The <code>integration_test.py</code> script uses the Unreal Python API to remote-control the editor. It spawns actors, modifies transforms, applies tags, and captures screenshots—verified against the engine's internal state.</td></tr><tr><td align="center"><strong>What it tests</strong>: It validates the "Logic &amp; Engine" layer (Layer 3). While it doesn't click the physical buttons on the Pyside6 UI, results establish only the assertions recorded for the selected fixtures.</td></tr><tr><td align="center"><strong>Benefits</strong>: Run a small selected section in the disposable project and retain its exact report. Timing and successful completion do not establish absence of regressions.</td></tr></tbody></table>
 
 
 ---
@@ -3871,7 +3762,7 @@ See `docs/UEFN_QUIRKS.md` Quirks #26 and #27 and the test matrix in `CLAUDE.md`.
 
 <blockquote align="center">
 <p align="center">[!WARNING]
-Always include <code>tb.register_all_tools()</code> after the module pop. If you skip it the registry will be empty and every tool call will fail with "Unknown Tool".</p>
+Use the supported <code>tb.hard_reload()</code>, which closes live windows and rebuilds registration. Continue only for status <code>ok</code>; otherwise restart UEFN. Do not clear the module cache directly.</p>
 </blockquote>
 
 
@@ -3880,46 +3771,12 @@ Always include <code>tb.register_all_tools()</code> after the module pop. If you
 
 ### Quick-Reference Command Table
 
-Copy the command that matches what you're doing right now:
+<p align="center">Only use these reload commands for existing pure tool-module edits. Other changes require a full restart. Integration still requires its disposable target and explicit mutation acknowledgement.</p>
 
-<table align="center">
-<thead>
-<tr>
-<th align="center">What you're working on</th>
-<th align="center">Command to paste in UEFN console</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center"><strong>Standard dev — open dashboard</strong></td>
-<td align="center"><code>import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.launch_qt()</code></td>
-</tr>
-<tr>
-<td align="center"><strong>Verse Device Graph window</strong></td>
-<td align="center"><code>import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("verse_graph_open")</code></td>
-</tr>
-<tr>
-<td align="center"><strong>Run integration tests</strong></td>
-<td align="center"><code>import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("toolbelt_integration_test")</code></td>
-</tr>
-<tr>
-<td align="center"><strong>Quick smoke test only</strong></td>
-<td align="center"><code>import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("toolbelt_smoke_test")</code></td>
-</tr>
-<tr>
-<td align="center"><strong>Sync docs + Verse IQ</strong></td>
-<td align="center"><code>import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("api_sync_master")</code></td>
-</tr>
-<tr>
-<td align="center"><strong>Headless reload (no UI)</strong></td>
-<td align="center"><code>import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools()</code></td>
-</tr>
-</tbody>
-</table>
+<table align="center"><thead><tr><th align="center">Task</th><th align="center">UEFN Python console</th></tr></thead><tbody><tr><td align="center">Existing-module edit, open dashboard</td><td align="center"><code>import UEFN_Toolbelt as tb; reload_result = tb.hard_reload(); tb.launch_qt() if reload_result.get("status") == "ok" else print(reload_result)</code></td></tr><tr><td align="center">Verse Device Graph</td><td align="center"><code>import UEFN_Toolbelt as tb; reload_result = tb.hard_reload(); tb.run("verse_graph_open") if reload_result.get("status") == "ok" else print(reload_result)</code></td></tr><tr><td align="center">Small integration section in ToolbeltAcceptance</td><td align="center"><code>import UEFN_Toolbelt as tb; reload_result = tb.hard_reload(); tb.run("toolbelt_integration_test", sections=["bulk_ops"], allow_mutation=True, preserve_bridge=True) if reload_result.get("status") == "ok" else print(reload_result)</code></td></tr><tr><td align="center">Environment health check</td><td align="center"><code>import UEFN_Toolbelt as tb; reload_result = tb.hard_reload(); tb.run("toolbelt_smoke_test") if reload_result.get("status") == "ok" else print(reload_result)</code></td></tr><tr><td align="center">Sync docs and Verse IQ</td><td align="center"><code>import UEFN_Toolbelt as tb; reload_result = tb.hard_reload(); tb.run("api_sync_master") if reload_result.get("status") == "ok" else print(reload_result)</code></td></tr><tr><td align="center">Reload and inspect status only</td><td align="center"><code>import UEFN_Toolbelt as tb; print(tb.hard_reload())</code></td></tr></tbody></table>
 
+See the deployment output and restart rules before choosing a command.
 
-
-All of these also appear in `deploy.bat` output — after deploying, just copy from the terminal.
 
 ---
 
@@ -3979,7 +3836,7 @@ All of these also appear in `deploy.bat` output — after deploying, just copy f
 </tr>
 <tr>
 <td align="center">Something isn't loading after an update</td>
-<td align="center">Module may be cached. Paste: <code>import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.launch_qt()</code></td>
+<td align="center">Module may be cached. Paste: <code>import UEFN_Toolbelt as tb; reload_result = tb.hard_reload(); tb.launch_qt() if reload_result.get("status") == "ok" else print(reload_result)</code></td>
 </tr>
 <tr>
 <td align="center">LOD generation fails</td>
@@ -4035,7 +3892,7 @@ connect starts with this codebase's context.
 
 
 **One-time setup:**
-<table align="center"><tbody><tr><td align="left"><pre><code class="language-bat">pip install mcp&#10;</code></pre></td></tr></tbody></table>
+<table align="center"><tbody><tr><td align="left"><pre><code class="language-bat">python -m pip install -r requirements-mcp.txt&#10;</code></pre></td></tr></tbody></table>
 
 
 
@@ -4288,11 +4145,11 @@ are present. It executes no tool and validates no tool schema.
 <a name="readme-section-134"></a>
 
 ### 2. Integration Test (Context-Aware Verification)
-A sophisticated fixture-based test that spawns actors, programmatically selects them in the viewport, runs tools, and verifies the results (e.g., material changes, transforms, JSON exports).
-<table align="center"><tbody><tr><td align="left"><pre><code class="language-python">import UEFN_Toolbelt as tb&#10;tb.run("toolbelt_integration_test")&#10;</code></pre></td></tr></tbody></table>
+Selected fixture checks in descriptor/world-confirmed ToolbeltAcceptance. The suite changes editor state and persistent files; inspect failed, unknown and execution-only results individually.
+<table align="center"><tbody><tr><td align="left"><pre><code class="language-python">import UEFN_Toolbelt as tb&#10;tb.run("toolbelt_integration_test", sections=["bulk_ops"], allow_mutation=True, preserve_bridge=True)&#10;</code></pre></td></tr></tbody></table>
 
 
-*Validated areas: Materials, Bulk Ops, Prop Patterns, Level Snapshots, API Crawler, Asset Tagger, Verse Helpers, and Screenshots.*
+<p align="center">Per-tool dispositions and native fixtures are documented in <a href="TOOL_STATUS.md">TOOL_STATUS.md</a> and the <a href="docs/audits/2026-10-09-native-tool-acceptance.md">acceptance record</a>. Do not infer coverage from this tool inventory.</p>
 
 ---
 
@@ -4304,25 +4161,13 @@ A sophisticated fixture-based test that spawns actors, programmatically selects 
 
 <a name="readme-section-136"></a>
 
-### Hot-Reloading (No UEFN Restart Required)
+### Supported reload and restart rules
 
-Use the Nuclear Reload command — it completely wipes the Toolbelt from Python's module cache and re-imports everything fresh. See the **Quick-Reference Command Table** above for the full set of variants (dashboard, graph window, tests, etc.).
+<p align="center">Deploy the edited source to the intended project. Existing pure tool-module edits may use the supported reload. Startup scripts, new modules and persistent-window changes require a full UEFN restart.</p>
 
-<table align="center"><tbody><tr><td align="left"><pre><code class="language-python"># Standard — reload everything and open the dashboard&#10;import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.launch_qt()&#10;</code></pre></td></tr></tbody></table>
+<table align="center"><tbody><tr><td align="left"><pre><code class="language-python">import UEFN_Toolbelt as tb; reload_result = tb.hard_reload(); tb.launch_qt() if reload_result.get("status") == "ok" else print(reload_result)&#10;</code></pre></td></tr></tbody></table>
 
-
-
-<blockquote align="center">
-<p align="center">[!TIP]
-<code>deploy.bat</code> prints the right command for your current task after each deploy — no memorisation needed.</p>
-</blockquote>
-
-
-
----
-| Open source | **AGPL-3.0, full source** | Closed or single files |
-
-Built for the 2026 UEFN Python wave. First. Most complete. Spec-accurate.
+<p align="center">Check the actual returned status before running another tool. An incomplete reload is a restart condition. <code>deploy.bat</code> prints the relevant workflow after deployment.</p>
 
 ---
 
@@ -4722,7 +4567,7 @@ Contributions are welcome and encouraged. This project follows a simple rule: **
 
 ### How to contribute
 
-<table align="center"><tbody><tr><td align="center">1</td><td align="center"><strong>Fork</strong> the repo and create a branch: <code>git checkout -b feature/my-tool</code></td></tr><tr><td align="center">2</td><td align="center"><strong>Follow the tool structure</strong> — see <a href="#adding-a-new-tool">Adding a New Tool</a> for the exact pattern</td></tr><tr><td align="center">3</td><td align="left"><strong>Test in a live UEFN editor — this is mandatory.</strong> Syntax checks don't catch UEFN runtime failures. Run the hard-refresh bundle in the UEFN Python console and confirm your tool works:<pre><code class="language-python">import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("your_tool_name")&#10;</code></pre>
+<table align="center"><tbody><tr><td align="center">1</td><td align="center"><strong>Fork</strong> the repo and create a branch: <code>git checkout -b feature/my-tool</code></td></tr><tr><td align="center">2</td><td align="center"><strong>Follow the tool structure</strong> — see <a href="#adding-a-new-tool">Adding a New Tool</a> for the exact pattern</td></tr><tr><td align="center">3</td><td align="left"><strong>Test in a live UEFN editor — this is mandatory.</strong> Syntax checks don't catch UEFN runtime failures. Deploy first, fully restart when required, and run the tool in the confirmed UEFN project:<pre><code class="language-python">import UEFN_Toolbelt as tb; tb.run("your_tool_name")&#10;</code></pre>
 Then run the smoke test to confirm no regressions: <code>tb.run("toolbelt_smoke_test")</code></td></tr><tr><td align="center">4</td><td align="center"><strong>Open a Pull Request</strong> with a clear description of what the tool does and why it belongs here</td></tr></tbody></table>
 
 

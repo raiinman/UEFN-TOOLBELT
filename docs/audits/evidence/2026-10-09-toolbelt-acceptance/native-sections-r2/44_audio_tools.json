@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "harness_version": "V11-ULTIMATE-171",
+  "harness_sha256": "349bb56a20ae98fccda7870862fe2bd79683405f19b5ccb7f7e9e7c03174186a",
+  "project": {
+    "project_dir": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance",
+    "descriptor": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\ToolbeltAcceptance.uefnproject",
+    "mount": "001485b2-9178-47cf-a1a5-e66b92a43825",
+    "world_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/ToolbeltAcceptance.ToolbeltAcceptance"
+  },
+  "engine_saved_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/",
+  "report_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt",
+  "date": "2026-10-09T17:10:42.237014",
+  "completed": true,
+  "sections": [
+    "audio_tools"
+  ],
+  "fatal": "",
+  "cleanup_error": "",
+  "checks": [
+    {
+      "section": "Audio",
+      "name": "audio_place",
+      "passed": true,
+      "detail": "",
+      "verified": true
+    },
+    {
+      "section": "Audio",
+      "name": "audio_list",
+      "passed": true,
+      "detail": "1 sounds",
+      "verified": true
+    },
+    {
+      "section": "Audio",
+      "name": "audio_set_volume",
+      "passed": true,
+      "detail": "",
+      "verified": true
+    },
+    {
+      "section": "Audio",
+      "name": "audio_set_radius",
+      "passed": true,
+      "detail": "",
+      "verified": true
+    }
+  ],
+  "limitation": "Recorded assertions only; verified flags are authored annotations, not per-tool native acceptance. Status-only and refusal checks require independent interpretation."
+}

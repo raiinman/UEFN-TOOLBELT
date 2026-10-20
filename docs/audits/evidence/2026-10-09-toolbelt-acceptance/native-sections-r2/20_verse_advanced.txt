@@ -1,0 +1,13 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:10:00.272231
+Passed:  2/2
+Verified: 1 checked a real outcome · 1 execution-only (ran without raising)
+Elapsed: 6.06s
+============================================================
+
+
+[Verse]
+----------------------------------------
+  PASS  CodeGen Boilerplates
+  PASS  Bulk Set Property

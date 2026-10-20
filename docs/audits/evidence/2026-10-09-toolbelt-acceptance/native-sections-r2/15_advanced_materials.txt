@@ -1,0 +1,20 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:05:27.953438
+Passed:  9/9
+Verified: 9 checked a real outcome · 0 execution-only (ran without raising)
+Elapsed: 25.43s
+============================================================
+
+
+[Materials]
+----------------------------------------
+  PASS  Randomize Colors  (3/3 actor(s) status=ok)
+  PASS  Gradient Painter  (3/3 actor(s) status=ok)
+  PASS  Team Color Split  (2 red + 1 blue = 3 of 3)
+  PASS  Pattern Painter  (3/3 actor(s) status=ok)
+  PASS  Glow Pulse Preview  (3/3 actor(s) status=ok)
+  PASS  Color Harmony  (3/3 actor(s) harmony=triadic)
+  PASS  Save & List Presets  (18 preset(s), saved one present=True)
+  PASS  Bulk Swap  (status=ok slots=1 actors=1)
+  PASS  Bulk Swap reports a miss as error  (status=error reason=no_slots_matched)

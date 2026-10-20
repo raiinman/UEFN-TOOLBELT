@@ -1,59 +1,46 @@
 """
-UEFN TOOLBELT — Memory Profiler & Auto-Fixer
-========================================
-Islands have strict memory budgets. This tool scans your project for the
-heaviest assets, flags the worst offenders by category, and applies
-automatic fixes where possible (LOD enforcement, texture size capping).
+UEFN TOOLBELT — Memory Inspection
+=================================
+Inspects registry-listed Texture2D, StaticMesh and SoundWave assets in the
+resolved project mount. Failed loading and unavailable metrics remain unknown.
 
-UEFN's memory constraints are real — an oversized texture or a mesh with
-no LODs can push you over budget and cause validation failures on publish.
+Measurements are authoring heuristics: texture pixel dimensions and base-level
+uncompressed RGBA estimates, LOD0 vertex counts, LOD counts, and sound duration.
+These do not measure Fortnite runtime memory, residency, compression, collision,
+particle cost, or the island's publish budget. Use native memory calculation for
+runtime budget acceptance. The LOD convenience action delegates to the existing
+LOD tool; its result determines availability and outcome.
 
-FEATURES:
-  • Full island asset scan: textures, meshes, sounds, particles
-  • Per-category memory budget report (textures dominate — always check first)
-  • Identifies top N heaviest assets in each category
-  • Texture resolution audit: flags anything over a configurable threshold
-  • Mesh complexity audit: poly count, missing LODs, missing collision
-  • Sound audit: uncompressed audio, long duration files
-  • Auto-fix: force mip generation on oversized textures
-  • Auto-fix: apply LODs to meshes missing them
-  • Export full report to Saved/UEFN_Toolbelt/memory_report.json
-  • Summary dashboard printed to Output Log
+Full reports are written atomically to the native project's
+Saved/UEFN_Toolbelt/memory_report.json with project/scan identity and unknown
+counts. Subfolder reports cannot establish full-project readiness.
 
-USAGE (REPL):
+Usage:
     import UEFN_Toolbelt as tb
-
-    # Full scan of /Game — prints summary + saves report
+    # Inspect the resolved /<project mount> and save a scoped report.
     tb.run("memory_scan", scan_path="")
-
-    # Scan only textures
     tb.run("memory_scan_textures", scan_path="", max_size_px=2048)
-
-    # Scan only meshes
     tb.run("memory_scan_meshes", scan_path="")
-
-    # Auto-fix: add LODs to all meshes missing them
-    tb.run("memory_autofix_lods", scan_path="")
-
-    # View top 10 heaviest assets
     tb.run("memory_top_offenders", scan_path="", top_n=10)
-
-BLUEPRINT:
-    "Execute Python Command" →
-        import UEFN_Toolbelt as tb; tb.run("memory_scan", scan_path="")
+    tb.run("memory_autofix_lods", scan_path="")
 """
 
 from __future__ import annotations
 
 import json
+import math
 import os
+import tempfile
 from datetime import datetime
+from pathlib import Path
 
 import unreal
 
 from ..core import (
+    detect_project_mount,
     load_asset,
     log_info,
+    native_project_dir,
     resolve_scan_path,
     scannable_assets,
 )
@@ -67,7 +54,7 @@ from ..registry import register_tool
 TEXTURE_WARN_PX  = 2048   # Flag as large
 TEXTURE_CRIT_PX  = 4096   # Flag as critical
 
-# Mesh triangle thresholds
+# Mesh LOD0 vertex-count thresholds
 MESH_WARN_TRIS   = 50_000
 MESH_CRIT_TRIS   = 200_000
 
@@ -80,100 +67,113 @@ SOUND_CRIT_SECS  = 120.0
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _list_assets_of_class(scan_path: str, class_name: str) -> list[tuple[str, unreal.Object]]:
-    """Return (path, asset) pairs for all assets of a given class in a folder."""
-    all_paths = unreal.EditorAssetLibrary.list_assets(
-        scan_path, recursive=True, include_folder=False
-    )
-    all_paths = scannable_assets(all_paths)
+    """Use class metadata to retain assets whose native loading is unavailable."""
+    registry = unreal.AssetRegistryHelpers.get_asset_registry()
+    metadata = registry.get_assets_by_path(scan_path, recursive=True)
+    if metadata is None:
+        raise ValueError("Asset registry enumeration is unavailable")
     results = []
-    for p in all_paths:
-        asset = load_asset(p)
-        if asset and asset.get_class().get_name() == class_name:
-            results.append((p, asset))
+    for item in metadata:
+        if str(item.asset_class_path.asset_name) != class_name:
+            continue
+        path = f"{item.package_name}.{item.asset_name}"
+        if not scannable_assets([path]):
+            continue
+        try:
+            asset = load_asset(path)
+            if asset is not None and str(asset.get_class().get_name()) != class_name:
+                asset = None
+        except Exception:
+            asset = None
+        results.append((path, asset))
     return results
 
 
+def _checked_number(value, *, integer=False, minimum=0):
+    if (isinstance(value, bool) or not isinstance(value, (int, float))
+            or not math.isfinite(value) or value < minimum
+            or (integer and int(value) != value)):
+        raise ValueError("Inspection returned an invalid numeric value")
+    return int(value) if integer else float(value)
+
+
 def _texture_info(asset: unreal.Texture2D) -> dict:
-    """Extract resolution and estimated memory from a Texture2D."""
-    try:
-        w = asset.get_editor_property("blueprint_width")
-        h = asset.get_editor_property("blueprint_height")
-    except Exception:
+    """Extract checked resolution; unavailable dimensions are never zero estimates."""
+    width = height = None
+    unknown = []
+    for field, method, prop, fallback in (
+            ("width", "blueprint_get_size_x", "blueprint_width", "source_art_width"),
+            ("height", "blueprint_get_size_y", "blueprint_height", "source_art_height")):
         try:
-            # Fallback: use source art size
-            w = asset.source_art_width if hasattr(asset, "source_art_width") else 0
-            h = asset.source_art_height if hasattr(asset, "source_art_height") else 0
+            value = _checked_number(getattr(asset, method)(), integer=True, minimum=1)
         except Exception:
-            w = h = 0
-
-    max_dim = max(w, h)
-
-    # Rough VRAM estimate: width × height × 4 bytes (RGBA uncompressed)
-    # BC compression reduces this ~6× but we flag the uncompressed size for safety
-    estimated_kb = (w * h * 4) / 1024 if (w and h) else 0
-
-    severity = "ok"
-    if max_dim >= TEXTURE_CRIT_PX:
-        severity = "critical"
-    elif max_dim >= TEXTURE_WARN_PX:
-        severity = "warning"
-
-    return {
-        "width": w, "height": h,
-        "max_dim": max_dim,
-        "estimated_vram_kb": round(estimated_kb, 1),
-        "severity": severity,
-    }
+            try:
+                value = _checked_number(asset.get_editor_property(prop), integer=True, minimum=1)
+            except Exception:
+                try:
+                    value = _checked_number(getattr(asset, fallback), integer=True, minimum=1)
+                except Exception:
+                    value = None
+                    unknown.append(field)
+        if field == "width":
+            width = value
+        else:
+            height = value
+    complete = not unknown
+    max_dim = max(width, height) if complete else None
+    estimate = round(width * height * 4 / 1024, 1) if complete else None
+    severity = "unknown" if not complete else (
+        "critical" if max_dim >= TEXTURE_CRIT_PX else
+        "warning" if max_dim >= TEXTURE_WARN_PX else "ok")
+    return {"width": width, "height": height, "max_dim": max_dim,
+            "estimated_vram_kb": estimate, "severity": severity,
+            "inspection_complete": complete, "unknown_fields": unknown,
+            "load_failed": asset is None}
 
 
 def _mesh_info(asset: unreal.StaticMesh) -> dict:
-    """Extract triangle count and LOD info from a StaticMesh."""
-    mesh_sub = unreal.get_editor_subsystem(unreal.StaticMeshEditorSubsystem)
-
+    """Extract checked vertex/LOD counts; uninspected LODs are not missing LODs."""
+    lod_count = vertices = None
+    unknown = []
+    if asset is None:
+        return {"lod_count": None, "approx_verts": None, "missing_lods": None,
+                "severity": "unknown", "inspection_complete": False,
+                "unknown_fields": ["lod_count", "approx_verts"], "load_failed": True}
     try:
-        lod_count = mesh_sub.get_lod_count(asset)
+        mesh_sub = unreal.get_editor_subsystem(unreal.StaticMeshEditorSubsystem)
     except Exception:
-        lod_count = 0
-
+        mesh_sub = None
     try:
-        tri_count = mesh_sub.get_number_verts(asset, 0)  # LOD0 vertex count approx
+        lod_count = _checked_number(mesh_sub.get_lod_count(asset), integer=True)
     except Exception:
-        tri_count = 0
-
-    severity = "ok"
-    if tri_count >= MESH_CRIT_TRIS:
+        unknown.append("lod_count")
+    try:
+        vertices = _checked_number(mesh_sub.get_number_verts(asset, 0), integer=True)
+    except Exception:
+        unknown.append("approx_verts")
+    missing = lod_count <= 1 if lod_count is not None else None
+    severity = "unknown" if unknown else "ok"
+    if vertices is not None and vertices >= MESH_CRIT_TRIS:
         severity = "critical"
-    elif tri_count >= MESH_WARN_TRIS:
+    elif (vertices is not None and vertices >= MESH_WARN_TRIS) or missing is True:
         severity = "warning"
-
-    if lod_count <= 1:
-        severity = "warning" if severity == "ok" else severity
-
-    return {
-        "lod_count":     lod_count,
-        "approx_verts":  tri_count,
-        "missing_lods":  lod_count <= 1,
-        "severity":      severity,
-    }
+    return {"lod_count": lod_count, "approx_verts": vertices, "missing_lods": missing,
+            "severity": severity, "inspection_complete": not unknown,
+            "unknown_fields": unknown, "load_failed": False}
 
 
 def _sound_info(asset: unreal.SoundWave) -> dict:
-    """Extract duration and compression info from a SoundWave."""
+    """Extract checked duration; unknown duration cannot pass the threshold audit."""
     try:
-        duration = asset.get_editor_property("duration")
+        duration = _checked_number(asset.get_editor_property("duration"))
     except Exception:
-        duration = 0.0
-
-    severity = "ok"
-    if duration >= SOUND_CRIT_SECS:
-        severity = "critical"
-    elif duration >= SOUND_WARN_SECS:
-        severity = "warning"
-
-    return {
-        "duration_secs": round(duration, 1),
-        "severity":      severity,
-    }
+        return {"duration_secs": None, "severity": "unknown",
+                "inspection_complete": False, "unknown_fields": ["duration_secs"],
+                "load_failed": asset is None}
+    severity = ("critical" if duration >= SOUND_CRIT_SECS else
+                "warning" if duration >= SOUND_WARN_SECS else "ok")
+    return {"duration_secs": round(duration, 1), "severity": severity,
+            "inspection_complete": True, "unknown_fields": [], "load_failed": False}
 
 
 def _severity_icon(s: str) -> str:
@@ -181,12 +181,22 @@ def _severity_icon(s: str) -> str:
 
 
 def _write_report(data: dict) -> str:
-    out_dir  = os.path.join(unreal.Paths.project_saved_dir(), "UEFN_Toolbelt")
-    os.makedirs(out_dir, exist_ok=True)
-    path = os.path.join(out_dir, "memory_report.json")
-    with open(path, "w") as f:
-        json.dump(data, f, indent=2)
-    return path
+    project = Path(native_project_dir()).resolve()
+    path = project / "Saved/UEFN_Toolbelt/memory_report.json"
+    if not path.resolve().is_relative_to(project):
+        raise ValueError("Memory report resolves outside the native project")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = ""
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                                         prefix=".memory.", suffix=".tmp", delete=False) as stream:
+            temporary = stream.name
+            json.dump(data, stream, indent=2)
+        os.replace(temporary, path)
+    finally:
+        if temporary and os.path.exists(temporary):
+            os.remove(temporary)
+    return str(path)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -212,17 +222,27 @@ def run_memory_scan(scan_path: str = "", **kwargs) -> dict:
     """
     scan_path = resolve_scan_path(scan_path)
     log_info(f"Memory scan: {scan_path} …")
+    mount = detect_project_mount()
+    try:
+        inventory = {kind: _list_assets_of_class(scan_path, class_name)
+                     for kind, class_name in (("textures", "Texture2D"),
+                                              ("meshes", "StaticMesh"), ("sounds", "SoundWave"))}
+    except Exception as exc:
+        return {"status": "error", "reason": "asset_registry_unavailable", "message": str(exc)}
 
     report: dict = {
         "timestamp": datetime.now().isoformat(),
         "scan_path": scan_path,
+        "project_mount": mount,
+        "full_project_scan": scan_path.rstrip("/") == "/" + mount,
+        "registry_enumeration_complete": True,
         "textures": [],
         "meshes":   [],
         "sounds":   [],
     }
 
     # ── Textures ──────────────────────────────────────────────────────────
-    tex_assets = _list_assets_of_class(scan_path, "Texture2D")
+    tex_assets = inventory["textures"]
     tex_warn = tex_crit = 0
     for path, asset in tex_assets:
         info = _texture_info(asset)
@@ -232,7 +252,7 @@ def run_memory_scan(scan_path: str = "", **kwargs) -> dict:
         if info["severity"] == "critical": tex_crit += 1
 
     # ── Meshes ────────────────────────────────────────────────────────────
-    mesh_assets = _list_assets_of_class(scan_path, "StaticMesh")
+    mesh_assets = inventory["meshes"]
     mesh_warn = mesh_crit = mesh_no_lod = 0
     for path, asset in mesh_assets:
         info = _mesh_info(asset)
@@ -243,7 +263,7 @@ def run_memory_scan(scan_path: str = "", **kwargs) -> dict:
         if info["missing_lods"]:           mesh_no_lod += 1
 
     # ── Sounds ────────────────────────────────────────────────────────────
-    sound_assets = _list_assets_of_class(scan_path, "SoundWave")
+    sound_assets = inventory["sounds"]
     snd_warn = snd_crit = 0
     for path, asset in sound_assets:
         info = _sound_info(asset)
@@ -253,12 +273,22 @@ def run_memory_scan(scan_path: str = "", **kwargs) -> dict:
         if info["severity"] == "critical": snd_crit += 1
 
     # ── Summary ───────────────────────────────────────────────────────────
-    total_tex_kb = sum(t.get("estimated_vram_kb", 0) for t in report["textures"])
+    total_tex_kb = sum(t["estimated_vram_kb"] for t in report["textures"]
+                       if t["estimated_vram_kb"] is not None)
+    unknowns = {kind: sum(not item["inspection_complete"] for item in report[kind])
+                for kind in ("textures", "meshes", "sounds")}
+    unknown_total = sum(unknowns.values())
     report["summary"] = {
         "total_textures":      len(tex_assets),
         "texture_warnings":    tex_warn,
         "texture_criticals":   tex_crit,
-        "estimated_vram_mb":   round(total_tex_kb / 1024, 1),
+        "estimated_vram_mb":   round(total_tex_kb / 1024, 1) if not unknowns["textures"] else None,
+        "known_vram_mb":       round(total_tex_kb / 1024, 1),
+        "estimate_complete":   not unknowns["textures"],
+        "unknown_textures":    unknowns["textures"],
+        "unknown_meshes":      unknowns["meshes"],
+        "unknown_sounds":      unknowns["sounds"],
+        "unknown_assets":      unknown_total,
         "total_meshes":        len(mesh_assets),
         "mesh_warnings":       mesh_warn,
         "mesh_criticals":      mesh_crit,
@@ -275,7 +305,7 @@ def run_memory_scan(scan_path: str = "", **kwargs) -> dict:
         "═" * 58,
         "",
         f"  TEXTURES  ({len(tex_assets)} scanned)",
-        f"    Estimated VRAM:  {total_tex_kb / 1024:.1f} MB",
+        f"    Known VRAM estimate: {total_tex_kb / 1024:.1f} MB; unknown textures: {unknowns['textures']}",
         f"    ⚠ Warnings:      {tex_warn}  (≥{TEXTURE_WARN_PX}px)",
         f"    ✗ Critical:      {tex_crit}  (≥{TEXTURE_CRIT_PX}px)",
         "",
@@ -295,13 +325,19 @@ def run_memory_scan(scan_path: str = "", **kwargs) -> dict:
         lines.append(f"    → Run memory_scan_textures to find the {tex_crit} critical texture(s)")
     if mesh_no_lod > 0:
         lines.append(f"    → Run memory_autofix_lods to add LODs to {mesh_no_lod} mesh(es)")
-    if tex_crit == 0 and mesh_no_lod == 0 and snd_crit == 0:
-        lines.append("    → No critical issues found. Good to publish!")
+    if unknown_total:
+        lines.append(f"    → Inspection incomplete for {unknown_total} asset(s); inspect unavailable fields in the editor.")
+    elif tex_crit == 0 and mesh_no_lod == 0 and snd_crit == 0:
+        lines.append("    → No critical issues in the inspected heuristics; run native memory calculation before publishing.")
 
     lines += ["", "═" * 58]
     log_info("\n".join(lines))
 
-    report_path = _write_report(report)
+    try:
+        report_path = _write_report(report)
+    except Exception as exc:
+        return {"status": "error", "reason": "memory_report_unavailable", "message": str(exc),
+                "summary": report["summary"]}
     log_info(f"Full report → {report_path}")
     return {"status": "ok", "path": report_path, "summary": report["summary"]}
 
@@ -327,22 +363,29 @@ def run_memory_scan_textures(
                "max_dim", "estimated_vram_kb", "severity"}]}
     """
     scan_path = resolve_scan_path(scan_path)
-    tex_assets = _list_assets_of_class(scan_path, "Texture2D")
+    try:
+        tex_assets = _list_assets_of_class(scan_path, "Texture2D")
+    except Exception as exc:
+        return {"status": "error", "reason": "asset_registry_unavailable", "message": str(exc)}
     if not tex_assets:
         log_info("No Texture2D assets found.")
-        return {"status": "ok", "count": 0, "offenders": []}
+        return {"status": "ok", "count": 0, "offenders": [], "unknown": []}
 
     raw_offenders = []
+    unknown = []
     for path, asset in tex_assets:
         info = _texture_info(asset)
+        if not info["inspection_complete"]:
+            unknown.append({"path": path, **info})
+            continue
         if info["max_dim"] > max_size_px:
             raw_offenders.append((path, info))
 
     raw_offenders.sort(key=lambda x: x[1]["max_dim"], reverse=True)
 
     if not raw_offenders:
-        log_info(f"All textures are ≤{max_size_px}px. ")
-        return {"status": "ok", "count": 0, "offenders": []}
+        log_info(f"No inspected textures exceed {max_size_px}px; {len(unknown)} inspection(s) unavailable.")
+        return {"status": "ok", "count": 0, "offenders": [], "unknown": unknown}
 
     lines = [f"\n⚠ {len(raw_offenders)} textures exceed {max_size_px}px:\n"]
     for path, info in raw_offenders:
@@ -355,13 +398,13 @@ def run_memory_scan_textures(
     log_info("\n".join(lines))
 
     offenders = [{"path": p, **info} for p, info in raw_offenders]
-    return {"status": "ok", "count": len(offenders), "offenders": offenders}
+    return {"status": "ok", "count": len(offenders), "offenders": offenders, "unknown": unknown}
 
 
 @register_tool(
     name="memory_scan_meshes",
     category="Optimization",
-    description="Audit all static meshes — polygon count, LODs, collision.",
+    description="Inspect static meshes — approximate vertex counts and LOD availability.",
     tags=["memory", "mesh", "lod", "polygon", "optimize"],
 )
 def run_memory_scan_meshes(scan_path: str = "", **kwargs) -> dict:
@@ -374,7 +417,10 @@ def run_memory_scan_meshes(scan_path: str = "", **kwargs) -> dict:
                "approx_verts", "missing_lods", "severity"}]}
     """
     scan_path = resolve_scan_path(scan_path)
-    mesh_assets = _list_assets_of_class(scan_path, "StaticMesh")
+    try:
+        mesh_assets = _list_assets_of_class(scan_path, "StaticMesh")
+    except Exception as exc:
+        return {"status": "error", "reason": "asset_registry_unavailable", "message": str(exc)}
     if not mesh_assets:
         log_info("No StaticMesh assets found.")
         return {"status": "ok", "count": 0, "offenders": []}
@@ -384,7 +430,7 @@ def run_memory_scan_meshes(scan_path: str = "", **kwargs) -> dict:
         info = _mesh_info(a)
         if info["severity"] != "ok" or info["missing_lods"]:
             raw_offenders.append((p, info))
-    raw_offenders.sort(key=lambda x: x[1]["approx_verts"], reverse=True)
+    raw_offenders.sort(key=lambda x: x[1]["approx_verts"] if x[1]["approx_verts"] is not None else -1, reverse=True)
 
     if not raw_offenders:
         log_info("All meshes look good (reasonable vertex count + LODs present).")
@@ -393,22 +439,25 @@ def run_memory_scan_meshes(scan_path: str = "", **kwargs) -> dict:
     lines = [f"\n⚠ {len(raw_offenders)} mesh issues:\n"]
     for path, info in raw_offenders:
         icon     = _severity_icon(info["severity"])
-        lod_flag = " [NO LODs]" if info["missing_lods"] else f" [{info['lod_count']} LODs]"
+        lod_flag = (" [LOD inspection unavailable]" if info["lod_count"] is None else
+                    " [NO LODs]" if info["missing_lods"] else f" [{info['lod_count']} LODs]")
         lines.append(
             f"  {icon} {path.split('/')[-1]:40s}  "
-            f"~{info['approx_verts']:,} verts{lod_flag}"
+            f"vertices={info['approx_verts'] if info['approx_verts'] is not None else 'unknown'}{lod_flag}"
         )
     log_info("\n".join(lines))
-    log_info("Run memory_autofix_lods to automatically add LODs to meshes missing them.")
+    if any(info["missing_lods"] is True for _, info in raw_offenders):
+        log_info("Run memory_autofix_lods for meshes with confirmed missing LODs.")
 
     offenders = [{"path": p, **info} for p, info in raw_offenders]
-    return {"status": "ok", "count": len(offenders), "offenders": offenders}
+    return {"status": "ok", "count": len(offenders), "offenders": offenders,
+            "unknown_count": sum(not item["inspection_complete"] for item in offenders)}
 
 
 @register_tool(
     name="memory_top_offenders",
     category="Optimization",
-    description="Print the top N heaviest assets by estimated memory cost.",
+    description="Rank measured textures by RGBA estimate and meshes by vertex count; report unknowns separately.",
     tags=["memory", "profiler", "top", "heaviest", "optimize"],
 )
 def run_memory_top_offenders(
@@ -425,9 +474,14 @@ def run_memory_top_offenders(
         dict: {"status", "textures": [{"path", ...}], "meshes": [{"path", ...}]}
     """
     scan_path = resolve_scan_path(scan_path)
-    tex_assets = _list_assets_of_class(scan_path, "Texture2D")
+    try:
+        tex_assets = _list_assets_of_class(scan_path, "Texture2D")
+        mesh_assets = _list_assets_of_class(scan_path, "StaticMesh")
+    except Exception as exc:
+        return {"status": "error", "reason": "asset_registry_unavailable", "message": str(exc)}
+    tex_info = [(p, _texture_info(a)) for p, a in tex_assets]
     tex_sorted = sorted(
-        [(p, _texture_info(a)) for p, a in tex_assets],
+        [(path, info) for path, info in tex_info if info["estimated_vram_kb"] is not None],
         key=lambda x: x[1]["estimated_vram_kb"],
         reverse=True,
     )[:top_n]
@@ -435,23 +489,24 @@ def run_memory_top_offenders(
     lines = [f"\n=== Top {top_n} Heaviest Textures ==="]
     for path, info in tex_sorted:
         lines.append(
-            f"  {info['width']:5d}×{info['height']:<5d}  "
-            f"{info['estimated_vram_kb']:7.0f} KB  "
+            f"  {info['width']}×{info['height']}  "
+            f"estimated KB={info['estimated_vram_kb']}  "
             f"{path.split('/')[-1]}"
         )
 
-    mesh_assets = _list_assets_of_class(scan_path, "StaticMesh")
+    mesh_info = [(p, _mesh_info(a)) for p, a in mesh_assets]
     mesh_sorted = sorted(
-        [(p, _mesh_info(a)) for p, a in mesh_assets],
+        [(path, info) for path, info in mesh_info if info["approx_verts"] is not None],
         key=lambda x: x[1]["approx_verts"],
         reverse=True,
     )[:top_n]
 
     lines += [f"\n=== Top {top_n} Most Complex Meshes ==="]
     for path, info in mesh_sorted:
-        lod_flag = "NO LODs" if info["missing_lods"] else f"{info['lod_count']} LODs"
+        lod_flag = ("unknown LODs" if info["lod_count"] is None else
+                    "NO LODs" if info["missing_lods"] else f"{info['lod_count']} LODs")
         lines.append(
-            f"  {info['approx_verts']:>8,} verts  [{lod_flag:8s}]  "
+            f"  vertices={info['approx_verts']}  [{lod_flag}]  "
             f"{path.split('/')[-1]}"
         )
 
@@ -459,7 +514,12 @@ def run_memory_top_offenders(
 
     textures = [{"path": p, **info} for p, info in tex_sorted]
     meshes   = [{"path": p, **info} for p, info in mesh_sorted]
-    return {"status": "ok", "textures": textures, "meshes": meshes}
+    return {"status": "ok", "textures": textures, "meshes": meshes,
+            "unknown_textures": [{"path": path, **info} for path, info in tex_info
+                                 if not info["inspection_complete"]],
+            "unknown_meshes": [{"path": path, **info} for path, info in mesh_info
+                               if not info["inspection_complete"]],
+            "limitation": "Ranked known estimates only; unavailable measurements cannot be compared."}
 
 
 @register_tool(

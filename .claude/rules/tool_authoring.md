@@ -44,7 +44,7 @@ Never return `None`, a bare primitive, or a live `unreal.*` object.
    neither the dashboard nor the menu, the count rises above
    `_UI_INVISIBLE_BASELINE` and the check fails. If the tool is intentionally
    headless (MCP/CLI only), raise the baseline and say why in the commit.
-6. If adding a new module to `tools/__init__.py` → **full UEFN restart required** (not nuclear reload). See UEFN_QUIRKS.md Quirk #26.
+6. If adding a new module to `tools/__init__.py` → **full UEFN restart required** (not guarded reload). See UEFN_QUIRKS.md Quirk #26.
 7. Leave the complete change uncommitted for independent review. Commit and
    push require separate owner authorization.
 

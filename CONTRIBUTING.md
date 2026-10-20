@@ -38,17 +38,17 @@ CLAUDE.md is auto-loaded by Claude Code — it gives you full codebase context, 
    Run deploy.bat first. The repo and UEFN project are separate trees.
 
    If you edited an existing module, paste into the UEFN Python console:
-   import sys; [sys.modules.pop(k) for k in list(sys.modules) if "UEFN_Toolbelt" in k]; import UEFN_Toolbelt as tb; tb.register_all_tools(); tb.run("my_tool_name")
+   import UEFN_Toolbelt as tb; tb.hard_reload(); tb.run("my_tool_name")
 
    When does `tb` already exist vs. when do you need to import?
-   • Same project, same session → `tb` is already defined, nuclear reload refreshes it
+   • Same project, same session → `tb` is already defined, guarded reload refreshes it
    • Switched to a different project → Python environment resets, `tb` is gone — run the full import above
    • Fresh UEFN launch → same as above, always import first
    • Rule of thumb: if you see `NameError: name 'tb' is not defined`, just run the full line above
 
    ⚠️ If you added a NEW module (new .py file): after deploy.bat, do a full UEFN
-   restart instead of nuclear reload, import Toolbelt fresh, register all tools,
-   and run the new tool. Nuclear reload + new module = EXCEPTION_ACCESS_VIOLATION.
+   restart instead of guarded reload, import Toolbelt fresh, register all tools,
+   and run the new tool. Guarded reload + new module = EXCEPTION_ACCESS_VIOLATION.
    See UEFN_QUIRKS.md Quirk #26.
 
 5. DOCUMENT AND HAND OFF FOR REVIEW
@@ -122,8 +122,8 @@ def my_tool(count: int = 10, folder: str = "", dry_run: bool = True, **kwargs) -
 | **#23 — /Game/ Mount** | UEFN mounts at project name, not `/Game/`. Use `detect_project_mount()` for all asset path operations. Never force-prepend `/Game/`. |
 | **#24 — Async Screenshot Deadlock** | `take_high_res_screenshot` is queued. File won't appear while Python is running. Trigger and exit — file lands ~1 second after console returns. |
 | **#25 — Slate Tick Required** | Long-running Python blocks the editor UI. Use `register_slate_pre_tick_callback` for deferred work. |
-| **#26 — Nuclear Reload + New Module = Crash** | `sys.modules.pop` frees Python objects while stale C++ callbacks still point at them. Adding a new `.py` file to tools? **Full UEFN restart**, not nuclear reload. |
-| **#27 — Hard Restart Clears State Nuclear Reload Cannot** | Nuclear reload fixes **code**. Hard restart fixes **state**. After a crash, project switch, or `Shiboken` abort — close UEFN completely and reopen. `tb` is undefined after switching projects; always import fresh. |
+| **#26 — New modules require a full restart** | Direct module clearing can free Python objects while C++ callbacks still reference them. Adding a new `.py` file to tools? **Full UEFN restart**. Use `tb.hard_reload()` only for existing pure tool-module edits. |
+| **#27 — Hard Restart Clears State Guarded Reload Cannot** | Guarded reload fixes **code**. Hard restart fixes **state**. After a crash, project switch, or `Shiboken` abort — close UEFN completely and reopen. `tb` is undefined after switching projects; always import fresh. |
 | **#37 — TextRenderActor Blocks Publishing** | Every placed `TextRenderActor` is disallowed remotely. Run `publish_audit` and remove all instances before submission. |
 | **#41 — Struct Positional Order Is Unsafe** | Build `unreal.*` structs with keyword arguments. `Rotator` is `(roll, pitch, yaw)` and `Color` follows C++ `B,G,R,A` field order. |
 | **#42 — Project Python Fails Remote Validation** | Before Launch Session, Push Changes, or publishing, run `prepare_launch.bat`; after remote validation completes, run `restore_after_launch.bat`. `.urcignore` is not enough. |

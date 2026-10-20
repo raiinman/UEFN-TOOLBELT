@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "harness_version": "V11-ULTIMATE-171",
+  "harness_sha256": "ddf82364acbe35e2fc58a042d18ac48915c92e72244c6cec7eabdbb4953ab2d5",
+  "project": {
+    "project_dir": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance",
+    "descriptor": "C:\\Users\\mikea\\Documents\\MCP\\ToolbeltTests\\ToolbeltAcceptance\\ToolbeltAcceptance.uefnproject",
+    "mount": "001485b2-9178-47cf-a1a5-e66b92a43825",
+    "world_path": "/001485b2-9178-47cf-a1a5-e66b92a43825/ToolbeltAcceptance.ToolbeltAcceptance"
+  },
+  "engine_saved_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/",
+  "report_dir": "C:/Users/mikea/AppData/Local/UnrealEditorFortnite/Saved/UEFN_Toolbelt",
+  "date": "2026-10-20T01:19:29.551732",
+  "completed": true,
+  "sections": [
+    "lighting_extended"
+  ],
+  "fatal": "",
+  "cleanup_error": "",
+  "checks": [
+    {
+      "section": "Lighting",
+      "name": "light_place (point)",
+      "passed": true,
+      "detail": "",
+      "verified": true
+    },
+    {
+      "section": "Lighting",
+      "name": "light_list",
+      "passed": true,
+      "detail": "1 lights",
+      "verified": true
+    },
+    {
+      "section": "Lighting",
+      "name": "light_set",
+      "passed": true,
+      "detail": "",
+      "verified": true
+    },
+    {
+      "section": "Lighting",
+      "name": "sky_set_time",
+      "passed": false,
+      "detail": "Operator refused or malformed result: {'status': 'error', 'message': 'No DirectionalLight in level.'}",
+      "verified": false
+    }
+  ],
+  "limitation": "Recorded assertions only; verified flags are authored annotations, not per-tool native acceptance. Status-only and refusal checks require independent interpretation."
+}

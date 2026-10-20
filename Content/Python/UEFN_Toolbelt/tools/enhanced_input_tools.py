@@ -73,7 +73,7 @@ def run_input_list_actions(search_path: str = "", **kwargs) -> dict:
         for a in assets:
             entry = {"name": str(a.asset_name), "path": str(a.package_name)}
             try:
-                loaded = unreal.EditorAssetLibrary.load_asset(str(a.object_path))
+                loaded = unreal.EditorAssetLibrary.load_asset(f"{a.package_name}.{a.asset_name}")
                 if loaded:
                     vt = loaded.get_editor_property("value_type")
                     entry["value_type"] = str(vt) if vt is not None else "unknown"

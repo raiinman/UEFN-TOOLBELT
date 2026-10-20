@@ -1,0 +1,17 @@
+UEFN TOOLBELT — Integration Test Results
+============================================================
+Date:    2026-10-09T17:05:02.228449
+Passed:  6/6
+Verified: 3 checked a real outcome · 3 execution-only (ran without raising)
+Elapsed: 0.32s
+============================================================
+
+
+[Procedural]
+----------------------------------------
+  PASS  Text Place
+  PASS  Text Paint Grid  (Found 4 actors, expected 4)
+  PASS  Text Save Style
+  PASS  Text Color Cycle
+  PASS  Text Label Selection
+  PASS  Text Clear  (Remaining actors: 0)
