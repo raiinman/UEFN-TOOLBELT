@@ -199,6 +199,7 @@ When the user requests a durable behavior change, record it here or in the relev
 
 - For repository maintenance, identify and implement improvements autonomously; do not ask the user to design enhancements. Authorized subagents may review and repair separate scopes. Keep progress updates brief, outcome-first, with a clear next step.
 - Native mutation acceptance belongs in the dedicated ToolbeltAcceptance project, verified against its descriptor and active world. Never run its fixtures in playable projects.
+- Toolbelt is a general UEFN toolset for whichever native project is open. Resolve identity from that project's descriptor; named acceptance projects are test targets, not a restriction on normal tools. Include package/startup/reference setup when preparing another project.
 
 ## Project Ownership
 

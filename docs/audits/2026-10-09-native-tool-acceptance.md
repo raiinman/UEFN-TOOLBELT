@@ -130,6 +130,37 @@ records; the combined ledger does not promote canonical source coverage in
 
 ## Remaining limits and closeout
 
+### Use in any prepared UEFN project
+
+The owner clarified that Toolbelt must work across UEFN projects. Named native
+acceptance targets are test isolation, not a restriction on ordinary tools.
+The maintained package uses each project's own descriptor and mount.
+
+The [global rollout record](evidence/2026-10-09-toolbelt-acceptance/global-rollout-2026-10-20/rollout.json)
+records deployment to AquaShiftGunGame, AquaShiftAnimSource, MyProject, FNSoT,
+Scrapline and DeadSignalUndertow, in addition to the already updated Riftbloom
+and ToolbeltAcceptance. All eight installed packages match all 94 maintained
+Python files, 752 file comparisons in total. The six additional deployments
+followed SHA-verified backups of 656 existing files. Five existing startup hooks,
+including Scrapline's custom hook, and sibling tools were preserved. Python was
+enabled only where missing, in AquaShiftAnimSource and MyProject; other descriptor
+fields and bindings were preserved. MyProject received the managed deferred hook.
+
+The local shared [startup loader](evidence/2026-10-09-toolbelt-acceptance/global-rollout-2026-10-20/startup-loader.py)
+now discovers installed Content/Python paths with strict native descriptor and
+world matching. Its optional legacy registry no longer restricts eligible
+projects. MyProject was found without a registry entry. Nineteen standalone
+checks passed: 18 simulated discovery, ambiguity, missing-registry and callback
+cases, plus filesystem metadata checks for the eight actual installed projects.
+The preserved self-check is machine-specific evidence, not a portable CI suite.
+
+The additional six editors were not opened, and the new discovery loader has
+not received a fresh native cold-start test. Existing two-project startup
+evidence remains specific to the earlier loader. Preparing a future project
+still requires its package, Python enablement and startup hook; it needs no
+hard-coded project-name entry. The user preference and global Toolbelt skill
+now make that preparation part of project setup.
+
 ### Current startup and deployment, 2026-10-20
 
 After deployment and a full UEFN restart, ToolbeltAcceptance started its
